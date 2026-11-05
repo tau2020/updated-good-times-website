@@ -1,6 +1,7 @@
 // The review cards (D57) show our own short summary of each Tripadvisor review, labelled as a summary and linked to
 // the original: a guest's own words are quoted only with their permission, and none is on record, so no entry
-// carries quoted text. Each rating is the reviewer's own, and no personal avatar is used.
+// carries quoted text. Each rating is the reviewer's own. A reviewer's own profile photo appears only once the owner
+// has supplied its file (shown at the owner's request; consent pending, docs/APPROVAL_REGISTER.md › R2).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
@@ -8,6 +9,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { reviews, pullQuote, reviewSource } from '../src/data/reviews.mjs';
+import { reviewerPhoto, REVIEWER_FILE } from '../src/partials/reviewer-photo.mjs';
 import { tourBySlug } from '../src/data/tours.mjs';
 import { services } from '../src/data/transfers.mjs';
 
@@ -43,10 +45,19 @@ test('a rating is only ever a whole number from 1 to 5, and none is invented', (
   }
 });
 
-test('no reviewer’s personal avatar is used; any avatar named in the data is in the repository', () => {
+test('each reviewer has one photo file name, the same on every review of theirs, and a photo shows only once its file exists', () => {
+  const byAuthor = new Map();
   for (const r of reviews) {
-    assert.equal(r.avatar, undefined, `${r.author}: initials or an illustrated avatar, never the reviewer’s own picture`);
-    if (!r.avatar) continue;
-    assert.ok(existsSync(join(HERE, '..', 'src', 'assets', 'img', 'reviewers', r.avatar)), `${r.author}: ${r.avatar}`);
+    assert.match(r.avatar, REVIEWER_FILE, `${r.author}: a plain lower-case file name`);
+    if (byAuthor.has(r.author)) assert.equal(r.avatar, byAuthor.get(r.author), `${r.author}: one photo for all their reviews`);
+    byAuthor.set(r.author, r.avatar);
+    const supplied = existsSync(join(HERE, '..', 'src', 'assets', 'img', 'reviewers', r.avatar));
+    assert.equal(reviewerPhoto(r.avatar), supplied ? `assets/img/reviewers/${r.avatar}` : '', `${r.author}: never a broken image`);
   }
+  // Two people never share a file
+  assert.equal(new Set(byAuthor.values()).size, byAuthor.size);
+  // The helper itself: a supplied file is used, a missing one or an unsafe name never is
+  assert.equal(reviewerPhoto('dave-f.jpg', { exists: () => true }), 'assets/img/reviewers/dave-f.jpg');
+  assert.equal(reviewerPhoto('dave-f.jpg', { exists: () => false }), '');
+  for (const bad of ['', undefined, '../x.jpg', 'Dave F.jpg', 'x.svg']) assert.equal(reviewerPhoto(bad, { exists: () => true }), '', String(bad));
 });

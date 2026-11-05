@@ -58,7 +58,7 @@ npm run qa:screens        # screenshot matrix → docs/qa/screens (server must b
 | Tours and activities (copy, times, inclusions, cancellation, group-tier prices, sources, points to confirm) | `src/data/tours.mjs` |
 | The multi-day Garden Route tour (copy, outline, days, rate, the points to confirm) | `src/data/packages.mjs` (the slug also in `PACKAGE_SLUGS`, `src/assets/js/enquiry-schema.js`) |
 | The airport transfer and its request types | `src/data/transfers.mjs` |
-| Reviews (Tripadvisor metadata and our own summaries; no reviewer's words are copied) | `src/data/reviews.mjs` |
+| Reviews (Tripadvisor metadata and our own summaries; no reviewer's words are copied). Each review's `avatar` names its reviewer's profile photo, used once the file is in `src/assets/img/reviewers/` (square, 168 px or larger); until then the cards draw an illustrated avatar or initials | `src/data/reviews.mjs`, `src/partials/reviewer-photo.mjs` |
 | FAQ (each answer with its source) | `src/data/faq.mjs` |
 | Image slots, alt text, focal points and origins | `src/data/images.mjs`, gallery captions in `src/data/photo-captions.mjs` |
 | Home page story below the hero | `src/pages/index.mjs` |

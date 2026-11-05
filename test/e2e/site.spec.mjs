@@ -492,9 +492,16 @@ test.describe('guest stories', () => {
       await expect(card.locator('.story-card__source a')).toHaveAttribute('href', r.url);
       await expect(card.locator('.story-card__source a')).toHaveAttribute('target', '_blank');
       await expect(card.locator('.story-card__source a')).toHaveAttribute('rel', /\bnoopener\b/);
-      // An original illustration over the initials (nobody's likeness): never the reviewer's own photograph
-      await expect(card.locator('.story-card__avatar img')).toHaveAttribute('alt', '');
-      await expect(card.locator('.story-card__avatar img')).toHaveAttribute('src', /^assets\/img\/avatars\/guest-\d{2}\.svg$/);
+      // The reviewer's own profile photo once its file is supplied (named in the alt), otherwise an original illustration
+      // over the initials (nobody's likeness, no alt)
+      const src = await card.locator('.story-card__avatar img').getAttribute('src');
+      if (src.startsWith('assets/img/reviewers/')) {
+        expect(src, r.author).toBe(`assets/img/reviewers/${r.avatar}`);
+        await expect(card.locator('.story-card__avatar img')).toHaveAttribute('alt', `${r.author}’s Tripadvisor profile photo`);
+      } else {
+        expect(src, r.author).toMatch(/^assets\/img\/avatars\/guest-\d{2}\.svg$/);
+        await expect(card.locator('.story-card__avatar img')).toHaveAttribute('alt', '');
+      }
       // Stars only where the review's own rating is recorded
       await expect(card.locator('.stars')).toHaveCount(r.rating ? 1 : 0);
       if (r.rating) await expect(card.locator('.story-card__stars .visually-hidden')).toHaveText(`Rated ${r.rating} out of 5`);

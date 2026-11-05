@@ -1,6 +1,7 @@
 /**
  * Card partials: tours, multi-day packages, transfer rows, reviews, destinations.
  */
+import { reviewerPhoto } from './reviewer-photo.mjs';
 import { esc, icon, picture, price, fmtDate, showRating, stars, artPanel } from './ui.mjs';
 import { routeArt } from './route-art.mjs';
 import { tourBySlug, categories, themeLabel } from '../data/tours.mjs';
@@ -96,6 +97,8 @@ export function reviewCard(r, { i = 0, showTour = true } = {}) {
   const t = r.tour ? tourBySlug(r.tour) : null;
   const meta = [r.origin, r.visited].filter(Boolean).join(' · ');
   const verbatim = r.quote && r.quoteApproval;
+  // The reviewer's own photo over their initials, once its file is supplied (partials/reviewer-photo.mjs)
+  const photo = reviewerPhoto(r.avatar);
   const title = verbatim ? `“${esc(r.quote)}”` : t ? esc(t.shortTitle) : esc(r.label || 'A private day with Good Times');
   const body = verbatim
     ? `<p class="review__label">In their words</p>`
@@ -106,7 +109,7 @@ export function reviewCard(r, { i = 0, showTour = true } = {}) {
   <h3 class="review__title">${title}</h3>
   ${body}
   <div class="review__head">
-    <span class="review__avatar" aria-hidden="true">${esc(initials(r.author))}</span>
+    <span class="review__avatar" aria-hidden="true">${esc(initials(r.author))}${photo ? `<img src="${photo}" alt="" width="80" height="80" loading="lazy" decoding="async">` : ''}</span>
     <div>
       <p class="review__author">${esc(r.author)}</p>
       ${meta ? `<p class="review__meta">${esc(meta)}</p>` : ''}

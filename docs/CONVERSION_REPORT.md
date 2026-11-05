@@ -26,7 +26,7 @@ How the supplied website template became the Good Times in Cape Town site (5 Nov
 | Copy | Rewritten for every page from Good Times' own published facts, in a warm, plain voice, without superlatives |
 | Prices | Good Times' published rand prices, as group tiers (1–4 and 5–8 guests) or per trip, dated; "Price on enquiry" where none is published. The display currency's base is now ZAR |
 | Terms and privacy | Good Times' own published Terms & Conditions (two adaptations: links to pages this site does not have). The privacy notice describes this site's actual processing. Both are marked draft until approved |
-| Reviews | Ten Tripadvisor reviews as short summaries in our own words, each linked; no reviewer's text, photo or avatar is copied |
+| Reviews | Ten Tripadvisor reviews as short summaries in our own words, each linked; no reviewer's text is copied. Each card shows the reviewer's own profile photo once the owner supplies it (requested 5 Nov 2026), and an illustrated avatar until then |
 | SEO and metadata | Good Times titles, descriptions, Open Graph image, and JSON-LD (TravelAgency with founder, address and map; TouristTrip with Offers; FAQPage; BreadcrumbList). Staging is `noindex` (meta, `X-Robots-Tag`, `robots.txt`), with canonicals on the staging address. A sitemap is only made for production |
 
 ## Offerings mapped onto the template

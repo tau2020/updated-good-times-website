@@ -7,13 +7,8 @@ import { imageByName } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
 import { reviews } from '../data/reviews.mjs';
-import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { reviewerPhoto } from '../partials/reviewer-photo.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-/** A reviewer's avatar file is used only once it is in the repository, never as a broken image (none is, by design). */
-const reviewerPhoto = (file) => (file && existsSync(join(HERE, '..', 'assets', 'img', 'reviewers', file)) ? `assets/img/reviewers/${file}` : '');
 const initials = (name) => name.replace(/[^A-Za-z ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('') || name.slice(0, 1).toUpperCase();
 const tour = (slug) => tours.find((t) => t.slug === slug);
 const tourHref = (slug) => `tours/${tour(slug).slug}/`;
@@ -100,13 +95,13 @@ const GALLERY = [
 
 /** 10 · Words from the road: every chosen review as a compact card in the carousel. */
 const LANGUAGES = { fr: 'French', de: 'German' };
-/** Ten original illustrated avatars (src/assets/img/avatars, drawn for this site, nobody's likeness): reviewer photos
-    are personal images and are not used */
+/** Ten original illustrated avatars (src/assets/img/avatars, drawn for this site, nobody's likeness): the stand-in on a
+    card until the reviewer's own photo is supplied (partials/reviewer-photo.mjs) */
 const AVATARS = 10;
 const avatarFor = (i) => `assets/img/avatars/guest-${String((i % AVATARS) + 1).padStart(2, '0')}.svg`;
 
 /**
- * A review card: an illustrated avatar, the reviewer's name and place, their own rating where it is
+ * A review card: the reviewer's photo (or an illustrated avatar until it is supplied), the reviewer's name and place, their own rating where it is
  * recorded, our labelled summary of the review (a verbatim passage only with the reviewer's permission,
  * `quoteApproval`, none recorded yet) and the link to the original.
  */
@@ -121,7 +116,7 @@ function storyCard(r, i) {
   const rated = Number.isFinite(r.rating) && r.rating >= 1 && r.rating <= 5;
   const avatar = `<span class="story-card__avatar"><span class="story-card__initials" aria-hidden="true">${esc(initials(r.author))}</span>${
     real
-      ? `<img src="${real}" alt="${esc(r.author)}’s Tripadvisor avatar" width="84" height="84" loading="lazy" decoding="async">`
+      ? `<img src="${real}" alt="${esc(r.author)}’s Tripadvisor profile photo" width="84" height="84" loading="lazy" decoding="async">`
       : `<img src="${avatarFor(i)}" alt="" width="84" height="84" loading="lazy" decoding="async">`
   }</span>`;
   const t = r.tour ? tour(r.tour) : null;

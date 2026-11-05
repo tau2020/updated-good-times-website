@@ -101,7 +101,8 @@ The rights log also excludes the Langa files with identifiable children (GT-A-03
 |---|---|---|
 | Rating 5.0 and 264 reviews | Tripadvisor listing, read 5 Nov 2026 (`site.tripadvisor`) | Public figures, dated on the page; recheck before release (R1) |
 | Rating breakdown (259 / 4 / 0 / 0 / 0) | Tripadvisor, read 3 Nov 2026 | As above |
-| Ten review cards | Tripadvisor reviews, each linked | Our own short summaries; no reviewer's words, photo or avatar is copied. Names as shown publicly on Tripadvisor |
+| Ten review cards | Tripadvisor reviews, each linked | Our own short summaries; no reviewer's words are copied. Names as shown publicly on Tripadvisor |
+| Reviewer profile photos | Each reviewer's own Tripadvisor profile photo, to be supplied by the owner as a file (`src/assets/img/reviewers/`) | Shown at the owner's request of 5 Nov 2026, once supplied; none supplied yet. Personal images of private individuals, used without the reviewers' recorded consent (the Drive research notes advised against them): `docs/APPROVAL_REGISTER.md` R2 |
 
 ## Prices, terms and facts
 

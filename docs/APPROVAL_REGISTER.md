@@ -64,7 +64,8 @@ Every product, price and rule shown comes from Good Times' own pages (read 5 Nov
 
 | # | Point | Until then |
 |---|---|---|
-| R1 | Recheck the Tripadvisor rating (5.0), review count (264) and breakdown before release, and approve the ten review cards: short summaries in our own words, each linked to the review, with the reviewer's public Tripadvisor name. No reviewer's text, photo or avatar is copied | Shown with the date they were read |
+| R1 | Recheck the Tripadvisor rating (5.0), review count (264) and breakdown before release, and approve the ten review cards: short summaries in our own words, each linked to the review, with the reviewer's public Tripadvisor name. No reviewer's text is copied | Shown with the date they were read |
+| R2 | Reviewers' profile photos, added at the owner's request (5 Nov 2026). Supply each reviewer's own Tripadvisor profile photo as a square file (168 px or larger) in `src/assets/img/reviewers/`, named: `seamus0314.jpg`, `travelangeldani.jpg`, `lydia-w.jpg`, `thea-h.jpg`, `meena301.jpg`, `dave-f.jpg`, `kashou106.jpg`, `andyjanec.jpg`. They cannot be collected automatically: Tripadvisor loads them with scripts and blocks automated browsing. These are personal images of private individuals; the Drive research notes advised against using them, and the reviewers' consent is not recorded. Confirm you accept that, or ask the reviewers | Each card keeps its illustrated avatar (home) or initials (reviews page) until its file is there |
 
 ## S. Design and copy
 
