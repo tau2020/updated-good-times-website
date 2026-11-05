@@ -1,0 +1,376 @@
+/* ==========================================================================
+   The media system's exhibition and lightbox (D66, design.md at the repository root §05; shared since D71)
+   The editorial wall of prints and the native <dialog> that shows a photograph whole. Loaded on the home page
+   (07 · The Living Travel Exhibition) and on every tour and package page with a Gallery tab, after styles.css,
+   living-cape-system.css and buttons.css. Markup: src/partials/media.mjs; behaviour: assets/js/media.js. The
+   wall carries .lc-scope outside the home page's .living-cape, and the dialog always does, so the tokens of
+   living-cape-system.css apply wherever they hang. Nothing here matches the hero, the header or .btn-coin.
+   ========================================================================== */
+
+/* 1. The wall: an editorial mosaic on an explicit grid. Each print's span and ratio come from its record
+   (photoExhibition, media.mjs): two columns on phones and tablets, feature tiles across both; from 64em a
+   12-column grid, where one print per row states its ratio and the others stretch to that row (their
+   photograph is absolutely placed, so it never sets a height). */
+.lc-gallery__wall {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gallery-gap);
+  margin: clamp(2rem, 1.5rem + 2vw, 3.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lc-gallery__item {
+  grid-column: span var(--sm-span, 1);
+  display: flex;
+  min-width: 0;
+}
+.lc-gallery__item .lc-print__frame {
+  aspect-ratio: var(--sm-ratio, 1);
+}
+@media (min-width: 40em) {
+  .lc-gallery__item {
+    grid-column: span var(--md-span, 1);
+  }
+  .lc-gallery__item .lc-print__frame {
+    aspect-ratio: var(--md-ratio, 1);
+  }
+}
+@media (min-width: 64em) {
+  .lc-gallery__wall {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .lc-gallery__item {
+    grid-column: span var(--lg-span, 4);
+  }
+  .lc-gallery__item .lc-print__frame {
+    flex: 1;
+    aspect-ratio: var(--lg-ratio, auto);
+  }
+}
+.lc-print {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--media-on-image);
+  text-decoration: none;
+  border-radius: var(--media-radius);
+}
+.lc-print__frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--media-radius);
+  background: var(--lc-ivory);
+}
+.lc-print__frame > picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.lc-print__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+  transition: transform 450ms var(--lc-ease);
+}
+/* On hover and focus: the photograph leans in (1.035), a local shade rises and the place is named */
+.lc-print__shade {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--media-radius);
+  background: linear-gradient(180deg, rgba(7, 16, 18, 0) 55%, rgba(7, 16, 18, 0.7) 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-fast) var(--lc-ease);
+}
+.lc-print__label {
+  position: absolute;
+  right: 3.5rem;
+  bottom: 0.9rem;
+  left: 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--media-on-image);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--motion-fast) var(--lc-ease), transform var(--motion-fast) var(--lc-ease);
+  pointer-events: none;
+}
+.lc-print__index {
+  flex: none;
+  font-family: var(--lc-display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--lc-champagne);
+}
+.lc-print__open {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--lc-ink);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity var(--motion-fast) var(--lc-ease), transform var(--motion-fast) var(--lc-ease);
+  pointer-events: none;
+}
+.lc-print__open .gt-engraved-icon {
+  --jei-size: 18px;
+}
+@media (hover: hover) {
+  .lc-print:hover .lc-print__frame img {
+    transform: scale(1.035);
+  }
+  .lc-print:hover .lc-print__shade,
+  .lc-print:hover .lc-print__label,
+  .lc-print:hover .lc-print__open {
+    opacity: 1;
+    transform: none;
+  }
+}
+.lc-print:focus-visible {
+  outline: 2px solid var(--lc-focus);
+  outline-offset: 3px;
+}
+.lc-print:focus-visible .lc-print__shade,
+.lc-print:focus-visible .lc-print__label,
+.lc-print:focus-visible .lc-print__open {
+  opacity: 1;
+  transform: none;
+}
+/* Touch: no hover to name the place, so only a quiet sign that the photograph opens */
+@media (hover: none) {
+  .lc-print__open {
+    width: 30px;
+    height: 30px;
+    opacity: 0.85;
+    transform: none;
+  }
+  .lc-print__open .gt-engraved-icon {
+    --jei-size: 15px;
+  }
+}
+.lc-print.is-away .lc-print__frame,
+.lc-print.is-away .lc-print__open {
+  visibility: hidden;
+}
+/* In a tour's or package's Gallery tab the wall starts at the panel's top (its heading is the tab) */
+.lc-gallery__wall--panel {
+  margin-top: 0;
+}
+
+/* 2. The round close control: unambiguous, a 48 px target */
+.lc-round {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid rgba(5, 106, 43, 0.38);
+  border-radius: 50%;
+  background: var(--lc-paper-light);
+  color: var(--lc-ink);
+  cursor: pointer;
+  transition: border-color var(--lc-micro) var(--lc-ease), background-color var(--lc-micro) var(--lc-ease), color var(--lc-micro) var(--lc-ease);
+}
+.lc-round .gt-engraved-icon {
+  --jei-size: 22px;
+}
+.lc-round:hover {
+  border-color: var(--lc-brass);
+  background: #fff;
+  color: var(--lc-forest);
+}
+.lc-round[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: default;
+}
+.lc-round--light {
+  border-color: rgba(111, 237, 143, 0.55);
+  background: rgba(11, 34, 51, 0.6);
+  color: #ffffff;
+}
+.lc-round--light:hover {
+  border-color: var(--lc-champagne);
+  background: rgba(11, 34, 51, 0.9);
+  color: var(--lc-champagne);
+}
+
+/* 3. The lightbox: a native modal <dialog> on a charcoal veil; the photograph whole at its own proportions */
+html.lc-locked {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+.lc-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(7, 16, 18, 0.96);
+  color: #ffffff;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+.lc-lightbox::backdrop {
+  background: transparent;
+}
+.lc-lightbox[open] {
+  display: block;
+}
+.lc-lightbox__inner {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  height: 100%;
+  padding: clamp(0.75rem, 0.5rem + 1vw, 1.5rem);
+  gap: 0.9rem;
+}
+@media (min-width: 64em) {
+  .lc-lightbox__inner {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+    grid-template-rows: minmax(0, 1fr) auto;
+    column-gap: clamp(1.5rem, 2vw, 2.5rem);
+    padding: clamp(1.5rem, 2.5vw, 2.75rem);
+  }
+  .lc-lightbox__stage {
+    grid-row: 1 / 3;
+  }
+  .lc-lightbox__info {
+    align-self: center;
+  }
+  .lc-lightbox__controls {
+    grid-column: 2;
+  }
+}
+.lc-lightbox__stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  touch-action: pan-y pinch-zoom;
+}
+.lc-lightbox__frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: var(--ar, 3 / 2);
+  width: min(100%, calc(var(--stage-h, 70vh) * var(--ar-n, 1.5)));
+  max-height: 100%;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+.lc-lightbox__frame > picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* Contained: the photograph is never cropped. While a print lifts in from the wall, its frame passes through the
+   wall's crop, so the photograph fills it on the same focal point until it lands */
+.lc-lightbox__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.lc-lightbox__frame.is-lifting img {
+  object-fit: cover;
+  object-position: var(--lift-focus, 50% 50%);
+}
+.lc-lightbox__count {
+  font-family: var(--lc-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--lc-champagne);
+}
+.lc-lightbox__title {
+  margin-top: 0.35rem;
+  font-family: var(--lc-display);
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.05;
+  color: #ffffff;
+}
+.lc-lightbox__place {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--lc-champagne);
+}
+.lc-lightbox__story {
+  max-width: 30rem;
+  margin-top: 0.6rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.84);
+}
+.lc-lightbox__credit {
+  margin-top: 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+}
+.lc-lightbox__credit a {
+  color: inherit;
+  text-decoration-color: rgba(111, 237, 143, 0.6);
+  text-underline-offset: 2px;
+}
+.lc-lightbox__credit a:hover {
+  color: var(--lc-champagne);
+}
+.lc-lightbox__link {
+  margin-top: 0.75rem;
+}
+.lc-lightbox__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+.lc-lightbox__close {
+  margin-left: auto;
+}
+@media (max-width: 63.99em) {
+  .lc-lightbox__info {
+    max-height: 34vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .lc-lightbox__title {
+    font-size: 1.6rem;
+  }
+  .lc-lightbox__story {
+    font-size: 0.875rem;
+  }
+}
+
+/* 4. Motion: without it (reduced motion, ?nomotion) the photograph does not lean in on hover */
+@media (prefers-reduced-motion: reduce) {
+  .lc-print:hover .lc-print__frame img,
+  .lc-print:focus-visible .lc-print__frame img {
+    transform: none;
+  }
+  .lc-print__frame img {
+    transition: none;
+  }
+}

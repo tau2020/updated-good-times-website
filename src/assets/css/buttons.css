@@ -1,0 +1,363 @@
+/* ==========================================================================
+   The Good Times button system, every page
+   Loaded after living-cape-system.css. One family of controls for the whole site:
+
+     .gt-button--primary     the Good Times green plate, white words (the main action of a section)
+     .gt-button--secondary   white with a green perimeter and a faint inner rule
+     .gt-button--tertiary    words with a green hairline beneath (minor ways on)
+     .gt-button--utility     compact, text-labelled controls (Previous, Next, Done)
+     .gt-button--danger      kept apart from green for anything irreversible
+     sizes: --compact (44 px), standard (48 px), --large (52 px); --block fills its column
+     .gt-button--on-dark     the light-on-dark versions for ocean navy and photographs
+
+   The flagship with the medallion is .btn-coin (styles.css: the header's and the Travel
+   Concierge's Make It Yours); it shares these tokens and states.
+   No control in the family carries an arrow, chevron or arrow-in-circle.
+   Colours come from the approved logo (green #059A35, reversed green #45E375/#6FED8F) and its
+   ocean footer (#102E42); every green behind white words keeps at least 4.8:1.
+   ========================================================================== */
+
+:root {
+  --gt-ink: #0b1620;
+  --gt-cream: #ffffff;
+  --gt-green-highlight: #0b8436;
+  --gt-green-light: #097d33;
+  --gt-green-base: #077530;
+  --gt-green-deep: #056a2b;
+  --gt-green-stroke: #056a29;
+  --gt-surface-dark: #102e42;
+  --gt-focus: #175b9a;
+  --gt-focus-on-dark: #6fed8f;
+  --gt-danger: #a32116;
+  --gt-danger-surface: #fff5f3;
+  --gt-control-radius: 10px;
+  --gt-cta-height: 48px;
+  --gt-cta-height-large: 52px;
+  --gt-cta-height-compact: 44px;
+  --gt-control-gap: 10px;
+  --gt-press: 220ms;
+}
+
+/* ---------- The shared base ---------- */
+.gt-button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gt-control-gap);
+  min-height: var(--gt-cta-height);
+  padding: 0.625rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--gt-control-radius);
+  background: transparent;
+  color: var(--gt-ink);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--gt-press) ease,
+    box-shadow var(--gt-press) ease,
+    background-color var(--gt-press) ease,
+    border-color var(--gt-press) ease,
+    color var(--gt-press) ease,
+    filter var(--gt-press) ease;
+}
+.gt-button:hover {
+  color: var(--gt-ink);
+}
+.gt-button .icon,
+.gt-button .gt-engraved-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.gt-button:focus-visible {
+  outline: 3px solid var(--gt-focus);
+  outline-offset: 3px;
+}
+.gt-button--on-dark:focus-visible {
+  outline-color: var(--gt-focus-on-dark);
+}
+
+/* ---------- Primary: the Good Times green plate ---------- */
+.gt-button--primary {
+  border-color: var(--gt-green-stroke);
+  background: linear-gradient(170deg, var(--gt-green-highlight) 0%, var(--gt-green-light) 31%, var(--gt-green-base) 69%, var(--gt-green-deep) 100%);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -2px 0 rgba(3, 60, 24, 0.22),
+    0 3px 9px rgba(11, 22, 32, 0.16);
+}
+.gt-button--primary:hover {
+  color: #fff;
+}
+/* The fine inner rule, 3 px inside the plate */
+.gt-button--primary::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: calc(var(--gt-control-radius) - 4px);
+  pointer-events: none;
+}
+/* A single pass of light on hover, prominent primaries only (never on load, never looping) */
+.gt-button--primary.gt-button--large::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.22) 50%, transparent 62%) 140% 0 / 260% 100% no-repeat;
+  pointer-events: none;
+}
+.gt-button--primary:hover {
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -2px 0 rgba(3, 60, 24, 0.22),
+    0 6px 14px rgba(11, 22, 32, 0.2);
+}
+.gt-button--primary.gt-button--large:hover::after {
+  background-position: -40% 0;
+  transition: background-position 700ms ease;
+}
+
+/* ---------- Secondary: white with a green perimeter ---------- */
+.gt-button--secondary {
+  border-color: var(--gt-green-stroke);
+  background: var(--gt-cream);
+  box-shadow: inset 0 0 0 3px rgba(5, 154, 53, 0.06);
+}
+.gt-button--secondary::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 3px;
+  border: 1px solid rgba(5, 106, 41, 0.14);
+  border-radius: calc(var(--gt-control-radius) - 4px);
+  pointer-events: none;
+}
+.gt-button--secondary:hover {
+  background: #f3faf5;
+  border-color: #03541f;
+  box-shadow:
+    inset 0 0 0 3px rgba(5, 154, 53, 0.1),
+    0 4px 10px rgba(11, 22, 32, 0.1);
+}
+/* On ocean navy and over photographs: a solid dark ground, a green rule, white words */
+.gt-button--secondary.gt-button--on-dark {
+  border-color: rgba(111, 237, 143, 0.7);
+  background: rgba(11, 34, 51, 0.82);
+  color: #fff;
+  box-shadow: inset 0 0 0 3px rgba(111, 237, 143, 0.07);
+}
+.gt-button--secondary.gt-button--on-dark::before {
+  border-color: rgba(111, 237, 143, 0.2);
+}
+.gt-button--secondary.gt-button--on-dark:hover {
+  border-color: var(--gt-focus-on-dark);
+  background: rgba(8, 26, 39, 0.92);
+  color: #fff;
+}
+.gt-button--secondary .icon,
+.gt-button--secondary .gt-engraved-icon {
+  color: var(--gt-green-stroke);
+}
+.gt-button--secondary.gt-button--on-dark .icon,
+.gt-button--secondary.gt-button--on-dark .gt-engraved-icon {
+  color: var(--gt-focus-on-dark);
+}
+
+/* ---------- Tertiary: words over a green hairline ---------- */
+.gt-button--tertiary {
+  min-height: var(--gt-cta-height-compact);
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--gt-green-stroke);
+  text-underline-offset: 6px;
+  white-space: normal;
+  text-align: left;
+}
+.gt-button--tertiary:hover {
+  color: #03541f;
+  text-decoration-thickness: 2px;
+  text-decoration-color: currentColor;
+}
+.gt-button--tertiary.gt-button--on-dark {
+  color: #fff;
+  text-decoration-color: rgba(111, 237, 143, 0.75);
+}
+.gt-button--tertiary.gt-button--on-dark:hover {
+  color: var(--gt-focus-on-dark);
+}
+
+/* ---------- Utility: compact text-labelled controls ---------- */
+.gt-button--utility {
+  min-width: var(--gt-cta-height-compact);
+  min-height: var(--gt-cta-height-compact);
+  padding: 0.5rem 1rem;
+  border-color: rgba(5, 106, 41, 0.45);
+  background: var(--gt-cream);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.gt-button--utility:hover {
+  border-color: var(--gt-green-stroke);
+  background: #f3faf5;
+}
+.gt-button--utility.gt-button--on-dark {
+  border-color: rgba(111, 237, 143, 0.6);
+  background: rgba(11, 34, 51, 0.72);
+  color: #fff;
+}
+.gt-button--utility.gt-button--on-dark:hover {
+  border-color: var(--gt-focus-on-dark);
+  background: rgba(8, 26, 39, 0.9);
+  color: #fff;
+}
+
+/* ---------- Danger: never green ---------- */
+.gt-button--danger {
+  border-color: var(--gt-danger);
+  background: var(--gt-danger-surface);
+  color: var(--gt-danger);
+}
+.gt-button--danger:hover {
+  background: #fde4df;
+  color: #7f1810;
+}
+
+/* ---------- Sizes ---------- */
+.gt-button--compact {
+  min-height: var(--gt-cta-height-compact);
+  padding: 0.5rem 1.05rem;
+  font-size: 0.875rem;
+}
+.gt-button--large {
+  min-height: var(--gt-cta-height-large);
+  padding: 0.75rem 1.875rem;
+}
+.gt-button--block {
+  width: 100%;
+}
+
+/* ---------- States ---------- */
+/* Hover lifts a pixel; pressing returns it to the plane with a slightly deeper inset, no bounce */
+@media (hover: hover) {
+  .gt-button:not(.gt-button--tertiary):hover:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']) {
+    transform: translateY(-1px);
+  }
+}
+.gt-button:not(.gt-button--tertiary):active:not(:disabled):not([aria-disabled='true']) {
+  transform: translateY(0);
+  filter: none;
+  box-shadow: inset 0 2px 4px rgba(3, 40, 16, 0.24);
+}
+/* Disabled: muted, dashed edge and a no-entry cursor, still legible (not opacity alone) */
+.gt-button:disabled,
+.gt-button[aria-disabled='true'] {
+  cursor: not-allowed;
+  filter: saturate(0.35);
+  border-style: dashed;
+  box-shadow: none;
+  transform: none;
+  opacity: 0.72;
+}
+.gt-button--tertiary:disabled,
+.gt-button--tertiary[aria-disabled='true'] {
+  text-decoration-style: dashed;
+}
+/* Loading: the width holds, a quiet ring turns beside the label, and a second press does nothing */
+.gt-button[aria-busy='true'] {
+  cursor: progress;
+  pointer-events: none;
+}
+.gt-button[aria-busy='true']::after {
+  content: '';
+  position: static;
+  flex: none;
+  order: -1;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  background: none;
+  animation: gt-button-turn 0.8s linear infinite;
+}
+@keyframes gt-button-turn {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* The specimen page (/design-system/, preview builds only) shows each state at rest */
+.lc-specimen .gt-button--primary.is-hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+.lc-specimen .gt-button--secondary.is-hover {
+  background: #f3faf5;
+  border-color: #03541f;
+}
+.lc-specimen .gt-button.is-pressed {
+  box-shadow: inset 0 2px 4px rgba(3, 40, 16, 0.24);
+  filter: none;
+}
+.lc-specimen .gt-button.is-focus {
+  outline: 3px solid var(--gt-focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gt-button,
+  .gt-button::after {
+    transition: none !important;
+  }
+  .gt-button:hover,
+  .gt-button:active {
+    transform: none !important;
+  }
+  .gt-button--primary.gt-button--large::after {
+    display: none;
+  }
+  .gt-button[aria-busy='true']::after {
+    display: block;
+    animation: none;
+    border-right-color: currentColor;
+    border-style: dotted;
+  }
+}
+
+@media (forced-colors: active) {
+  .gt-button {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+  .gt-button::before {
+    display: none;
+  }
+  .gt-button:focus-visible {
+    outline-color: Highlight;
+  }
+  .gt-button:disabled,
+  .gt-button[aria-disabled='true'] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}

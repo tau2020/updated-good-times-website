@@ -1,0 +1,43 @@
+{
+  "name": "good-times-in-cape-town-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Good Times in Cape Town: static website (zero-dependency build) and enquiry system",
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "watch": "node src/build.mjs --watch",
+    "images": "node src/tools/build-images.mjs",
+    "check": "node src/tools/check-site.mjs",
+    "serve": "node src/tools/serve.mjs",
+    "start": "node src/build.mjs && node src/tools/serve.mjs",
+    "test": "node --test --test-concurrency=1 \"test/**/*.test.mjs\"",
+    "db:migrate": "node lib/db/migrate.mjs",
+    "email:test": "node scripts/send-test-email.mjs",
+    "email:retry": "node scripts/retry-failed-email.mjs",
+    "privacy:erase": "node scripts/erase-personal-data.mjs",
+    "video": "bash src/tools/build-video.sh",
+    "test:e2e": "playwright test",
+    "qa:screens": "node qa/screenshots.mjs --full",
+    "guard": "node src/tools/brand-guard.mjs",
+    "preview:zip": "bash qa/preview-zip.sh"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "imports": {
+    "#pglite-driver": {
+      "workerd": "./lib/db/pglite.workers.mjs",
+      "default": "./lib/db/pglite.mjs"
+    }
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@electric-sql/pglite": "^0.5.8",
+    "@playwright/test": "^1.63.0",
+    "wrangler": "4.149.0"
+  }
+}

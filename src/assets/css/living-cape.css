@@ -1,0 +1,2020 @@
+/* ==========================================================================
+   The Cape, A Living Story: the home page beneath the approved hero (D65)
+   Loaded on the home page only, after styles.css and living-cape-system.css.
+   Every rule is scoped to .living-cape (the wrapper after the hero), so the
+   hero, the header and their descendants are never matched. Tokens, the icons
+   and the three actions live in living-cape-system.css.
+
+   Page rhythm (design.md §05): cinematic scale → quiet editorial space → human
+   intimacy → interactive discovery → useful service information → cinematic
+   reflection → booking. Grounds alternate paper, chalk, photography and deep forest.
+   ========================================================================== */
+
+.living-cape {
+  --lc-chapter: clamp(4rem, 6vw, 8rem);
+  --lc-gap: clamp(1rem, 0.5rem + 1.6vw, 2rem);
+  color: var(--lc-body);
+  background: var(--lc-paper);
+  font-family: var(--lc-ui);
+}
+.living-cape > section {
+  position: relative;
+}
+.living-cape h2,
+.living-cape h3 {
+  overflow-wrap: normal;
+}
+
+/* 1. The editorial voice (design.md §04) ------------------------------------ */
+.lc-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: clamp(1rem, 0.8rem + 0.6vw, 1.5rem);
+  font-family: var(--lc-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--lc-umber);
+}
+.lc-mark__num {
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--lc-functional-gold);
+}
+.lc-mark__rule {
+  flex: none;
+  width: 2.75rem;
+  height: 1px;
+  background: var(--lc-brass);
+}
+.lc-mark--light {
+  color: rgba(255, 255, 255, 0.92);
+}
+.lc-mark--light .lc-mark__num {
+  color: var(--lc-champagne);
+}
+.lc-mark--light .lc-mark__rule {
+  background: var(--lc-champagne);
+  opacity: 0.8;
+}
+/* Cinematic statements: Plus Jakarta Sans at full voice */
+.lc-statement {
+  max-width: 15ch;
+  font-family: var(--lc-display);
+  font-size: clamp(2.6rem, 5vw, 5.6rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--lc-ink);
+  text-wrap: balance;
+}
+.lc-statement em,
+.lc-title em {
+  font-style: normal;
+  font-weight: inherit;
+  color: var(--gt-em, #078a36);
+}
+.lc-statement__turn,
+.lc-title__turn {
+  display: block;
+}
+/* Chapter titles */
+.lc-title {
+  max-width: 19ch;
+  font-family: var(--lc-display);
+  font-size: clamp(2.25rem, 3.7vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  color: var(--lc-ink);
+  text-wrap: balance;
+}
+.lc-lead {
+  max-width: 42rem;
+  margin-top: clamp(1.1rem, 0.9rem + 0.8vw, 1.75rem);
+  font-size: clamp(1.06rem, 1.5vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--lc-body);
+  text-wrap: pretty;
+}
+.lc-body {
+  max-width: 38rem;
+  margin-top: 1.1rem;
+  font-size: clamp(1rem, 0.96rem + 0.15vw, 1.0625rem);
+  line-height: 1.7;
+  color: var(--lc-body);
+  text-wrap: pretty;
+}
+.living-cape figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--lc-muted);
+}
+/* Dark grounds: champagne accents, ivory words */
+.lc-dark .lc-title,
+.lc-dark .lc-statement {
+  color: #ffffff;
+}
+.lc-dark .lc-title em,
+.lc-dark .lc-statement em {
+  color: var(--lc-champagne);
+}
+.lc-dark .lc-body,
+.lc-dark .lc-lead {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* A story photograph: filling its frame on its stated focus, with the media system's corners (D66, design.md §02);
+   the full-bleed scenes and the interlude stay square-edged */
+.lc-print-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--ratio, 3 / 2);
+  border-radius: var(--media-radius);
+  background: var(--lc-ivory);
+}
+.lc-print-frame > picture {
+  display: block;
+  height: 100%;
+}
+.lc-print-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+}
+
+/* 2. 01 · The Sun Paints the Cape: pigment at the hero's edge, a drop, a pool that opens onto the coast */
+.lc-sun {
+  padding-bottom: var(--lc-chapter);
+  background: var(--lc-paper);
+  /* Clipped on every side: the water layer must never paint a pixel into the hero above */
+  overflow: clip;
+}
+.lc-sun__inner {
+  position: relative;
+  padding-top: clamp(6.5rem, 4.5rem + 7vw, 11.5rem);
+}
+/* The water that reveals the coast (living-cape.js draws it with motion only). It is a layer over the words and
+   the photograph that never takes a click; the section clips it, so it starts on the first pixel row under the hero */
+.lc-sun__water {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+html.cine .lc-sun__water.is-live {
+  display: block;
+}
+html.cine .lc-sun__water.is-live.is-done {
+  display: none;
+}
+/* Paper over the parts of the photograph the water has not reached yet */
+.lc-water__veil {
+  fill: var(--lc-paper);
+}
+/* The damp edge where the water meets the dry paper: only the part outside the wet area shows */
+.lc-water__damp,
+.lc-water__edge {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.lc-water__damp {
+  stroke: rgba(40, 84, 110, 0.05);
+}
+.lc-water__edge {
+  stroke: rgba(46, 92, 118, 0.26);
+}
+.lc-water__front {
+  fill: none;
+  stroke: rgba(46, 92, 118, 0.3);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+.lc-water__glow {
+  fill: none;
+  stroke: rgba(222, 236, 243, 0.9);
+  stroke-width: 7;
+  stroke-linejoin: round;
+}
+/* The film of water in the wet channels: a faint cool sheen over the photograph */
+.lc-water__film {
+  fill: none;
+  stroke: rgba(236, 246, 250, 0.2);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Clear water: a cool tint, a darker meniscus line, a soft shadow on the paper and silver highlights */
+.lc-water__shade {
+  fill: rgba(24, 56, 76, 0.1);
+}
+.lc-water__body {
+  fill: rgba(170, 204, 221, 0.4);
+  stroke: rgba(48, 94, 122, 0.5);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+.lc-water__light {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+.lc-water__light--soft {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 0.7;
+}
+.lc-water__sparkle {
+  fill: #fff;
+}
+.lc-sun__words {
+  position: relative;
+  z-index: 2;
+}
+.lc-sun .lc-statement {
+  max-width: none;
+}
+.lc-sun .lc-lead {
+  max-width: 36rem;
+}
+.lc-sun__plate {
+  position: relative;
+  margin-top: clamp(2.5rem, 1.5rem + 3.5vw, 5rem);
+}
+.lc-sun__frame {
+  position: relative;
+  aspect-ratio: 1000 / 560;
+  overflow: hidden;
+  border-radius: var(--media-radius);
+}
+.lc-sun__frame > picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.lc-sun__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus);
+}
+.lc-sun__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+}
+.lc-sun__caption > span {
+  max-width: 40rem;
+}
+@media (min-width: 48em) {
+  .lc-sun__words {
+    width: 64%;
+  }
+}
+@media (max-width: 47.99em) {
+  .lc-sun__frame {
+    aspect-ratio: 4 / 5;
+  }
+  .lc-sun__frame img {
+    object-position: var(--focus-tall);
+  }
+  .lc-sun .lc-lead {
+    max-width: 84%;
+  }
+}
+
+/* 3. Scenes: full-bleed photographs with the words where the picture leaves room (A, C and the invitation) */
+.lc-scene {
+  isolation: isolate;
+  display: grid;
+  min-height: clamp(34rem, 94svh, 60rem);
+  color: #ffffff;
+  background: var(--lc-forest-deep);
+  overflow: hidden;
+}
+.lc-scene__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+/* Taller than the frame by the parallax travel (about 7% each way) */
+.lc-scene__drift {
+  position: absolute;
+  inset: -7% 0;
+}
+.lc-scene__drift > picture {
+  display: block;
+  height: 100%;
+}
+.lc-scene__drift img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus);
+}
+@media (max-width: 47.99em) {
+  .lc-scene__drift img {
+    object-position: var(--focus-tall);
+  }
+}
+.lc-scene__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.lc-scene__inner {
+  position: relative;
+  display: flex;
+  padding-block: clamp(5.5rem, 4rem + 6vw, 9.5rem);
+}
+.lc-scene__words {
+  max-width: 44rem;
+}
+.lc-statement--scene {
+  color: #ffffff;
+  text-shadow: 0 2px 30px rgba(1, 18, 39, 0.3);
+}
+.lc-scene__line {
+  max-width: 34rem;
+  margin-top: clamp(1rem, 0.8rem + 0.6vw, 1.5rem);
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 1px 12px rgba(1, 18, 39, 0.4);
+  text-wrap: pretty;
+}
+.lc-scene__words > .lc-note {
+  margin-top: 1.25rem;
+}
+.lc-scene__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: clamp(1.5rem, 1rem + 1.2vw, 2.25rem);
+}
+.lc-scene__credit {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 1rem;
+  left: var(--gutter);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 6px rgba(1, 18, 39, 0.6);
+}
+/* A · the coast road: the words in the sky over the bay's left shoulder */
+.lc-scene--road .lc-scene__inner {
+  align-items: flex-start;
+}
+.lc-scene--road .lc-scene__scrim {
+  background:
+    radial-gradient(ellipse 70% 62% at 16% 24%, rgba(4, 34, 54, 0.46) 0%, rgba(4, 34, 54, 0.18) 55%, rgba(4, 34, 54, 0) 78%),
+    linear-gradient(180deg, rgba(1, 18, 39, 0.18) 0%, rgba(1, 18, 39, 0) 40%);
+}
+/* C · the golden Cape: low, over the dark sand, under a quiet sky */
+.lc-scene--golden .lc-scene__inner {
+  align-items: flex-end;
+}
+.lc-scene--golden .lc-scene__scrim {
+  background: linear-gradient(0deg, rgba(14, 16, 26, 0.62) 0%, rgba(14, 16, 26, 0.3) 34%, rgba(14, 16, 26, 0) 56%);
+}
+.lc-scene--golden .lc-statement--scene {
+  max-width: 13ch;
+}
+/* The invitation: the headline in the sky to the right of the peaks, the two actions low over the grass,
+   so the Twelve Apostles and the bay stay clear between them */
+.lc-scene--invite {
+  min-height: clamp(40rem, 100svh, 64rem);
+}
+.lc-scene--invite .lc-scene__inner {
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  padding-block: clamp(4.5rem, 3.5rem + 4vw, 7rem) clamp(4rem, 3rem + 3vw, 6rem);
+}
+.lc-scene--invite .lc-scene__words {
+  align-self: flex-end;
+  max-width: 46rem;
+}
+.lc-scene--invite .lc-statement--scene {
+  max-width: none;
+  font-size: clamp(2.6rem, 1rem + 4vw, 5.25rem);
+}
+.lc-scene__close {
+  max-width: 40rem;
+}
+.lc-scene__close .lc-scene__line {
+  margin-top: 0;
+}
+.lc-scene--invite .lc-scene__scrim {
+  background:
+    radial-gradient(ellipse 52% 46% at 78% 18%, rgba(11, 34, 51, 0.42) 0%, rgba(11, 34, 51, 0.16) 60%, rgba(11, 34, 51, 0) 82%),
+    linear-gradient(0deg, rgba(8, 14, 20, 0.72) 0%, rgba(8, 14, 20, 0.38) 26%, rgba(8, 14, 20, 0) 46%);
+}
+/* The golden thread resolved: the sun's seal, and a fine line drawn beneath it */
+.lc-invite-seal {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  color: var(--lc-champagne);
+}
+.lc-invite-seal .gt-engraved-icon {
+  --jei-size: 52px;
+  stroke-width: 1.4;
+}
+.lc-invite-seal__thread {
+  width: 15rem;
+  height: 8px;
+  overflow: visible;
+}
+.lc-invite-seal__thread path {
+  fill: none;
+  stroke: var(--lc-sun);
+  stroke-width: 1.4;
+  stroke-dasharray: 1;
+  stroke-dashoffset: var(--thread, 0);
+}
+@media (max-width: 47.99em) {
+  .lc-scene {
+    min-height: clamp(32rem, 88svh, 46rem);
+  }
+  .lc-scene__inner {
+    padding-block: 4.5rem 5rem;
+  }
+  .lc-scene--road .lc-scene__scrim {
+    background: linear-gradient(180deg, rgba(1, 18, 39, 0.5) 0%, rgba(1, 18, 39, 0.22) 46%, rgba(1, 18, 39, 0) 70%);
+  }
+  .lc-scene--invite .lc-scene__words {
+    align-self: stretch;
+  }
+  .lc-scene--invite .lc-scene__scrim {
+    background:
+      linear-gradient(180deg, rgba(11, 34, 51, 0.6) 0%, rgba(11, 34, 51, 0.24) 38%, rgba(11, 34, 51, 0) 52%),
+      linear-gradient(0deg, rgba(8, 14, 20, 0.82) 0%, rgba(8, 14, 20, 0.45) 34%, rgba(8, 14, 20, 0) 56%);
+  }
+  .lc-scene__actions > * {
+    width: 100%;
+  }
+  .lc-scene__credit {
+    text-align: left;
+  }
+}
+
+/* 4. 03 · The moments between destinations: an asymmetric composition of four real photographs */
+.lc-moments {
+  padding-block: var(--lc-chapter);
+  background: var(--lc-paper-light);
+}
+.lc-moments__grid {
+  display: grid;
+  gap: clamp(2rem, 1.5rem + 2vw, 3.5rem) var(--lc-gap);
+}
+.lc-moments__item--a .lc-print-frame {
+  --ratio: 3 / 2;
+}
+.lc-moments__item--b .lc-print-frame {
+  --ratio: 4 / 5;
+}
+.lc-moments__item--c .lc-print-frame {
+  --ratio: 3 / 2;
+}
+.lc-moments__item--d .lc-print-frame {
+  --ratio: 4 / 3;
+}
+@media (min-width: 40em) and (max-width: 63.99em) {
+  .lc-moments__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lc-moments__head,
+  .lc-moments__item--a {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 39.99em) {
+  .lc-moments__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.85rem;
+  }
+  .lc-moments__head,
+  .lc-moments__item--a,
+  .lc-moments__item--c {
+    grid-column: 1 / -1;
+  }
+  .lc-moments__item--b {
+    grid-row: 3;
+  }
+  .lc-moments__item--d {
+    grid-row: 3;
+    align-self: end;
+  }
+  .lc-moments__item--c {
+    grid-row: 4;
+  }
+}
+@media (min-width: 64em) {
+  .lc-moments__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+  }
+  .lc-moments__head {
+    grid-column: 1 / 6;
+    grid-row: 1;
+    padding-top: 1rem;
+  }
+  .lc-moments__item--a {
+    grid-column: 6 / 13;
+    grid-row: 1 / 3;
+  }
+  .lc-moments__item--b {
+    grid-column: 2 / 5;
+    grid-row: 2 / 4;
+    margin-top: 1.5rem;
+  }
+  .lc-moments__item--c {
+    grid-column: 6 / 10;
+    grid-row: 3;
+  }
+  .lc-moments__item--d {
+    grid-column: 10 / 13;
+    grid-row: 3;
+    margin-top: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+/* 5. 04 · The destination carousel (D66, design.md §04): a compact ribbon of photographs, one destination
+   featured at a time. The strip is a native horizontal scroller that snaps without JavaScript; media.js
+   adds the selection, the settle, the drag and the rails (.is-enhanced). Every card has the same height;
+   from 48em the featured card is wider (--film-W), below it every card is the same width. */
+.lc-film {
+  --film-gap: 16px;
+  --film-w: min(84vw, 26rem);
+  --film-W: var(--film-w);
+  --film-h: min(calc(var(--film-w) * 1.25), 30rem);
+  position: relative;
+  padding-block: var(--lc-chapter);
+  background: var(--lc-paper);
+}
+@media (min-width: 48em) {
+  .lc-film {
+    --film-w: clamp(12.5rem, 26vw, 18.125rem);
+    --film-W: clamp(25rem, 55vw, 38.75rem);
+    --film-h: 22.5rem;
+  }
+}
+@media (min-width: 75em) {
+  .lc-film {
+    --film-w: clamp(13.75rem, 20vw, 18.125rem);
+    --film-W: clamp(30rem, 43vw, 38.75rem);
+    --film-h: clamp(21.25rem, 26vw, 23.75rem);
+  }
+}
+/* The top row: the chapter mark and a compact heading on the left, the counter, progress, Previous and Next on the right */
+.lc-film__head {
+  display: grid;
+  gap: 1.25rem 2rem;
+  align-items: end;
+}
+@media (min-width: 64em) {
+  .lc-film__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+.lc-title--compact {
+  max-width: 21ch;
+  font-size: clamp(2.2rem, 1.2rem + 2.7vw, 3.75rem);
+  line-height: 1.04;
+}
+.lc-film__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.lc-film__nav[hidden] {
+  display: none;
+}
+.lc-film__count {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--lc-ink);
+}
+.lc-film__count > span:last-child {
+  color: var(--lc-muted);
+}
+.lc-film__count-rule {
+  width: 1rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+.lc-film__progress {
+  position: relative;
+  width: clamp(4.5rem, 8vw, 7.5rem);
+  height: 2px;
+  margin-right: 0.5rem;
+  background: var(--media-line);
+}
+.lc-film__progress > span {
+  position: absolute;
+  inset: 0;
+  background: var(--lc-brass);
+  transform-origin: left center;
+}
+/* Previous and Next: the system's text-labelled utility controls (buttons.css); at either end the button says so
+   (aria-disabled), drawn dashed and muted by the system */
+@media (max-width: 63.99em) {
+  .lc-film__nav {
+    justify-content: flex-end;
+  }
+}
+/* Narrow phones: the counter, Previous and Next keep their row; the hairline below the strip carries the progress */
+@media (max-width: 29.99em) {
+  .lc-film__progress {
+    display: none;
+  }
+  .lc-film__nav .gt-button--utility {
+    padding-inline: 0.8rem;
+  }
+}
+
+/* The strip: full bleed to the right, aligned with the container on the left; 16 px between cards */
+.lc-film__viewport {
+  margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  padding: 4px max(var(--gutter), (100% - var(--container)) / 2) 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(var(--gutter), (100% - var(--container)) / 2);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(63, 168, 98, 0.6) transparent;
+}
+/* With media.js the hairline rail below replaces the scrollbar; from 48em the settle replaces the snap */
+.lc-film.is-enhanced .lc-film__viewport {
+  scrollbar-width: none;
+}
+.lc-film.is-enhanced .lc-film__viewport::-webkit-scrollbar {
+  display: none;
+}
+@media (min-width: 48em) {
+  .lc-film.is-enhanced .lc-film__viewport {
+    scroll-snap-type: none;
+  }
+  .lc-film.is-enhanced .lc-film__card {
+    cursor: grab;
+  }
+  .lc-film.is-enhanced .is-active .lc-film__card {
+    cursor: default;
+  }
+}
+.lc-film__viewport.is-steering {
+  scroll-snap-type: none;
+}
+.lc-film__viewport.is-dragging,
+.lc-film__viewport.is-dragging .lc-film__card {
+  cursor: grabbing;
+  user-select: none;
+}
+.lc-film__track {
+  display: flex;
+  gap: var(--film-gap);
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lc-film__item {
+  flex: none;
+  width: var(--film-w);
+  scroll-snap-align: start;
+}
+.lc-film__item.is-active {
+  width: var(--film-W);
+}
+/* The words sit in the flow at the card's foot, over the photograph and its shade (both behind, in the card's own
+   stacking context); the round arrow is placed against the card itself */
+.lc-film__card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: var(--film-h);
+  overflow: hidden;
+  border-radius: var(--media-radius);
+  background: var(--lc-ivory);
+}
+/* The photograph: cropped on its focal point, in a frame 8% wider than the card for the drift (media.js) */
+.lc-film__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  transition: transform 300ms var(--lc-ease);
+}
+.lc-film__drift {
+  position: absolute;
+  inset: 0 -4%;
+}
+.lc-film__drift > picture {
+  display: block;
+  height: 100%;
+}
+.lc-film__drift img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+}
+/* Bright above, dark only where the words sit; a breath of shade behind the index in the top corner */
+.lc-film__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 8rem 5rem at 0 0, rgba(7, 16, 18, 0.42), rgba(7, 16, 18, 0) 75%),
+    var(--media-overlay);
+  pointer-events: none;
+}
+.lc-film__num {
+  position: absolute;
+  top: 1.1rem;
+  left: 1.25rem;
+  z-index: 2;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1;
+  color: var(--lc-champagne);
+  text-shadow: 0 1px 6px rgba(7, 16, 18, 0.55);
+}
+.lc-film__copy {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1.25rem;
+  color: var(--media-on-image);
+}
+.lc-film__item.is-active .lc-film__copy {
+  padding: 1.5rem 5.75rem 1.5rem 1.6rem;
+}
+.lc-film__name {
+  font-family: var(--lc-display);
+  font-size: clamp(1.25rem, 0.65rem + 1.05vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.005em;
+  color: var(--media-on-image);
+  text-shadow: 0 1px 14px rgba(7, 16, 18, 0.35);
+  text-wrap: balance;
+}
+.lc-film__item.is-active .lc-film__name {
+  font-size: clamp(1.7rem, 2.6vw, 2.8rem);
+  line-height: 1.02;
+}
+.lc-film__name a {
+  color: inherit;
+  text-decoration: none;
+}
+.lc-film__name a:focus-visible {
+  outline: 2px solid var(--lc-champagne);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+/* The mask the title rises out of; the bottom padding keeps descenders inside it */
+.lc-film__mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.lc-film__title {
+  display: block;
+}
+.lc-film__line {
+  display: -webkit-box;
+  max-width: 34rem;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  text-wrap: pretty;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+/* Descriptions reveal only on the featured card; elsewhere they are read, not shown */
+.lc-film__item:not(.is-active) .lc-film__line {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.lc-film__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--lc-champagne);
+}
+.lc-film__meta .gt-engraved-icon {
+  --jei-size: 16px;
+}
+/* A card not featured: the photograph leans in a touch, a gold line draws along its foot */
+.lc-film__card::after {
+  content: '';
+  position: absolute;
+  right: 1.25rem;
+  bottom: 0;
+  left: 1.25rem;
+  z-index: 2;
+  height: 2px;
+  background: var(--lc-champagne);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--motion-fast) var(--lc-ease);
+}
+@media (hover: hover) {
+  .lc-film__item:not(.is-active) .lc-film__card:hover .lc-film__media {
+    transform: scale(1.03);
+  }
+  .lc-film__item:not(.is-active) .lc-film__card:hover::after {
+    transform: scaleX(1);
+  }
+}
+.lc-film__item:not(.is-active) .lc-film__card:focus-within::after {
+  transform: scaleX(1);
+}
+.lc-film__card:has(a:focus-visible) {
+  outline: 2px solid var(--lc-focus);
+  outline-offset: 3px;
+}
+
+/* The lower rail: the drag hint and the hairline of the strip's position, then one editorial line and the way on */
+.lc-film__rail {
+  display: grid;
+  grid-template-columns: auto minmax(5rem, 1fr);
+  align-items: center;
+  gap: 0.9rem 1.5rem;
+  margin-top: 1.1rem;
+}
+.lc-film__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lc-muted);
+}
+.lc-film__hint-swipe {
+  display: none;
+}
+@media (pointer: coarse) {
+  .lc-film__hint-drag {
+    display: none;
+  }
+  .lc-film__hint-swipe {
+    display: inline;
+  }
+}
+.lc-film__hint[hidden],
+.lc-film__scroll[hidden] {
+  display: none;
+}
+.lc-film__scroll {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: var(--media-line);
+}
+.lc-film__scroll > span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--lc-brass);
+}
+.lc-film__foot {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.lc-film__note {
+  max-width: 34rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--lc-muted);
+}
+@media (min-width: 75em) {
+  .lc-film__rail {
+    grid-template-columns: auto minmax(8rem, 1fr) auto;
+  }
+  .lc-film__foot {
+    grid-column: auto;
+    justify-content: flex-end;
+  }
+}
+/* Phones: the strip ends with room for the last card to lead (every card has its own snap point); the words have
+   the card's full width (up to three lines) */
+@media (max-width: 47.99em) {
+  .lc-film__viewport {
+    padding-right: max(var(--gutter), 100% - var(--film-w) - var(--gutter));
+  }
+  .lc-film__item.is-active .lc-film__copy {
+    padding: 1.25rem 1.25rem 1.3rem;
+  }
+  .lc-film__line {
+    -webkit-line-clamp: 3;
+  }
+}
+/* Without JavaScript there is no featured card to choose on a phone: every card shows its words */
+@media (max-width: 47.99em) {
+  .no-js .lc-film__item .lc-film__line {
+    position: static;
+    width: auto;
+    height: auto;
+    clip: auto;
+    white-space: normal;
+  }
+}
+/* Below 390 px: smaller words and a shorter card, the 16 px gutter and 44 px targets kept */
+@media (max-width: 24.37em) {
+  .lc-film__copy,
+  .lc-film__item.is-active .lc-film__copy {
+    padding: 1rem;
+  }
+  .lc-film__item.is-active .lc-film__name {
+    font-size: 1.55rem;
+  }
+  .lc-film__line {
+    font-size: 0.8125rem;
+  }
+}
+/* The probes media.js measures the two card widths from */
+.lc-film__probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+.lc-film__probe > span {
+  display: block;
+  width: var(--film-w);
+  height: 0;
+}
+.lc-film__probe > span + span {
+  width: var(--film-W);
+}
+
+/* 6. The interlude: two full-bleed backdrops held while the words pass over them (CSS sticky, no
+   scroll-jacking). The elephant holds behind the headline; the cheetah panel, pulled up by one viewport,
+   rises over it on a fine golden seam and holds behind the safari copy. Pure scrolling: the same with
+   reduced motion and without JavaScript; with motion, GSAP only adds a slow settle and depth. Each
+   backdrop carries its "AI-generated artwork" tag. */
+.lc-wild {
+  --wild-one: 200svh; /* the elephant's panel: it holds for one viewport, while the cheetah rises over it */
+  --wild-two: 140svh;
+  isolation: isolate;
+  /* Keeps the sticky layers' painting to this section: without it Chromium re-tiles the page's raster and the
+     hero's poster differs by a few hundred near-invisible pixels at 1024 px (found by qa/hero-guard.mjs) */
+  contain: paint;
+  background: var(--lc-forest-deep);
+  color: #ffffff;
+}
+.lc-wild__panel {
+  position: relative;
+  display: grid;
+  min-height: var(--wild-one);
+}
+.lc-wild__panel--two {
+  z-index: 1;
+  min-height: var(--wild-two);
+  margin-top: -100svh;
+}
+.lc-wild__media,
+.lc-wild__beat {
+  grid-area: 1 / 1;
+}
+.lc-wild__media {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100svh;
+  margin: 0;
+  overflow: hidden;
+  background: var(--lc-forest-deep);
+}
+.lc-wild__art {
+  position: absolute;
+  inset: 0;
+}
+.lc-wild__art > picture {
+  display: block;
+  height: 100%;
+}
+.lc-wild__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus);
+}
+/* Local, directional washes: the words sit on the sky and plain to the right of each animal */
+.lc-wild__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.lc-wild__panel--one .lc-wild__scrim {
+  background:
+    linear-gradient(270deg, rgba(14, 12, 8, 0.62) 0%, rgba(14, 12, 8, 0.36) 34%, rgba(14, 12, 8, 0) 60%),
+    linear-gradient(180deg, rgba(1, 18, 20, 0.35) 0%, rgba(1, 18, 20, 0) 28%);
+}
+.lc-wild__panel--two .lc-wild__scrim {
+  background:
+    linear-gradient(270deg, rgba(14, 12, 8, 0.68) 0%, rgba(14, 12, 8, 0.4) 36%, rgba(14, 12, 8, 0) 62%),
+    linear-gradient(0deg, rgba(10, 10, 6, 0.55) 0%, rgba(10, 10, 6, 0) 40%);
+}
+/* The outgoing backdrop darkens a little as the next rises over it (motion only; transparent otherwise) */
+.lc-wild__shade {
+  position: absolute;
+  inset: 0;
+  background: #05080b;
+  opacity: 0;
+  pointer-events: none;
+}
+/* The seam: the sun's thread along the cheetah's top edge, with a soft shadow cast onto the elephant */
+.lc-wild__panel--two .lc-wild__media {
+  overflow: visible;
+}
+.lc-wild__panel--two .lc-wild__media::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(242, 201, 76, 0) 0%, rgba(242, 201, 76, 0.85) 22%, rgba(111, 237, 143, 0.95) 50%, rgba(242, 201, 76, 0.85) 78%, rgba(242, 201, 76, 0) 100%);
+  box-shadow: 0 -22px 48px rgba(0, 0, 0, 0.5);
+}
+.lc-wild__panel--two .lc-wild__art {
+  overflow: hidden;
+}
+/* The words: in the right-hand plain, high on the elephant's sky, low on the cheetah's savanna */
+.lc-wild__beat {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 18svh;
+}
+.lc-wild__panel--two .lc-wild__beat {
+  padding-top: 46svh;
+}
+.lc-wild__words {
+  width: min(40rem, 48%);
+}
+.lc-wild__panel--two .lc-wild__words {
+  width: min(34rem, 40%);
+}
+.lc-wild__title {
+  max-width: none;
+  font-size: clamp(2.75rem, 1.2rem + 3.8vw, 5.25rem);
+}
+.lc-wild .lc-scene__line {
+  margin-top: 0;
+}
+.lc-wild__words > .lc-note {
+  margin-top: 1.1rem;
+}
+@media (max-width: 47.99em) {
+  .lc-wild__art img {
+    object-position: var(--focus-tall);
+  }
+  /* Phones: the words below the animal's face, over a wash rising from the foot */
+  .lc-wild__panel--one .lc-wild__scrim,
+  .lc-wild__panel--two .lc-wild__scrim {
+    background: linear-gradient(0deg, rgba(10, 10, 6, 0.78) 0%, rgba(10, 10, 6, 0.5) 38%, rgba(10, 10, 6, 0) 64%);
+  }
+  .lc-wild__beat {
+    justify-content: flex-start;
+    padding-top: 50svh;
+  }
+  .lc-wild__panel--two .lc-wild__beat {
+    padding-top: 58svh;
+  }
+  .lc-wild__words,
+  .lc-wild__panel--two .lc-wild__words {
+    width: 100%;
+  }
+}
+
+/* 7. 05 · Your journey, your way: four photograph-led invitations (real Good Times photographs, the
+   request of 23 Oct 2026), one booking action. Desktop and tablet: two large editorial cards a row;
+   phones: compact rows with the photograph as a thumbnail, so the four fit in little more than a screen. */
+.lc-ways {
+  padding-block: var(--lc-chapter);
+  background: var(--lc-paper-light);
+}
+.lc-ways__grid {
+  display: grid;
+  gap: clamp(2rem, 1.5rem + 2vw, 3rem) var(--lc-gap);
+}
+.lc-ways__head {
+  max-width: 50rem;
+}
+.lc-ways__list {
+  display: grid;
+  gap: clamp(2.25rem, 1.5rem + 2vw, 3.5rem) var(--lc-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 48em) {
+  .lc-ways__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.lc-way {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.lc-way__photo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--media-radius);
+  background: var(--lc-ivory);
+}
+.lc-way__photo > picture {
+  display: block;
+  height: 100%;
+}
+.lc-way__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+  transition: transform 900ms var(--lc-ease);
+}
+.lc-way__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-top: clamp(1rem, 0.8rem + 0.6vw, 1.4rem);
+  border-top: 1px solid var(--lc-brass);
+  margin-top: clamp(0.9rem, 0.7rem + 0.5vw, 1.2rem);
+}
+.lc-way__name {
+  font-family: var(--lc-display);
+  font-size: clamp(1.9rem, 1.6rem + 0.9vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.02;
+  color: var(--lc-ink);
+}
+.lc-way__name a {
+  color: inherit;
+  text-decoration: none;
+}
+/* The whole card is the link */
+.lc-way__name a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.lc-way__name a:focus-visible {
+  outline: none;
+}
+.lc-way:focus-within {
+  outline: 2px solid var(--lc-focus);
+  outline-offset: 6px;
+}
+.lc-way__line {
+  max-width: 34rem;
+  margin-top: 0.55rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--lc-body);
+}
+/* The practical facts: plain words on one line, a brass point between them */
+.lc-way__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--lc-muted);
+}
+.lc-way__facts li + li::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin: 0 0.7rem 0.2rem;
+  border-radius: 50%;
+  background: var(--lc-brass);
+  vertical-align: middle;
+}
+.lc-way__go {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--lc-forest);
+}
+.lc-way__go .gt-engraved-icon {
+  --jei-size: 18px;
+  color: var(--lc-functional-gold);
+  transition: transform var(--lc-micro) var(--lc-ease);
+}
+/* Each card's action and the packages link share the tertiary's look (buttons.css): words over a gold hairline that
+   thickens on hover, the card's action when the card is hovered, the packages link when it is */
+.lc-way__go span,
+.lc-way__extra {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--gt-green-stroke, #056a29);
+  text-underline-offset: 6px;
+}
+.lc-way:hover:not(:has(.lc-way__extra:hover)) .lc-way__go span,
+.lc-way__extra:hover {
+  text-decoration-thickness: 2px;
+  text-decoration-color: currentColor;
+}
+/* The one extra link (packages) sits above the card's own link */
+.lc-way__extra {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--lc-umber);
+}
+.lc-way:hover .lc-way__photo img {
+  transform: scale(1.04);
+}
+.lc-way:hover .lc-way__name {
+  color: var(--lc-forest);
+}
+.lc-way:hover .lc-way__go .gt-engraved-icon {
+  transform: translateX(3px);
+}
+@media (max-width: 47.99em) {
+  .lc-ways__list {
+    gap: 0;
+    border-top: 1px solid var(--lc-stone-line);
+  }
+  .lc-way {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    column-gap: 1rem;
+    align-items: start;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--lc-stone-line);
+  }
+  .lc-way__photo {
+    aspect-ratio: 1;
+    border-radius: 6px;
+  }
+  .lc-way__body {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .lc-way__name {
+    font-size: 1.6rem;
+  }
+  .lc-way__line {
+    margin-top: 0.3rem;
+    font-size: 0.875rem;
+  }
+  .lc-way__facts {
+    display: none;
+  }
+  .lc-way__go {
+    min-height: 44px;
+    padding-top: 0.2rem;
+  }
+}
+.lc-ways__book {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+.lc-ways__book p {
+  max-width: 24rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--lc-muted);
+}
+
+/* 8. 06 · The people make the journey: a documentary portrait beside the words, two smaller moments */
+.lc-people {
+  padding-block: var(--lc-chapter);
+  background: var(--lc-paper);
+}
+.lc-people__grid {
+  display: grid;
+  gap: clamp(2rem, 1.5rem + 2vw, 3.5rem) var(--lc-gap);
+}
+.lc-people__portrait .lc-print-frame {
+  --ratio: 3 / 2;
+}
+.lc-people__pair .lc-print-frame {
+  --ratio: 3 / 2;
+}
+.lc-people__ways {
+  display: grid;
+  gap: 1rem;
+  margin: 1.75rem 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.lc-people__ways li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--lc-stone-line);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--lc-body);
+}
+.lc-people__ways strong {
+  color: var(--lc-ink);
+  font-weight: 600;
+}
+.lc-people__ways .gt-engraved-icon {
+  --jei-size: 26px;
+  color: var(--lc-forest);
+}
+@media (min-width: 40em) and (max-width: 63.99em) {
+  .lc-people__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lc-people__portrait,
+  .lc-people__words {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 64em) {
+  .lc-people__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+  }
+  .lc-people__portrait {
+    grid-column: 1 / 8;
+    grid-row: 1;
+  }
+  .lc-people__words {
+    grid-column: 8 / 13;
+    grid-row: 1 / 3;
+    padding-left: clamp(0.5rem, 1.5vw, 1.5rem);
+  }
+  .lc-people__pair--a {
+    grid-column: 2 / 5;
+    grid-row: 2;
+  }
+  .lc-people__pair--b {
+    grid-column: 5 / 8;
+    grid-row: 2;
+    margin-top: clamp(2.5rem, 5vw, 5rem);
+  }
+}
+
+/* 9. 07 · The living travel exhibition (D66, design.md §05): the section around the wall. The wall of prints and
+   the lightbox are shared with the tour and package galleries, in media.css (D71). */
+.lc-gallery {
+  padding-block: var(--lc-chapter);
+  background: var(--lc-paper-light);
+  scroll-margin-top: var(--header-h);
+}
+.lc-gallery__head {
+  max-width: 50rem;
+}
+.lc-gallery .lc-title {
+  font-size: clamp(2.2rem, 4.5vw, 4.8rem);
+}
+/* 10. 09 · The art of making it easy: three stops on one engraved route that draws as you read */
+.lc-ease {
+  padding-block: var(--lc-chapter);
+  background: var(--lc-paper);
+}
+.lc-ease__head {
+  max-width: 50rem;
+}
+.lc-ease__journey {
+  position: relative;
+  margin-top: clamp(2.5rem, 2rem + 2.5vw, 4.5rem);
+}
+.lc-ease__line {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+.lc-ease__line--wide {
+  top: -32px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+}
+.lc-ease__line--tall {
+  display: none;
+}
+.lc-ease__trace,
+.lc-ease__ink {
+  fill: none;
+  stroke-linecap: round;
+}
+.lc-ease__trace {
+  stroke: var(--lc-stone-line);
+  stroke-width: 1.4;
+  stroke-dasharray: 2 7;
+}
+.lc-ease__ink {
+  stroke: var(--lc-brass);
+  stroke-width: 1.8;
+  stroke-dasharray: 1;
+  stroke-dashoffset: var(--journey, 0);
+}
+.lc-ease__steps {
+  position: relative;
+  display: grid;
+  gap: 2.5rem var(--lc-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 48em) {
+  .lc-ease__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.lc-ease__stop {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(63, 168, 98, 0.7);
+  border-radius: 50%;
+  background: var(--lc-paper-light);
+  color: var(--lc-forest);
+  box-shadow: 0 0 0 6px var(--lc-paper);
+}
+.lc-ease__stop .gt-engraved-icon {
+  --jei-size: 30px;
+}
+.lc-ease__num {
+  margin-top: 1.1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lc-umber);
+}
+.lc-ease__step h3 {
+  margin-top: 0.4rem;
+  max-width: 16ch;
+  font-family: var(--lc-display);
+  font-size: clamp(1.6rem, 1.4rem + 0.7vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.08;
+  color: var(--lc-ink);
+}
+.lc-ease__step p:last-child {
+  max-width: 24rem;
+  margin-top: 0.6rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--lc-body);
+}
+.lc-ease__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+}
+@media (max-width: 47.99em) {
+  .lc-ease__line--wide {
+    display: none;
+  }
+  .lc-ease__line--tall {
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: -2px;
+    width: 60px;
+    height: 100%;
+  }
+  .lc-ease__step {
+    position: relative;
+    padding-left: 76px;
+  }
+  .lc-ease__stop {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .lc-ease__num {
+    margin-top: 0.4rem;
+  }
+}
+
+/* 11. 10 · Words from the road (D57's carousel, D65's surfaces): deep forest, chalk review panels */
+/* A compact rail (D57): its own tighter padding and the editorial-subheading scale for the title */
+.stories {
+  padding-block: clamp(2.5rem, 1.5rem + 2vw, 3.5rem);
+  color: rgba(255, 255, 255, 0.9);
+  background: var(--lc-forest-deep);
+  overflow: hidden;
+}
+.stories__inner {
+  position: relative;
+}
+.stories__head {
+  display: grid;
+  gap: var(--space-5) var(--space-7);
+  align-items: end;
+  margin-bottom: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+}
+.stories .lc-mark {
+  margin-bottom: 0.85rem;
+}
+@media (min-width: 64em) {
+  .stories__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+.stories__title {
+  max-width: 14em;
+  font-family: var(--lc-display);
+  font-size: clamp(2rem, 1.4rem + 2vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  color: #fff;
+  text-wrap: balance;
+}
+.stories__title em {
+  font-style: normal;
+  color: var(--lc-champagne);
+}
+@media (max-width: 39.99em) {
+  .stories__title br {
+    display: none;
+  }
+}
+.stories__stats {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stories__stat {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding-inline: clamp(1.25rem, 1rem + 1.5vw, 2.75rem);
+}
+.stories__stat:first-child {
+  padding-left: 0;
+}
+.stories__stat:last-child {
+  padding-right: 0;
+}
+.stories__stat + .stories__stat {
+  border-left: 1px solid rgba(63, 168, 98, 0.5);
+}
+.stories__stat-icon {
+  --jei-size: 26px;
+  margin-bottom: 0.5rem;
+  color: var(--lc-champagne);
+}
+.stories__stat-value {
+  display: block;
+  font-family: var(--lc-display);
+  font-size: clamp(2.2rem, 1.8rem + 1.4vw, 3rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--lc-champagne);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.stories__stat-label {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: var(--text-small);
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.9);
+}
+.stories__stat-sub {
+  display: block;
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.7);
+}
+/* The carousel: a snapping scroller by default; with motion (reviews.js) the viewport clips and GSAP moves the track */
+.stories__carousel {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  grid-template-areas:
+    'viewport viewport viewport'
+    'prev next toggle';
+  column-gap: var(--space-3);
+  row-gap: var(--space-4);
+}
+.stories__viewport {
+  grid-area: viewport;
+  margin-inline: calc(-1 * var(--gutter));
+  padding: 4px var(--gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+.stories__viewport::-webkit-scrollbar {
+  display: none;
+}
+.stories__viewport:focus-visible {
+  outline: 2px solid var(--lc-champagne);
+  outline-offset: -2px;
+}
+.stories__track {
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.story-card {
+  --lc-focus: #174f86;
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+@media (min-width: 40em) {
+  .story-card {
+    flex-basis: calc((100% - var(--space-4)) / 2);
+  }
+}
+@media (min-width: 64em) {
+  .stories__track {
+    gap: var(--space-5);
+  }
+  .story-card {
+    flex-basis: calc((100% - 2 * var(--space-5)) / 3);
+  }
+}
+.stories__carousel.is-motion .stories__viewport {
+  margin-inline: 0;
+  padding-inline: 0;
+  overflow: hidden;
+  scroll-snap-type: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.stories__carousel.is-motion.is-dragging .stories__viewport {
+  cursor: grabbing;
+}
+.stories__carousel.is-motion .story-card {
+  scroll-snap-align: none;
+}
+.stories__carousel.is-motion .story-card img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+/* The card: a review panel with a fine edge, the summary in the display face */
+.story-card__inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(1.125rem, 0.9rem + 0.9vw, 1.5rem);
+  border: 1px solid rgba(211, 223, 219, 0.9);
+  border-radius: 10px;
+  background: var(--lc-paper-light);
+  color: var(--lc-body);
+}
+.story-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+/* Compact, human-scale portraits (D66, design.md §06: 40–56 px); the card moves as a whole, the face never on its own */
+.story-card__avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border: 1px solid rgba(63, 168, 98, 0.7);
+  border-radius: 50%;
+  background: var(--lc-forest);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 0 0 3px var(--lc-paper-light), 0 0 0 4px rgba(63, 168, 98, 0.35);
+}
+@media (max-width: 39.99em) {
+  .story-card__avatar {
+    width: 48px;
+    height: 48px;
+  }
+}
+.story-card__avatar img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.story-card__who {
+  min-width: 0;
+}
+.story-card__name {
+  font-family: var(--lc-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--lc-ink);
+  overflow-wrap: anywhere;
+}
+.story-card__place {
+  margin-top: 0.15rem;
+  font-size: var(--text-small);
+  color: var(--lc-muted);
+}
+.story-card__stars {
+  margin-top: 0.4rem;
+}
+.story-card .stars {
+  color: var(--lc-functional-gold);
+}
+.story-card__quote {
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--lc-stone-line);
+}
+.story-card__quote p {
+  font-family: var(--lc-display);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--lc-ink);
+  text-wrap: pretty;
+}
+.story-card__source {
+  margin-top: auto;
+  padding-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--lc-muted);
+}
+.story-card__source a {
+  color: var(--lc-functional-gold);
+  font-weight: 600;
+  text-decoration-color: rgba(5, 106, 43, 0.45);
+}
+.story-card__source a:hover {
+  color: var(--lc-forest);
+  text-decoration-color: currentColor;
+}
+/* Controls: Previous and Next are the system's text-labelled utility buttons (buttons.css), under the cards at every
+   width; the pause control stays a round engraved button */
+.stories__toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid rgba(111, 237, 143, 0.55);
+  border-radius: 50%;
+  background: rgba(11, 34, 51, 0.6);
+  color: var(--lc-champagne);
+  cursor: pointer;
+  transition: background-color var(--lc-micro) var(--lc-ease), border-color var(--lc-micro) var(--lc-ease), color var(--lc-micro) var(--lc-ease), transform var(--lc-micro) var(--lc-ease);
+}
+.stories__toggle:hover {
+  background: rgba(16, 46, 66, 0.95);
+  border-color: var(--lc-champagne);
+  color: #fff;
+}
+.stories__toggle:active {
+  transform: scale(0.96);
+}
+.stories__arrow--prev {
+  grid-area: prev;
+}
+.stories__arrow--next {
+  grid-area: next;
+}
+.stories__toggle {
+  grid-area: toggle;
+  justify-self: end;
+  align-self: center;
+  width: 44px;
+  height: 44px;
+}
+.stories__toggle .gt-engraved-icon {
+  --jei-size: 18px;
+}
+.stories__toggle .stories__toggle-play,
+.stories__toggle.is-paused .stories__toggle-pause {
+  display: none;
+}
+.stories__toggle.is-paused .stories__toggle-play {
+  display: block;
+}
+.stories__foot {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+}
+/* Wide screens: Previous and Next sit closer under the cards, so the chapter keeps its compact height (D57) */
+@media (min-width: 80em) {
+  .stories__carousel {
+    row-gap: 0.75rem;
+  }
+  .stories__foot {
+    margin-top: 1rem;
+  }
+}
+@media (max-width: 39.99em) {
+  /* Full width on phones; on the narrowest (about 320 px) the words cannot fit on one line beside the mark, so they
+     may wrap into two balanced lines rather than run into the border */
+  .stories__cta {
+    width: 100%;
+    white-space: normal;
+    text-wrap: balance;
+  }
+}
+
+/* Motion: without it (reduced motion, ?nomotion) nothing moves by itself and every composition is finished */
+@media (prefers-reduced-motion: reduce) {
+  .lc-film__card:hover .lc-film__frame img,
+  .lc-way:hover .lc-way__photo img,
+  .lc-way:hover .lc-way__go .gt-engraved-icon {
+    transform: none;
+  }
+  .lc-film__frame img,
+  .lc-way__photo img {
+    transition: none;
+  }
+}
+
+/* 12. The design-system specimen (preview builds only, src/pages/design-system.mjs) -------- */
+.lc-specimen__band {
+  padding-block: clamp(2.5rem, 2rem + 2vw, 4rem);
+  border-bottom: 1px solid var(--lc-stone-line);
+}
+.lc-specimen__h {
+  margin: 0 0 1.25rem;
+  font-family: var(--lc-ui);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lc-umber);
+}
+.lc-specimen__icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+.lc-specimen__icons li {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: center;
+  padding: 1rem 0.5rem 0.75rem;
+  border: 1px solid var(--lc-stone-line);
+  border-radius: 10px;
+  background: var(--lc-paper-light);
+  color: var(--lc-forest);
+}
+.lc-specimen__icons li > span {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+.lc-specimen__icons code,
+.lc-specimen__swatches code {
+  font-size: 0.75rem;
+  color: var(--lc-muted);
+}
+.lc-specimen__icons--dark li {
+  border-color: rgba(111, 237, 143, 0.25);
+  background: var(--lc-forest-deep);
+  color: var(--lc-champagne);
+}
+.lc-specimen__icons--dark code {
+  color: rgba(255, 255, 255, 0.7);
+}
+.lc-specimen__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.lc-specimen__row--dark {
+  padding: 1.5rem;
+  border-radius: 10px;
+  background: var(--lc-forest-deep);
+}
+.lc-seal.is-hover {
+  transform: translateY(-1px);
+}
+.lc-seal.is-hover::before {
+  background: var(--seal-bg-hover);
+}
+.lc-seal.is-hover::after {
+  border-color: var(--seal-rule-hover);
+}
+.lc-seal.is-hover .lc-seal__arrow {
+  transform: translateX(3px);
+}
+.lc-specimen__invites {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 52rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 48em) {
+  .lc-specimen__invites {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.lc-specimen__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lc-specimen__swatches li {
+  display: grid;
+  gap: 0.3rem;
+}
+.lc-specimen__swatches span {
+  height: 3.5rem;
+  border: 1px solid var(--lc-stone-line);
+  border-radius: 8px;
+}
+.lc-specimen__swatches small {
+  font-size: 0.75rem;
+  color: var(--lc-muted);
+}
+.lc-specimen__icons--emblems {
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+}

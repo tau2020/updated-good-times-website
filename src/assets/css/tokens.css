@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Good Times in Cape Town — design tokens
+   Colours come from the approved logo pack (Approved Logo Pack v2): the logo's
+   black lettering and green (#059A35), its reversed greens (#45E375, #6FED8F)
+   and the ocean navy of its reversed footer (#102E42). Every colour and font used
+   by the site is a token here; styles.css and enquiry.css only reference them.
+   (Token names are the template's own; their values are Good Times'.)
+   ========================================================================== */
+:root {
+  /* Colour: ocean navy grounds, Good Times green actions, white and soft sea-glass surfaces, near-black ink */
+  --forest: #102e42; /* the logo's ocean navy; white on it: 14:1 */
+  --forest-deep: #0b2233; /* bands, footer, preview bar */
+  --forest-soft: #e6f4ea; /* selected-state tint on white */
+  --gold: #056a2b; /* primary actions; white on it: 6.3:1 */
+  --gold-hover: #03541f;
+  --gold-soft: #45e375; /* the reversed logo's green: icons and rules on navy, 8.4:1 */
+  --gold-tint: #eef7f1; /* soft green wash behind accents */
+  --star: #e2a92b; /* decorative rating stars */
+  --ink: #0b1620; /* headings: the logo's near-black */
+  --text: #283037; /* body: 13:1 on white */
+  --muted: #5b6670; /* secondary text: 5.9:1 on white */
+  --line: #e1e7ea;
+  --line-strong: #c8d1d6;
+  --ivory: #e2eae8;
+  --ivory-soft: #f3f7f5;
+  --mist: #eaeff0;
+  --paper: #f7faf9;
+  --white: #ffffff;
+  --danger: #b3261e;
+  --danger-tint: #fdf0ef;
+  --danger-ink: #6f1a14;
+  --success: #1e6b3c;
+  --success-tint: #eef7f1;
+  --on-dark: rgba(255, 255, 255, 0.86);
+  --on-dark-muted: rgba(255, 255, 255, 0.7);
+  /* Over the hero photograph and on navy: white words, the logo's light green for rules and accents */
+  --champagne: #6fed8f; /* rule, borders and hover tone over the hero */
+  --hero-ivory: #ffffff; /* navigation titles, headline and lead over the photograph */
+  --champagne-deep: #2fbe60; /* medallion and button edges */
+  --champagne-ink: #062314; /* text on light-green surfaces */
+  --gold-warm: #45e375; /* guest experiences accents: eyebrow, rule, icon rims */
+
+  /* Type: Plus Jakarta Sans (Good Times' own typeface on goodtimesincapetown.co.za) for display, Inter for reading */
+  --font-display: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; /* header navigation and the home hero */
+  --text-hero: clamp(2.5rem, 1.55rem + 4vw, 5rem);
+  --text-h1: clamp(2.1rem, 1.45rem + 2.4vw, 3.6rem);
+  --text-h2: clamp(1.75rem, 1.35rem + 1.5vw, 2.75rem);
+  --text-h3: clamp(1.15rem, 1.07rem + 0.32vw, 1.3rem);
+  --text-lead: clamp(1.1rem, 1.04rem + 0.28vw, 1.22rem);
+  --text-body: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --text-small: 0.9375rem;
+  --text-xs: 0.8125rem;
+  --text-eyebrow: 0.75rem;
+
+  /* Space (4 pt scale) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --section: clamp(3.5rem, 2rem + 5vw, 7rem);
+
+  /* Layout */
+  --container: 82.5rem;
+  --container-narrow: 46rem;
+  --gutter: clamp(1rem, 0.25rem + 3.5vw, 4rem);
+  --header-h: 64px;
+  --hero-edge: max(var(--gutter), 6vw); /* the home hero's side padding; the overlay header shares it */
+  --radius-s: 6px;
+  --radius: 12px;
+  --radius-l: 16px;
+
+  /* Elevation (navy tinted, soft) */
+  --shadow-s: 0 1px 2px rgb(11 34 51 / 0.06), 0 2px 8px rgb(11 34 51 / 0.04);
+  --shadow: 0 1px 2px rgb(11 34 51 / 0.06), 0 8px 24px rgb(11 34 51 / 0.06);
+  --shadow-l: 0 2px 6px rgb(11 34 51 / 0.08), 0 20px 48px rgb(11 34 51 / 0.14);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur: 220ms;
+  --dur-slow: 400ms;
+
+  /* Layers */
+  --z-bar: 40;
+  --z-drawer: 45;
+  --z-sticky: 50;
+  --z-dialog: 100;
+  --z-skip: 200;
+}
+@media (min-width: 64em) {
+  :root {
+    --header-h: 84px;
+  }
+}
+@media (min-width: 112.5em) {
+  :root {
+    --container: 90rem;
+  }
+}

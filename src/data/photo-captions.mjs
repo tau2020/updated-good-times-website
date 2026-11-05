@@ -1,0 +1,42 @@
+/**
+ * The tour and package galleries' captions: for each photograph a short title and the place it shows,
+ * read in the lightbox. Every word comes from the photograph's own alt text in images.mjs; where the
+ * photograph does not show a place, `place` is left empty rather than guessed. The home page's
+ * exhibition keeps its own longer captions (src/pages/index.mjs).
+ */
+export const CAPTIONS = {
+  'chapmans-viewpoint-couple': { title: 'A viewpoint above the Atlantic', place: 'The Cape Peninsula' },
+  'boulders-penguins-boardwalk': { title: 'African penguins on the sand', place: 'Boulders Beach, Simon’s Town' },
+  'boulders-penguin-colony': { title: 'The penguin colony', place: 'Boulders Beach, Simon’s Town' },
+  'cape-of-good-hope-sign': { title: 'At the Cape of Good Hope', place: 'Table Mountain National Park' },
+  'muizenberg-huts-guests': { title: 'The bathing huts', place: 'Muizenberg Beach' },
+  'hout-bay-flag-frame': { title: 'A South African flag photo frame', place: 'Above the coast' },
+  'peninsula-bench-view': { title: 'Above a long white beach', place: 'The Cape Peninsula' },
+  'castle-table-mountain': { title: 'The Castle of Good Hope', place: 'Table Mountain behind' },
+  'district-six-museum': { title: 'Inside the District Six Museum', place: 'Cape Town' },
+  'heritage-building-guests': { title: 'A historic stone building', place: 'Central Cape Town' },
+  'castle-moat': { title: 'The Castle’s moat', place: 'Castle of Good Hope, Cape Town' },
+  'bokaap-selfie': { title: 'A selfie in the Bo-Kaap', place: 'Bo-Kaap, Cape Town' },
+  'bokaap-street': { title: 'A Bo-Kaap street', place: 'Bo-Kaap, Devil’s Peak behind' },
+  'langa-mural': { title: 'A mural in Langa', place: 'Langa, Cape Town' },
+  'marine-dynamics-boat': { title: 'Out to shark territory', place: 'Gansbaai' },
+  'company-garden-squirrel': { title: 'A white squirrel', place: 'The Company’s Garden' },
+  'winelands-host-pouring': { title: 'A tasting outdoors', place: 'A Winelands estate' },
+  'fairview-goat-tower': { title: 'The goat tower', place: 'Fairview' },
+  'mandela-statue-drakenstein': { title: 'The statue of Nelson Mandela', place: 'Drakenstein Correctional Centre' },
+  'winelands-terrace': { title: 'A terrace tasting', place: 'A Winelands estate' },
+  'winelands-cape-dutch-group': { title: 'A Cape Dutch manor house', place: 'A Winelands estate' },
+  'winelands-tasting-table': { title: 'Around the tasting table', place: '' },
+  'winelands-tasting-flight': { title: 'A tasting flight', place: 'The Cape Winelands' },
+  'langa-mural-guests': { title: 'The Langa mural', place: 'Langa, Cape Town' },
+  'langa-traditional-drink': { title: 'A traditional drink, shared', place: 'Langa, Cape Town' },
+  'private-guests-arms-raised': { title: 'Arms raised above the ocean', place: '' },
+  'guide-selfie-bay': { title: 'A selfie above the bay', place: '' },
+  'hermanus-frame': { title: 'The Hermanus photo frame', place: 'Hermanus' },
+  'hermanus-whale-sculpture': { title: 'The whale-tail sculpture', place: 'Hermanus' },
+  'quad-bikes-dunes': { title: 'On the dunes', place: '' },
+  'quad-bikes-convoy': { title: 'Lined up on the sand', place: '' },
+  'rooiberg-red-chair': { title: 'The giant red chair at Rooiberg', place: 'Route 62' },
+  'map-of-africa-viewpoint': { title: 'The Map of Africa viewpoint', place: 'Near Wilderness' },
+  'cango-caves': { title: 'Inside the Cango Caves', place: 'Near Oudtshoorn' },
+};

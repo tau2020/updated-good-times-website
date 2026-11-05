@@ -1,0 +1,502 @@
+{
+  "airport-arrivals-group": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1152
+  },
+  "airport-departures-wave": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 3120,
+    "height": 2081
+  },
+  "airport-guests-luggage": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
+    "height": 1152
+  },
+  "airport-luggage-boot": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
+    "height": 1152
+  },
+  "airport-pickup-area": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "airport-welcome-sign": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "bokaap-selfie": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "bokaap-street": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2000,
+    "height": 1600
+  },
+  "boulders-penguin-colony": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 1024
+  },
+  "boulders-penguins-boardwalk": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
+  },
+  "camps-bay-twelve-apostles": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2048,
+    "height": 1365
+  },
+  "cango-caves": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1200,
+    "height": 1100
+  },
+  "cape-minstrels": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2754,
+    "height": 1836
+  },
+  "cape-of-good-hope-sign": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 1024
+  },
+  "cape-point-cliffs": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2048,
+    "height": 1365
+  },
+  "cape-point-headland": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2048,
+    "height": 1365
+  },
+  "cape-point-headland-portrait": {
+    "widths": [
+      480,
+      800,
+      1092
+    ],
+    "width": 1092,
+    "height": 1365
+  },
+  "castle-cannons-group": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1152
+  },
+  "castle-moat": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "castle-table-mountain": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 3240,
+    "height": 2160
+  },
+  "chapmans-viewpoint-couple": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 3120,
+    "height": 2081
+  },
+  "company-garden-squirrel": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "district-six-museum": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1364
+  },
+  "fairview-goat-tower": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
+  },
+  "guide-selfie-bay": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1364
+  },
+  "heritage-building-guests": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 3120,
+    "height": 2081
+  },
+  "hermanus-frame": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1200,
+    "height": 1600
+  },
+  "hermanus-whale-sculpture": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "hout-bay-flag-frame": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1280,
+    "height": 853
+  },
+  "langa-mural": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "langa-mural-guests": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2560,
+    "height": 1440
+  },
+  "langa-traditional-drink": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1364
+  },
+  "mandela-statue-drakenstein": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1456
+    ],
+    "width": 1456,
+    "height": 2048
+  },
+  "map-of-africa-viewpoint": {
+    "widths": [
+      480,
+      800,
+      1000
+    ],
+    "width": 1000,
+    "height": 800
+  },
+  "marine-dynamics-boat": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2000,
+    "height": 1600
+  },
+  "muizenberg-huts": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1600
+  },
+  "muizenberg-huts-guests": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 3240,
+    "height": 2160
+  },
+  "peninsula-bench-view": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1365
+  },
+  "private-guests-arms-raised": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2880,
+    "height": 2160
+  },
+  "quad-bikes-convoy": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 739
+  },
+  "quad-bikes-dunes": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2000,
+    "height": 1500
+  },
+  "rooiberg-red-chair": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2000,
+    "height": 1600
+  },
+  "table-mountain-sparkling": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 3120,
+    "height": 2081
+  },
+  "winelands-cape-dutch-group": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2880,
+    "height": 2160
+  },
+  "winelands-garden-lunch": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2000,
+    "height": 1600
+  },
+  "winelands-host-pouring": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1152
+  },
+  "winelands-pergola-lunch": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
+    "height": 1152
+  },
+  "winelands-tasting-flight": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2000,
+    "height": 1600
+  },
+  "winelands-tasting-table": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
+  },
+  "winelands-terrace": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
+    "height": 1152
+  }
+}
