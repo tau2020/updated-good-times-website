@@ -62,6 +62,18 @@ Every product, price and rule shown comes from Good Times' own pages (read 5 Nov
 | P5 **release** | The home hero is AI-generated (basis G): the café scene of five friends and the six pictures in its phone. Nothing presents them as guests, reviews or Good Times photographs, and the photo credits say they are AI-generated illustrations; consumer and advertising rules still expect an operator not to suggest real customers where there are none. Approve AI-generated people on the home page, or supply real client photographs (with their consent) to replace them, as the supplied package itself advises before launch | On staging for review only (5 Nov 2026), not in production; credited as AI-generated |
 | P6 | Three of the phone's pictures need a look against how the tours really run: Boulders Beach shows a penguin within arm's reach of the group (visitors are asked to keep their distance and never touch or feed them); Camps Bay is a drive-by on the Peninsula day, so a beach stop is on request; no itinerary lists a sunset lookout (shown as a Private Cape Town Experience). Keep, swap or re-caption | Captioned by place, each tied to the tour it fits (`src/data/phone-gallery.json`) |
 
+## M. The cinematic motion layer (branch `feature/gtict-cinematic-sand-journey`, not on `main`; details in `docs/motion/`)
+
+| # | Decision | Until then |
+|---|---|---|
+| M0 | The baseline: the motion package names deployment `08077562` (the other redesign project's audit preview, commit `c079427`, behind a login), but describes this site's home page (the frozen hero and the phone gallery). Confirm this repository is the target (`docs/motion/00-discovery.md`) | Built here, on its own branch, from `main` at `d2b30e1` |
+| M1 | The flying aircraft: the logo's own airliner (built as the default) or the package's propeller aircraft (preview builds, `?aircraft=prop`) | The logo's airliner |
+| M2 | Its flight: in from the left over the hero's sky, then along the logo's own dotted route into the "i" of "in"; the titles follow 85 ms apart | As built |
+| M3 | Footprint realism: approve the close-ups in `docs/motion/qa/footprint-*.jpg`, or ask for the next pass (messier toes, sole texture, damp sand) | Not merged |
+| M4 | The 8-step walk (6 on phones), the sweep onto Camps Bay and the section's length (one screen plus 2 screens of scrolling on desktop, 1.7 on phones) | Not merged |
+| M5 | The Camps Bay photograph now appears twice on the home page (the sand journey and chapter 11's closing scene); keep it, or choose another approved beach photograph for one of them | Both |
+| M6 **merge** | Merge into `main` and deploy to staging only after M0–M5 | Branch and its own preview only |
+
 ## R. Reviews
 
 | # | Point | Until then |

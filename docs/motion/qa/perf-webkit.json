@@ -1,0 +1,126 @@
+[
+ {
+  "label": "desktop 1440x900 @2x full",
+  "engine": "webkit",
+  "tier": "full",
+  "canvas": [
+   2880,
+   1800
+  ],
+  "phases": {
+   "walk": {
+    "median": 4,
+    "p90": 4,
+    "max": 5
+   },
+   "sweep": {
+    "median": 5,
+    "p90": 6,
+    "max": 6
+   },
+   "erosion": {
+    "median": 7,
+    "p90": 8,
+    "max": 8
+   }
+  },
+  "scrollFrames": 118,
+  "medianGap": 17,
+  "p95Gap": 18,
+  "avgFps": 59.4,
+  "downgraded": false
+ },
+ {
+  "label": "desktop 1440x900 @2x lite",
+  "engine": "webkit",
+  "tier": "lite",
+  "canvas": [
+   1339,
+   837
+  ],
+  "phases": {
+   "walk": {
+    "median": 1,
+    "p90": 1,
+    "max": 2
+   },
+   "sweep": {
+    "median": 1,
+    "p90": 2,
+    "max": 2
+   },
+   "erosion": {
+    "median": 2,
+    "p90": 2,
+    "max": 2
+   }
+  },
+  "scrollFrames": 118,
+  "medianGap": 17,
+  "p95Gap": 18,
+  "avgFps": 58.8,
+  "downgraded": false
+ },
+ {
+  "label": "phone 390x844 @3x full",
+  "engine": "webkit",
+  "tier": "full",
+  "canvas": [
+   780,
+   1688
+  ],
+  "phases": {
+   "walk": {
+    "median": 2,
+    "p90": 2,
+    "max": 2
+   },
+   "sweep": {
+    "median": 2,
+    "p90": 2,
+    "max": 2
+   },
+   "erosion": {
+    "median": 2,
+    "p90": 3,
+    "max": 3
+   }
+  },
+  "scrollFrames": 104,
+  "medianGap": 17,
+  "p95Gap": 18,
+  "avgFps": 59.3,
+  "downgraded": false
+ },
+ {
+  "label": "phone 390x844 @3x lite",
+  "engine": "webkit",
+  "tier": "lite",
+  "canvas": [
+   363,
+   785
+  ],
+  "phases": {
+   "walk": {
+    "median": 1,
+    "p90": 1,
+    "max": 2
+   },
+   "sweep": {
+    "median": 1,
+    "p90": 1,
+    "max": 1
+   },
+   "erosion": {
+    "median": 1,
+    "p90": 1,
+    "max": 1
+   }
+  },
+  "scrollFrames": 104,
+  "medianGap": 17,
+  "p95Gap": 18,
+  "avgFps": 59.8,
+  "downgraded": false
+ }
+]

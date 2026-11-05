@@ -23,7 +23,8 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith('.mjs')).sort()) {
 }
 const render = (path) => layout(pages.find((p) => p.path === path), site);
 const home = render('index.html');
-const hero = home.slice(home.indexOf('<section class="hero"'), home.indexOf('<div class="living-cape"'));
+// The hero ends where the next section begins: the sand journey (partials/sand-journey.mjs), then the chapters
+const hero = home.slice(home.indexOf('<section class="hero"'), home.indexOf('<section class="sand-journey"'));
 const ai = [...images, ...generated].filter((i) => i.origin === 'G');
 
 test('the hero: one h1 for search and screen readers, one call to action to the tours, no paragraph or second action', () => {
@@ -109,7 +110,7 @@ test('the AI-generated pictures appear in the home hero only, and the credits sa
     const html = layout(p, site);
     assert.deepEqual(uses(html.slice(html.indexOf('<main'), html.indexOf('</main>'))), [], p.path);
   }
-  assert.deepEqual(uses(home.slice(home.indexOf('<div class="living-cape"'))), [], 'nowhere below the hero');
+  assert.deepEqual(uses(home.slice(home.indexOf('<section class="sand-journey"'))), [], 'nowhere below the hero (the sand journey and the chapters)');
   assert.equal(ORIGIN_NOTES.G, 'An AI-generated illustration supplied by Good Times in Cape Town, not a photograph of guests');
   const privacy = render('privacy/index.html');
   assert.match(privacy, /the café scene at the top of the home page and the photographs in its phone are AI-generated illustrations/);

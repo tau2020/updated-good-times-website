@@ -68,7 +68,7 @@ People: **none** = no person; **far** = people too small or turned away to ident
 | mandela-statue-drakenstein | Website Images, file 057 | S | guests | In use, provenance and consent P2 |
 | hermanus-frame | Website Images, file 092 | S | guests | In use, provenance and consent P2 |
 | muizenberg-huts | Website Images, file 104 | S | none | In use, provenance P2 |
-| camps-bay-twelve-apostles | Website Images, file 231 | S | none | In use, provenance P2 |
+| camps-bay-twelve-apostles | Website Images, file 231 | S | none | In use, provenance P2; also under the home page's sand journey (branch `feature/gtict-cinematic-sand-journey`, M5) |
 | quad-bikes-dunes | Website Images, file 332 | S | guests | In use, provenance and consent P2 |
 | quad-bikes-convoy | Website Images, file 198 | S | far | In use, provenance P2 |
 | cango-caves | Website Images, file 276 | S | guests | In use, provenance and consent P2 |
@@ -112,6 +112,9 @@ The rights log also excludes the Langa files with identifiable children (GT-A-03
 | Logos, symbol, favicons, social avatar | Good Times Approved Logo Pack v2 (Drive), used as supplied: `src/assets/brand/` | Approved by the owner (the pack's own README). Not redrawn; the email logo is a PNG export of the pack's reversed logo |
 | Mountain-trail artwork (art panels for tours without a photograph) | Logo Pack v2 › `04-mountain-trail.svg` | As above |
 | Share image (`og-default.jpg`) | The pack's primary logo on the site's paper colour | As above |
+| The home page's flying aircraft (motion layer) | The lockup's own airliner glyph and dotted route, read from `gt-logo-compact.svg` at build time; the logo files are not edited | As above |
+| The propeller aircraft (preview builds only, the owner's alternative) | The owner's motion package (5 Nov 2026): `src/assets/motion/gtict-real-aircraft.svg`, an original vector, recoloured to the logo's greens | Supplied by the owner; not a claim about any aircraft Good Times operates (M1) |
+| The sand, the footprints and their grains | Procedural, drawn by this repository's own WebGL2 code (`src/assets/js/motion/sand/`); no texture or photograph of sand is used | Original |
 
 ## Reviews and ratings
 

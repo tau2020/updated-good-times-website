@@ -1,0 +1,363 @@
+/* Good Times in Cape Town — the cinematic motion layer (home page only)
+   1. The brand aircraft: the dock anchor in the logo link, the mask that holds the logo's own airliner back while
+      its flying copy is in the air, and the flight layer (assets/js/brand-plane.js, nested in hero.js).
+   2. The header's entrance stays accessible: staged with opacity only, anything focused shows at once.
+   3. The sand journey between the hero and the first chapter (assets/js/sand-journey.js and assets/js/motion/sand/).
+   Without motion (reduced motion, ?nomotion, no JavaScript) none of this moves or hides anything: the logo is whole
+   and the sand journey is the Camps Bay photograph with its words and its link. */
+
+/* 1. The brand aircraft ---------------------------------------------------- */
+.brand {
+  position: relative;
+}
+/* Exactly over the logo's airliner (the "i" of "in"); measured by the flight, never seen */
+.brand__dock {
+  position: absolute;
+  left: var(--dock-x);
+  top: var(--dock-y);
+  width: var(--dock-w);
+  height: var(--dock-h);
+  pointer-events: none;
+}
+/* While the flying copy is in the air, the logo's own airliner is held back by a hole in a mask the size of its box
+   (nothing else of the lockup is inside it); it is whole again at the landing, in the same frame as the copy goes */
+.brand.is-awaiting-aircraft .brand__logo {
+  -webkit-mask:
+    linear-gradient(#000 0 0) 0 0 / 100% 100% no-repeat,
+    linear-gradient(#000 0 0) var(--hole-x) var(--hole-y) / var(--dock-w) var(--dock-h) no-repeat;
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) 0 0 / 100% 100% no-repeat,
+    linear-gradient(#000 0 0) var(--hole-x) var(--hole-y) / var(--dock-w) var(--dock-h) no-repeat;
+  mask-composite: exclude;
+}
+.aircraft-flight {
+  --aircraft-green: #059a35;
+  --aircraft-light: #49d277;
+  --aircraft-deep: #03712a;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: visible;
+  pointer-events: none;
+}
+.aircraft-flight[hidden] {
+  display: none;
+}
+/* Over the film, the reversed lockup's green (the logo's own two greens, one per header state) */
+.site-header--overlay:not(.is-condensed) .aircraft-flight {
+  --aircraft-green: #45e375;
+  --aircraft-light: #a6f5bd;
+  --aircraft-deep: #1ea84c;
+}
+.aircraft-flight__trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: var(--aircraft-green);
+}
+.aircraft-flight__plane,
+.aircraft-flight__shadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+.aircraft-flight__plane svg,
+.aircraft-flight__shadow svg,
+.aircraft-flight__bank {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.aircraft-flight__shadow use {
+  fill: #031a10;
+}
+.aircraft-flight__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.aircraft-flight__glyph {
+  fill: var(--aircraft-green);
+}
+.aircraft-flight__light {
+  fill: rgba(255, 255, 255, 0.3);
+}
+.aircraft-flight__shade {
+  fill: rgba(0, 38, 14, 0.2);
+}
+.aircraft-flight__shade--far {
+  fill: rgba(255, 255, 255, 0.12);
+}
+.aircraft-flight__line {
+  fill: none;
+  stroke: rgba(0, 46, 18, 0.34);
+  stroke-width: 0.55;
+  stroke-linecap: round;
+}
+.aircraft-flight__nacelle {
+  fill: var(--aircraft-deep);
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 0.4;
+}
+.aircraft-flight__glass {
+  fill: #0d2433;
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 0.35;
+}
+.aircraft-flight__fin {
+  stroke: var(--aircraft-deep);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.aircraft-flight__nav--port {
+  fill: #ff5a4f;
+}
+.aircraft-flight__nav--starboard {
+  fill: #c8ffd6;
+}
+.aircraft-flight__stop-light {
+  stop-color: var(--aircraft-light);
+}
+.aircraft-flight__stop-deep {
+  stop-color: var(--aircraft-green);
+}
+.aircraft-flight__prop-edge {
+  stroke: var(--aircraft-deep);
+}
+.aircraft-flight[data-variant='jet'] .aircraft-flight__prop,
+.aircraft-flight[data-variant='prop'] .aircraft-flight__jet {
+  display: none;
+}
+
+/* 2. The header's entrance: staged with opacity only (hero.js), so the logo link, the titles and Book Now are in the
+   accessibility tree and the tab order from the first paint; whichever is focused shows at once */
+.cine:not(.intro-ready) .home .site-header [data-intro] {
+  visibility: visible;
+}
+.home .site-header [data-intro]:focus-visible,
+.home .site-header [data-intro]:focus-within {
+  opacity: 1 !important;
+}
+/* The preview bar's review aid (preview builds only): replay the entrance. Laid over the bar's right end, so it never
+   changes the bar's height (the hero's height is measured from it); not on narrow screens, where the bar's line is full */
+.home .preview-bar__inner {
+  position: relative;
+}
+.preview-bar__replay {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  padding: 0.05rem 0.6rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.preview-bar__replay[hidden] {
+  display: none;
+}
+@media (max-width: 63.99em) {
+  .preview-bar__replay {
+    display: none;
+  }
+}
+
+/* 3. The sand journey (partials/sand-journey.mjs, assets/js/sand-journey.js) ---------------------------------
+   Static by default: one screen of the Camps Bay photograph with its words and link at the lower left. With motion
+   (html.cine) the section is taller than the screen and the stage is held by CSS sticky while the scroll drives the
+   scene; no ScrollTrigger pin, so nothing is measured inside a pin spacer and nothing shifts. */
+.sand-journey {
+  --pin: 200svh;
+  --words: 1;
+  position: relative;
+  background: #d8c8aa;
+}
+.sand-journey__stage {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--hero-ivory);
+}
+.sand-journey__beach,
+.sand-journey__beach picture,
+.sand-journey__beach img,
+.sand-journey__sand {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sand-journey__beach img {
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+.sand-journey__sand {
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+}
+/* Legibility for the words at the lower left, from below; nothing darkens the bay above them */
+.sand-journey__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(3, 22, 36, 0.66) 0%, rgba(3, 22, 36, 0.3) 34%, rgba(3, 22, 36, 0) 58%);
+  opacity: var(--words);
+}
+.sand-journey__inner {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 max(var(--hero-edge), env(safe-area-inset-left)) clamp(3.25rem, 2rem + 5vh, 5.5rem);
+  pointer-events: none;
+}
+.sand-journey__words {
+  max-width: 34rem;
+  pointer-events: auto;
+  opacity: var(--words);
+  transform: translateY(calc((1 - var(--words)) * 22px));
+}
+.sand-journey__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.85rem;
+  font-family: var(--font-display);
+  font-size: var(--text-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 8px rgba(1, 18, 39, 0.5);
+}
+.sand-journey__rule {
+  width: 2.25rem;
+  height: 2px;
+  background: var(--champagne);
+}
+.sand-journey__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--hero-ivory);
+  text-shadow: 0 2px 18px rgba(1, 18, 39, 0.45);
+  overflow-wrap: normal;
+}
+.sand-journey__line {
+  margin: 0 0 1.5rem;
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 10px rgba(1, 18, 39, 0.55);
+}
+.sand-journey__credit {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 1rem;
+  left: var(--gutter);
+  z-index: 3;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 6px rgba(1, 18, 39, 0.6);
+  opacity: var(--words);
+}
+/* With motion: the scroll scene (the held stage; the words wait for the sand to clear) */
+html.cine .sand-journey.is-live {
+  height: calc(100svh + var(--pin));
+}
+html.cine .sand-journey.is-live .sand-journey__stage {
+  position: sticky;
+  top: 0;
+}
+@media (max-width: 47.99em), (max-aspect-ratio: 1/1) {
+  .sand-journey {
+    --pin: 170svh;
+  }
+}
+/* Phones: the words and the link clear the call bar fixed at the foot of the screen */
+@media (max-width: 47.99em) {
+  .has-mobile-cta .sand-journey__inner {
+    padding-bottom: calc(clamp(3.25rem, 2rem + 5vh, 5.5rem) + 3.5rem + env(safe-area-inset-bottom));
+  }
+  .has-mobile-cta .sand-journey__credit {
+    bottom: calc(1rem + 3.75rem + env(safe-area-inset-bottom));
+  }
+}
+/* Until the renderer is ready, after a lost context, and in the static tier, the scene is the photograph and its words */
+.sand-journey:not(.is-ready) .sand-journey__sand,
+.sand-journey.is-lost .sand-journey__sand,
+.sand-journey.is-static .sand-journey__sand {
+  display: none;
+}
+.sand-journey:not(.is-ready),
+.sand-journey.is-lost,
+.sand-journey.is-static {
+  --words: 1 !important;
+}
+/* The renderer arriving while the scene is on screen: a 0.7 s cross-fade, never a one-frame swap */
+.sand-journey.is-arriving .sand-journey__sand {
+  animation: sand-arrive 0.7s ease-out both;
+}
+.sand-journey.is-arriving .sand-journey__words,
+.sand-journey.is-arriving .sand-journey__scrim,
+.sand-journey.is-arriving .sand-journey__credit {
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+@keyframes sand-arrive {
+  from {
+    opacity: 0;
+  }
+}
+/* The hero's lower edge lies over the sand: a soft contact shadow where they meet (with motion; the static scene is a
+   photograph and needs none) */
+html.cine .sand-journey.is-ready .sand-journey__stage::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: clamp(18px, 3.2vh, 34px);
+  background: linear-gradient(180deg, rgba(40, 30, 18, 0.22) 0%, rgba(40, 30, 18, 0.07) 45%, rgba(40, 30, 18, 0) 100%);
+  pointer-events: none;
+  opacity: calc(1 - var(--words));
+}
+/* Anything focused in the words shows at once, whatever the sand is doing */
+.sand-journey__words:focus-within {
+  opacity: 1;
+  transform: none;
+}
+.sand-journey__stage:focus-within .sand-journey__scrim {
+  opacity: 1;
+}
+@media print {
+  .sand-journey__sand {
+    display: none !important;
+  }
+  html.cine .sand-journey.is-live {
+    height: auto;
+  }
+}

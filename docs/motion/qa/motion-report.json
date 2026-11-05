@@ -1,0 +1,361 @@
+{
+  "base": "http://127.0.0.1:8093",
+  "engine": "webkit",
+  "when": "2026-11-05T23:14:57.458Z",
+  "sizes": {
+    "1440x900": {
+      "errors": [],
+      "plane": {
+        "variant": "jet",
+        "landsAt": 1.22,
+        "handoverAt": 1.47,
+        "landingErrorPx": 0.07,
+        "maskedAfter": false,
+        "layerHiddenAfter": true
+      },
+      "sand": {
+        "mode": "live",
+        "start": 252,
+        "end": 2700,
+        "shots": [
+          {
+            "p": 0,
+            "scrollY": 252,
+            "settled": 0
+          },
+          {
+            "p": 0.1,
+            "scrollY": 497,
+            "settled": 0.1001
+          },
+          {
+            "p": 0.2,
+            "scrollY": 742,
+            "settled": 0.2002
+          },
+          {
+            "p": 0.36,
+            "scrollY": 1133,
+            "settled": 0.3599
+          },
+          {
+            "p": 0.48,
+            "scrollY": 1427,
+            "settled": 0.48
+          },
+          {
+            "p": 0.65,
+            "scrollY": 1843,
+            "settled": 0.6499
+          },
+          {
+            "p": 0.8,
+            "scrollY": 2210,
+            "settled": 0.7998
+          },
+          {
+            "p": 1,
+            "scrollY": 2700,
+            "settled": 1
+          }
+        ],
+        "readyAfterMs": 1,
+        "tier": "full",
+        "checksums": [
+          {
+            "p": 0,
+            "forward": "a63350f0",
+            "backward": "a63350f0",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.1,
+            "forward": "27cd68b8",
+            "backward": "27cd68b8",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.2,
+            "forward": "35a7a82a",
+            "backward": "35a7a82a",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.36,
+            "forward": "e07338c3",
+            "backward": "e07338c3",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.48,
+            "forward": "6442664a",
+            "backward": "6442664a",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.65,
+            "forward": "ab8f91c5",
+            "backward": "ab8f91c5",
+            "same": true,
+            "meanAlpha": 0.8577
+          },
+          {
+            "p": 0.8,
+            "forward": "676c82e9",
+            "backward": "676c82e9",
+            "same": true,
+            "meanAlpha": 0.2064
+          },
+          {
+            "p": 1,
+            "forward": "1f376fc5",
+            "backward": "1f376fc5",
+            "same": true,
+            "meanAlpha": 0
+          }
+        ]
+      }
+    },
+    "390x844": {
+      "errors": [],
+      "plane": {
+        "variant": "jet",
+        "landsAt": 1.22,
+        "handoverAt": 1.47,
+        "landingErrorPx": 0.063,
+        "maskedAfter": false,
+        "layerHiddenAfter": true
+      },
+      "sand": {
+        "mode": "live",
+        "start": 236,
+        "end": 2278,
+        "shots": [
+          {
+            "p": 0,
+            "scrollY": 236,
+            "settled": 0
+          },
+          {
+            "p": 0.1,
+            "scrollY": 440,
+            "settled": 0.0999
+          },
+          {
+            "p": 0.2,
+            "scrollY": 644,
+            "settled": 0.1998
+          },
+          {
+            "p": 0.36,
+            "scrollY": 971,
+            "settled": 0.3599
+          },
+          {
+            "p": 0.48,
+            "scrollY": 1216,
+            "settled": 0.4799
+          },
+          {
+            "p": 0.65,
+            "scrollY": 1563,
+            "settled": 0.6499
+          },
+          {
+            "p": 0.8,
+            "scrollY": 1870,
+            "settled": 0.8002
+          },
+          {
+            "p": 1,
+            "scrollY": 2278,
+            "settled": 1
+          }
+        ],
+        "readyAfterMs": 1,
+        "tier": "full",
+        "checksums": [
+          {
+            "p": 0,
+            "forward": "be90401b",
+            "backward": "be90401b",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.1,
+            "forward": "3d74970",
+            "backward": "3d74970",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.2,
+            "forward": "18347476",
+            "backward": "18347476",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.36,
+            "forward": "9621bda3",
+            "backward": "9621bda3",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.48,
+            "forward": "874e8dc9",
+            "backward": "874e8dc9",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.65,
+            "forward": "aa03895b",
+            "backward": "aa03895b",
+            "same": true,
+            "meanAlpha": 0.871
+          },
+          {
+            "p": 0.8,
+            "forward": "5eae2c27",
+            "backward": "5eae2c27",
+            "same": true,
+            "meanAlpha": 0.0477
+          },
+          {
+            "p": 1,
+            "forward": "30923c65",
+            "backward": "30923c65",
+            "same": true,
+            "meanAlpha": 0
+          }
+        ]
+      }
+    },
+    "360x740": {
+      "errors": [],
+      "plane": {
+        "variant": "jet",
+        "landsAt": 1.22,
+        "handoverAt": 1.47,
+        "landingErrorPx": 0.048,
+        "maskedAfter": false,
+        "layerHiddenAfter": true
+      },
+      "sand": {
+        "mode": "live",
+        "start": 207,
+        "end": 1998,
+        "shots": [
+          {
+            "p": 0,
+            "scrollY": 207,
+            "settled": 0
+          },
+          {
+            "p": 0.1,
+            "scrollY": 386,
+            "settled": 0.0999
+          },
+          {
+            "p": 0.2,
+            "scrollY": 565,
+            "settled": 0.1999
+          },
+          {
+            "p": 0.36,
+            "scrollY": 852,
+            "settled": 0.3601
+          },
+          {
+            "p": 0.48,
+            "scrollY": 1067,
+            "settled": 0.4802
+          },
+          {
+            "p": 0.65,
+            "scrollY": 1371,
+            "settled": 0.6499
+          },
+          {
+            "p": 0.8,
+            "scrollY": 1640,
+            "settled": 0.8001
+          },
+          {
+            "p": 1,
+            "scrollY": 1998,
+            "settled": 1
+          }
+        ],
+        "readyAfterMs": 1,
+        "tier": "full",
+        "checksums": [
+          {
+            "p": 0,
+            "forward": "370a0703",
+            "backward": "370a0703",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.1,
+            "forward": "ae2e1a33",
+            "backward": "ae2e1a33",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.2,
+            "forward": "bf44350b",
+            "backward": "bf44350b",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.36,
+            "forward": "2beb9052",
+            "backward": "2beb9052",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.48,
+            "forward": "91e9602c",
+            "backward": "91e9602c",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.65,
+            "forward": "243d8f74",
+            "backward": "243d8f74",
+            "same": true,
+            "meanAlpha": 0.876
+          },
+          {
+            "p": 0.8,
+            "forward": "4d349f97",
+            "backward": "4d349f97",
+            "same": true,
+            "meanAlpha": 0.0475
+          },
+          {
+            "p": 1,
+            "forward": "e9dbbe45",
+            "backward": "e9dbbe45",
+            "same": true,
+            "meanAlpha": 0
+          }
+        ]
+      }
+    }
+  }
+}

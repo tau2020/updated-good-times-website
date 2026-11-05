@@ -4,6 +4,7 @@ import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../par
 import { destinationCarousel, photoExhibition, mediaLightbox } from '../partials/media.mjs';
 import { culinaryReveal, tasteRule } from '../partials/culinary.mjs';
 import { heroPhoneGallery } from '../partials/phone-gallery.mjs';
+import { sandJourney } from '../partials/sand-journey.mjs';
 import { imageByName } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
@@ -204,6 +205,8 @@ export const page = {
   priority: 1,
   changefreq: 'weekly',
   overlayHeader: true,
+  // The logo's airliner flies in and lands as the "i" of "in" (partials/aircraft.mjs, assets/js/brand-plane.js)
+  brandFlight: true,
   bodyClass: 'home',
   // The hero's held frame is the first paint (one 16:9 rendition set for every screen; the crop is CSS).
   preload: [preloadFor('hero-moment-poster')],
@@ -213,7 +216,7 @@ export const page = {
   // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger and Flip (GSAP 3.15, self-hosted;
   // the policy allows same-origin scripts only), the hero's entrance, its phone gallery, the guest stories carousel,
   // the chapters and the media system: the destination carousel, the exhibition and its lightbox.
-  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/reviews.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
+  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/vendor/MotionPathPlugin.min.js', 'assets/js/brand-plane.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/reviews.js', 'assets/js/sand-journey.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
   /*
    * The hero, "the world has stopped, the memories haven't": five friends in a café above the Atlantic, Table Mountain
    * behind, held still in one moment of laughter (the film moves only the cloud and the sea, src/tools/build-video.sh).
@@ -237,6 +240,8 @@ export const page = {
     ${heroPhoneGallery()}
   </div>
 </section>
+
+${sandJourney()}
 
 <div class="living-cape" data-living-cape>
 
