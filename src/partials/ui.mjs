@@ -188,6 +188,8 @@ export function picture({ name, alt, sizes = '100vw', cls = '', eager = false, f
 </picture>`;
 }
 
+/** The pipeline's record for an image ({ widths, width, height, ambient? }), or null before `npm run images`. */
+export const renditionsOf = (name) => renditions[name] || null;
 /** Intrinsic width of an image's original (0 if unknown). */
 export const imageWidth = (name) => renditions[name]?.width || 0;
 /** Intrinsic size of an image's original ({ width, height }, zeros if unknown). */

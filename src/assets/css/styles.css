@@ -779,12 +779,24 @@ h4 {
 }
 
 /* 7. Home hero ----------------------------------------------------------------- */
-/* Layers, bottom to top: poster and film (.hero__media, the only clipped layer), a
-   localized readability mask (.hero__scrim), then the text block anchored to the lower
-   left. The hero is one viewport tall (less the preview bar), edge to edge, and sits
-   under the transparent header (section 6), whose bar shares --hero-edge so the
-   wordmark and the headline align. */
+/* "The world has stopped, the memories haven't" (index.mjs). Layers, bottom to top: the café scene
+   (.hero__media, the only clipped layer: the held frame, then the film, which moves only the cloud
+   and the sea), a light sky wash for the transparent header (.hero__scrim), the one call to action
+   bottom left (.hero__content) and the phone bottom right (.hero__phone; the component itself is
+   phone-gallery.css). The header (section 6) shares --hero-edge, so the wordmark and the call to
+   action align.
+   No face is ever covered. The call to action sits in the strip below the sleeping friend's chin
+   (the lowest face, 89% down the frame), the phone right of the laughing blonde friend (her face
+   ends 82% across). Landscape screens show the scene full bleed and steer the crop by aspect ratio
+   so her face stays clear of the phone; screens narrower than 13:10 (phones, portrait tablets) frame
+   the whole group under the header and carry the call to action and the phone on a band below it,
+   the phone rising only into the picture's lower corner, below every face. Nothing darkens the faces. */
 .hero {
+  --hero-inset: clamp(0.75rem, 0.1rem + 1.9vh, 1.75rem); /* the gap under the call to action and the phone */
+  --phone-right: max(clamp(0.875rem, 0.2rem + 1.5vw, 2rem), env(safe-area-inset-right));
+  /* The phone's width (phone-gallery.css): 14% of the screen, 150–224 px, never taller than 56% of the hero */
+  --pw: min(clamp(150px, 14vw, 224px), calc((100svh - var(--preview-h, 0px)) * 0.272));
+  --hero-focus: 50% 75%;
   position: relative;
   z-index: 1;
   isolation: isolate;
@@ -795,18 +807,13 @@ h4 {
   min-height: calc(100svh - var(--preview-h, 0px));
   padding-left: max(var(--hero-edge), env(safe-area-inset-left));
   padding-right: max(var(--hero-edge), env(safe-area-inset-right));
-  padding-bottom: clamp(3rem, 16vh, 11rem);
+  padding-bottom: max(var(--hero-inset), env(safe-area-inset-bottom));
   color: var(--ivory-soft);
   background: var(--forest-deep);
 }
 /* Until main.js has measured the preview bar, assume its one-line height */
 .has-preview-bar .hero {
   min-height: calc(100svh - var(--preview-h, 2rem));
-}
-@media (max-width: 47.99em) {
-  .hero {
-    padding-bottom: clamp(2.5rem, 9vh, 5rem);
-  }
 }
 .hero__media {
   position: absolute;
@@ -823,15 +830,14 @@ h4 {
   width: 100%;
   height: 100%;
 }
-/* Framed on the Cape Point headland: landscape screens use the landscape photograph;
-   portrait screens use its 4:5 crop (focus values in index.mjs) */
+/* Poster and film share one crop, so the film lands exactly on its own first frame */
 .hero__media img,
 .hero__media video {
   object-fit: cover;
-  object-position: var(--hero-focus, 100% 42%);
+  object-position: var(--hero-focus);
 }
-/* The film fades in over its own first frame once a frame has been presented (main.js);
-   without JavaScript, under reduced motion or after a failure the poster simply stays */
+/* The film fades in over the poster once a frame has been presented (main.js); without
+   JavaScript, under reduced motion or after a failure the poster simply stays */
 .hero__media video {
   opacity: 0;
   pointer-events: none;
@@ -845,84 +851,41 @@ h4 {
     opacity: 0;
   }
 }
-@media (max-aspect-ratio: 9/10) {
-  .hero__media img,
-  .hero__media video {
-    object-position: var(--hero-focus-portrait, 62% 50%);
+/* The crop by shape. Wider than 16:9 the frame fits the width and gives up a little sky, never the
+   strip under the faces; narrower, it fits the height and slides left as the screen narrows, so the
+   blonde friend's face keeps clear of the phone without the sleeping friend leaving the frame. */
+@media (max-aspect-ratio: 16/9) {
+  .hero {
+    --hero-focus: 66% 75%;
   }
 }
-/* Readability without panels: deep ink across the sky behind the header and a
-   pocket behind the wordmark, a left wash and a lower-left mask behind the text that
-   fade out before the figure and the ocean, and a short fade into the trust band */
+@media (max-aspect-ratio: 8/5) {
+  .hero {
+    --hero-focus: 84% 75%;
+  }
+}
+/* Readability without panels: a sky wash behind the transparent header, and nothing else */
 .hero__scrim {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(3, 16, 32, 0.5) 0%, rgba(3, 16, 32, 0.22) 14%, rgba(3, 16, 32, 0) 30%),
-    radial-gradient(34% 44% at 12% 10%, rgba(3, 16, 32, 0.38) 0%, rgba(3, 16, 32, 0) 70%),
-    linear-gradient(90deg, rgba(6, 20, 30, 0.5) 0%, rgba(6, 20, 30, 0.24) 36%, rgba(6, 20, 30, 0) 66%),
-    radial-gradient(80% 62% at 18% 80%, rgba(6, 20, 30, 0.64) 0%, rgba(6, 20, 30, 0.32) 45%, rgba(6, 20, 30, 0) 78%),
-    linear-gradient(0deg, var(--forest-deep) 0%, rgba(11, 34, 51, 0.45) 6%, rgba(11, 34, 51, 0) 16%);
-}
-/* Phones and portrait tablets: the figure fills the middle of the frame, so the text sits
-   on a bottom-up wash instead of the side mask */
-@media (max-width: 47.99em), (max-aspect-ratio: 9/10) {
-  .hero__scrim {
-    background:
-      linear-gradient(180deg, rgba(3, 16, 32, 0.52) 0%, rgba(3, 16, 32, 0.22) 22%, rgba(3, 16, 32, 0) 42%),
-      linear-gradient(0deg, var(--forest-deep) 0%, rgba(2, 14, 20, 0.84) 22%, rgba(2, 14, 20, 0.58) 42%, rgba(2, 14, 20, 0.28) 56%, rgba(2, 14, 20, 0) 70%);
-  }
-}
-@media (max-width: 47.99em) {
-  .hero__lead {
-    font-size: 1.1875rem;
-  }
+  background: linear-gradient(180deg, rgba(3, 16, 32, 0.44) 0%, rgba(3, 16, 32, 0.18) 11%, rgba(3, 16, 32, 0) 24%);
 }
 .hero__content {
   position: relative;
-  max-width: 44rem;
+  /* Never under the phone: the content box less the phone, a gap, and the difference in side insets */
+  max-width: calc(100% - var(--pw) - 1rem + var(--hero-edge) - var(--phone-right));
 }
-/* The headline: Plus Jakarta Sans, bold and upright, white with a soft contact shadow, no glow */
-.hero__title {
-  max-width: 12em;
-  font-family: var(--font-serif);
-  font-style: normal;
-  font-weight: 800;
-  font-size: clamp(2.6rem, 1.45rem + 3.1vw, 4.4rem);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
-  color: var(--hero-ivory);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 18px rgba(0, 0, 0, 0.22);
-  text-wrap: balance;
-  overflow-wrap: normal;
+.hero__phone {
+  position: absolute;
+  right: var(--phone-right);
+  bottom: max(var(--hero-inset), env(safe-area-inset-bottom));
+  z-index: 1;
+  width: var(--pw);
 }
-.hero__rule {
-  display: block;
-  width: 5.5rem;
-  height: 2px;
-  margin: clamp(1.125rem, 0.75rem + 1.4vh, 1.875rem) 0 clamp(1.125rem, 0.75rem + 1.6vh, 2rem);
-  background: var(--champagne);
-}
-.hero__lead {
-  max-width: 26em;
-  font-family: var(--font-serif);
-  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.3rem);
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--hero-ivory);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  text-wrap: pretty;
-}
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3) 1.125rem;
-  margin-top: clamp(1.5rem, 1rem + 2vh, 2.5rem);
-}
-/* Primary action: Good Times green, white words, a fine light edge, modest depth */
+/* The call to action: Good Times green, white words in the brand's display face at its boldest, a fine
+   light edge, a pill; a single sheen crosses it as it arrives (hero.js) and again under the pointer */
 .btn-champagne {
   display: inline-flex;
   align-items: center;
@@ -960,46 +923,119 @@ h4 {
   transform: translateY(0) scale(0.98);
   filter: none;
 }
-/* Secondary action: white words in a thin light-green frame on a faint dark glass, the same
-   height as the primary and plainly quieter than it; no arrow */
-.hero__link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 0.75rem 1.9rem;
-  border: 1px solid rgba(111, 237, 143, 0.8);
-  border-radius: 8px;
-  background: rgba(6, 20, 30, 0.42);
-  color: var(--hero-ivory);
-  font-family: var(--font-serif);
-  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  font-weight: 700;
-  line-height: 1.15;
-  text-decoration: none;
-  white-space: nowrap;
-  touch-action: manipulation;
-  transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
-}
-.hero__link:hover {
-  color: var(--champagne);
-  border-color: var(--champagne);
-  background: rgba(6, 20, 30, 0.55);
-  transform: translateY(-1px);
-}
-.hero__link:active {
-  transform: translateY(0) scale(0.98);
-}
-.btn-champagne:focus-visible,
-.hero__link:focus-visible {
+.btn-champagne:focus-visible {
   outline: 2px solid var(--ivory-soft);
   outline-offset: 3px;
 }
-/* Entrance (home page with motion, assets/js/hero.js): the wordmark, the titles, Book Now
-   and the hero text hold, invisible and unfocusable, until the GSAP master timeline takes
-   over and reveals them in sequence. If the script never runs, a timed fallback shows
-   everything after 2.8 s. Without motion (reduced motion, ?nomotion, no JavaScript)
-   nothing is hidden and nothing moves. */
+.hero__cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: clamp(42px, 1.7rem + 2vh, 62px);
+  padding: 0.5rem clamp(1.25rem, 0.75rem + 1.25vw, 2.15rem);
+  border-color: rgba(111, 237, 143, 0.55);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 0.82rem + 0.55vw, 1.375rem);
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  text-shadow: 0 1px 1px rgba(3, 40, 16, 0.35);
+}
+.hero__cta-label {
+  position: relative;
+  z-index: 1;
+}
+/* The playful turn: "Here!" leans forward (Plus Jakarta Sans italic, preloaded on the home page) */
+.hero__cta-label em {
+  font-style: italic;
+  font-weight: 800;
+  padding-right: 0.04em;
+}
+.hero__cta-sheen {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 46%;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.34) 48%, rgba(220, 255, 230, 0.5) 52%, rgba(255, 255, 255, 0) 100%);
+  transform: translateX(-160%);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .hero__cta:hover .hero__cta-sheen {
+    transform: translateX(330%);
+    transition: transform 0.85s var(--ease-out);
+  }
+}
+/* Short landscape screens (phones turned sideways): the frame fits the width and the faces fill its
+   height, so the call to action moves left of the sleeping friend's face (he begins 20% across) */
+@media (min-aspect-ratio: 13/10) and (max-height: 34em) {
+  .hero {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    --hero-focus: 50% 55%;
+  }
+  .hero__content {
+    max-width: calc(18.5vw - 1rem - 0.5rem);
+  }
+  .hero__cta {
+    min-height: 44px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.875rem;
+    white-space: normal;
+    text-wrap: balance;
+    text-align: center;
+  }
+}
+/* Phones, portrait tablets and near-square windows: the whole group, framed at 8:7 (wider where the
+   screen is short, which shows more of the scene, never less) under the header; the call to action and
+   the phone on the band below. The hero stays one screen tall, as the chapters below it expect. The
+   phone fills the band, rising into the picture by at most 16% of its height (below every face: the
+   lowest chin is 11% above the frame's foot, the blonde friend's 30%; and below the phone in the
+   brunette's hand, 17%), and takes at most 46% of the width so the call to action keeps its room.
+   Under the picture the scene's table is mirrored, dim and soft, as if on glass (build-video.sh). */
+@media (max-aspect-ratio: 13/10) {
+  .hero {
+    --hero-top: calc(var(--header-h) + 1px);
+    --hero-h: calc(100svh - var(--preview-h, 0px));
+    /* Leaves the band room for at least a 100 px phone: 13.75rem = its height and gap less the 16% rise */
+    --box-h: min(calc(100vw * 7 / 8), calc((var(--hero-h) - var(--hero-top) - 13.75rem) / 0.84));
+    --pw: clamp(100px, calc((var(--hero-h) - var(--hero-top) - var(--box-h) * 0.84 - var(--hero-inset)) / 2.06), min(46vw, 240px));
+    --hero-focus: 50.75% 50%;
+    --band-top: calc(var(--hero-top) + var(--box-h));
+    background:
+      linear-gradient(180deg, rgba(11, 34, 51, 0.3) 0%, rgba(11, 34, 51, 0.78) 42%, var(--forest-deep) 88%) 0 var(--band-top) / 100% calc(100% - var(--band-top)) no-repeat,
+      url('../img/hero-moment-reflection.webp') 0 var(--band-top) / 100% calc(100% - var(--band-top)) no-repeat,
+      var(--forest-deep);
+  }
+  .hero__media {
+    top: var(--hero-top);
+    bottom: auto;
+    height: var(--box-h);
+  }
+  /* The picture's foot (the drinks on the table) melts into the band, below every face */
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 9%;
+    background: linear-gradient(0deg, var(--forest-deep) 0%, rgba(11, 34, 51, 0) 100%);
+    pointer-events: none;
+  }
+  .hero__scrim {
+    display: none;
+  }
+  .hero__cta {
+    min-height: 48px;
+    padding: 0.55rem 0.95rem;
+    font-size: clamp(0.9375rem, 0.7rem + 1vw, 1.25rem);
+    white-space: normal;
+    text-wrap: balance;
+    text-align: center;
+  }
+}
+/* Entrance (home page with motion, assets/js/hero.js): the wordmark, the titles, Book Now and the
+   call to action hold, invisible and unfocusable, until the GSAP master timeline takes over and
+   reveals them in sequence. If the script never runs, a timed fallback shows everything after 2.8 s.
+   Without motion (reduced motion, ?nomotion, no JavaScript) nothing is hidden and nothing moves.
+   The phone is never held back: its first photograph is there at first paint. */
 .cine:not(.intro-ready) .home [data-intro] {
   opacity: 0;
   visibility: hidden;

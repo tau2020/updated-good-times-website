@@ -9,7 +9,8 @@
  * Widths never exceed the original (no upscaling). The widths produced are
  * written to src/data/images.generated.json, which the picture() helper reads
  * so pages only reference files that exist. Needs macOS `sips`, `cwebp` and
- * `avifenc` (brew install webp libavif).
+ * `avifenc` (brew install webp libavif); slots marked `ambient` also need
+ * `ffmpeg`, for their tiny blurred colour wash (`<name>-ambient.webp`, 72 px).
  */
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -41,6 +42,22 @@ async function dims(file) {
   return { w, h };
 }
 
+/**
+ * The colour wash behind a landscape photograph in the home hero's phone gallery: the photograph shrunk to
+ * 72 px, blurred and a touch richer and darker, so the screen above and below the picture glows in its
+ * colours (as a phone’s photo viewer does). About 1 KB; drawn stretched over the page, where the blur (stronger
+ * across than down, so the stretch never streaks) hides the scaling.
+ */
+const AMBIENT_W = 72;
+async function ambient(img, file) {
+  const out = join(OUT, `${img.name}-ambient.webp`);
+  if (!force && !only.length && existsSync(out)) return;
+  const png = join(tmpdir(), `gt-ambient-${img.name}-${process.pid}.png`);
+  await run('ffmpeg', ['-v', 'error', '-y', '-i', file, '-frames:v', '1', '-vf', `scale=${AMBIENT_W}:-2:flags=area,gblur=sigma=4.5:sigmaV=2.5,eq=saturation=1.45:brightness=-0.09:contrast=1.05,format=rgb24`, png]);
+  await run('cwebp', ['-quiet', '-q', '70', '-m', '6', '-metadata', 'none', png, '-o', out]);
+  await rm(png, { force: true });
+}
+
 async function one(img, generated) {
   const file = join(SRC, img.src);
   if (!existsSync(file)) {
@@ -64,8 +81,9 @@ async function one(img, generated) {
     await run('avifenc', ['-q', '50', '-s', '6', '-j', '4', '--ignore-exif', '--ignore-xmp', scaled, avif]);
   }
   await rm(tmp, { recursive: true, force: true });
-  generated[img.name] = { widths: uniq, width: w, height: h };
-  return `${img.name}: ${uniq.join('/')} (${w}×${h})`;
+  if (img.ambient) await ambient(img, file);
+  generated[img.name] = { widths: uniq, width: w, height: h, ...(img.ambient ? { ambient: true } : {}) };
+  return `${img.name}: ${uniq.join('/')} (${w}×${h})${img.ambient ? ' + ambient' : ''}`;
 }
 
 async function main() {

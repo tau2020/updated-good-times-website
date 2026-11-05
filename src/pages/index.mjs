@@ -3,6 +3,7 @@ import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox } from '../partials/media.mjs';
 import { culinaryReveal, tasteRule } from '../partials/culinary.mjs';
+import { heroPhoneGallery } from '../partials/phone-gallery.mjs';
 import { imageByName } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
@@ -204,29 +205,36 @@ export const page = {
   changefreq: 'weekly',
   overlayHeader: true,
   bodyClass: 'home',
-  // The hero photograph is the first paint: preload the rendition that matches the screen's aspect ratio.
-  preload: [preloadFor('cape-point-headland', { media: '(min-aspect-ratio: 9/10)' }), preloadFor('cape-point-headland-portrait', { media: '(max-aspect-ratio: 9/10)' })],
+  // The hero's held frame is the first paint (one 16:9 rendition set for every screen; the crop is CSS).
+  preload: [preloadFor('hero-moment-poster')],
   // The Living Cape chapters have their own sheet, loaded after styles.css and the system sheet, scoped to .living-cape.
-  styles: ['assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css'],
+  // The hero's phone gallery has its own sheet and script (HeroPhoneGallery, partials/phone-gallery.mjs).
+  styles: ['assets/css/phone-gallery.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css'],
   // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger and Flip (GSAP 3.15, self-hosted;
-  // the policy allows same-origin scripts only), the hero's entrance, the guest stories carousel, the chapters
-  // and the media system: the destination carousel, the exhibition and its lightbox.
-  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/hero.js', 'assets/js/reviews.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
+  // the policy allows same-origin scripts only), the hero's entrance, its phone gallery, the guest stories carousel,
+  // the chapters and the media system: the destination carousel, the exhibition and its lightbox.
+  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/reviews.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
+  /*
+   * The hero, "the world has stopped, the memories haven't": five friends in a café above the Atlantic, Table Mountain
+   * behind, held still in one moment of laughter (the film moves only the cloud and the sea, src/tools/build-video.sh).
+   * Three independent layers: the scene (poster, then film), the one call to action bottom left (in the strip below the
+   * sleeping friend's face, never over it) and the phone bottom right, the only thing that keeps moving. The scene and
+   * the gallery are AI-generated illustrations supplied by the owner (docs/RIGHTS_REGISTER.md, G). The h1 names the
+   * business for search and screen readers; on screen the picture and the call to action say it.
+   */
   body: ({ site }) => `
-<section class="hero" aria-labelledby="hero-title" style="--hero-focus: 58% 42%; --hero-focus-portrait: 40% 46%">
-  <div class="hero__media" data-hero-film aria-hidden="true">
-    ${picture({ name: 'cape-point-headland', cls: 'hero__poster', eager: true, fetchpriority: 'high', alt: '', portrait: { name: 'cape-point-headland-portrait', media: '(max-aspect-ratio: 9/10)' } })}
-    ${site.media.heroFilm ? `<video class="hero__video" muted playsinline loop preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" data-mp4="${esc(site.media.heroFilm.mp4)}" data-webm="${esc(site.media.heroFilm.webm)}" data-mp4-mobile="${esc(site.media.heroFilm.mp4Mobile)}" data-webm-mobile="${esc(site.media.heroFilm.webmMobile)}"></video>` : ''}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__media" data-hero-film>
+    ${picture({ name: 'hero-moment-poster', cls: 'hero__poster', eager: true, fetchpriority: 'high' })}
+    ${site.media.heroFilm ? `<video class="hero__video" aria-hidden="true" muted playsinline loop preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" data-mp4="${esc(site.media.heroFilm.mp4)}" data-webm="${esc(site.media.heroFilm.webm)}"></video>` : ''}
   </div>
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__content">
-    <h1 class="hero__title" id="hero-title" data-intro>Cape Town, your way.</h1>
-    <span class="hero__rule" aria-hidden="true" data-intro></span>
-    <p class="hero__lead" data-intro>Private tours with accredited local guides since 2014, from Chapman’s Peak and Cape Point to Langa, the Winelands and the Garden Route.</p>
-    <div class="hero__actions">
-      <a class="btn-champagne" href="tours/" data-intro>Explore Tours</a>
-      <a class="hero__link" href="enquire/?type=transfer" data-intro>Arrange a Transfer</a>
-    </div>
+    <h1 class="visually-hidden" id="hero-title">Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014</h1>
+    <a class="btn-champagne hero__cta" href="tours/" data-intro><span class="hero__cta-label">Good Times start <em>Here!</em></span><span class="hero__cta-sheen" aria-hidden="true"></span></a>
+  </div>
+  <div class="hero__phone">
+    ${heroPhoneGallery()}
   </div>
 </section>
 

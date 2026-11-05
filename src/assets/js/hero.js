@@ -1,13 +1,14 @@
 /* Good Times in Cape Town — home hero entrance (one GSAP master timeline, home page only)
-   A directed sequence over the already-visible photograph: the wordmark and Book Now arrive
-   first, the navigation titles follow one by one, the headline rises, its rule draws, the
-   lead settles, and the two actions close the composition. Whole elements only, opacity and
-   small transforms (autoAlpha, y, a touch of scale on the wordmark and the headline),
-   overlapping so it reads as one piece: about 4.5 s on desktop, 3.8 s on tablets and 2.7 s
-   on phones. It runs once per load, only when motion is allowed (html.cine from the inline
-   gate) and GSAP has loaded; otherwise nothing is hidden or moved. styles.css keeps the
-   holding state until the timeline takes over, with a timed fallback should this script
-   never run. Elements are hidden with autoAlpha, so nothing invisible can take focus. */
+   A directed sequence over the already-visible café scene and its phone: the wordmark and Book Now
+   arrive first, the navigation titles follow one by one, then the one call to action, Good Times
+   start Here!, rises into the bottom-left corner and a single sheen crosses it. Whole elements only,
+   opacity and small transforms (autoAlpha, y, a touch of scale on the wordmark and the call to action),
+   overlapping so it reads as one piece: about 3.7 s on desktop, 3.1 s on tablets and 2.3 s on phones.
+   The phone is not part of it: its first photograph is there from the first paint, and its gallery
+   (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
+   (html.cine from the inline gate) and GSAP has loaded; otherwise nothing is hidden or moved.
+   styles.css keeps the holding state until the timeline takes over, with a timed fallback should this
+   script never run. Elements are hidden with autoAlpha, so nothing invisible can take focus. */
 (function () {
   'use strict';
   var html = document.documentElement;
@@ -33,24 +34,17 @@
   var brand = header && one('.brand', header);
   var bookNow = header && one('.header-cta', header);
   var titles = header ? list('.primary-nav a', header) : [];
-  var headline = one('.hero__title');
-  var rule = one('.hero__rule');
-  var lead = one('.hero__lead');
-  var actions = list('.hero__actions > *');
-  var primary = actions[0] || null;
-  var secondary = actions[1] || null;
+  var cta = one('.hero__cta');
+  var sheen = cta && cta.querySelector('.hero__cta-sheen');
 
   var ctx = gsap.context(function () {
     // Starting states, written before the stylesheet's holding state is released
-    var fading = [brand, bookNow, headline, lead].concat(titles, actions).filter(Boolean);
+    var fading = [brand, bookNow, cta].concat(titles).filter(Boolean);
     gsap.set(fading, { autoAlpha: 0 });
     if (brand) gsap.set(brand, { y: 12, scale: 0.985, transformOrigin: 'left center' });
     if (bookNow) gsap.set(bookNow, { y: 10 });
     if (titles.length) gsap.set(titles, { y: 8 });
-    if (headline) gsap.set(headline, { y: 18, scale: 0.99, transformOrigin: 'left bottom' });
-    if (rule) gsap.set(rule, { autoAlpha: 0, scaleX: 0, transformOrigin: 'left center' });
-    if (lead) gsap.set(lead, { y: 12 });
-    if (actions.length) gsap.set(actions, { y: 10 });
+    if (cta) gsap.set(cta, { y: 16, scale: 0.96, transformOrigin: 'left bottom' });
     html.classList.add('intro-ready');
 
     var tl = gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: finish });
@@ -64,19 +58,13 @@
     tl.addLabel('titles', 0.7);
     if (titles.length) tl.to(titles, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.28 }, 'titles');
 
-    // Act III — the headline rises, the rule follows (2.0–3.4 s)
-    tl.addLabel('headline', 2);
-    if (headline) tl.to(headline, { autoAlpha: 1, y: 0, scale: 1, duration: 1.35 }, 'headline');
-    if (rule) tl.to(rule, { autoAlpha: 1, scaleX: 1, duration: 0.65, ease: 'power3.out' }, 'headline+=0.45');
-
-    // Act IV — the supporting story (2.6–3.8 s)
-    tl.addLabel('lead', 2.6);
-    if (lead) tl.to(lead, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'sine.out' }, 'lead');
-
-    // Act V — the calls to action (3.4–4.5 s)
-    tl.addLabel('actions', 3.4);
-    if (primary) tl.to(primary, { autoAlpha: 1, y: 0, duration: 0.9 }, 'actions');
-    if (secondary) tl.to(secondary, { autoAlpha: 1, y: 0, duration: 0.9 }, 'actions+=0.18');
+    // Act III — the call to action rises into its corner and settles, then one sheen crosses it (2.2–3.7 s)
+    tl.addLabel('cta', 2.2);
+    if (cta) {
+      tl.to(cta, { autoAlpha: 1, y: 0, scale: 1, duration: 0.95, ease: 'back.out(1.5)', clearProps: 'transform' }, 'cta');
+      // x: 0 drops the stylesheet's resting offset that GSAP would otherwise read in and add (translateX(-160%))
+      if (sheen) tl.fromTo(sheen, { x: 0, xPercent: -160 }, { x: 0, xPercent: 330, duration: 0.85, ease: 'power2.inOut', clearProps: 'transform' }, 'cta+=0.62');
+    }
 
     // The same composition, quicker where the screen is smaller
     var desktop = window.matchMedia('(min-width: 64em)').matches;

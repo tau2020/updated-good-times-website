@@ -91,7 +91,8 @@
 
   /* ---------- Home hero film: decorative video behind the hero, over its poster ----------
      Nothing is fetched until motion is allowed (no reduced-motion preference, no ?nomotion).
-     The file matching the screen's aspect ratio (16:9 or the 4:5 crop) is attached, the
+     The file matching the screen's aspect ratio is attached (a portrait crop where one is
+     supplied, data-*-mobile; otherwise the one 16:9 file, which the CSS crops), the
      film fades in only once a frame has been presented, it pauses while the hero is
      offscreen or the tab is hidden, and if autoplay is refused or the file fails the
      poster simply stays. No controls, no play button, nothing focusable. */
@@ -126,7 +127,8 @@
       video.remove();
     };
     const attach = () => {
-      const want = portrait.matches ? 'portrait' : 'landscape';
+      const d0 = video.dataset;
+      const want = portrait.matches && (d0.mp4Mobile || d0.webmMobile) ? 'portrait' : 'landscape';
       if (variant === want) return;
       variant = want;
       unready();

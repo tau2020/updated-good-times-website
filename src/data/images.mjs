@@ -14,12 +14,18 @@
  *   W = published by Good Times on its own website, goodtimesincapetown.co.za (company-owned)
  *   U = a company website photograph enlarged for the web by the owner (Drive › Upscaled Images)
  *   S = supplied by the owner in Drive › Website Images; provenance to be confirmed by Good Times
+ *   G = AI-generated, supplied by the owner on 5 Nov 2026 for the home hero only: the photographs in
+ *       its phone gallery (HeroPhoneGallery, src/data/phone-gallery.json) and the café scene behind
+ *       it (the film's held frame, `generated` below). Illustrations of five fictional friends, never
+ *       presented as guests or as Good Times photographs, and used nowhere else (test/hero.test.mjs)
  * Guests appear in many photographs: their consent to marketing use is confirmed by Good Times
  * (docs/APPROVAL_REGISTER.md). No traveller photo from Tripadvisor, no reviewer avatar, no stock
- * image, no photograph of a child (or of anyone who may be under 18) and no AI-generated scene is
- * used: four selected photographs were withdrawn on that ground (docs/RIGHTS_REGISTER.md › Withdrawn).
+ * image and no photograph of a child (or of anyone who may be under 18) is used: four selected
+ * photographs were withdrawn on that ground (docs/RIGHTS_REGISTER.md › Withdrawn).
  *
  * `full: true` marks the home page's full-bleed scenes, which get a 2000 px rendition.
+ * `ambient: true` adds a tiny blurred rendition (`<name>-ambient.webp`), the colour wash a phone
+ * gallery shows above and below a landscape photograph.
  * `focus` is the subject's position (x% y%) for every cover crop of the photograph:
  * a placement may refine it, never ignore it.
  */
@@ -30,6 +36,7 @@ export const ORIGIN_NOTES = {
   W: 'Published by Good Times in Cape Town on goodtimesincapetown.co.za',
   U: 'A Good Times photograph from goodtimesincapetown.co.za, enlarged for the web',
   S: 'Supplied by Good Times in Cape Town',
+  G: 'An AI-generated illustration supplied by Good Times in Cape Town, not a photograph of guests',
 };
 /** The short credit beside a photograph (the gallery's lightbox). */
 export const ORIGIN_CREDITS = {
@@ -37,12 +44,14 @@ export const ORIGIN_CREDITS = {
   W: 'A Good Times photograph',
   U: 'A Good Times photograph, enlarged for the web',
   S: 'A Good Times photograph',
+  G: 'An AI-generated illustration',
 };
 
 const T = 'tripadvisor/';
 const W = 'website/';
 const U = 'upscaled/';
 const S = 'library/';
+const G = 'phone-gallery/';
 
 export const images = [
   // The home hero: Cape Point, people-free (a landscape and its phone crop)
@@ -111,10 +120,28 @@ export const images = [
   { name: 'airport-pickup-area', src: `${W}airport-pickup-area.jpg`, origin: 'W', focus: '50% 50%', alt: 'The public pick-up area at Cape Town International Airport, with luggage trolleys and signage' },
   // Edited for privacy: the guest's handwritten name on the sign is blurred
   { name: 'airport-welcome-sign', src: `${W}airport-welcome-sign-name-blurred.jpg`, origin: 'W', focus: '48% 40%', alt: 'A Good Times driver in the arrivals hall holding a Good Times in Cape Town welcome sign' },
+
+  // The home hero's phone gallery, "Cape Town Memories": the five friends of the café scene on their days out
+  // (AI-generated, G; the supplied gallery package's originals, goodtimes_phone_gallery_assets.zip, 5 Nov 2026).
+  // Order, captions and the tour each one belongs to: src/data/phone-gallery.json
+  { name: 'memories-table-mountain', src: `${G}01_table_mountain_selfie.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The five friends squeezed into one laughing selfie, Table Mountain and the city behind them' },
+  { name: 'memories-boulders', src: `${G}02_boulders_penguins.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The friends laughing in a selfie on the sand at Boulders Beach, an African penguin in front of them and the colony behind' },
+  { name: 'memories-bokaap', src: `${G}03_bo_kaap_street.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The friends pulling faces on a Bo-Kaap street of bright green, yellow and pink houses, Table Mountain behind' },
+  { name: 'memories-camps-bay', src: `${G}04_beach_jump.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The five friends jumping in the air together on the beach at Camps Bay, Lion’s Head behind' },
+  { name: 'memories-cape-of-good-hope', src: `${G}05_cape_of_good_hope.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The friends cheering behind the Cape of Good Hope sign, the most south-western point of the African continent' },
+  { name: 'memories-sunset', src: `${G}06_sunset_lookout.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The five friends seen from behind on a rock, arms round each other, watching the sun set beyond Lion’s Head with Table Mountain and the city below' },
 ];
 
-/** Renditions made outside the photo pipeline (none: the home hero is a photograph since the conversion). */
-export const generated = [];
+/** Renditions made outside the photo pipeline. */
+export const generated = [
+  // The home hero's café scene: the first frame of its film, held (src/tools/build-video.sh). AI-generated (G).
+  {
+    name: 'hero-moment-poster',
+    origin: 'G',
+    focus: '50% 50%',
+    alt: 'Four friends laughing at a photo on a phone at a café above the Atlantic, Table Mountain behind them, while the fifth sleeps with his head on the table',
+  },
+];
 
 export const imageByName = (name) => images.find((i) => i.name === name) || generated.find((g) => g.name === name);
 /** The short credit for an image, from its recorded origin ('' when none is recorded). */

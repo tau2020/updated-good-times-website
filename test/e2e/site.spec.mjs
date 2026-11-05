@@ -296,19 +296,32 @@ test.describe('tours', () => {
 });
 
 test.describe('home hero', () => {
-  test('shows the headline, lead and two plain actions: no search panel, rating badge, icons or arrows', async ({ page }) => {
+  // "The world has stopped, the memories haven't": the café scene held still, one call to action bottom left, the phone
+  // bottom right (index.mjs, styles.css › Home hero, HeroPhoneGallery). Face clearances at every size: qa/hero.mjs.
+  const box = (loc) => loc.evaluate((el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, right: r.right, bottom: r.bottom }; });
+
+  test('shows the held café scene, one call to action bottom left and the phone bottom right: no paragraph, search panel, rating badge or second action', async ({ page }) => {
     await page.goto('/?nomotion');
-    await expect(page.locator('.hero h1')).toHaveText('Cape Town, your way.');
-    await expect(page.locator('.hero__lead')).toHaveText('Private tours with accredited local guides since 2014, from Chapman’s Peak and Cape Point to Langa, the Winelands and the Garden Route.');
-    const actions = page.locator('.hero__actions a');
-    await expect(actions).toHaveCount(2);
-    await expect(actions.nth(0)).toHaveText('Explore Tours');
-    await expect(actions.nth(0)).toHaveAttribute('href', /(^|\/)tours\/$/);
-    await expect(actions.nth(1)).toHaveText('Arrange a Transfer');
-    await expect(actions.nth(1)).toHaveAttribute('href', /(^|\/)enquire\/\?type=transfer$/);
-    await expect(page.locator('.hero svg, .hero .icon')).toHaveCount(0);
-    await expect(page.locator('.hero .search, .hero form, .hero [role="tablist"], .hero input, .hero .eyebrow, .hero .btn')).toHaveCount(0);
+    await expect(page.locator('.hero h1')).toHaveText('Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014');
+    await expect(page.locator('.hero h1')).toHaveClass('visually-hidden');
+    const cta = page.locator('.hero a');
+    await expect(cta).toHaveCount(1);
+    await expect(cta).toHaveText('Good Times start Here!');
+    await expect(cta).toHaveAttribute('href', /(^|\/)tours\/$/);
+    await expect(cta).toBeVisible();
+    await expect(page.locator('.hero__poster img')).toBeVisible();
+    await expect(page.locator('.hero__poster img')).toHaveAttribute('alt', /^Four friends laughing at a photo on a phone/);
+    await expect(page.locator('.hero .phone-gallery')).toBeVisible();
+    // Bottom left and bottom right of the hero, apart from each other
+    const [hero, c, phone] = [await box(page.locator('.hero')), await box(cta), await box(page.locator('.phone-gallery'))];
+    expect(c.x + c.w / 2, 'call to action on the left').toBeLessThan(hero.x + hero.w / 2);
+    expect(phone.x + phone.w / 2, 'phone on the right').toBeGreaterThan(hero.x + hero.w / 2);
+    for (const b of [c, phone]) expect(hero.bottom - b.bottom, 'near the hero’s foot').toBeLessThan(40);
+    expect(c.right, 'never under the phone').toBeLessThan(phone.x);
+    expect(phone.right).toBeLessThanOrEqual(hero.right);
+    await expect(page.locator('.hero p.hero__lead, .hero__link, .hero .search, .hero form, .hero [role="tablist"], .hero input, .hero .eyebrow, .hero .btn')).toHaveCount(0);
     await expect(page.locator('.hero .medallion, .hero .stars, .hero .rating')).toHaveCount(0);
+    await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon')).toHaveCount(0);
     await expect(page.locator('.hero')).not.toContainText(/tripadvisor|extraordinary places|cape town, personally|tailored|find experiences/i);
     // The header over the hero: the reversed logo from the approved logo pack, Make It Yours with its ornamental coin
     const header = page.locator('.site-header--overlay');
@@ -327,23 +340,133 @@ test.describe('home hero', () => {
     await expect(header.locator('.header-cta .btn-coin__coin svg')).toHaveCount(1);
     await expect(header.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
     const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.family === 'Plus Jakarta Sans' && f.status === 'loaded').map((f) => f.style));
-    expect(fonts, 'Plus Jakarta Sans roman and italic loaded').toEqual(expect.arrayContaining(['normal', 'italic']));
+    expect(fonts, 'Plus Jakarta Sans roman and italic loaded (“Here!” leans)').toEqual(expect.arrayContaining(['normal', 'italic']));
   });
 
-  test('the hero is a still photograph of Cape Point, even with motion: no film is fetched, and no video, control or play button appears', async ({ page, isMobile }) => {
+  test('with motion the film fades in over its own first frame, muted and looping, with no controls or play button', async ({ page }) => {
     const media = [];
-    page.on('request', (r) => r.url().includes('/assets/video/') && media.push(r.url()));
+    page.on('request', (r) => r.url().includes('/assets/video/') && media.push(r.url().split('/').pop()));
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1, name: 'Cape Town, your way.', exact: true })).toHaveCount(1);
-    const poster = page.locator('.hero__poster img');
-    await expect(poster).toBeVisible();
-    // Phones and portrait tablets get the 4:5 crop of the same photograph, everything else the landscape
-    await expect.poll(() => poster.evaluate((img) => img.currentSrc)).toMatch(isMobile ? /cape-point-headland-portrait-\d+\.(avif|webp)$/ : /cape-point-headland-\d+\.(avif|webp)$/);
-    await expect(page.locator('video')).toHaveCount(0);
-    await expect(page.locator('.hero button, .hero [role="button"], [data-film-toggle]')).toHaveCount(0);
-    await page.waitForTimeout(800);
-    expect(media, 'no film request').toEqual([]);
+    await expect(page.locator('.hero__media')).toHaveClass(/\bis-playing\b/, { timeout: 15_000 });
+    const film = await page.locator('.hero__video').evaluate((v) => ({ src: v.currentSrc.split('/').pop(), muted: v.muted, loop: v.loop, controls: v.controls, paused: v.paused, hidden: v.getAttribute('aria-hidden'), opacity: getComputedStyle(v).opacity }));
+    expect(film).toEqual({ src: expect.stringMatching(/^hero-moment-1280\.(webm|mp4)$/), muted: true, loop: true, controls: false, paused: false, hidden: 'true', opacity: expect.any(String) });
+    expect(media.every((f) => /^hero-moment-1280\.(webm|mp4)$/.test(f)), media.join()).toBe(true);
+    // Poster and film share one crop, so nothing jumps as it fades in
+    const fit = await page.evaluate(() => ['.hero__poster img', '.hero__video'].map((s) => { const cs = getComputedStyle(document.querySelector(s)); return `${cs.objectFit} ${cs.objectPosition}`; }));
+    expect(fit[0]).toBe(fit[1]);
+    await expect(page.locator('.hero [role="button"], [data-film-toggle], .hero video[controls]')).toHaveCount(0);
+  });
+
+  test('with motion the phone gallery swipes on its own: only the photographs move, clipped by the screen; the phone stays put; its key pauses and plays', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/');
+    await page.waitForFunction(() => !!(window.__phoneGalleries && window.__phoneGalleries[0] && window.__phoneGalleries[0].timeline()), null, { timeout: 15_000 });
+    const plan = await page.evaluate(() => { const g = window.__phoneGalleries[0]; const tl = g.timeline(); return { repeat: tl.repeat(), cycle: tl.duration(), step: g.state.step }; });
+    expect(plan.repeat, 'loops for ever').toBe(-1);
+    expect(plan.cycle, 'six holds and six swipes').toBeGreaterThan(9);
+    expect(plan.cycle).toBeLessThan(13);
+    expect(plan.step, 'a page and the dark gap after it').toBeGreaterThan(100);
+    const phone = page.locator('.phone-gallery');
+    const frame = await phone.boundingBox();
+    const toggle = page.locator('[data-phone-toggle]');
+    await expect(toggle).toBeVisible();
+    await expect(toggle).toHaveAttribute('aria-label', 'Pause the photo gallery');
+    // The first swipe: the track moves left by one page, the counter follows, the phone does not move
+    await expect(page.locator('[data-phone-count]')).toHaveText('2', { timeout: 8_000 });
+    await page.waitForFunction(() => !window.__phoneGalleries[0].state.swiping);
+    const x = await page.locator('[data-phone-track]').evaluate((t) => new DOMMatrix(getComputedStyle(t).transform).m41 / t.offsetWidth);
+    expect(x).toBeCloseTo(-plan.step / 100, 2);
+    expect(await phone.boundingBox(), 'the phone never moves').toEqual(frame);
+    expect(await page.locator('.phone-gallery__screen').evaluate((s) => getComputedStyle(s).overflow)).toBe('hidden');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), 'no sideways scroll').toBeLessThanOrEqual(0);
+    // Every photograph has loaded before the first swipe: none is ever empty
+    expect(await page.locator('.phone-gallery__img').evaluateAll((imgs) => imgs.every((i) => i.complete && i.naturalWidth > 1 && !i.src.startsWith('data:')))).toBe(true);
+    // Pause: the photograph stays; play: it carries on
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-label', 'Play the photo gallery');
+    await page.waitForFunction(() => window.__phoneGalleries[0].timeline().paused());
+    const held = await page.locator('[data-phone-count]').textContent();
+    await page.waitForTimeout(3_000);
+    await expect(page.locator('[data-phone-count]')).toHaveText(held);
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-label', 'Pause the photo gallery');
+    expect(await page.evaluate(() => window.__phoneGalleries[0].timeline().paused())).toBe(false);
+    // Leaving the page kills the timeline and every listener
+    await page.evaluate(() => window.__phoneGalleries[0].destroy());
+    expect(await page.evaluate(() => [window.__phoneGalleries[0].timeline(), window.__phoneGalleries[0].state.destroyed])).toEqual([null, true]);
+    await expect(toggle).toBeHidden();
+  });
+
+  test('a click on the phone lifts its photograph out onto the hero (GSAP Flip), and a click away flies it back into the phone', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/');
+    await page.waitForFunction(() => !!(window.__phoneGalleries && window.__phoneGalleries[0] && window.__phoneGalleries[0].timeline()), null, { timeout: 15_000 });
+    await page.waitForFunction(() => !window.__phoneGalleries[0].state.swiping);
+    const k = await page.evaluate(() => window.__phoneGalleries[0].state.index);
+    const inPhone = page.locator('.phone-gallery__slide').nth(k).locator('.phone-gallery__img');
+    const opener = page.locator('[data-phone-open]');
+    await opener.scrollIntoViewIfNeeded(); // so the click itself never scrolls the page
+    const small = await inPhone.boundingBox();
+    await expect(opener).toBeVisible();
+    await expect(opener).toHaveAttribute('aria-label', new RegExp(`^Enlarge photo ${k + 1} of 6: `));
+    await opener.click();
+    const zoom = page.locator('.pg-zoom');
+    await expect(zoom).toHaveJSProperty('open', true);
+    // In flight it starts from the phone's own box; it lands far larger, centred on the hero, and the phone's copy is out
+    await expect.poll(async () => (await zoom.locator('.pg-zoom__img').boundingBox()).width, { timeout: 3_000 }).toBeGreaterThan(small.width * 1.6);
+    await page.waitForTimeout(1_000);
+    const big = await zoom.locator('.pg-zoom__img').boundingBox();
+    const hero = await page.locator('.hero').boundingBox();
+    expect(Math.abs(big.x + big.width / 2 - (hero.x + hero.width / 2)), 'centred across the hero').toBeLessThan(4);
+    expect(big.y + big.height, 'within the hero').toBeLessThan(hero.y + hero.height);
+    expect(await inPhone.evaluate((i) => getComputedStyle(i).visibility), 'the photograph has left the phone').toBe('hidden');
+    expect(await page.evaluate(() => [window.__phoneGalleries[0].timeline().paused(), window.__phoneGalleries[0].state.zoomed, document.documentElement.classList.contains('pg-locked')]), 'the swipe waits; the page holds still').toEqual([true, true, true]);
+    await expect(zoom.locator('.pg-zoom__img')).toHaveAttribute('alt', await inPhone.getAttribute('alt'));
+    expect(await zoom.locator('.pg-zoom__img').evaluate((i) => i.currentSrc), 'its largest rendition once landed').toMatch(/memories-[a-z-]+-(549|550|552|800)\.(avif|webp)$/);
+    await expect(zoom.locator('.pg-zoom__place')).toHaveText(await page.locator('.phone-gallery__slide').nth(k).getAttribute('data-place'));
+    await expect(zoom.locator('.pg-zoom__tour')).toHaveAttribute('href', /(^|\/)tours\/[a-z-]+\/$/);
+    await expect(zoom.locator('.pg-zoom__meta')).toHaveText(new RegExp(`^Cape Town Memories · ${k + 1} / 6 · An AI-generated illustration$`));
+    await expect(zoom.locator('.pg-zoom__close')).toBeFocused();
+    // A click away (the dimmed hero, far from the photograph) puts it back, and the swipe carries on from it
+    await page.mouse.click(hero.x + 24, hero.y + hero.height - 24);
+    await expect(zoom).toHaveJSProperty('open', false, { timeout: 3_000 });
+    await expect(page.locator('html')).not.toHaveClass(/\bpg-locked\b/); // the dialog's close event has been handled
+    expect(await inPhone.evaluate((i) => getComputedStyle(i).visibility)).toBe('visible');
+    expect(await inPhone.boundingBox(), 'back in exactly the same place').toEqual(small);
+    expect(await page.evaluate(() => [window.__phoneGalleries[0].timeline().paused(), window.__phoneGalleries[0].state.zoomed, document.documentElement.classList.contains('pg-locked')])).toEqual([false, false, false]);
+    await expect(opener).toBeFocused();
+    await expect(page.locator('[data-phone-count]')).toHaveText(String(k + 1));
+    // Escape is a way back too
+    await opener.click();
+    await expect(zoom).toHaveJSProperty('open', true);
+    await page.keyboard.press('Escape');
+    await expect(zoom).toHaveJSProperty('open', false, { timeout: 3_000 });
+    await expect(page.locator('.hero a')).toHaveCount(1);
+  });
+
+  test('without motion the photograph is enlarged and put back at once, from the keyboard too, and the open dialog passes axe', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const opener = page.locator('[data-phone-open]');
+    await expect(opener).toBeVisible();
+    await opener.focus();
+    await page.keyboard.press('Enter');
+    const zoom = page.locator('.pg-zoom');
+    await expect(zoom).toHaveJSProperty('open', true);
+    expect(await zoom.locator('.pg-zoom__img').evaluate((i) => getComputedStyle(i).transform), 'nothing flies').toBe('none');
+    await expect(zoom.locator('.pg-zoom__close')).toBeFocused();
+    await expect(zoom.locator('.pg-zoom__place')).toHaveText('Table Mountain');
+    const axe = await new AxeBuilder({ page }).include('.pg-zoom').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+    expect(axe.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+    await page.keyboard.press('Enter'); // Close
+    await expect(zoom).toHaveJSProperty('open', false);
+    await expect(opener).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(zoom).toHaveJSProperty('open', true);
+    await page.keyboard.press('Escape');
+    await expect(zoom).toHaveJSProperty('open', false);
+    expect(await page.evaluate(() => window.__phoneGalleries[0].timeline()), 'still no swipe').toBeNull();
   });
 
   test('with motion, the entrance plays as one directed sequence of whole elements and settles into the approved layout', async ({ page, isMobile }) => {
@@ -352,7 +475,7 @@ test.describe('home hero', () => {
     const boxes = (p) =>
       p.evaluate(() =>
         Object.fromEntries(
-          ['.site-header--overlay .brand', '.site-header--overlay .header-cta', '.hero__title', '.hero__rule', '.hero__lead', '.hero__actions .btn-champagne', '.hero__link'].map((sel) => {
+          ['.site-header--overlay .brand', '.site-header--overlay .header-cta', '.hero__cta', '.phone-gallery'].map((sel) => {
             const r = document.querySelector(sel).getBoundingClientRect();
             return [sel, [r.x, r.y, r.width, r.height].map((n) => Math.round(n))];
           }),
@@ -363,10 +486,12 @@ test.describe('home hero', () => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveClass(/\bintro-ready\b/);
     await expect(page.locator('.intro-char, .intro-word')).toHaveCount(0); // whole elements, never letters
+    // The phone is never held back: its first photograph is there from the first paint
+    expect(await page.locator('.phone-gallery').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility])).toEqual(['1', 'visible']);
     // One master timeline, acts in the directed order, timed for the screen
     const plan = await page.evaluate(() => {
       const tl = window.__heroEntrance;
-      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.className.split(' ')[0]);
+      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero__cta') ? 'cta' : el.className.split(' ')[0]);
       return { duration: tl.duration(), timeScale: tl.timeScale(), tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), targets: t.targets().map(name) })) };
     });
     const startOf = (n) => plan.tweens.find((t) => t.targets.includes(n))?.at;
@@ -379,51 +504,50 @@ test.describe('home hero', () => {
     } else {
       expect(plan.tweens.some((t) => t.targets.some((n) => n.startsWith('title:') || n === 'bookNow')), 'hidden desktop titles and Book Now are left alone on phones').toBe(false);
     }
-    expect(startOf('hero__title')).toBeCloseTo(2, 2);
-    expect(startOf('hero__rule')).toBeCloseTo(2.45, 2);
-    expect(startOf('hero__lead')).toBeCloseTo(2.6, 2);
-    expect(startOf('btn-champagne')).toBeCloseTo(3.4, 2);
-    expect(startOf('hero__link')).toBeCloseTo(3.58, 2);
+    expect(startOf('cta')).toBeCloseTo(2.2, 2);
+    expect(startOf('hero__cta-sheen')).toBeCloseTo(2.82, 2);
+    expect(plan.tweens.some((t) => t.targets.some((n) => /phone-gallery|hero__poster|hero__video/.test(n))), 'the scene and the phone are not part of it').toBe(false);
     const seconds = plan.duration / plan.timeScale;
-    if (isMobile) expect(seconds).toBeLessThanOrEqual(3);
-    else expect(seconds).toBeGreaterThan(4.3);
-    expect(seconds).toBeLessThanOrEqual(4.6);
+    if (isMobile) expect(seconds).toBeLessThanOrEqual(2.5);
+    else expect(seconds).toBeGreaterThan(3.4);
+    expect(seconds).toBeLessThanOrEqual(3.8);
     // Nothing invisible can take focus while its entrance is pending
-    expect(await page.locator('.hero__link').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
+    expect(await page.locator('.hero__cta').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
     const states = await page.evaluate(() =>
       [...document.querySelectorAll('.hero [data-intro], .site-header--overlay [data-intro]')].map((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility]),
     );
-    expect(states.length).toBeGreaterThan(8);
+    expect(states.length).toBeGreaterThan(isMobile ? 1 : 7);
     for (const [opacity, visibility] of states) expect([opacity, visibility]).toEqual(['1', 'visible']);
     expect(await boxes(page), 'every element settles exactly where the static hero draws it').toEqual(settled);
   });
 
-  test('with reduced motion the hero keeps its still photograph, fetches no film, and nothing is split or hidden', async ({ page }) => {
+  test('with reduced motion the scene stays a still, the gallery shows its first photograph and loads no other, and nothing is hidden', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const media = [];
-    page.on('request', (r) => r.url().includes('/assets/video/') && media.push(r.url()));
+    page.on('request', (r) => /\/assets\/(video\/|img\/memories-)/.test(r.url()) && media.push(r.url().split('/').pop()));
     await page.goto('/');
-    await page.waitForTimeout(800);
-    expect(media, 'no film request').toEqual([]);
-    await expect(page.locator('video')).toHaveCount(0);
+    await page.waitForTimeout(1_200);
+    expect(media.filter((f) => !/^memories-table-mountain-/.test(f)), 'no film, and no other photograph').toEqual([]);
     await expect(page.locator('.hero__poster img')).toBeVisible();
-    await expect(page.locator('.hero h1')).toHaveText('Cape Town, your way.');
-    expect(await page.locator('.hero h1').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none']);
-    expect(await page.evaluate(() => window.__heroEntrance), 'no timeline is built under reduced motion').toBeUndefined();
+    expect(await page.locator('.hero__video').evaluate((v) => v.currentSrc)).toBe('');
+    await expect(page.locator('.hero__media')).not.toHaveClass(/\bis-playing\b/);
+    await expect(page.locator('.hero h1')).toHaveCount(1);
+    expect(await page.locator('.hero__cta').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none']);
+    // No timeline is built under reduced motion (the gallery's lift still works: it simply does not fly)
+    expect(await page.evaluate(() => [window.__heroEntrance, window.__phoneGalleries[0].timeline()]), 'no timeline under reduced motion').toEqual([undefined, null]);
+    await expect(page.locator('[data-phone-toggle]')).toBeHidden();
+    await expect(page.locator('[data-phone-count]')).toHaveText('1');
+    expect(await page.locator('[data-phone-track]').evaluate((t) => getComputedStyle(t).transform)).toBe('none');
+    expect(await page.locator('.phone-gallery__slide').first().locator('.phone-gallery__img').evaluate((i) => i.complete && i.naturalWidth > 1)).toBe(true);
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/);
   });
 
-  test('the two actions lead to the tours catalogue and to a prefilled transfer request', async ({ page }) => {
+  test('the call to action leads to the tours catalogue', async ({ page }) => {
     await page.goto('/?nomotion');
-    await page.locator('.hero__actions .btn-champagne').click();
+    await page.locator('.hero__cta').click();
     await expect(page).toHaveURL(/\/tours\/$/);
     await expect(page.locator('h1')).toHaveText('Tours & Experiences');
-    await page.goto('/?nomotion');
-    await page.locator('.hero__link').click();
-    await expect(page).toHaveURL(/\/enquire\/\?type=transfer$/);
-    await page.waitForSelector('.wizard.is-ready');
-    await expect(page.locator('h1')).toHaveText('Book Your Transfer');
   });
 
   test('a plan carried in the URL still reaches the tours page, which shows it and passes it on', async ({ page }) => {
@@ -1469,7 +1593,8 @@ const photos = (page) =>
     scrollTo(0, 0);
     await Promise.all([...document.images].map((i) => (i.complete ? null : new Promise((r) => i.addEventListener('load', r, { once: true }) || setTimeout(r, 3000)))));
     return [...document.querySelectorAll('picture img')]
-      .filter((img) => img.naturalWidth && img.getBoundingClientRect().width)
+      // A deferred photograph (the hero's phone gallery before it moves) is a placeholder pixel, not yet a photo
+      .filter((img) => img.naturalWidth > 1 && !img.currentSrc.startsWith('data:') && img.getBoundingClientRect().width)
       .map((img) => {
         const r = img.getBoundingClientRect();
         const drawn = getComputedStyle(img).objectFit === 'cover' ? Math.max(r.width, (r.height * img.naturalWidth) / img.naturalHeight) : r.width;

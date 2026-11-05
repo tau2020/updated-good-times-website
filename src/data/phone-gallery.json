@@ -1,0 +1,12 @@
+{
+  "_about": "The home hero's phone gallery (HeroPhoneGallery, src/partials/phone-gallery.mjs), adapted from the supplied gallery.json (goodtimes_phone_gallery_assets.zip, 5 Nov 2026): the same six photographs in the supplied order, each with its image slot (src/data/images.mjs, where the alt text lives), a short place caption and the Good Times tour the moment belongs to (src/data/tours.mjs). AI-generated illustrations (basis G, docs/RIGHTS_REGISTER.md).",
+  "title": "Cape Town Memories",
+  "items": [
+    { "id": "01_table_mountain_selfie", "file": "01_table_mountain_selfie.webp", "image": "memories-table-mountain", "caption": "Table Mountain", "tour": "cape-town-city-private-tour" },
+    { "id": "02_boulders_penguins", "file": "02_boulders_penguins.webp", "image": "memories-boulders", "caption": "Boulders Beach", "tour": "cape-peninsula-private-tour" },
+    { "id": "03_bo_kaap_street", "file": "03_bo_kaap_street.webp", "image": "memories-bokaap", "caption": "Bo-Kaap", "tour": "cape-town-city-private-tour" },
+    { "id": "04_beach_jump", "file": "04_beach_jump.webp", "image": "memories-camps-bay", "caption": "Camps Bay", "tour": "cape-peninsula-private-tour" },
+    { "id": "05_cape_of_good_hope", "file": "05_cape_of_good_hope.webp", "image": "memories-cape-of-good-hope", "caption": "Cape of Good Hope", "tour": "cape-peninsula-private-tour" },
+    { "id": "06_sunset_lookout", "file": "06_sunset_lookout.webp", "image": "memories-sunset", "caption": "Sunset over the city", "tour": "private-cape-town-experience" }
+  ]
+}

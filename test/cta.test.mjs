@@ -69,9 +69,9 @@ test('the signature never labels a form submission or a wizard step', () => {
 
 test('home: the hero, the four ways in, the closing actions and the concierge cards keep their routes and parameters', () => {
   const html = render('index.html');
-  assert.deepEqual([...html.matchAll(/<a class="(btn-champagne|hero__link)" href="([^"]*)" data-intro>([^<]*)<\/a>/g)].map((m) => [m[3], m[2]]), [
-    ['Explore Tours', 'tours/'],
-    ['Arrange a Transfer', 'enquire/?type=transfer'],
+  // The hero's one call to action (test/hero.test.mjs has the rest of the hero)
+  assert.deepEqual([...html.matchAll(/<a class="btn-champagne hero__cta" href="([^"]*)" data-intro>([\s\S]*?)<\/a>/g)].map((m) => [m[2].replace(/<[^>]+>/g, ''), m[1]]), [
+    ['Good Times start Here!', 'tours/'],
   ]);
   const ways = [...html.matchAll(/<h3 class="lc-way__name"><a href="([^"]*)">([^<]*)<\/a><\/h3>[\s\S]*?<p class="lc-way__go"><span>([^<]*)<\/span><\/p>/g)].map((m) => [m[2], m[3], m[1].replace(/&amp;/g, '&')]);
   assert.deepEqual(ways, [

@@ -50,12 +50,17 @@ test.describe('launch', () => {
     await expect(page.locator('[data-result="preview"]')).toContainText('this enquiry was not sent to us');
   });
 
-  test('the hero photograph is served as AVIF in both crops', async ({ request }) => {
-    for (const file of ['cape-point-headland-1600.avif', 'cape-point-headland-portrait-800.avif']) {
-      const res = await request.get(`/assets/img/${file}`);
-      expect(res.status(), file).toBe(200);
-      expect(res.headers()['content-type'], file).toMatch(/^image\/avif/);
-      expect((await res.body()).length, file).toBeGreaterThan(1000);
+  test('the hero scene is served: its held frame as AVIF, its film in byte ranges (Safari plays only 206 Partial Content)', async ({ request }) => {
+    const poster = await request.get('/assets/img/hero-moment-poster-1280.avif');
+    expect(poster.status()).toBe(200);
+    expect(poster.headers()['content-type']).toMatch(/^image\/avif/);
+    expect((await poster.body()).length).toBeGreaterThan(1000);
+    for (const [file, type] of [['hero-moment-1280.mp4', /^video\/mp4/], ['hero-moment-1280.webm', /^video\/webm/]]) {
+      const res = await request.get(`/assets/video/${file}`, { headers: { Range: 'bytes=0-1023' } });
+      expect(res.status(), file).toBe(206);
+      expect(res.headers()['content-range'], file).toMatch(/^bytes 0-1023\/\d+$/);
+      expect(res.headers()['content-type'], file).toMatch(type);
+      expect((await res.body()).length, file).toBe(1024);
     }
   });
 

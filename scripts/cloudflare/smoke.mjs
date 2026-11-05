@@ -109,12 +109,20 @@ export async function smoke({ url, env, domain = false, fetchImpl = fetch }) {
     else expect(post.status === 503, `POST {} → ${post.status}`);
     return `${body.enquiries}; POST {} → ${post.status}`;
   });
-  await check('hero photograph', async () => {
-    const res = await get('/assets/img/cape-point-headland-800.avif');
+  await check('hero scene', async () => {
+    const res = await get('/assets/img/hero-moment-poster-960.avif');
     const bytes = await res.arrayBuffer();
     expect(res.status === 200 && bytes.byteLength > 1000, `status ${res.status}, ${bytes.byteLength} bytes`);
     expect(/image\/avif/.test(res.headers.get('content-type') || ''), `content-type ${res.headers.get('content-type')}`);
     return `${bytes.byteLength} bytes, ${res.headers.get('content-type')}`;
+  });
+  // Safari plays a <video> only from 206 Partial Content (functions/assets/video)
+  await check('hero film', async () => {
+    const res = await get('/assets/video/hero-moment-1280.mp4', { headers: { Range: 'bytes=0-1023' } });
+    const bytes = await res.arrayBuffer();
+    expect(res.status === 206 && bytes.byteLength === 1024, `status ${res.status}, ${bytes.byteLength} bytes`);
+    expect(/^bytes 0-1023\/\d+$/.test(res.headers.get('content-range') || ''), `content-range ${res.headers.get('content-range')}`);
+    return `206, ${res.headers.get('content-range')}`;
   });
   await check('email logo', async () => {
     const res = await get('/assets/brand/gt-logo-reversed-email.png');

@@ -167,8 +167,10 @@ export const site = {
   },
 
   media: {
-    // No hero film: Good Times has no authorised footage yet, so the home hero is a photograph.
-    heroFilm: null,
+    // The home hero's film: the owner's supplied café scene (5 Nov 2026), held still except for the cloud over Table Mountain
+    // and the sea (src/tools/build-video.sh), a 7 s loop. One 16:9 file for every screen: portrait screens crop it in CSS.
+    // AI-generated (docs/RIGHTS_REGISTER.md, G). null keeps the still poster only.
+    heroFilm: { mp4: 'assets/video/hero-moment-1280.mp4', webm: 'assets/video/hero-moment-1280.webm' },
   },
 
   /** Primary navigation. "Transfers" keeps the /transfers/ URL. Reviews and FAQ live in the footer. */

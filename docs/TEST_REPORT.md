@@ -67,3 +67,20 @@ Screenshots taken from outside South Africa show prices converted and marked ≈
 | `npm run check` failed in a folder whose path contains a space | `fileURLToPath`, `src/tools/check-site.mjs` |
 | Four photographs showed children or people who may be under 18 | Withdrawn and replaced (`docs/RIGHTS_REGISTER.md`) |
 | Three browser tests depended on the runner's country or on reading `_headers` as a file, so they failed only on the deployed site | Tests pin a South African visitor and read the deployed CSP from the response |
+
+## Home hero: frozen moment (5 Nov 2026, local build, not deployed)
+
+The hero now shows the supplied café film held still (only the cloud over Table Mountain and the sea move), one call to action bottom left and the phone gallery bottom right (`docs/APPROVAL_REGISTER.md` S4, P5, P6). Checked on this machine; nothing was deployed.
+
+| Check | Command | Result |
+|---|---|---|
+| Build, static QA, brand guard | `npm run build`, `npm run check`, `npm run guard` | 25 pages; no problems; 1,220 files clean (the hero's new files included) |
+| Unit and integration | `npm test` | 264 / 278 passed. The 14 failures are the Pages Functions tests: workerd cannot start in this checkout (`node_modules/@cloudflare/workerd-darwin-arm64/bin` is empty, before and apart from this change; `npm ci` restores it). The smoke script's two new hero checks pass against the local server (poster as AVIF; film answers 206 with `bytes 0-1023/354756`) |
+| Browser suite: desktop (1440 × 900) and mobile (Pixel 7), with axe | `npm run test:e2e` | **300 passed, 0 failed**, 34 skipped (with the lift's tests) |
+| Axe on the moving hero (gallery playing, its key shown) | ad hoc, `@axe-core/playwright` on `.hero` | 0 violations; the key is 26 × 26 px (desktop), 24 × 24 px (mobile), reached by Tab after the call to action, Space pauses |
+| No face covered, 18 viewports from 320 × 568 to 2560 × 1440, portrait and landscape | `node qa/hero.mjs` (and `--motion`) | Every face clear of the call to action and the phone; the tightest gap is 15 px (1280 × 720 with the staging bar; 30 px without it); no sideways scroll; the phone always inside the screen |
+| The people held still | ffmpeg: every frame of the finished film against its first | Outside the cloud and the sea, 99.3% of pixels never change and the rest by at most 3 levels, but for 51 single-frame encoder blips (at most 15 levels); the loop seam differs by 0.25 levels on average |
+| The lift: a click on the phone's photograph (GSAP Flip) | Playwright, desktop and mobile, with and without motion | The photograph flies from its box in the phone (187 × 157 px at 1440 × 900) to one centred on the hero (670 × 563 px), tilting on the way, and swaps to its largest rendition; the swipe pauses, the page holds still, focus moves to Close. A click away, Escape or Close flies it back onto the same box; the swipe resumes from that photograph (clicked mid-swipe three times: each time the photograph filling the screen was lifted and the track came back exactly to it). Without motion it opens and closes at once; axe finds nothing in the open dialog |
+| Swipe motion and the phone frame | Playwright, track transform sampled through a swipe | 0 → −67 → −144 → −171 → −187 → −190 → −188 → −187 px (a 1.6% glide past the edge, then the settle); the phone's box identical throughout; every photograph decoded before the first swipe |
+
+Screenshots (static and with motion) and short recordings of the hero (`hero-1440x900.mp4`, `hero-390x844.mp4`) and of the lift (`hero-lift-1440x900.mp4`, `hero-lift-390x844.mp4`): `docs/qa/hero/`, with `report.json` and `report-motion.json`.

@@ -12,8 +12,9 @@ Being in Drive does not, on its own, make a photograph usable. Each one below ha
 | **W** | Published by Good Times on goodtimesincapetown.co.za (Drive › media-library › originals › other › website-cdn) | Company-owned website photographs | Guest consent, as for T (P1) |
 | **U** | A goodtimesincapetown.co.za photograph enlarged for the web by the owner (Drive › Upscaled Images) | As W; the enlargement was supplied by the owner | Guest consent (P1) |
 | **S** | Supplied by the owner in Drive › Website Images | Supplied for the website by the owner; no further record | Provenance (who took it) and guest consent (P2) |
+| **G** | AI-generated, supplied by the owner on 5 Nov 2026 for the home hero (below) | The owner's direction for the home hero; illustrations of five fictional friends, not photographs, never presented as guests or as Good Times photographs, and credited as AI-generated (privacy/#credits) | Approval of AI-generated people on the home page, and their replacement with real client photographs when there are some (P5) |
 
-Not used, by rule: guest photos attached to Tripadvisor reviews (256) and the listing gallery's traveller photos (13), which are the travellers' own (the rights log marks them "permission required"); reviewer profile photos; stock or third-party images; AI-generated scenes; and any photograph of a child or of anyone who may be under 18. Drive is never the image host: every photograph is served from the site's own renditions (`src/assets/img/`, AVIF and WebP, never upscaled by the pipeline).
+Not used, by rule: guest photos attached to Tripadvisor reviews (256) and the listing gallery's traveller photos (13), which are the travellers' own (the rights log marks them "permission required"); reviewer profile photos; stock or third-party images; AI-generated scenes anywhere except the home hero (G, the owner's decision of 5 Nov 2026); and any photograph of a child or of anyone who may be under 18. Drive is never the image host: every photograph is served from the site's own renditions (`src/assets/img/`, AVIF and WebP, never upscaled by the pipeline).
 
 ## Photographs in use (50)
 
@@ -73,6 +74,23 @@ People: **none** = no person; **far** = people too small or turned away to ident
 | cango-caves | Website Images, file 276 | S | guests | In use, provenance and consent P2 |
 
 The Cape Agulhas Private Tour and Sky Diving have no photograph that meets these rules, so their pages show the approved mountain-trail artwork from the logo pack instead (P3).
+
+## The home hero (AI-generated, G)
+
+Supplied by the owner on 5 Nov 2026 with the "frozen moment" brief, which names the film and the gallery package (a Drive folder was shared with it; the files used are the ones the brief names), at the owner's direction. They show five fictional friends, the same five throughout; no real person is depicted or named. Used in the home hero only (`test/hero.test.mjs` proves it), and the photo credits say they are AI-generated illustrations. The supplied gallery package's own note says to "validate that the represented excursions match the tour operator's published packages and replace any synthetic picture with licensed real client imagery when available" (P5).
+
+| Item | Supplied file | Where | Status |
+|---|---|---|---|
+| Hero film, the café scene held still | `gemini_generated_video_db7db861.mp4` (1280×720, 8 s; made from the approved still "Coastal Friends Sharing a Laugh", which it matches frame for frame) | `src/assets/video/hero-moment-1280.{mp4,webm}`, built by `npm run video` (people held on the first frame, only the cloud and the sea move) | In use, P5 |
+| Hero poster (the film's held frame) | as above | `src/assets/img/hero-moment-poster-*` (`generated` in `src/data/images.mjs`) | In use, P5 |
+| memories-table-mountain | `goodtimes_phone_gallery_assets.zip` › `01_table_mountain_selfie.webp` | Phone gallery 1 · Cape Town City Private Tour (Table Mountain from the Signal Hill stop, the Noon Day Gun) | In use, P5 |
+| memories-boulders | › `02_boulders_penguins.webp` | Phone gallery 2 · Cape Peninsula Private Tour (Boulders Beach) | In use, P5 and P6 (a penguin within arm's reach) |
+| memories-bokaap | › `03_bo_kaap_street.webp` | Phone gallery 3 · Cape Town City Private Tour (the Bo-Kaap) | In use, P5 |
+| memories-camps-bay | › `04_beach_jump.webp` | Phone gallery 4 · Cape Peninsula Private Tour (the route passes Camps Bay; a beach stop is on request, P6) | In use, P5 and P6 |
+| memories-cape-of-good-hope | › `05_cape_of_good_hope.webp` | Phone gallery 5 · Cape Peninsula Private Tour (the Cape of Good Hope sign) | In use, P5 |
+| memories-sunset | › `06_sunset_lookout.webp` | Phone gallery 6 · Private Cape Town Experience (no itinerary lists a sunset lookout; a tailored day can, P6) | In use, P5 and P6 |
+
+The package's 9:16 `*_phone.webp` versions are not used: their sharp picture fills only 61% of the screen's width. The phone shows each original across the full width instead, over a soft wash of its own colours (`ambient` in `src/data/images.mjs`).
 
 ## Withdrawn
 

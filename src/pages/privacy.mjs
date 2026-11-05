@@ -105,7 +105,7 @@ export const page = {
     ${mail ? `<p>Questions about this notice or your data? Contact us at ${mail}.</p>` : ''}
 
     <h2 id="credits">Photo credits</h2>
-    <p>Every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing. One is edited for privacy (a guest’s name on a welcome sign is blurred). The logo is Good Times’ own approved artwork.</p>
+    <p>Every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing. One is edited for privacy (a guest’s name on a welcome sign is blurred). The exceptions are not photographs: the café scene at the top of the home page and the photographs in its phone are AI-generated illustrations of five friends, not pictures of our guests. The logo is Good Times’ own approved artwork.</p>
     <details>
       <summary>Photo list and origins</summary>
       <ul class="small">

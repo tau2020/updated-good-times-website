@@ -276,6 +276,15 @@
     "width": 1000,
     "height": 800
   },
+  "hero-moment-poster": {
+    "widths": [
+      640,
+      960,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
   "hout-bay-flag-frame": {
     "widths": [
       480,
@@ -344,6 +353,60 @@
     ],
     "width": 2000,
     "height": 1600
+  },
+  "memories-bokaap": {
+    "widths": [
+      480,
+      550
+    ],
+    "width": 550,
+    "height": 461,
+    "ambient": true
+  },
+  "memories-boulders": {
+    "widths": [
+      480,
+      549
+    ],
+    "width": 549,
+    "height": 461,
+    "ambient": true
+  },
+  "memories-camps-bay": {
+    "widths": [
+      480,
+      549
+    ],
+    "width": 549,
+    "height": 461,
+    "ambient": true
+  },
+  "memories-cape-of-good-hope": {
+    "widths": [
+      480,
+      800
+    ],
+    "width": 828,
+    "height": 457,
+    "ambient": true
+  },
+  "memories-sunset": {
+    "widths": [
+      480,
+      800
+    ],
+    "width": 828,
+    "height": 457,
+    "ambient": true
+  },
+  "memories-table-mountain": {
+    "widths": [
+      480,
+      552
+    ],
+    "width": 552,
+    "height": 462,
+    "ambient": true
   },
   "muizenberg-huts": {
     "widths": [

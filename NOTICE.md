@@ -18,6 +18,7 @@ own history, configuration and infrastructure.
 |---|---|---|
 | Approved Logo Pack v2 (logos, symbol, favicons, social avatar), used as supplied | `src/assets/brand/` | Good Times' own; supplied by the owner |
 | Photographs | `src/assets/img/` (renditions only) | Good Times' own, from the Drive folder supplied by the owner; each one's status in `docs/RIGHTS_REGISTER.md` |
+| The home hero's café film and the pictures in its phone gallery | `src/assets/video/`, `src/assets/img/hero-moment-poster-*`, `src/assets/img/memories-*` | AI-generated, supplied by the owner on 5 Nov 2026 for the home hero only; credited as such on the site (`docs/RIGHTS_REGISTER.md`, basis G) |
 | Business facts, tours, prices, terms | `src/data/`, `src/pages/` | From goodtimesincapetown.co.za and Tripadvisor, read on 5 Nov 2026, with sources in the data files; open points in `docs/APPROVAL_REGISTER.md` |
 
 ## Third-party software and fonts

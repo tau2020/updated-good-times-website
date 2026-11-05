@@ -1,0 +1,505 @@
+/* ==========================================================================
+   HeroPhoneGallery (partials/phone-gallery.mjs, assets/js/phone-gallery.js)
+   An enlarged view of the phone the friends are laughing at: a modern phone, its
+   photo viewer "Cape Town Memories" showing their days out. Sized by one custom
+   property, --pw (the phone's width), set by whoever places it (styles.css › Home
+   hero); 200 px when nothing does. Everything inside is in em of a type size taken
+   from that width, so the phone scales as one object.
+   Inside the screen, each slide is a landscape photograph across the full width
+   over a soft wash of its own colours (the photo viewer's look); the status bar,
+   the title bar and the dots stay put above it. Only the track moves (a transform,
+   assets/js/phone-gallery.js), clipped by the screen's rounded corners; the phone
+   itself never moves. No notifications, no camera controls, no oversized keys.
+   ========================================================================== */
+.phone-gallery {
+  --pg-w: var(--pw, 200px);
+  --pg-bezel: calc(var(--pg-w) * 0.036);
+  --pg-radius: calc(var(--pg-w) * 0.165);
+  position: relative;
+  width: var(--pg-w);
+  aspect-ratio: 1 / 2.06;
+  font-family: var(--font-body);
+  font-size: max(5.5px, calc(var(--pg-w) * 0.05)); /* 10 px on a 200 px phone */
+  line-height: 1.2;
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+}
+.phone-gallery__device {
+  position: absolute;
+  inset: 0;
+  padding: var(--pg-bezel);
+  border-radius: var(--pg-radius);
+  /* A dark titanium band: lighter where the light catches its edge, near black along the bezel */
+  background: linear-gradient(150deg, #4a5058 0%, #1d2126 16%, #0b0d10 46%, #15181c 78%, #3a4047 100%);
+  box-shadow:
+    inset 0 0 0 calc(var(--pg-w) * 0.006) rgba(255, 255, 255, 0.14),
+    inset 0 0 0 calc(var(--pg-w) * 0.016) #0a0c0e,
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 10px 22px -6px rgba(0, 0, 0, 0.5),
+    0 30px 60px -18px rgba(3, 12, 20, 0.62);
+}
+/* The keys: slim, dark and flush, the action key and volume on the left, the side key on the right */
+.phone-gallery__key {
+  position: absolute;
+  width: calc(var(--pg-w) * 0.013);
+  border-radius: calc(var(--pg-w) * 0.01);
+  background: linear-gradient(90deg, #2c3137, #4a5058);
+}
+.phone-gallery__key--action {
+  left: calc(var(--pg-w) * -0.011);
+  top: 17%;
+  height: 5%;
+}
+.phone-gallery__key--up {
+  left: calc(var(--pg-w) * -0.011);
+  top: 25%;
+  height: 8.5%;
+}
+.phone-gallery__key--down {
+  left: calc(var(--pg-w) * -0.011);
+  top: 35.5%;
+  height: 8.5%;
+}
+.phone-gallery__key--side {
+  right: calc(var(--pg-w) * -0.011);
+  top: 28%;
+  height: 12%;
+  background: linear-gradient(270deg, #2c3137, #4a5058);
+}
+.phone-gallery__screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--pg-radius) - var(--pg-bezel));
+  background: #07090c;
+  isolation: isolate;
+  /* Keeps the rounded clip on the moving track in Safari (a composited child escapes overflow otherwise) */
+  transform: translateZ(0);
+}
+/* The glass: a faint reflection across the top left, and the shades that keep the bars legible */
+.phone-gallery__screen::before,
+.phone-gallery__screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.phone-gallery__screen::before {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.18) 13%, rgba(0, 0, 0, 0) 22%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.14) 12%, rgba(0, 0, 0, 0) 20%);
+}
+.phone-gallery__screen::after {
+  z-index: 4;
+  background: linear-gradient(128deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.03) 30%, rgba(255, 255, 255, 0) 31%);
+}
+.phone-gallery__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+/* The photo viewer's pages, with a dark gap between them as a real one has (the script measures the step) */
+.phone-gallery__track {
+  display: flex;
+  gap: 4%;
+  height: 100%;
+  will-change: transform;
+}
+.phone-gallery__slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #090c10;
+}
+/* The photograph's own colours from a tiny blurred copy (images.mjs › ambient), stretched over the page: above the
+   photograph glows its sky, below it its foreground, as a phone's photo viewer extends a picture */
+.phone-gallery__wash {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: fill;
+  opacity: 0.78;
+}
+.phone-gallery__photo {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  transform: translateY(-52%);
+}
+.phone-gallery__picture,
+.phone-gallery__img {
+  display: block;
+  width: 100%;
+}
+.phone-gallery__img {
+  height: auto;
+  box-shadow: 0 0.5em 1.4em rgba(0, 0, 0, 0.38);
+}
+.phone-gallery__place {
+  position: absolute;
+  top: calc(100% + 0.75em);
+  left: 0.95em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: max(6px, 0.95em);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+.phone-gallery__pin {
+  width: 0.72em;
+  height: auto;
+  flex: none;
+  color: #ff5a4f;
+}
+/* Status bar: the time, the camera's island, signal, Wi-Fi and battery */
+.phone-gallery__status {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.9em;
+  padding: 0 1.55em 0 1.85em;
+  font-size: 0.92em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.phone-gallery__clock {
+  font-variant-numeric: tabular-nums;
+}
+.phone-gallery__island {
+  position: absolute;
+  top: 0.62em;
+  left: 50%;
+  width: 32%;
+  height: 1.68em;
+  border-radius: 999px;
+  background: #000;
+  transform: translateX(-50%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+/* The lens, a faint glint inside the island */
+.phone-gallery__island::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 13%;
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2d3f63 0%, #101828 55%, #05070b 100%);
+  transform: translateY(-50%);
+}
+.phone-gallery__signals {
+  width: 4.2em;
+  height: auto;
+}
+/* Title bar: the album's name and where you are in it */
+.phone-gallery__bar {
+  position: absolute;
+  top: 2.9em;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6em;
+  padding: 0.35em 1.05em 0;
+}
+.phone-gallery__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: max(7px, 1.2em);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+.phone-gallery__count {
+  margin: 0;
+  font-size: max(6px, 0.86em);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.78);
+}
+/* Foot: the progress dots, the play/pause key and the home indicator */
+.phone-gallery__foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.55em;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: max(24px, 2.6em);
+}
+.phone-gallery__dots {
+  display: flex;
+  gap: 0.48em;
+}
+.phone-gallery__dot {
+  width: 0.48em;
+  height: 0.48em;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.42);
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.phone-gallery__dot.is-active {
+  background: #fff;
+  transform: scale(1.4);
+}
+.phone-gallery__toggle {
+  position: absolute;
+  right: 0.8em;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: max(24px, 2.6em);
+  height: max(24px, 2.6em);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(10, 14, 18, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  color: #fff;
+  cursor: pointer;
+  transform: translateY(-50%);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background-color var(--dur, 0.2s) ease;
+}
+.phone-gallery__toggle[hidden] {
+  display: none;
+}
+.phone-gallery__toggle:hover {
+  background: rgba(10, 14, 18, 0.7);
+}
+.phone-gallery__toggle:focus-visible {
+  outline: 2px solid var(--champagne, #6fed8f);
+  outline-offset: 1px;
+}
+.phone-gallery__icon {
+  width: 58%;
+  height: 58%;
+}
+.phone-gallery__icon--play,
+.phone-gallery__toggle.is-paused .phone-gallery__icon--pause {
+  display: none;
+}
+.phone-gallery__toggle.is-paused .phone-gallery__icon--play {
+  display: block;
+}
+.phone-gallery__home {
+  position: absolute;
+  left: 50%;
+  bottom: 0.6em;
+  z-index: 3;
+  width: 34%;
+  height: max(2px, 0.36em);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateX(-50%);
+}
+/* Enlarge: the photo area of the screen, between the title bar and the dots, opens the photograph showing
+   (phone-gallery.js). Invisible but for the zoom-in pointer and, under the pointer or keyboard focus, a small
+   expand mark in the photograph's corner. Hidden until the script that runs it is there. */
+.phone-gallery__open {
+  position: absolute;
+  top: 4.9em;
+  bottom: 4.6em;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 0;
+  border: 0;
+  border-radius: 0.6em;
+  background: transparent;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+.phone-gallery__open[hidden] {
+  display: none;
+}
+.phone-gallery__open::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0.7em;
+  width: max(18px, 2.2em);
+  height: max(18px, 2.2em);
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9.5 3.5h3v3M6.5 12.5h-3v-3M12.5 3.5 9 7M3.5 12.5 7 9'/%3E%3C/svg%3E") center / 58% no-repeat,
+    rgba(10, 14, 18, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  opacity: 0;
+  transform: translateY(-50%) scale(0.85);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .phone-gallery__open:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+.phone-gallery__open:focus-visible {
+  outline: 2px solid var(--champagne, #6fed8f);
+  outline-offset: -2px;
+}
+.phone-gallery__open:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+@media (forced-colors: active) {
+  .phone-gallery__device {
+    border: 2px solid CanvasText;
+  }
+  .phone-gallery__toggle {
+    border: 1px solid ButtonText;
+  }
+}
+
+/* The lifted photograph (phone-gallery.js): a full-screen modal <dialog> whose dimmed ground is the hero
+   behind it; the photograph lands centred on the hero in view, rounded, with its place, its tour and its
+   credit on a dark panel beneath, and a close button on its corner. A click anywhere puts it back. */
+html.pg-locked {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+.pg-zoom {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(4, 12, 20, 0.72);
+  color: #fff;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  cursor: zoom-out;
+}
+.pg-zoom::backdrop {
+  background: transparent;
+}
+.pg-zoom[open] {
+  display: block;
+}
+.pg-zoom__figure {
+  position: absolute;
+  margin: 0;
+}
+.pg-zoom__picture,
+.pg-zoom__img {
+  display: block;
+  width: 100%;
+}
+.pg-zoom__img {
+  height: auto;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 18px 40px -12px rgba(0, 0, 0, 0.6),
+    0 40px 90px -30px rgba(0, 0, 0, 0.7);
+  transform-origin: 50% 50%;
+}
+.pg-zoom__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.85rem;
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.95rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(6, 16, 26, 0.88);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.35;
+  cursor: auto;
+}
+.pg-zoom__place {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.pg-zoom__tour {
+  color: var(--champagne, #6fed8f);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+.pg-zoom__tour:hover {
+  color: #fff;
+}
+.pg-zoom__tour:focus-visible {
+  outline: 2px solid var(--champagne, #6fed8f);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.pg-zoom__tour[hidden] {
+  display: none;
+}
+.pg-zoom__meta {
+  flex-basis: 100%;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.74);
+}
+.pg-zoom__close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(8, 16, 24, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34), 0 6px 16px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  cursor: pointer;
+}
+.pg-zoom__close svg {
+  width: 16px;
+  height: 16px;
+}
+.pg-zoom__close:hover {
+  background: rgba(16, 46, 66, 0.98);
+}
+.pg-zoom__close:focus-visible {
+  outline: 2px solid var(--champagne, #6fed8f);
+  outline-offset: 2px;
+}
+/* Narrow screens: the photograph spans the width, so the close button sits inside its corner */
+@media (max-width: 34em) {
+  .pg-zoom__close {
+    top: 8px;
+    right: 8px;
+  }
+}
+@media (forced-colors: active) {
+  .pg-zoom__close {
+    border: 1px solid ButtonText;
+  }
+}

@@ -13,11 +13,11 @@ src/
   assets/            css (tokens.css, styles.css, buttons.css, enquiry.css, living-cape*.css, media.css), js, fonts, brand (the approved logo pack), img (generated renditions)
   tools/             image pipeline, static QA, brand guard, local server
 lib/                 enquiry system (validation, storage, email, availability, dashboard), host-agnostic
-functions/           Cloudflare Pages Functions: /api/* (the enquiry API), /admin/* (the bookings dashboard), /assets/video/* (byte ranges; no film is shipped)
+functions/           Cloudflare Pages Functions: /api/* (the enquiry API), /admin/* (the bookings dashboard), /assets/video/* (byte ranges, for the home hero's film)
 api/                 the same API as Vercel functions (not the deployment host)
 scripts/cloudflare/  the Pages project as code (project.mjs), setup.mjs, build.mjs, smoke.mjs, env.mjs, target.mjs, local-pages.mjs
 test/                node:test unit and integration tests (incl. the Functions in workerd); test/e2e = Playwright browser tests
-qa/                  responsive screenshot matrix
+qa/                  responsive screenshot matrix; the home hero's face-clearance check (hero.mjs)
 docs/                approval register, rights register, conversion report, test report, residue audit
 ```
 
@@ -37,6 +37,7 @@ npm run test:e2e          # browser tests (Playwright + axe), builds and serves 
 node scripts/cloudflare/smoke.mjs <url> --env preview|production [--domain]   # check a deployed site from outside
 node scripts/cloudflare/setup.mjs [check|pages|domain|email|resend] [--apply]  # the Cloudflare and Resend set-up (read-only by default)
 npm run qa:screens        # screenshot matrix → docs/qa/screens (server must be running on :8090)
+node qa/hero.mjs [--motion] [--video]   # the home hero at 18 sizes: screenshots, and proof nothing covers a face (server on :8090)
 ```
 
 ## Build switches
@@ -61,6 +62,7 @@ npm run qa:screens        # screenshot matrix → docs/qa/screens (server must b
 | Reviews (Tripadvisor metadata and our own summaries; no reviewer's words are copied). Each review's `avatar` names its reviewer's profile photo, used once the file is in `src/assets/img/reviewers/` (square, 168 px or larger); until then the cards draw an illustrated avatar or initials | `src/data/reviews.mjs`, `src/partials/reviewer-photo.mjs` |
 | FAQ (each answer with its source) | `src/data/faq.mjs` |
 | Image slots, alt text, focal points and origins | `src/data/images.mjs`, gallery captions in `src/data/photo-captions.mjs` |
+| The home hero: the scene, the one call to action, the phone gallery ("Cape Town Memories": order, captions, the tour each picture belongs to) | `src/pages/index.mjs`, `src/data/phone-gallery.json`; the component is `src/partials/phone-gallery.mjs`, `src/assets/css/phone-gallery.css`, `src/assets/js/phone-gallery.js`; where the faces are, `src/data/hero-scene.mjs` |
 | Home page story below the hero | `src/pages/index.mjs` |
 | Design tokens (the Good Times palette and type scale) | `src/assets/css/tokens.css` |
 | Display currencies: base ZAR; the country → currency map and symbols (`currency-core.js`, shared with the API); the rate source (`lib/currency/rates.mjs`, `EXCHANGE_RATES_URL`, `off` shows ZAR everywhere) | `src/assets/js/currency-core.js` |
@@ -77,7 +79,15 @@ Photographs come from the Good Times Google Drive folder supplied by the owner a
 npm run images            # AVIF + WebP renditions (never upscaled) + src/data/images.generated.json
 ```
 
-`npm run images` needs macOS `sips`, `cwebp` and `avifenc`. The processed renditions in `src/assets/img/` are committed and served by the site itself: Drive is never used as an image host. Every photograph's origin, consent position and status is in `docs/RIGHTS_REGISTER.md`; a new photograph is added there before it is used. Photographs of children, identifiable travellers without recorded consent, and stock or third-party images are not used.
+`npm run images` needs macOS `sips`, `cwebp` and `avifenc` (and `ffmpeg` for the phone gallery's colour washes). The processed renditions in `src/assets/img/` are committed and served by the site itself: Drive is never used as an image host. Every photograph's origin, consent position and status is in `docs/RIGHTS_REGISTER.md`; a new photograph is added there before it is used. Photographs of children, identifiable travellers without recorded consent, and stock or third-party images are not used.
+
+The home hero's film is the owner's supplied café scene (`media-src/video/hero-moment-src.mp4`, git-ignored):
+
+```bash
+npm run video             # freeze the people, keep the cloud and the sea moving, loop, encode, posters (needs ffmpeg, cwebp, avifenc)
+```
+
+It holds every frame on the first one except inside a feathered mask (`src/tools/hero-moment-mask.mjs`) around the cloud over Table Mountain and the sea, kept clear of every face, then crossfades the loop and encodes H.264 and VP9 with one keyframe per loop (`src/assets/video/`, about 350 KB and 210 KB). The scene and the six pictures in the hero's phone are AI-generated, supplied by the owner for the home hero only (basis G in `docs/RIGHTS_REGISTER.md`, approval P5).
 
 The logo files in `src/assets/brand/` are the approved Good Times Logo Pack v2, used as supplied (no redraws).
 
