@@ -1,6 +1,6 @@
 # Good Times in Cape Town: website
 
-Marketing site and enquiry system for **Good Times in Cape Town**, a private tour company in Cape Town (since 2014). A zero-dependency Node static generator, self-hosted fonts (Plus Jakarta Sans and Inter), an AVIF/WebP image pipeline, and a two-path booking-request system (tour enquiry and airport transfer request).
+Marketing site and enquiry system for **Good Times in Cape Town**, a private tour company in Cape Town (since 2014). A zero-dependency Node static generator, self-hosted fonts (Bricolage Grotesque, DM Sans and Caveat: `design/font-design.md`), an AVIF/WebP image pipeline, and a two-path booking-request system (tour enquiry and airport transfer request).
 
 > **Status: staging only.** The site deploys to a separate Cloudflare Pages project, `good-times-in-cape-town`, at <https://staging.good-times-in-cape-town.pages.dev>. It is `noindex`, shows a preview banner, and the enquiry form validates and reviews but sends nothing (`ENQUIRY_MODE=preview`). The current website at goodtimesincapetown.co.za is untouched: no domain is attached and no DNS has changed. A production release needs the owner's approval (`docs/APPROVAL_REGISTER.md`).
 
@@ -10,7 +10,7 @@ src/
   data/              all content and business facts, with sources and verification flags
   pages/             one module per route (home, tours, packages, transfers, destinations, about, reviews, contact, faq, enquire, privacy, terms, 404)
   partials/          layout shell, UI helpers, cards, media system
-  assets/            css (tokens.css, styles.css, buttons.css, enquiry.css, living-cape*.css, media.css), js, fonts, brand (the approved logo pack), img (generated renditions)
+  assets/            css (tokens.css, styles.css, buttons.css, enquiry.css, living-cape*.css, media.css), js, fonts, brand (the approved logo pack), img (generated renditions; credentials/ holds the CTGA logo, shown only once verified)
   tools/             image pipeline, static QA, brand guard, local server
 lib/                 enquiry system (validation, storage, email, availability, dashboard), host-agnostic
 functions/           Cloudflare Pages Functions: /api/* (the enquiry API), /admin/* (the bookings dashboard), /assets/video/* (byte ranges, for the home hero's film)
@@ -76,9 +76,9 @@ node qa/layout-compare.mjs --before=<url> --after=<url> --out=<file>   # layout 
 | The home hero: the scene, the one call to action, the phone gallery ("Cape Town Memories": order, captions, the tour each picture belongs to) | `src/pages/index.mjs`, `src/data/phone-gallery.json`; the component is `src/partials/phone-gallery.mjs`, `src/assets/css/phone-gallery.css`, `src/assets/js/phone-gallery.js`; where the faces are, `src/data/hero-scene.mjs` |
 | The brand aircraft (the logo's airliner flies in and lands as the "i" of "in") and the sand journey after the hero (footprints, then the sweep onto the owner's destination film, a woman at the water's edge at the end of the same trail, playing over its own first frame, and the Cape Peninsula tour) | `src/partials/aircraft.mjs`, `src/assets/js/brand-plane.js`, `src/partials/sand-journey.mjs`, `src/assets/js/sand-journey.js`, `src/assets/js/motion/sand/` (the foot, the scene, the shaders), `src/assets/css/motion.css`; reports and evidence in `docs/motion/` |
 | Home page story below the hero | `src/pages/index.mjs` |
-| Design tokens (the Good Times palette and type scale) | `src/assets/css/tokens.css` |
+| Design tokens (the Good Times palette, the leaf-green action colours and the type scale) | `src/assets/css/tokens.css`; the rules in `design/font-design.md` and `design/button-design.md` |
 | Display currencies: base ZAR; the country → currency map and symbols (`currency-core.js`, shared with the API); the rate source (`lib/currency/rates.mjs`, `EXCHANGE_RATES_URL`, `off` shows ZAR everywhere) | `src/assets/js/currency-core.js` |
-| Buttons (primary, secondary, tertiary, utility, danger) and the `button()`/`coinButton()` helpers | `src/assets/css/buttons.css`, `src/partials/ui.mjs` |
+| Buttons (the leaf-green pills: primary, secondary, outline, on-image, tertiary, utility, danger) and the `button()`/`coinButton()` helpers | `src/assets/css/buttons.css`, `src/partials/ui.mjs`, `design/button-design.md` |
 | Booking rules (vehicles, notice, pickup hours, holds) | `BOOKING_RULES`, `src/assets/js/enquiry-schema.js` (working defaults until Good Times confirms them) |
 
 Only verified facts are rendered. To publish the WhatsApp link, for example, set `verified: true` on `site.contact.whatsapp` once Good Times confirms the number.
@@ -160,3 +160,6 @@ The build writes `site/_headers`: the Content-Security-Policy with the inline sc
 - `docs/TEST_REPORT.md`: build, static QA, unit, browser and deployment checks
 - `docs/RESIDUE_AUDIT.md`: the final check that no identifier of the template's earlier operator remains
 - `NOTICE.md`: framework provenance and third-party licences
+- `design/font-design.md`, `design/button-design.md`: the type system and the leaf-green button system ("Good Times, Naturally", 6 Nov 2026)
+- `content/copy-audit.md`, `content/reviews-source-audit.md`: every copy change with its reason, and the reviews' sources, mapping and permissions
+- `qa/surgical-change-report.md`: the "Good Times, Naturally" change log, the checks run on the Cloudflare preview, before/after evidence and known limitations

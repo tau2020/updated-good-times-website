@@ -88,6 +88,7 @@ Each was checked one by one for what it shows (several file names did not match:
 | vineyard-couple | Drive › `good-times-cape-town-050.jpg` (ID `1B4CCn93p0OyPrImy3RukbJnpTTQNQOTY`) | S | guests | In use, provenance and consent P2 |
 | guide-selfie-peninsula | Drive › `replace-goats-on-home-page-Cape Peninsula Private Tour - traveller 106.jpg` (ID `1M3mT3uMm2adGjIXdo0g8HqIn_zwtfRTe`) | O | guests, staff | In use, photographer permission and consent P7 |
 | hout-bay-viewpoint-couple | Drive › `good-times-cape-town-022.jpg` (ID `1u7OdbUitlbeE2YWxouEeRP6LkR3wTlMH`) | S | guests | In use, provenance and consent P2 |
+| chapmans-lookout-travellers | Drive › `Cape Peninsula Private Tour - traveller 077.jpg` (ID `1emxrC_RVorRLgK_0OsCvCfv2ctSBSWXu`, SHA-256 `ee94541f28363c51caa61c69b88f337ac56ea6790025908693ecddd08c3f6cd1`, 2268 × 4032), supplied by the owner on 6 Nov 2026 for the home page's Cape Peninsula story ("Good Times, Naturally", `qa/surgical-change-report.md`) | O | guests | In use (home, one placement, shown whole), photographer permission and consent P7 |
 | chapmans-peak-wall-trio | Drive › `Cape Peninsula Private Tour - operator 10.jpg` (ID `1ZKXvzm42GNcqvid-AjGscFZaQTuWuyia`) | T | guests | In use, consent P1 |
 | boulders-shadows | Drive › `second-scene-after-hero-section.jpg` (ID `14MGXr1Ed6rqlbVtKtlcehjNtsW7fnpAh`) | S | far (shadows only) | In use, provenance P2 |
 | cape-point-ostrich | Drive › `Good Times profile page - 12.jpg` (ID `1iRfHIV-l0__0TQxfqOAz8HRwNCggTP3u`) | T | none | In use |
@@ -200,14 +201,21 @@ The rights log also excludes the Langa files with identifiable children (GT-A-03
 | The propeller aircraft (preview builds only, the owner's alternative) | The owner's motion package (5 Nov 2026): `src/assets/motion/gtict-real-aircraft.svg`, an original vector, recoloured to the logo's greens | Supplied by the owner; not a claim about any aircraft Good Times operates (M1) |
 | The sand, the footprints and their grains | Procedural, drawn by this repository's own WebGL2 code (`src/assets/js/motion/sand/`); no texture or photograph of sand is used | Original |
 
+## Credentials
+
+| Item | Source | Status |
+|---|---|---|
+| Cape Tourist Guides Association logo (`src/assets/img/credentials/ctga-logo.svg`) | The association's own vector logo, `tourguides.capetown/images/logo.svg`, read 6 Nov 2026, unaltered (SHA-256 `632f01f5a9558301b7339981df1f94b61f4e3ad2044c6e82c1be6a7ebe11d705`). CTGA offers its logo to associate members "to place on your website advertising that you only employ/promote legal/registered guides" | Shown in preview builds only, marked "Preview only", until the membership is confirmed (T1 in `docs/APPROVAL_REGISTER.md`). The owner's screenshot of the logo was not used (not attached to the brief, and a screenshot is not a brand file) |
+
 ## Reviews and ratings
 
 | Item | Source | Status |
 |---|---|---|
 | Rating 5.0 and 264 reviews | Tripadvisor listing, read 5 Nov 2026 (`site.tripadvisor`) | Public figures, dated on the page; recheck before release (R1) |
 | Rating breakdown (259 / 4 / 0 / 0 / 0) | Tripadvisor, read 3 Nov 2026 | As above |
-| Ten review cards | Tripadvisor reviews, each linked | Our own short summaries; no reviewer's words are copied. Names as shown publicly on Tripadvisor |
+| Ten review cards | Tripadvisor reviews, each linked | Our own short summaries, labelled "The review in short, in our words"; no reviewer's words are copied. Names, places, ratings and months as shown publicly on Tripadvisor (`content/reviews-source-audit.md`) |
 | Reviewer profile photos | Each reviewer's own Tripadvisor profile photo, to be supplied by the owner as a file (`src/assets/img/reviewers/`) | Shown at the owner's request of 5 Nov 2026, once supplied; none supplied yet. Personal images of private individuals, used without the reviewers' recorded consent (the Drive research notes advised against them): `docs/APPROVAL_REGISTER.md` R2 |
+| Reviewer headphotos, reconciled 6 Nov 2026 | The review archive (Drive › TripAdvisor Review Photos, `1ewKajce8G7_vfMf3Q9b1gDiuh5drt2V_`) indexes 343 photographs attached to reviews, not reviewers' profile photos (its `extraction_report.json`: "avatars … were not collected"); its `usage_rights_report.json` and the live sheet's Usage Rights tab record 0 approved and all 70 reviewers "Not requested"; `03_Approved_Photos` is empty | No headphoto is available or approved: every card shows the reviewer's initials (no illustrated stand-in faces since 6 Nov 2026). Details: `content/reviews-source-audit.md` |
 
 ## Prices, terms and facts
 

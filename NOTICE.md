@@ -26,8 +26,9 @@ own history, configuration and infrastructure.
 
 | Component | Location | Licence |
 |---|---|---|
-| Plus Jakarta Sans (variable, roman and italic, latin subsets, Google Fonts v12) | `src/assets/fonts/PlusJakartaSans.woff2`, `src/assets/fonts/PlusJakartaSans-Italic.woff2` | SIL Open Font Licence 1.1, `licenses/OFL-plusjakartasans.txt` |
-| Inter (variable, latin subset, from `@fontsource-variable/inter` 5.3.0) | `src/assets/fonts/Inter.woff2` | SIL Open Font Licence 1.1, `licenses/OFL-inter.txt` |
+| Bricolage Grotesque (variable: weight 200–800 and optical size 12–96, latin subset, from `@fontsource-variable/bricolage-grotesque` 5.3.0, file `bricolage-grotesque-latin-opsz-normal.woff2`, unmodified) | `src/assets/fonts/BricolageGrotesque.woff2` | SIL Open Font Licence 1.1, `licenses/OFL-bricolage-grotesque.txt` |
+| DM Sans (variable weight 100–1000 at optical size 14, roman and italic, latin subsets, from `@fontsource-variable/dm-sans` 5.3.0, files `dm-sans-latin-wght-normal.woff2` and `-italic.woff2`, unmodified) | `src/assets/fonts/DMSans.woff2`, `src/assets/fonts/DMSans-Italic.woff2` | SIL Open Font Licence 1.1, `licenses/OFL-dm-sans.txt` |
+| Caveat (variable weight 400–700, latin subset, from `@fontsource-variable/caveat` 5.3.0, file `caveat-latin-wght-normal.woff2`, unmodified) | `src/assets/fonts/Caveat.woff2` | SIL Open Font Licence 1.1, `licenses/OFL-caveat.txt` |
 | Brand marks for WhatsApp, Instagram, Facebook and Tripadvisor (path data from Simple Icons 16.33.0; the Facebook mark reduced to its "f") | `src/partials/ui.mjs` (`BRAND_MARKS`) | CC0 1.0, <https://github.com/simple-icons/simple-icons>. The marks themselves remain the networks' trademarks, used only to link to Good Times' own profiles |
 | GSAP 3.15.0 core and its ScrollTrigger, Flip and MotionPathPlugin plugins (from the `gsap` npm package; MotionPathPlugin added 5 Nov 2026 for the brand aircraft, byte-identical to `gsap@3.15.0/dist`) | `src/assets/js/vendor/gsap.min.js`, `src/assets/js/vendor/ScrollTrigger.min.js`, `src/assets/js/vendor/Flip.min.js`, `src/assets/js/vendor/MotionPathPlugin.min.js` | GreenSock Standard "no charge" licence, <https://gsap.com/standard-license> (free for commercial use since 3.13; the licence header is kept in the file) |
 
