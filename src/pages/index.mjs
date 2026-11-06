@@ -274,7 +274,9 @@ ${scene({
   cls: 'lc-scene--road',
   image: 'chapmans-viewpoint-couple',
   focus: '66% 46%',
-  focusTall: '72% 50%',
+  // On a phone the scene shows about a quarter of the photograph's width, under the words: the coast and the headland,
+  // not the couple's faces behind the heading (the media audit, 6.B); wider screens show the couple beside the words
+  focusTall: '30% 50%',
   mark: chapterMark(2, 'Where the Road Meets the Ocean', 'lc-mark--light'),
   title: 'The coast road <br>is half the <em>adventure.</em>',
   line: 'Chapman’s Peak Drive, the Cape of Good Hope and Cape Point, then the penguins at Boulders Beach: the Peninsula in one private day.',
