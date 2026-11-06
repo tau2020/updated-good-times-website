@@ -9,22 +9,24 @@ The first build's sweep was judged "holes punched in paper" by the independent r
 from shared centres opened pinwheel and heart-shaped holes, the leftover sand was flat islands with spray-brush edges,
 and from p 0.88 it became a moth-eaten noise dissolve. As rebuilt:
 
-- **Brushing, not punching:** long, gently curved passes (circular arcs, 320–900 cm in radius), side by side and back and forth, in one direction: along the walk on wide screens, across the screen on portrait ones. They start with the pass over the last prints and work outwards, 11 passes on desktop and 10 on phones, each from beyond one edge of the held stage to beyond the other. The swept ground is a capsule along the arc, round at both ends, with ragged sides.
+- **Brushing, not punching:** long, gently curved passes (circular arcs, 650–1300 cm in radius, all bowed the same way, so they lie in parallel rows), side by side and back and forth, along the walk. They start with the pass over the last prints and work outwards, 11–13 passes, each from beyond one edge of the held stage to beyond the other. The swept ground is a capsule along the arc, round at both ends, with ragged sides. Together the passes cover the whole stage, so it clears steadily: by about p 0.80 at every size measured. (Until 6 Nov 2026 the radii were 320–900 cm with random bows and ±7° of jitter: neighbouring passes bowed apart and left up to 27 % of a desktop stage for the crumbling, so about 340 px of scrolling at 1440 × 900 changed nothing while a band of sand lay over the woman's hat. Measured with the renderer's coverage at every 0.02 of p.)
 - **Pushed sand:** each pass drives a heap ahead of its brush and leaves a lumpy ridge along its sides, lit like the rest of the sand.
 - **A layer with thickness:** the remaining sand's edges catch the light (a lit lip and a darker far side), and it casts a soft shadow on the photograph beside it.
 - **Grainy edges, a few spilled grains:** the edge thins to loose grains through a grain-sized dither fixed in the world, and a few grains lie on the swept ground right beside remaining sand, only there (an early version scattered them along every pass's edge and dirtied the sky; fixed).
-- **Crumbling in order:** from p 0.84 what is left becomes rounded clumps that shrink away, **those next to swept ground first**, so the clearing spreads outwards instead of holes appearing everywhere at once.
+- **Crumbling in order:** from p 0.76, while the last passes go over, what they leave at their edges becomes rounded clumps that shrink away, **those next to swept ground first**, so the clearing spreads outwards instead of holes appearing everywhere at once.
 - **The prints go with their sand:** depressions and ridges disappear only where the sand has gone.
 - **Exact ends, never back:** nothing is swept before p = 0.605 and everything is gone from p = 0.95 (tested on a grid of points). At every point the swept amount never decreases as p grows (tested; this caught and fixed a 1 % refill at the brush's tapering end). At p = 0.72 between 15 % and 85 % is swept: a sweep, not a wipe (tested).
 
 ## The destination
 
-The photograph under the sand is an `<img>`: sharp and in full colour, the approved `camps-bay-twelve-apostles`, fetched at
-low priority. Over it, in HTML: the eyebrow "Camps Bay, on the Cape Peninsula day", the heading **Cape Peninsula Private
-Tour** (the tour's own title), the tour's own card line, and **Explore This Experience** → `tours/cape-peninsula-private-tour/`
-(an existing page; the accessible name includes the tour). No price, claim or new copy was invented. The words are in
-the accessibility tree throughout and show at once when focused. Under motion they rise in at p 0.87–0.98, as the
-sand clears.
+Since 6 Nov 2026 (the owner's replacement brief, 07): the image under the sand is the owner's
+`ocean-footprints-reveal`, a woman standing at the water's edge with the walk's last four prints behind her, an
+`<img>` sharp and in full colour, fetched at low priority. (It replaced the Camps Bay photograph, which stays in use in
+chapter 11 and on the packages page.) Beside it, in HTML: the eyebrow "Cape Peninsula · Coastal Journey", the heading
+**Look Where Your Footsteps Led.**, the line "One private journey. Breathtaking coastlines, penguins, and unforgettable
+Cape Town moments." and the link **Explore the Cape Peninsula Tour** → `tours/cape-peninsula-private-tour/` (an
+existing page). The words are the owner's; no price or claim was added. They are in the accessibility tree throughout
+and show at once when focused. Under motion they rise in one after another at p 0.84–0.965, once the sand has gone.
 
 ## Tiers
 
@@ -32,7 +34,7 @@ sand clears.
 |---|---|---|
 | Full | WebGL2, motion allowed | Up to 2× pixels (5.4 MP cap), cast shadows, the full grain pool |
 | Lite | Measured slow frames (more than 22 of the last 36 gaps over 30 ms while drawing), or `?sand=lite` | 0.62× resolution (1.2 MP cap), no cast shadows, 45 % of the grains |
-| Static | Reduced motion, `?nomotion`, `?sand=static`, no WebGL2, a failed shader or import, a lost context (until restored), print | The photograph, words and link. One screen tall if it happens before the stage is held; inside the held stretch it stays tall, so nothing jumps |
+| Static | Reduced motion, `?nomotion`, `?sand=static`, no WebGL2, a failed shader or import, a lost context (until restored), print | The image, words and link (with the script, the words fade in once as the scene comes into view: opacity only). One screen tall if it happens before the stage is held; inside the held stretch it stays tall, so nothing jumps |
 
 Capability is never guessed from the user agent. The only inputs are reduced motion, WebGL2 availability and measured
 frame times.

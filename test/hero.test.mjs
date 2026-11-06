@@ -103,17 +103,23 @@ test('the lift: one Enlarge button over the phone’s photo area, hidden until t
   assert.doesNotMatch(home, /class="pg-zoom/);
 });
 
-test('the AI-generated pictures appear in the home hero only, and the credits say what they are', () => {
-  assert.deepEqual(ai.map((i) => i.name).sort(), ['hero-moment-poster', 'memories-bokaap', 'memories-boulders', 'memories-camps-bay', 'memories-cape-of-good-hope', 'memories-sunset', 'memories-table-mountain']);
+test('the AI-generated pictures appear in the home hero and at the sand journey’s destination only, and the credits say what they are', () => {
+  assert.deepEqual(ai.map((i) => i.name).sort(), ['hero-moment-poster', 'memories-bokaap', 'memories-boulders', 'memories-camps-bay', 'memories-cape-of-good-hope', 'memories-sunset', 'memories-table-mountain', 'ocean-footprints-reveal']);
   const uses = (html) => ai.filter((i) => html.includes(`assets/img/${i.name}-`)).map((i) => i.name);
   for (const p of pages.filter((p) => p.path !== 'index.html')) {
     const html = layout(p, site);
     assert.deepEqual(uses(html.slice(html.indexOf('<main'), html.indexOf('</main>'))), [], p.path);
   }
-  assert.deepEqual(uses(home.slice(home.indexOf('<section class="sand-journey"'))), [], 'nowhere below the hero (the sand journey and the chapters)');
+  // Below the hero: the owner's destination image in the sand journey (6 Nov 2026), and nothing AI-made in the chapters
+  const sand = home.indexOf('<section class="sand-journey"');
+  const chapters = home.indexOf('<div class="living-cape"');
+  assert.deepEqual(uses(home.slice(sand, chapters)), ['ocean-footprints-reveal'], 'the sand journey: its destination only');
+  assert.deepEqual(uses(home.slice(chapters)), [], 'nowhere in the chapters');
+  assert.match(home.slice(sand, chapters), /<p class="sand-journey__credit">An AI-generated illustration<\/p>/, 'credited beside it');
   assert.equal(ORIGIN_NOTES.G, 'An AI-generated illustration supplied by Good Times in Cape Town, not a photograph of guests');
   const privacy = render('privacy/index.html');
   assert.match(privacy, /the café scene at the top of the home page and the photographs in its phone are AI-generated illustrations/);
+  assert.match(privacy, /the woman standing at the water’s edge after the footprints below it is an AI-generated illustration too/);
   for (const i of ai.filter((i) => images.includes(i))) assert.ok(privacy.includes(`<li>${i.alt}: ${ORIGIN_NOTES.G}</li>`), `${i.name} credited`);
 });
 

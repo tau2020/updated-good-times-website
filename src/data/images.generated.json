@@ -428,6 +428,16 @@
     "width": 3240,
     "height": 2160
   },
+  "ocean-footprints-reveal": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1672,
+    "height": 941
+  },
   "peninsula-bench-view": {
     "widths": [
       480,

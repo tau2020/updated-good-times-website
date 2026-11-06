@@ -7,8 +7,8 @@
       "errors": [],
       "plane": {
         "variant": "jet",
-        "landsAt": 1.22,
-        "handoverAt": 1.47,
+        "landsAt": 3.8730158730158726,
+        "handoverAt": 4.666666666666666,
         "landingErrorPx": 0.07,
         "maskedAfter": false,
         "layerHiddenAfter": true
@@ -59,57 +59,57 @@
             "settled": 1
           }
         ],
-        "readyAfterMs": 1,
+        "readyAfterMs": 47,
         "tier": "full",
         "checksums": [
           {
             "p": 0,
-            "forward": "a63350f0",
-            "backward": "a63350f0",
+            "forward": "dc1cb37",
+            "backward": "dc1cb37",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.1,
-            "forward": "27cd68b8",
-            "backward": "27cd68b8",
+            "forward": "307f8c30",
+            "backward": "307f8c30",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.2,
-            "forward": "35a7a82a",
-            "backward": "35a7a82a",
+            "forward": "22b50814",
+            "backward": "22b50814",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.36,
-            "forward": "e07338c3",
-            "backward": "e07338c3",
+            "forward": "2274cd84",
+            "backward": "2274cd84",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.48,
-            "forward": "6442664a",
-            "backward": "6442664a",
+            "forward": "980584dd",
+            "backward": "980584dd",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.65,
-            "forward": "ab8f91c5",
-            "backward": "ab8f91c5",
+            "forward": "4c96de81",
+            "backward": "4c96de81",
             "same": true,
-            "meanAlpha": 0.8577
+            "meanAlpha": 0.867
           },
           {
             "p": 0.8,
-            "forward": "676c82e9",
-            "backward": "676c82e9",
+            "forward": "6a5b4a12",
+            "backward": "6a5b4a12",
             "same": true,
-            "meanAlpha": 0.2064
+            "meanAlpha": 0.0002
           },
           {
             "p": 1,
@@ -125,8 +125,8 @@
       "errors": [],
       "plane": {
         "variant": "jet",
-        "landsAt": 1.22,
-        "handoverAt": 1.47,
+        "landsAt": 3.8730158730158726,
+        "handoverAt": 4.666666666666666,
         "landingErrorPx": 0.063,
         "maskedAfter": false,
         "layerHiddenAfter": true
@@ -177,57 +177,57 @@
             "settled": 1
           }
         ],
-        "readyAfterMs": 1,
+        "readyAfterMs": 50,
         "tier": "full",
         "checksums": [
           {
             "p": 0,
-            "forward": "be90401b",
-            "backward": "be90401b",
+            "forward": "71955211",
+            "backward": "71955211",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.1,
-            "forward": "3d74970",
-            "backward": "3d74970",
+            "forward": "e6817f8e",
+            "backward": "e6817f8e",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.2,
-            "forward": "18347476",
-            "backward": "18347476",
+            "forward": "a3e76f9f",
+            "backward": "a3e76f9f",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.36,
-            "forward": "9621bda3",
-            "backward": "9621bda3",
+            "forward": "cd78fc0b",
+            "backward": "cd78fc0b",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.48,
-            "forward": "874e8dc9",
-            "backward": "874e8dc9",
+            "forward": "abbdc55f",
+            "backward": "abbdc55f",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.65,
-            "forward": "aa03895b",
-            "backward": "aa03895b",
+            "forward": "81714cb8",
+            "backward": "81714cb8",
             "same": true,
-            "meanAlpha": 0.871
+            "meanAlpha": 0.8828
           },
           {
             "p": 0.8,
-            "forward": "5eae2c27",
-            "backward": "5eae2c27",
+            "forward": "b88ec343",
+            "backward": "b88ec343",
             "same": true,
-            "meanAlpha": 0.0477
+            "meanAlpha": 0.0709
           },
           {
             "p": 1,
@@ -243,8 +243,8 @@
       "errors": [],
       "plane": {
         "variant": "jet",
-        "landsAt": 1.22,
-        "handoverAt": 1.47,
+        "landsAt": 3.8730158730158726,
+        "handoverAt": 4.666666666666666,
         "landingErrorPx": 0.048,
         "maskedAfter": false,
         "layerHiddenAfter": true
@@ -295,57 +295,57 @@
             "settled": 1
           }
         ],
-        "readyAfterMs": 1,
+        "readyAfterMs": 50,
         "tier": "full",
         "checksums": [
           {
             "p": 0,
-            "forward": "370a0703",
-            "backward": "370a0703",
+            "forward": "e2d158b3",
+            "backward": "e2d158b3",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.1,
-            "forward": "ae2e1a33",
-            "backward": "ae2e1a33",
+            "forward": "10789139",
+            "backward": "10789139",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.2,
-            "forward": "bf44350b",
-            "backward": "bf44350b",
+            "forward": "92c30aea",
+            "backward": "92c30aea",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.36,
-            "forward": "2beb9052",
-            "backward": "2beb9052",
+            "forward": "39e65916",
+            "backward": "39e65916",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.48,
-            "forward": "91e9602c",
-            "backward": "91e9602c",
+            "forward": "b4823415",
+            "backward": "b4823415",
             "same": true,
             "meanAlpha": 1
           },
           {
             "p": 0.65,
-            "forward": "243d8f74",
-            "backward": "243d8f74",
+            "forward": "aee247c4",
+            "backward": "aee247c4",
             "same": true,
-            "meanAlpha": 0.876
+            "meanAlpha": 0.8669
           },
           {
             "p": 0.8,
-            "forward": "4d349f97",
-            "backward": "4d349f97",
+            "forward": "d00de09f",
+            "backward": "d00de09f",
             "same": true,
-            "meanAlpha": 0.0475
+            "meanAlpha": 0.0483
           },
           {
             "p": 1,
@@ -357,5 +357,7 @@
         ]
       }
     }
-  }
+  },
+  "planeRemeasured": "2026-11-05T23:47:11.997Z",
+  "sandRemeasured": "2026-11-06T01:17:43.814Z"
 }

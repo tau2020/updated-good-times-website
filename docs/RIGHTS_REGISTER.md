@@ -12,9 +12,9 @@ Being in Drive does not, on its own, make a photograph usable. Each one below ha
 | **W** | Published by Good Times on goodtimesincapetown.co.za (Drive › media-library › originals › other › website-cdn) | Company-owned website photographs | Guest consent, as for T (P1) |
 | **U** | A goodtimesincapetown.co.za photograph enlarged for the web by the owner (Drive › Upscaled Images) | As W; the enlargement was supplied by the owner | Guest consent (P1) |
 | **S** | Supplied by the owner in Drive › Website Images | Supplied for the website by the owner; no further record | Provenance (who took it) and guest consent (P2) |
-| **G** | AI-generated, supplied by the owner on 5 Nov 2026 for the home hero (below) | The owner's direction for the home hero; illustrations of five fictional friends, not photographs, never presented as guests or as Good Times photographs, and credited as AI-generated (privacy/#credits) | Approval of AI-generated people on the home page, and their replacement with real client photographs when there are some (P5) |
+| **G** | AI-generated, supplied by the owner on 5 Nov 2026 for the home hero, and on 6 Nov 2026 for the sand journey's destination (below) | The owner's direction for each; illustrations of fictional people, not photographs, never presented as guests or as Good Times photographs, and credited as AI-generated (privacy/#credits, and beside the destination image) | Approval of AI-generated people on the home page, and their replacement with real client photographs when there are some (P5) |
 
-Not used, by rule: guest photos attached to Tripadvisor reviews (256) and the listing gallery's traveller photos (13), which are the travellers' own (the rights log marks them "permission required"); reviewer profile photos; stock or third-party images; AI-generated scenes anywhere except the home hero (G, the owner's decision of 5 Nov 2026); and any photograph of a child or of anyone who may be under 18. Drive is never the image host: every photograph is served from the site's own renditions (`src/assets/img/`, AVIF and WebP, never upscaled by the pipeline).
+Not used, by rule: guest photos attached to Tripadvisor reviews (256) and the listing gallery's traveller photos (13), which are the travellers' own (the rights log marks them "permission required"); reviewer profile photos; stock or third-party images; AI-generated scenes anywhere except the home hero and the sand journey's destination after it (G, the owner's decisions of 5 and 6 Nov 2026); and any photograph of a child or of anyone who may be under 18. Drive is never the image host: every photograph is served from the site's own renditions (`src/assets/img/`, AVIF and WebP, never upscaled by the pipeline).
 
 ## Photographs in use (50)
 
@@ -68,7 +68,7 @@ People: **none** = no person; **far** = people too small or turned away to ident
 | mandela-statue-drakenstein | Website Images, file 057 | S | guests | In use, provenance and consent P2 |
 | hermanus-frame | Website Images, file 092 | S | guests | In use, provenance and consent P2 |
 | muizenberg-huts | Website Images, file 104 | S | none | In use, provenance P2 |
-| camps-bay-twelve-apostles | Website Images, file 231 | S | none | In use, provenance P2; also under the home page's sand journey (branch `feature/gtict-cinematic-sand-journey`, M5) |
+| camps-bay-twelve-apostles | Website Images, file 231 | S | none | In use, provenance P2 |
 | quad-bikes-dunes | Website Images, file 332 | S | guests | In use, provenance and consent P2 |
 | quad-bikes-convoy | Website Images, file 198 | S | far | In use, provenance P2 |
 | cango-caves | Website Images, file 276 | S | guests | In use, provenance and consent P2 |
@@ -89,6 +89,14 @@ Supplied by the owner on 5 Nov 2026 with the "frozen moment" brief, which names 
 | memories-camps-bay | › `04_beach_jump.webp` | Phone gallery 4 · Cape Peninsula Private Tour (the route passes Camps Bay; a beach stop is on request, P6) | In use, P5 and P6 |
 | memories-cape-of-good-hope | › `05_cape_of_good_hope.webp` | Phone gallery 5 · Cape Peninsula Private Tour (the Cape of Good Hope sign) | In use, P5 |
 | memories-sunset | › `06_sunset_lookout.webp` | Phone gallery 6 · Private Cape Town Experience (no itinerary lists a sunset lookout; a tailored day can, P6) | In use, P5 and P6 |
+
+## The sand journey's destination (AI-generated, G; on `main` since 6 Nov 2026, not yet deployed)
+
+Supplied by the owner on 6 Nov 2026 with the "footprint reveal image replacement" brief, which names the image and asks for it in place of the Camps Bay photograph at the end of the home page's sand journey. It shows one fictional woman, from behind, standing at the water's edge with her footprints behind her; no real person is depicted or named, and it is not presented as a photograph of a tour stop. Two copies were supplied: `Golden Shoreline Footprints.png` and `goodtimes-ocean-footprints-reveal (1).webp` (both 1672 × 941, the same picture; the PNG is the master). It is credited beside the image ("An AI-generated illustration") and on the privacy page. The brief does not say it is AI-generated; its look (and the owner's other supplied scenes) does, so the owner is asked to confirm (M5).
+
+| Item | Supplied file | Where | Status |
+|---|---|---|---|
+| ocean-footprints-reveal | `Golden Shoreline Footprints.png` (kept as `media-src/journey/goodtimes-ocean-footprints-reveal.png`; renditions 480–1600 px, AVIF and WebP, never upscaled) | The home page's sand journey, after the animated footprints (`src/partials/sand-journey.mjs`); the animated trail ends on its four prints | In use on `main` (not yet deployed), P5 and M5 |
 
 The package's 9:16 `*_phone.webp` versions are not used: their sharp picture fills only 61% of the screen's width. The phone shows each original across the full width instead, over a soft wash of its own colours (`ambient` in `src/data/images.mjs`).
 

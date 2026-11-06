@@ -7,13 +7,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { FOOT, envelopes, variation, depthAt } from '../src/assets/js/motion/sand/foot.js';
-import { layoutScene, stateAt, revealAt, grainsAt, PHASE, STEPS, STEPS_PORTRAIT, LIGHT } from '../src/assets/js/motion/sand/scene.js';
+import { layoutScene, photoPlacement, stateAt, revealAt, grainsAt, PHASE, PHOTO, STEPS, STEPS_PORTRAIT, LIGHT } from '../src/assets/js/motion/sand/scene.js';
 import { SAND } from '../src/assets/js/motion/sand/shaders.js';
 import { hash2u } from '../src/assets/js/motion/sand/noise.js';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
 import { tours } from '../src/data/tours.mjs';
-import { SAND_TOUR, SAND_IMAGE } from '../src/partials/sand-journey.mjs';
+import { SAND_TOUR, SAND_IMAGE, SAND_WORDS } from '../src/partials/sand-journey.mjs';
+import { pages as tourPages } from '../src/pages/tours.mjs';
 
 const plain = { length: 1, width: 1, spread: 1, depth: 1, heelBias: 0, fifth: 0.44, angle: 0 };
 const full = { heel: 1, fore: 1, toes: 1 };
@@ -95,29 +96,33 @@ test('each step presses heel, then ball, then toes, monotonically, and a step is
   assert.notDeepEqual(a, b, 'every step varies length, width, toe spread, depth and weight');
 });
 
-const desk = layoutScene({ width: 1440, height: 900, pinAt: 0.72 / (0.72 + 2.0) });
-const phone = layoutScene({ width: 390, height: 844, pinAt: 0.72 / (0.72 + 1.7) });
+// The stage below the sticky header (113 px on the home page's desktop header, 90 px on a 390 px phone, whose call bar
+// covers the stage's lowest 76 px)
+const desk = layoutScene({ width: 1440, height: 900, pinAt: 0.72 / (0.72 + 2.0), headerH: 113 });
+const phone = layoutScene({ width: 390, height: 844, pinAt: 0.72 / (0.72 + 1.7), headerH: 90, bar: 76 });
 
 test('the walk: eight steps (six on a portrait phone), alternating, big toes inside the trail, a real stride, all made in view, done before the sweep', () => {
   assert.deepEqual([STEPS, STEPS_PORTRAIT], [8, 6]);
-  for (const sc of [desk, phone]) {
+  for (const [sc, headerH] of [[desk, 113], [phone, 90]]) {
     const n = sc.portrait ? STEPS_PORTRAIT : STEPS;
     assert.equal(sc.steps.length, n);
-    // Every print is pressed where it can be seen: on the stage (below the header's band) at its start and its end
+    const footPx = FOOT.length * sc.s;
+    // Every print is pressed where it can be seen: on the stage, clear of the header, at its start and its end
     for (const st of sc.steps) {
       for (const p of [st.onset, st.onset + st.duration]) {
         const cam = sc.camAt(p);
         const x = (st.c[0] - cam[0]) * sc.s + sc.width / 2;
         const y = (st.c[1] - cam[1]) * sc.s + sc.height / 2;
-        assert.ok(x > 0.06 * sc.width && x < 0.94 * sc.width && y > 0.14 * sc.height && y < 0.88 * sc.height, `print ${st.index} at p ${p.toFixed(3)}: ${x.toFixed(0)}, ${y.toFixed(0)}`);
+        assert.ok(x > 0.04 * sc.width && x < 0.96 * sc.width && y > headerH + 0.3 * footPx && y < 0.88 * sc.height, `print ${st.index} at p ${p.toFixed(3)}: ${x.toFixed(0)}, ${y.toFixed(0)}`);
       }
     }
-    sc.steps.forEach((st, k) => assert.equal(st.foot, k % 2 ? 'right' : 'left'));
     for (let k = 1; k < n; k++) {
       const a = sc.steps[k - 1];
       const b = sc.steps[k];
+      assert.notEqual(b.foot, a.foot, 'left, right, left…');
+      // The destination image's own stride (about 1.95 foot lengths, unhurried on soft sand), the walk before it the same
       const stride = Math.hypot(b.c[0] - a.c[0], b.c[1] - a.c[1]);
-      assert.ok(stride > 50 && stride < 66, `step ${k}: ${stride.toFixed(1)} cm`);
+      assert.ok(stride > 42 && stride < 58, `step ${k}: ${stride.toFixed(1)} cm`);
       // The medial direction of each foot points towards the other foot of the pair
       const med = [b.sigma * b.h[1], -b.sigma * b.h[0]];
       const toOther = [a.c[0] - b.c[0], a.c[1] - b.c[1]];
@@ -139,8 +144,60 @@ test('the walk: eight steps (six on a portrait phone), alternating, big toes ins
   }
 });
 
+test('one trail, one walker: the walk ends on the destination image’s own four prints (place, heading, foot and size), at every layout', () => {
+  // [width, height, header, call bar]: wide desktops and laptops, a small window and a tablet with the call bar, portrait
+  // tablets and phones, phones on their side and a low window (the image fitted beside the words)
+  const layouts = [
+    [1440, 900, 113, 0], [1920, 1080, 113, 0], [1280, 720, 113, 0], [1366, 657, 113, 0], [1024, 768, 113, 0], [900, 700, 85, 76],
+    [768, 1024, 85, 76], [390, 844, 90, 76], [360, 740, 83, 76], [375, 667, 86, 76],
+    [844, 390, 85, 76], [667, 375, 85, 76], [1280, 600, 113, 0],
+  ];
+  for (const [W, H, headerH, bar] of layouts) {
+    const name = `${W}×${H}`;
+    const place = photoPlacement(W, H, headerH, bar);
+    const sc = layoutScene({ width: W, height: H, pinAt: 0.72 / (0.72 + (W / H <= 1 || W < 768 ? 1.7 : 2.0)), headerH, bar });
+    const n = sc.steps.length;
+    const end = sc.camAt(1);
+    assert.ok(Math.hypot(end[0] - sc.camEnd[0], end[1] - sc.camEnd[1]) < 1e-9, `${name}: the walk ends in the image's own framing`);
+    assert.deepEqual(sc.camAt(PHASE.walkEnd), end, `${name}: and holds still for the sweep`);
+    const at = (st) => [(st.c[0] - end[0]) * sc.s + W / 2, (st.c[1] - end[1]) * sc.s + H / 2];
+    assert.ok(Math.abs(FOOT.length * sc.s - PHOTO.footLength * place.k) < 1e-6, `${name}: the animated feet are the photographed ones' size`);
+    PHOTO.prints.forEach((pr, i) => {
+      const st = sc.steps[n - 4 + i];
+      assert.equal(st.photo, i);
+      assert.equal(st.foot, pr.foot, `${name}: print ${i + 1} is the image's ${pr.foot} foot`);
+      const [x, y] = at(st);
+      const want = [place.ox + pr.c[0] * place.k, place.oy + pr.c[1] * place.k];
+      assert.ok(Math.hypot(x - want[0], y - want[1]) < 0.01, `${name}: print ${i + 1} at (${x.toFixed(2)}, ${y.toFixed(2)}), the image's at (${want[0].toFixed(2)}, ${want[1].toFixed(2)})`);
+      assert.ok(Math.abs((Math.atan2(st.h[1], st.h[0]) * 180) / Math.PI - pr.angle) < 1e-9, `${name}: print ${i + 1} heads as the image's`);
+      assert.deepEqual([st.v.length, st.v.width, st.v.angle], [1, 1, 0], 'no variation on a photographed print');
+    });
+    // Never a print twice: the animated prints before the image's four end off the image (they go with the sand)
+    const box = [Math.max(0, place.ox), Math.max(headerH, place.oy), Math.min(W, place.ox + PHOTO.width * place.k), Math.min(H - bar, place.oy + PHOTO.height * place.k)];
+    const r = 0.55 * FOOT.length * sc.s;
+    for (const st of sc.steps.slice(0, n - 4)) {
+      const [x, y] = at(st);
+      assert.ok(x + r < box[0] || x - r > box[2] || y + r < box[1] || y - r > box[3], `${name}: print ${st.index + 1} ends off the image (${x.toFixed(0)}, ${y.toFixed(0)})`);
+    }
+    // One direction, no kink where the image's prints take over: each foot's track (a print to the next of the same
+    // foot) heads within 20° of the image's own trail and turns less than 10° from one print to the next
+    const deg = (r) => (r * 180) / Math.PI;
+    const trail = Math.atan2(PHOTO.prints[3].c[1] - PHOTO.prints[0].c[1], PHOTO.prints[3].c[0] - PHOTO.prints[0].c[0]);
+    let prevDir = null;
+    for (let k = 2; k < n; k++) {
+      const dir = Math.atan2(sc.steps[k].c[1] - sc.steps[k - 2].c[1], sc.steps[k].c[0] - sc.steps[k - 2].c[0]);
+      assert.ok(Math.abs(deg(dir - trail)) < 20, `${name}: print ${k + 1}'s track heads along the trail (${deg(dir - trail).toFixed(1)}°)`);
+      if (prevDir !== null) assert.ok(Math.abs(deg(dir - prevDir)) < 10, `${name}: print ${k + 1}'s track turns gently (${deg(dir - prevDir).toFixed(1)}°)`);
+      prevDir = dir;
+    }
+    // The woman is whole in every layout: hat to feet inside the image's visible part
+    const [sx0, sy0, sx1, sy1] = PHOTO.subject;
+    assert.ok(place.ox + sx0 * place.k >= 0 && place.ox + sx1 * place.k <= W && place.oy + sy0 * place.k >= headerH && place.oy + sy1 * place.k <= H - bar, `${name}: the woman whole`);
+  }
+});
+
 test('the scene is deterministic: the same layout and p give the same state, whatever came before', () => {
-  const again = layoutScene({ width: 1440, height: 900, pinAt: 0.72 / (0.72 + 2.0) });
+  const again = layoutScene({ width: 1440, height: 900, pinAt: 0.72 / (0.72 + 2.0), headerH: 113 });
   assert.equal(JSON.stringify(again.steps), JSON.stringify(desk.steps));
   assert.equal(JSON.stringify(again.strokes), JSON.stringify(desk.strokes));
   const ps = [0, 0.04, 0.1, 0.3, 0.48, 0.55, 0.62, 0.72, 0.8, 0.9, 0.97, 1];
@@ -196,7 +253,7 @@ test('the grains: a fixed pool, positions from p alone, none before the first st
   assert.deepEqual(grainsAt(desk, p), a, 'seeking elsewhere first changes nothing');
   assert.ok(a.length > 0 && a.length / 6 < 60, 'a few grains, short-lived, at the step being made');
   assert.ok(desk.grains.length < 900 && phone.grains.length < 900);
-  const lite = layoutScene({ width: 390, height: 844, pinAt: 0.72 / (0.72 + 1.7), quality: 'lite' });
+  const lite = layoutScene({ width: 390, height: 844, pinAt: 0.72 / (0.72 + 1.7), headerH: 90, bar: 76, quality: 'lite' });
   assert.ok(lite.grains.length < phone.grains.length * 0.6, 'lite has fewer');
 });
 
@@ -224,12 +281,22 @@ test('the scene in the page: between the hero and the first chapter, static and 
   const s = html.slice(sand, chapter);
   assert.match(s, /aria-labelledby="sand-journey-title"/);
   assert.doesNotMatch(s, /<canvas/, 'the canvas is the script’s, decorative and added only with motion');
+  // The owner's words (6 Nov 2026), the headline naming the section, the link an ordinary HTML link to the existing tour
+  assert.deepEqual(SAND_WORDS, {
+    eyebrow: 'Cape Peninsula · Coastal Journey',
+    title: 'Look Where Your Footsteps Led.',
+    line: 'One private journey. Breathtaking coastlines, penguins, and unforgettable Cape Town moments.',
+    cta: 'Explore the Cape Peninsula Tour',
+  });
+  assert.match(s, /<div class="sand-journey__head">\s*<p class="sand-journey__eyebrow">Cape Peninsula · Coastal Journey<\/p>\s*<h2 class="sand-journey__title" id="sand-journey-title">Look Where Your Footsteps Led\.<\/h2>\s*<\/div>/);
+  assert.match(s, /<div class="sand-journey__foot">\s*<p class="sand-journey__line">One private journey\. Breathtaking coastlines, penguins, and unforgettable Cape Town moments\.<\/p>\s*<a class="btn gt-button gt-button--primary sand-journey__cta" href="tours\/cape-peninsula-private-tour\/"><span>Explore the Cape Peninsula Tour<\/span><\/a>\s*<\/div>/);
   const t = tours.find((x) => x.slug === SAND_TOUR);
-  assert.match(s, new RegExp(`<h2 class="sand-journey__title" id="sand-journey-title">${t.shortTitle}</h2>`));
-  assert.ok(s.includes(t.card.replace(/’/g, '’')), 'the tour’s own words');
-  assert.match(s, /<a class="btn gt-button gt-button--primary sand-journey__cta" href="tours\/cape-peninsula-private-tour\/"><span>Explore This Experience<\/span><span class="visually-hidden">: the Cape Peninsula Private Tour<\/span><\/a>/);
+  assert.ok(t && tourPages.some((pg) => pg.path === `tours/${t.slug}/index.html`), 'the link goes to an existing tour page');
   assert.ok(existsSync(new URL(`../src/pages/tours.mjs`, import.meta.url)), 'tour pages exist');
+  // The destination image, not the Camps Bay photograph it replaced (which the chapters and the packages page still use)
   assert.match(s, new RegExp(`assets/img/${SAND_IMAGE}-`));
+  assert.doesNotMatch(s, /camps-bay/);
+  assert.match(s, /width="1672" height="941" loading="lazy" decoding="async" fetchpriority="low"/, 'its own size reserved, fetched after the hero');
   assert.match(readFileSync(new URL('../docs/RIGHTS_REGISTER.md', import.meta.url), 'utf8'), new RegExp(`\\| ${SAND_IMAGE} \\|[^\\n]*In use`));
   assert.match(html, /<script src="assets\/js\/sand-journey\.js" defer><\/script>\n<script src="assets\/js\/living-cape\.js" defer>/, 'before the chapters measure their triggers');
 });

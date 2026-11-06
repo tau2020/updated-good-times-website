@@ -81,7 +81,7 @@ space.
 | Need | Status |
 |---|---|
 | approved_logo_source | In the repository (Approved Logo Pack v2); the aircraft and route are read from it |
-| beach_destination_image | Approved photograph `camps-bay-twelve-apostles`, already rendered (AVIF and WebP, 480–2000 px); owner point M5 |
+| beach_destination_image | Approved photograph `camps-bay-twelve-apostles`, already rendered (AVIF and WebP, 480–2000 px); owner point M5. Replaced on 6 Nov 2026 by the owner's own image (07) |
 | dry_sand_albedo, sand_normal_or_height_map | Procedural and original: a 1024² grain tile baked on the GPU at start (`shaders.js` BAKE) plus analytic ripples and dunes. No textures were downloaded. |
 | foot_pressure_left_and_right | Procedural: an anatomical signed-distance foot (`motion/sand/foot.js`), varied per step, with a tested CPU reference; depth map in `qa/footprint-depth-model.png` |
 | sand_static_fallback | The static tier is the photograph with its words and link, so no sand poster is needed |

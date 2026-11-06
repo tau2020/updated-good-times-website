@@ -4,7 +4,7 @@
    at start, and the eight footprints from foot.js, each pressed heel → ball → toes by its envelopes), lit by one low
    sun from the upper left (normals from the height field, soft shadows cast by the prints' walls, occlusion in the
    cavities, compressed sand a little darker), and cut away by the sweep (strokes with ragged, crumbling edges, the
-   remaining layer's thickness catching the light and shadowing the photograph beneath). A point pass draws the few
+   remaining layer's thickness catching the light and shadowing the image beneath). A point pass draws the few
    grains in flight. The constants for the foot are written from foot.js, so the GPU and the tested CPU model agree.
    Nothing here reads a clock: the picture is a function of the uniforms, and the uniforms of the scroll progress. */
 import { FOOT } from './foot.js';
@@ -195,7 +195,7 @@ float ground(vec2 w, float press) {
   // Asymmetric ripple: a long gentle stoss slope and a short steep lee
   float rip = fr < 0.72 ? fr / 0.72 : 1.0 - (fr - 0.72) / 0.28;
   rip = smoothstep(0.0, 1.0, rip);
-  float amp = 0.085 * (0.45 + 0.55 * vnoise(w * 0.05 + 11.0));
+  float amp = 0.05 * (0.45 + 0.55 * vnoise(w * 0.05 + 11.0));
   return dunes + (rip - 0.5) * amp * (1.0 - 0.85 * press);
 }
 
@@ -299,7 +299,7 @@ void main() {
   float rAx = texture(uDetail, uvA + vec2(tx, 0.0)).r;
   float rAy = texture(uDetail, uvA + vec2(0.0, tx)).r;
 
-  // The remaining layer's shadow on the photograph (one sample towards the sun; the edge's own softness does the rest),
+  // The remaining layer's shadow on the image (one sample towards the sun; the edge's own softness does the rest),
   // and a few grains spilled from it onto the swept ground right beside it (only where sand is still there)
   float pl, fr;
   float nearSand = uRevealOn > 0.5 && gone > 0.0 ? 1.0 - reveal(w + Ld * 1.5, pl, fr) : 0.0;
@@ -351,28 +351,30 @@ void main() {
   float crevice = smoothstep(0.35, 1.5, length(grad)) * smoothstep(0.05, 0.4, depth);
   float ao = clamp(1.0 - 0.3 * smoothstep(0.0, 1.7, depth) - 0.2 * crevice, 0.45, 1.0);
 
-  // Albedo: pale Cape sand, grain by grain, damper and darker where compacted, specks and shell fragments
-  vec3 sand = vec3(0.80, 0.70, 0.54);
+  // Albedo: warm golden-hour beach sand, matched to the destination image's (its open sand averages sRGB 221, 181, 149;
+  // measured against this shader's frames in WebKit, 6 Nov 2026), grain by grain, damper and darker where compacted,
+  // with a few mineral specks and shell fragments
+  vec3 sand = vec3(0.784, 0.537, 0.378);
   float varA = (tA.g - 0.5) * 0.24 + (tB.g - 0.5) * 0.14;
   vec3 col = sand * (1.0 + varA);
   float mott = mix(tA.a, tB.a, 0.5);
   col *= 0.94 + 0.12 * mott;
   float sp = tA.b;
-  if (sp < 0.3) col = mix(col, vec3(0.08, 0.07, 0.065), 0.85 * smooth_);
-  else if (sp > 0.85) col = mix(col, vec3(0.93, 0.89, 0.8), 0.7);
-  // Compacted, a little damper: darker and slightly greyer where the foot pressed
-  col = mix(col, col * vec3(0.86, 0.85, 0.86), smoothstep(0.08, 0.7, press));
+  if (sp < 0.3) col = mix(col, vec3(0.2, 0.13, 0.09), 0.45 * smooth_);
+  else if (sp > 0.85) col = mix(col, vec3(0.9, 0.72, 0.55), 0.5);
+  // Compacted, a little damper: darker where the foot pressed
+  col = mix(col, col * vec3(0.9, 0.88, 0.87), smoothstep(0.08, 0.7, press));
   col *= 1.0 - 0.12 * smoothstep(0.1, 0.9, press);
 
   // Light: a warm low sun, a cool sky, grains a little rougher than Lambert
   float ndl = dot(N, uLight);
   float diff = clamp((ndl + 0.12) / 1.12, 0.0, 1.0);
-  vec3 sun = vec3(1.0, 0.95, 0.86) * 1.18;
-  vec3 sky = vec3(0.58, 0.66, 0.8) * 0.42;
+  vec3 sun = vec3(1.0, 0.94, 0.84) * 1.18;
+  vec3 sky = vec3(0.7, 0.66, 0.66) * 0.42; // golden hour: warm light in the shadows too
   vec3 lit = col * (sun * diff * shadow + sky * (0.55 + 0.45 * N.z) * ao);
   lit *= mix(1.0, ao, 0.55);
 
-  // What is left of the layer over the photograph, and its shadow where the photograph shows through
+  // What is left of the layer over the image, and its shadow where the image shows through
   vec3 rgb = toSrgb(lit);
   float a = sandA + shadeBelow * gone * (1.0 - sandA);
   outColor = vec4(rgb * sandA, a);

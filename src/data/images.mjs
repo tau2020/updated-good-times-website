@@ -17,7 +17,8 @@
  *   G = AI-generated, supplied by the owner on 5 Nov 2026 for the home hero only: the photographs in
  *       its phone gallery (HeroPhoneGallery, src/data/phone-gallery.json) and the café scene behind
  *       it (the film's held frame, `generated` below). Illustrations of five fictional friends, never
- *       presented as guests or as Good Times photographs, and used nowhere else (test/hero.test.mjs)
+ *       presented as guests or as Good Times photographs, and used nowhere else but the hero and, at the owner's
+ *       direction of 6 Nov 2026, the sand journey's destination after it (test/hero.test.mjs)
  * Guests appear in many photographs: their consent to marketing use is confirmed by Good Times
  * (docs/APPROVAL_REGISTER.md). No traveller photo from Tripadvisor, no reviewer avatar, no stock
  * image and no photograph of a child (or of anyone who may be under 18) is used: four selected
@@ -130,6 +131,12 @@ export const images = [
   { name: 'memories-camps-bay', src: `${G}04_beach_jump.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The five friends jumping in the air together on the beach at Camps Bay, Lion’s Head behind' },
   { name: 'memories-cape-of-good-hope', src: `${G}05_cape_of_good_hope.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The friends cheering behind the Cape of Good Hope sign, the most south-western point of the African continent' },
   { name: 'memories-sunset', src: `${G}06_sunset_lookout.webp`, origin: 'G', ambient: true, focus: '50% 50%', alt: 'The five friends seen from behind on a rock, arms round each other, watching the sun set beyond Lion’s Head with Table Mountain and the city below' },
+
+  // The sand journey's destination, after the footprints (home page, second screen): a woman standing at the water's
+  // edge, her footprints behind her. AI-generated (G), supplied by the owner on 6 Nov 2026 as
+  // goodtimes-ocean-footprints-reveal.png, used unedited at the owner's direction (an artistic representation of the
+  // coast, not a photograph of a tour). Its four prints are measured in assets/js/motion/sand/scene.js (PHOTO).
+  { name: 'ocean-footprints-reveal', src: 'journey/goodtimes-ocean-footprints-reveal.png', origin: 'G', full: true, focus: '68% 40%', alt: 'A woman in a yellow sundress and a straw hat standing at the water’s edge, looking out to sea, her footprints trailing behind her across the sand' },
 ];
 
 /** Renditions made outside the photo pipeline. */

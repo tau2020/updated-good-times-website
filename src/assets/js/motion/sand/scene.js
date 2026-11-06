@@ -17,11 +17,16 @@
                 in view: the one scene crossing the boundary
      pin–0.60   the other prints, one after another (the second just before the stage is held), the camera gliding
                 along the walk; the last (8th; 6th on a portrait phone) is complete at 0.60
-     0.605–0.87 long brushing passes, side by side and back and forth, sweep the sand off, the first over the last prints,
-                then outwards; each pushes a heap ahead of it, piles sand along its sides and spills a few grains
-     0.84–0.95  what is left crumbles into rounded clumps, those next to swept ground first, uncovering Camps Bay; the
-                prints go with the sand they were pressed into
-     0.89–0.985 the words and the link to the Cape Peninsula day rise in; from 0.95 the photograph is clear */
+     0.605–0.80 long, gently curved brushing passes in parallel rows, back and forth, sweep the sand off, the first along
+                the trail, then outwards to either side; each pushes a heap ahead of it, piles sand along its sides and
+                spills a few grains. Together they cover the whole stage, so it clears steadily (by about 0.80 at every
+                size; the last passes run out beyond it)
+     0.76–0.95  what the passes leave at their edges crumbles into rounded clumps, those next to swept ground first,
+                uncovering the destination: the woman at the water's edge, the walk's last four prints behind her, in
+                the same places as the animated ones (the animated prints go with the sand they were pressed into; the
+                image's stay)
+     0.84–0.97  the eyebrow, the headline, the line and the link rise in, one after another; from 0.95 no sand is left
+                anywhere (revealAt is exactly 1) */
 import { seeded, range, hash, clamp, mix, smoothstep } from './random.js';
 import { FOOT, envelopes, variation } from './foot.js';
 import { vnoise, h2f } from './noise.js';
@@ -29,7 +34,7 @@ import { vnoise, h2f } from './noise.js';
 /** Eight steps on wide screens; six on portrait phones, where the brief allows fewer (the stride stays real). */
 export const STEPS = 8;
 export const STEPS_PORTRAIT = 6;
-export const PHASE = { first: [0.04, 0.09], walkEnd: 0.6, reveal: 0.605, erosion: 0.84, clear: 0.95, words: [0.89, 0.985] };
+export const PHASE = { first: [0.04, 0.09], walkEnd: 0.6, reveal: 0.605, brush: 0.84, erosion: 0.76, clear: 0.95, words: [0.84, 0.97] };
 /** Where the progress starts: the section's top this far down the screen (sand-journey.js uses the same value). */
 export const START = 0.72;
 /** The sun, from the upper left and low (about 28° up), so the prints' walls cast shadows: unit vector towards it. */
@@ -41,45 +46,144 @@ export const LIGHT = (() => {
 export const SEED = 20261105;
 
 /**
- * The scene for a stage of width × height CSS px. pinAt: the progress at which the stage is held (the controller
- * measures it from the scroll geometry). quality: 'full' or 'lite' (fewer grains).
+ * The destination image's own trail (the owner's goodtimes-ocean-footprints-reveal, 1672 × 941): its four prints in
+ * walking order, in image pixels, measured from the image (each print's dark interior: centroid, principal axis and
+ * length; which foot from the side its big toe and its midfoot band are on). The animated walk ends on exactly these
+ * four, so when the sand is swept away the same prints are there in the image: one trail, one walker.
  */
-export function layoutScene({ width, height, pinAt = 0.25, seed = SEED, quality = 'full' }) {
+export const PHOTO = {
+  width: 1672,
+  height: 941,
+  footLength: 132, // heel to toe tip, image px
+  prints: [
+    { c: [120.6, 320.5], angle: 24.3, foot: 'right' },
+    { c: [348.5, 409.3], angle: 25.0, foot: 'left' },
+    { c: [546.1, 561.8], angle: 20.0, foot: 'right' },
+    { c: [816.5, 620.1], angle: 19.3, foot: 'left' },
+  ],
+  // The woman, hat to feet (x0, y0, x1, y1): every placement keeps her whole
+  subject: [1100, 95, 1310, 662],
+  // Where the image is fitted to a frame (portrait and short landscape screens), its x = 1340 (just past her hat) is
+  // the frame's right edge
+  portraitRight: 1340,
+};
+
+/**
+ * Where motion.css places the image on a stage of W × H CSS px whose top headerH px lie under the sticky header and
+ * whose bottom bar px lie under the call bar (phones and tablets): { k: CSS px per image px, ox, oy: the image's
+ * top-left corner }.
+ * - Wide screens: the image covers the stage below the header, anchored left (object-position 0% 25%).
+ * - Portrait screens: a frame below the header, as tall as the screen is wide less what the words (17.5rem) and the
+ *   call bar need under it (at least 13rem), the image height-fitted with its x = 1340 at the frame's right edge.
+ * - Short landscape screens (at most 640 px tall): the image height-fitted between the header and the call bar, its
+ *   x = 1340 at the right edge, the words to its left.
+ * The page measures the real placement and passes it in; this is the same rule, for the tests.
+ */
+export function photoPlacement(W, H, headerH = 0, bar = 0) {
+  const fit = (frameH, right) => {
+    const k = frameH / PHOTO.height;
+    return { k, ox: right - PHOTO.portraitRight * k, oy: headerH };
+  };
+  if (W / H <= 1) {
+    const p = fit(Math.max(208, Math.min(W, H - headerH - bar - 280)), W);
+    return { ...p, ox: Math.min(0, p.ox) };
+  }
+  if (H <= 640) return fit(H - headerH - bar, W);
+  const bh = H - headerH;
+  const k = Math.max(W / PHOTO.width, bh / PHOTO.height);
+  return { k, ox: 0, oy: headerH + (bh - PHOTO.height * k) * 0.25 };
+}
+
+/**
+ * The scene for a stage of width × height CSS px. pinAt: the progress at which the stage is held (the controller
+ * measures it from the scroll geometry). photo: where the destination image sits ({ k, ox, oy }, measured by the page;
+ * by default photoPlacement() with headerH and bar). quality: 'full' or 'lite' (fewer grains).
+ */
+export function layoutScene({ width, height, pinAt = 0.25, seed = SEED, quality = 'full', photo = null, headerH = 0, bar = 0 }) {
   const W = Math.max(1, width);
   const H = Math.max(1, height);
-  const portrait = H > W * 1.05;
-  const s = clamp(Math.min((portrait ? 0.19 : 0.17) * H, 0.3 * W, 165) / FOOT.length, 3.4, 8.4);
+  const portrait = W / H <= 1;
+  const place = photo || photoPlacement(W, H, headerH, bar);
+  // The animated feet are the image's prints' size, so the two trails are one
+  const s = (place.k * PHOTO.footLength) / FOOT.length;
   const rnd = seeded(seed);
 
-  // The gait: down the screen (portrait) or down and across it (landscape), with a slight meander
-  // Where the first print sits (just under the hero's edge) and where the last one finishes: the walk runs straight
-  // between them, down a portrait screen, along the diagonal of a wide one (more of the trail in view, less panning)
-  const first = portrait ? [0.5 * W, 0.24 * H] : [0.1 * W, 0.22 * H];
-  const target = portrait ? [0.5 * W, 0.68 * H] : [0.78 * W, 0.72 * H];
-  const heading = Math.atan2(target[1] - first[1], target[0] - first[0]);
-  const h = [Math.cos(heading), Math.sin(heading)];
-  const left = [h[1], -h[0]]; // the walker's left, in screen coordinates (y down)
-  const stepWidth = 13;
-  const toeOut = 7;
-  const steps = [];
+  // World centimetres; the held view at the end is the stage itself (world = stage px / s), so the image's prints
+  // have fixed world positions
+  const camEnd = [W / 2 / s, H / 2 / s];
+  const P = PHOTO.prints.map((pr) => ({
+    c: [(place.ox + pr.c[0] * place.k) / s, (place.oy + pr.c[1] * place.k) / s],
+    a: (pr.angle * Math.PI) / 180,
+    foot: pr.foot,
+  }));
+  const d = [P[3].c[0] - P[0].c[0], P[3].c[1] - P[0].c[1]];
+  const dl = Math.hypot(d[0], d[1]);
+  const heading = Math.atan2(d[1], d[0]);
+  const h = [d[0] / dl, d[1] / dl];
+  let stride = 0;
+  for (let i = 1; i < 4; i++) stride += Math.hypot(P[i].c[0] - P[i - 1].c[0], P[i].c[1] - P[i - 1].c[1]) / 3;
+
+  // The gait: the last four steps are the image's; before them the walk is extended backwards with the image's own
+  // stride, step width and alternation, along its walking line (between the two feet's tracks), bending gently away
+  // from it (the walker comes in more level and veers down towards the water)
   const count = portrait ? STEPS_PORTRAIT : STEPS;
-  let along = 0;
+  const m = count - 4;
+  const opposite = (f) => (f === 'left' ? 'right' : 'left');
+  const mid = (a, b) => [(a.c[0] + b.c[0]) / 2, (a.c[1] + b.c[1]) / 2];
+  const off = (q, a, b) => Math.abs((b.c[0] - a.c[0]) * (q.c[1] - a.c[1]) - (b.c[1] - a.c[1]) * (q.c[0] - a.c[0])) / Math.hypot(b.c[0] - a.c[0], b.c[1] - a.c[1]);
+  // Half the distance between the tracks: each print's distance from the line through the two either side of it, halved
+  const halfWidth = (off(P[1], P[0], P[2]) + off(P[2], P[1], P[3])) / 4;
+  // The walking line where the first print was made, and its direction there
+  const m12 = mid(P[0], P[1]);
+  const m23 = mid(P[1], P[2]);
+  const walkDir = Math.atan2(m23[1] - m12[1], m23[0] - m12[0]);
+  const steps = [];
   for (let k = 0; k < count; k++) {
     const sseed = hash(seed, k + 1);
     const v = variation(sseed);
-    const isLeft = k % 2 === 0;
-    if (k) along += 57 * range(rnd, 0.96, 1.04);
-    const sway = 3.2 * Math.sin(k * 0.95 + 0.6);
-    const side = (isLeft ? 1 : -1) * (stepWidth / 2) * range(rnd, 0.9, 1.1);
-    const c = [h[0] * along + left[0] * (side + sway), h[1] * along + left[1] * (side + sway)];
-    // Toes out: the left foot turns towards the walker's left, the right foot towards the right
-    const a = heading + (((isLeft ? -1 : 1) * toeOut + v.angle) * Math.PI) / 180;
-    const fh = [Math.cos(a), Math.sin(a)];
-    // sigma: +1 right foot (medial = the walker's left), −1 left foot (medial = the walker's right)
-    steps.push({ index: k, foot: isLeft ? 'left' : 'right', sigma: isLeft ? -1 : 1, c, h: fh, v, depth: 2.1 * v.depth, seed: sseed, onset: 0, duration: 0 });
+    steps.push({ index: k, v, seed: sseed, onset: 0, duration: 0 });
+  }
+  // The image's steps: their positions, headings and feet exactly; the foot's size is the image's (no variation)
+  for (let i = 0; i < 4; i++) {
+    const st = steps[m + i];
+    st.foot = P[i].foot;
+    st.c = P[i].c;
+    st.h = [Math.cos(P[i].a), Math.sin(P[i].a)];
+    st.v = { ...st.v, length: 1, width: 1, angle: 0 };
+    st.photo = i;
+  }
+  // The walk before them, from the image's first print backwards: the line turns away from the image's own
+  // direction slowly at first (the bend grows with the square of the distance), 4.5° a step on average (18° at the
+  // first of eight steps, 9° at the first of six)
+  let line = [m12[0] - (Math.cos(walkDir) * stride) / 2, m12[1] - (Math.sin(walkDir) * stride) / 2];
+  let foot = P[0].foot;
+  for (let j = 1; j <= m; j++) {
+    const st = steps[m - j];
+    const bend = walkDir - 4.5 * m * Math.pow(j / Math.max(1, m), 2) * (Math.PI / 180);
+    const len = stride * range(rnd, 0.97, 1.03);
+    line = [line[0] - Math.cos(bend) * len, line[1] - Math.sin(bend) * len];
+    foot = opposite(foot);
+    const left = [Math.sin(bend), -Math.cos(bend)]; // the walker's left (y down)
+    const side = (foot === 'left' ? 1 : -1) * halfWidth * range(rnd, 0.85, 1.15);
+    st.foot = foot;
+    st.c = [line[0] + left[0] * side, line[1] + left[1] * side];
+    const a = bend + ((foot === 'left' ? -1 : 1) * 4 + st.v.angle) * (Math.PI / 180);
+    st.h = [Math.cos(a), Math.sin(a)];
+  }
+  for (const st of steps) {
+    st.sigma = st.foot === 'left' ? -1 : 1;
+    st.depth = 2.1 * st.v.depth;
   }
 
-  // Where the first print sits on the stage, and the camera before it moves
+  // Where the first print sits (just under the hero's edge, and clear of the sticky header once the stage is held), and
+  // the camera before it moves
+  const footPx = FOOT.length * s;
+  // A print's half-height on screen (a foot pointing across the screen is about 0.45 of its length tall)
+  const halfH = (st) => (Math.abs(st.h[1]) * 0.55 + Math.abs(st.h[0]) * 0.22) * footPx;
+  for (const st of steps) st.halfH = halfH(st);
+  // The first two prints both clear the header by 8 px (the second, a left foot, lies a little higher than the first)
+  const lift = Math.max(...[0, 1].map((k) => steps[k].halfH - (steps[k].c[1] - steps[0].c[1]) * s));
+  const first = [(portrait ? 0.12 : 0.1) * W, Math.max(0.22 * H, headerH + 8 + lift)];
   const cam0 = [steps[0].c[0] - (first[0] - W / 2) / s, steps[0].c[1] - (first[1] - H / 2) / s];
   const at0 = (k) => [((steps[k].c[0] - cam0[0]) * s + W / 2) / W, ((steps[k].c[1] - cam0[1]) * s + H / 2) / H];
 
@@ -94,13 +198,12 @@ export function layoutScene({ width, height, pinAt = 0.25, seed = SEED, quality 
   // The part of the stage on screen at p, as a fraction of its height (its top is START down the screen at p = 0)
   const shown = (p) => 1 - START + (p * START) / pin;
   const halfFoot = (FOOT.length * 0.55 * s) / H;
-  // (wide screens only: on a portrait screen a stride is a third of the stage's height, and a second print made before
-  // the stage is held would put the walk ahead of where the camera can follow)
+  const top = (headerH + 8) / H; // clear of the header once the stage is held
   let entry = 1;
-  for (let k = 1; k < count - 1 && !portrait; k++) {
+  for (let k = 1; k < m; k++) {
     const [x, y] = at0(k);
     const from = Math.max(steps[k - 1].onset + 0.065, ((y + halfFoot + 0.04 - 1 + START) * pin) / START);
-    if (x > 0.92 || y > 0.8 || from + 0.072 > pin - 0.03 || shown(from) < y + halfFoot) break;
+    if (x > 0.92 || y > 0.8 || y - steps[k].halfH / H < top || from + 0.072 > pin - 0.03 || shown(from) < y + halfFoot) break;
     steps[k].onset = from;
     steps[k].duration = 0.072;
     steps[k].phase = 'entry';
@@ -115,34 +218,26 @@ export function layoutScene({ width, height, pinAt = 0.25, seed = SEED, quality 
     steps[k].phase = 'walk';
   }
 
-  // The camera: still while the stage scrolls in (the first prints sit just under the hero's edge), then a glide along
-  // the walk that brings the last print to the target point as its heel strikes; still again for the sweep
-  // How far the camera must travel along the walk for the last print to finish at the target point
-  const last = steps[count - 1].c;
-  const lx = (last[0] - cam0[0]) * s + W / 2 - target[0];
-  const ly = (last[1] - cam0[1]) * s + H / 2 - target[1];
-  const panTotal = Math.max(0, lx * h[0] + ly * h[1]);
-  // An even glide over the whole walk (eased only at its ends), not a chase of each step: the sand never moves much
-  // faster than the page scrolls
-  // The glide ends as the last heel strikes, so the last print is pressed at the target point, not past it
+  // The camera: still while the stage scrolls in, then an even glide (eased only at its ends) from there to the held
+  // view, which is the image's own framing: it arrives as the last heel strikes, and stays for the sweep
   const glideEnd = steps[count - 1].onset + steps[count - 1].duration * 0.45;
   const camAt = (p) => {
     const u = clamp((Math.min(p, PHASE.walkEnd) - (pin - 0.02)) / (glideEnd - (pin - 0.02)));
     const eased = 0.6 * u + 0.4 * u * u * (3 - 2 * u);
-    const ahead = panTotal * eased;
-    return [cam0[0] + (h[0] * ahead) / s, cam0[1] + (h[1] * ahead) / s];
+    return [mix(cam0[0], camEnd[0], eased), mix(cam0[1], camEnd[1], eased)];
   };
-  const camEnd = camAt(PHASE.walkEnd);
+  const last = steps[count - 1].c;
+  const panTotal = Math.hypot(camEnd[0] - cam0[0], camEnd[1] - cam0[1]) * s;
 
   // The sweep: someone brushing the sand off in long, gently curved passes, side by side and back and forth, in one
-  // direction (along the walk on wide screens, across the screen on portrait ones), starting with the pass over the
+  // direction (along the trail), starting with the pass over the
   // last prints and working outwards. Each pass is a circular arc from beyond one edge of the held stage to beyond
   // the other; whatever is left in between crumbles in the erosion.
   const vw = W / s;
   const vh = H / s;
   const prev = steps[count - 2].c;
   const focus = [(last[0] + prev[0]) / 2, (last[1] + prev[1]) / 2];
-  const dir0 = portrait ? 0 : heading;
+  const dir0 = heading;
   const ux = Math.cos(dir0);
   const uy = Math.sin(dir0);
   const nx = -uy;
@@ -160,7 +255,7 @@ export function layoutScene({ width, height, pinAt = 0.25, seed = SEED, quality 
   const strokes = [];
   for (let j = 0; j < n; j++) {
     const off = lanes[j] + range(rnd, -0.12, 0.12) * step;
-    const jit = (range(rnd, -7, 7) * Math.PI) / 180;
+    const jit = (range(rnd, -3, 3) * Math.PI) / 180;
     const dx = Math.cos(dir0 + jit) * (j % 2 ? -1 : 1);
     const dy = Math.sin(dir0 + jit) * (j % 2 ? -1 : 1);
     const cx = camEnd[0] + nx * off;
@@ -168,10 +263,11 @@ export function layoutScene({ width, height, pinAt = 0.25, seed = SEED, quality 
     const half = 0.62 * alongExt;
     const A = [cx - dx * half, cy - dy * half];
     const B = [cx + dx * half, cy + dy * half];
-    // A gentle bow: the centre sits far to one side of the chord
-    const R = range(rnd, 320, 900);
+    // A gentle bow, the same way round for every pass (the brush works in parallel curved rows, so neighbouring passes
+    // overlap rather than leave unswept bands between them; the passes go back and forth, so the side flips with them)
+    const R = range(rnd, 650, 1300);
     const chord = Math.hypot(B[0] - A[0], B[1] - A[1]);
-    const side = rnd() < 0.5 ? 1 : -1;
+    const side = j % 2 ? -1 : 1;
     const dist = Math.sqrt(Math.max(1, R * R - (chord / 2) * (chord / 2)));
     const O = [(A[0] + B[0]) / 2 - dy * dist * side, (A[1] + B[1]) / 2 + dx * dist * side];
     const a0 = Math.atan2(A[1] - O[1], A[0] - O[0]);
@@ -187,12 +283,12 @@ export function layoutScene({ width, height, pinAt = 0.25, seed = SEED, quality 
       dA,
       width: meanW * range(rnd, 0.88, 1.14),
       seed: hash(seed, 101 + j),
-      start: PHASE.reveal + 0.008 + (PHASE.erosion - PHASE.reveal - 0.07) * Math.pow(u, 0.9) + range(rnd, -0.004, 0.004),
+      start: PHASE.reveal + 0.008 + (PHASE.brush - PHASE.reveal - 0.07) * Math.pow(u, 0.9) + range(rnd, -0.004, 0.004),
       duration: range(rnd, 0.075, 0.1),
     });
   }
 
-  const scene = { width: W, height: H, s, portrait, heading, h, steps, strokes, cam0, camEnd, pin, seed, quality, camAt, target, panTotal };
+  const scene = { width: W, height: H, s, portrait, heading, h, steps, strokes, cam0, camEnd, pin, seed, quality, camAt, panTotal, place, stride };
   scene.grains = makeGrains(scene, quality === 'lite' ? 0.45 : 1);
   return scene;
 }

@@ -101,7 +101,9 @@ for (const size of sizes) {
     // Bring the section near so the renderer loads, then wait for it
     await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), geo.start);
     const t0 = Date.now();
-    await page.waitForFunction(() => window.__sandJourney.ready() || window.__sandJourney.tier === 'static', null, { timeout: 30_000 }).catch(() => {});
+    // The tier reads 'static' until the renderer has loaded, so wait for the renderer itself, or for a real fallback
+    // (no motion, or a failure recorded in api.error)
+    await page.waitForFunction(() => { const a = window.__sandJourney; return a.ready() || a.mode === 'static' || !!a.error; }, null, { timeout: 30_000 }).catch(() => {});
     r.sand.readyAfterMs = Date.now() - t0;
     r.sand.tier = await page.evaluate(() => window.__sandJourney.tier);
     for (const p of progress) {

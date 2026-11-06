@@ -1,6 +1,7 @@
 /* Good Times in Cape Town — the sand journey's controller (home page only)
-   The section after the hero is, in its markup, a complete static scene: the Camps Bay photograph, its words and the
-   link to the Cape Peninsula day. With motion (html.cine) and WebGL2 it becomes a scroll scene: the section is taller
+   The section after the hero is, in its markup, a complete static scene: the destination image (a woman at the water's
+   edge, her footprints behind her), its words and the link to the Cape Peninsula tour. With motion (html.cine) and
+   WebGL2 it becomes a scroll scene: the section is taller
    than the screen and its stage is held by CSS sticky while the visitor scrolls (no ScrollTrigger pin, so no pin
    spacer and no layout shift); ScrollTrigger turns the scroll into one progress value p (scrubbed, so it eases and
    reverses), and the renderer (assets/js/motion/sand/renderer.js, loaded after the hero's entrance or at the first
@@ -9,7 +10,8 @@
 
    Tiers: full (WebGL2, up to 2× pixels, shadows), lite (fewer pixels and grains, no cast shadows; chosen when frames
    are measured to be slow while the scene is drawing), static (reduced motion, ?nomotion, no WebGL2, a failed
-   renderer, a lost context until it is restored, print): the photograph with its words and link. ?sand=static|lite
+   renderer, a lost context until it is restored, print): the image with its words and link (when the script runs, the
+   words fade in once as the scene comes into view, opacity only). ?sand=static|lite
    forces a tier (QA). The canvas is decorative (aria-hidden, no pointer events); the words are real HTML and stay in
    the accessibility tree, and anything focused in them shows at once (motion.css). */
 (function () {
@@ -28,6 +30,19 @@
   var live = html.classList.contains('cine') && !!gsap && !!ST && !!src && typeof window.WebGL2RenderingContext !== 'undefined' && query !== 'static';
   if (!live) {
     section.classList.add('is-static');
+    // The final scene at once; only its words fade in (opacity, nothing moves), once, as it comes into view
+    if ('IntersectionObserver' in window) {
+      section.classList.add('is-fading');
+      var seen = new IntersectionObserver(
+        function (entries) {
+          if (!entries.some(function (e) { return e.isIntersecting; })) return;
+          seen.disconnect();
+          section.classList.add('is-seen');
+        },
+        { threshold: 0.3 }
+      );
+      seen.observe(section);
+    }
     return;
   }
   gsap.registerPlugin(ST);
@@ -73,9 +88,36 @@
     }
   };
 
-  // The words rise in as the sand clears (and the scrim behind them); p is the only input
+  // The words rise in, one after another (eyebrow, headline, line, link), once the scene is clear enough; p is the
+  // only input (PHASE.words in motion/sand/scene.js)
   var words = function (p) {
-    section.style.setProperty('--words', smooth(0.89, 0.985, p).toFixed(3)); // PHASE.words in motion/sand/scene.js
+    var st = section.style;
+    st.setProperty('--words', smooth(0.84, 0.97, p).toFixed(3));
+    for (var i = 0; i < 4; i++) st.setProperty('--w' + i, smooth(0.84 + 0.025 * i, 0.89 + 0.025 * i, p).toFixed(3));
+  };
+
+  // Where the stylesheet put the destination image on the stage ({ k: CSS px per image px, ox, oy }): the animated
+  // trail is laid out from it, so its last prints land on the image's own
+  var photoImg = stage.querySelector('[data-sand-photo] img');
+  var placement = function () {
+    if (!photoImg) return null;
+    var nw = Number(photoImg.getAttribute('width')) || 1672;
+    var nh = Number(photoImg.getAttribute('height')) || 941;
+    var sr = stage.getBoundingClientRect();
+    var r = photoImg.getBoundingClientRect();
+    var cs = getComputedStyle(photoImg);
+    if (cs.objectFit === 'cover') {
+      var k = Math.max(r.width / nw, r.height / nh);
+      var pos = cs.objectPosition.split(' ');
+      var px = parseFloat(pos[0]) / 100 || 0;
+      var py = parseFloat(pos[1]) / 100 || 0;
+      return { k: k, ox: r.left - sr.left + (r.width - nw * k) * px, oy: r.top - sr.top + (r.height - nh * k) * py };
+    }
+    return { k: r.height / nh, ox: r.left - sr.left, oy: r.top - sr.top };
+  };
+  var headerHeight = function () {
+    var hd = doc.querySelector('[data-header]');
+    return hd ? hd.offsetHeight : 0;
   };
 
   // Frame cadence while the scene is being drawn: if most recent frames are slow, drop to lite once
@@ -113,7 +155,7 @@
   var measure = function () {
     var span = trigger ? trigger.end - trigger.start : 1;
     api.pinAt = span > 0 ? (START * window.innerHeight) / span : 0.25;
-    if (renderer) renderer.resize(stage.clientWidth, stage.clientHeight, api.pinAt);
+    if (renderer) renderer.resize(stage.clientWidth, stage.clientHeight, api.pinAt, placement(), headerHeight());
   };
 
   var tween = gsap.to(state, {
@@ -150,12 +192,12 @@
         var make = function () {
           renderer = m.createSandRenderer(canvas, { quality: query === 'lite' ? 'lite' : 'full' });
           api.tier = renderer.quality;
-          renderer.resize(stage.clientWidth, stage.clientHeight, api.pinAt);
+          renderer.resize(stage.clientWidth, stage.clientHeight, api.pinAt, placement(), headerHeight());
           renderer.renderAt(state.p);
           // Arriving while the scene is on screen (a slow connection, a fast scroll): the sand and the words cross-fade
-          // into the state for this p over 0.7 s, rather than the photograph and its words vanishing in one frame
+          // into the state for this p over 0.7 s, rather than the image and its words vanishing in one frame
           var r = stage.getBoundingClientRect();
-          if (r.bottom > 0 && r.top < window.innerHeight && state.p > 0.01 && state.p < 0.985) {
+          if (r.bottom > 0 && r.top < window.innerHeight && state.p > 0.01 && state.p < 0.97) {
             section.classList.add('is-arriving');
             setTimeout(function () {
               section.classList.remove('is-arriving');
@@ -231,6 +273,7 @@
     return renderer && renderer.scene;
   };
   api.trigger = trigger;
+  api.placement = placement;
   var lose = null;
   api.loseContext = function () {
     lose = renderer && renderer.gl.getExtension('WEBGL_lose_context');

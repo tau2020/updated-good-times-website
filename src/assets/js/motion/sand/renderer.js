@@ -1,8 +1,8 @@
 /* Good Times in Cape Town — the sand journey's renderer (WebGL2, no library).
 
-   createSandRenderer(canvas, options) → { renderAt(p), resize(width, height, pinAt), setQuality(q), checksum(),
-   destroy(), quality, scene } or throws when WebGL2 or the shaders are unavailable (the controller then keeps the
-   static scene). It draws only when asked: renderAt(p) is called from the GSAP ScrollTrigger update (and on resize),
+   createSandRenderer(canvas, options) → { renderAt(p), resize(width, height, pinAt, photo, headerH), setQuality(q),
+   checksum(), destroy(), quality, scene } or throws when WebGL2 or the shaders are unavailable (the controller then
+   keeps the static scene). It draws only when asked: renderAt(p) is called from the GSAP ScrollTrigger update (and on resize),
    there is no loop of its own. renderAt is side-effect free with respect to the picture: it rebuilds every uniform
    from p, so the same p always gives the same frame, forwards, backwards or after a jump.
 
@@ -46,7 +46,7 @@ export function createSandRenderer(canvas, options = {}) {
   let quality = options.quality === 'lite' ? 'lite' : 'full';
   let scene = null;
   let lastP = 0;
-  let size = { width: 1, height: 1, pinAt: 0.25 };
+  let size = { width: 1, height: 1, pinAt: 0.25, photo: null, headerH: 0 };
 
   const sandProg = program(gl, VERTEX, SAND);
   const bakeProg = program(gl, VERTEX, BAKE);
@@ -111,15 +111,15 @@ export function createSandRenderer(canvas, options = {}) {
   const strokeB = new Float32Array(64);
   let dpr = 1;
 
-  function resize(width, height, pinAt = size.pinAt) {
-    size = { width: Math.max(1, width), height: Math.max(1, height), pinAt };
+  function resize(width, height, pinAt = size.pinAt, photo = size.photo, headerH = size.headerH) {
+    size = { width: Math.max(1, width), height: Math.max(1, height), pinAt, photo, headerH };
     const q = QUALITY[quality];
     dpr = Math.min(window.devicePixelRatio || 1, q.dpr) * q.scale;
     const px = size.width * size.height * dpr * dpr;
     if (px > q.cap) dpr *= Math.sqrt(q.cap / px);
     canvas.width = Math.max(1, Math.round(size.width * dpr));
     canvas.height = Math.max(1, Math.round(size.height * dpr));
-    scene = layoutScene({ width: size.width, height: size.height, pinAt, quality });
+    scene = layoutScene({ width: size.width, height: size.height, pinAt, quality, photo, headerH });
     render(lastP);
   }
 
@@ -235,7 +235,7 @@ export function createSandRenderer(canvas, options = {}) {
     setQuality(q) {
       if (q === quality || !QUALITY[q]) return;
       quality = q;
-      resize(size.width, size.height, size.pinAt);
+      resize(size.width, size.height, size.pinAt, size.photo, size.headerH);
     },
     destroy,
   };
