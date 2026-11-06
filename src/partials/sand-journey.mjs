@@ -1,10 +1,16 @@
 /**
  * The sand journey (home page, between the hero and the first chapter): footprints form in the sand one by one as the
- * page scrolls, then the sand is swept away from the destination of that same walk: the owner's image of a woman
+ * page scrolls, then the sand is swept away from the destination of that same walk: the owner's film of a woman
  * standing at the water's edge, the last four of those footprints behind her (assets/js/sand-journey.js,
- * assets/js/motion/sand/, assets/css/motion.css). The animated trail ends exactly on the image's own prints.
+ * assets/js/motion/sand/, assets/css/motion.css). The animated trail ends exactly on the film's own prints.
  *
- * The markup is the complete static scene: the image, the words and the link to the existing Cape Peninsula tour page,
+ * The destination is the owner's section-2-video (6 Nov 2026): the same picture as the still it replaces, brought to
+ * life (the surf washing in, the wind in her dress; she, the camera and the prints never move), as a 7-second loop
+ * (src/tools/build-beach-film.sh). Its first frame is the picture in the markup (the poster: the trail is measured on
+ * it), and the film fades in over it once it plays (sand-journey.js): only with motion allowed, while the scene is on
+ * screen and not under the sand, and never with the data saver on. It plays on its own clock; the scroll never scrubs it.
+ *
+ * The markup is the complete static scene: the poster, the words and the link to the existing Cape Peninsula tour page,
  * all in HTML. That is what a visitor sees with reduced motion, without JavaScript or WebGL, or if the renderer fails;
  * with motion the sand is a decorative canvas laid over the image by the script (aria-hidden, never takes a click), and
  * the words rise in, one after another, as the sand clears. On wide screens the headline sits in the sand above the
@@ -18,7 +24,10 @@ import { tours } from '../data/tours.mjs';
 import { creditFor } from '../data/images.mjs';
 
 export const SAND_TOUR = 'cape-peninsula-private-tour';
-export const SAND_IMAGE = 'ocean-footprints-reveal';
+/** The poster: the film's first frame, 1280 × 720 (the still the walk was measured on, PHOTO in scene.js, was 1672 × 941) */
+export const SAND_IMAGE = 'beach-film-poster';
+/** The film (H.264, fast start; served with byte ranges by functions/assets/video for Safari) */
+export const SAND_FILM = { mp4: 'assets/video/beach-film-1280.mp4', width: 1280, height: 720 };
 export const SAND_WORDS = {
   eyebrow: 'Cape Peninsula · Coastal Journey',
   title: 'Look Where Your Footsteps Led.',
@@ -38,7 +47,9 @@ export function sandJourney() {
   return `<section class="sand-journey" id="sand-journey" aria-labelledby="sand-journey-title" data-sand-journey>
   <link rel="stylesheet" href="assets/css/motion.css">
   <div class="sand-journey__stage" data-sand-stage>
-    <div class="sand-journey__beach" data-sand-photo>${picture({ name: SAND_IMAGE, sizes, fetchpriority: 'low' })}</div>
+    <div class="sand-journey__beach" data-sand-photo>${picture({ name: SAND_IMAGE, sizes, fetchpriority: 'low' })}
+      <video class="sand-journey__film" aria-hidden="true" muted playsinline loop preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" width="${SAND_FILM.width}" height="${SAND_FILM.height}" data-mp4="${esc(SAND_FILM.mp4)}" data-sand-film></video>
+    </div>
     <div class="sand-journey__words" data-sand-words>
       <div class="sand-journey__head">
         <p class="sand-journey__eyebrow">${esc(w.eyebrow)}</p>

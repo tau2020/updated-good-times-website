@@ -11,8 +11,16 @@
  * Captions name a place only where the photograph shows it; no wording implies that a meal,
  * a tasting or a restaurant is included in a tour.
  */
-import { esc, picture } from './ui.mjs';
+import { esc, picture, coverSizes } from './ui.mjs';
 import { focusOf } from './media.mjs';
+
+/**
+ * The width a frame's photograph is drawn at, for its `sizes` (coverSizes): the picture is 10% taller than its frame (the
+ * scroll drift, culinary.css) and it covers the frame, so a landscape photograph in a square or portrait frame is drawn
+ * much wider than the frame.
+ *   frames: [media condition or '', frame width, frame shape (width / height)] per breakpoint, as in culinary.css
+ */
+export const frameSizes = (name, frames) => coverSizes(name, frames.map(([media, w, shape]) => [media, w, shape / 1.1]));
 
 const frame = (name, { sizes, focus, ratio, cls = '' }) =>
   `<div class="taste__frame${cls ? ` ${cls}` : ''}" style="--focus: ${focusOf(name, focus)}${ratio ? `; --ratio: ${ratio}` : ''}" data-taste-frame>${picture({ name, sizes })}</div>`;
@@ -31,8 +39,8 @@ export function culinaryReveal({ id, words, main, layer, caption }) {
       ${words}
     </div>
     <figure class="taste__stage">
-      <div class="taste__main" data-taste-main>${frame(main.name, { sizes: '(min-width: 64em) min(58vw, 50rem), 100vw', focus: main.focus })}</div>
-      <div class="taste__layer" data-taste-layer>${frame(layer.name, { sizes: '(min-width: 64em) min(24vw, 21rem), 52vw', focus: layer.focus })}</div>
+      <div class="taste__main" data-taste-main>${frame(main.name, { sizes: frameSizes(main.name, [['(min-width: 64em)', 'min(58vw, 57rem)', 3 / 2], ['', '100vw', 3 / 2]]), focus: main.focus })}</div>
+      <div class="taste__layer" data-taste-layer>${frame(layer.name, { sizes: frameSizes(layer.name, [['(min-width: 64em)', 'min(24vw, 21rem)', 1], ['', '52vw', 1]]), focus: layer.focus })}</div>
       <figcaption class="taste__caption" data-taste-caption>${caption}</figcaption>
     </figure>
   </div>
@@ -53,11 +61,11 @@ export function diningDiptych({ id, eyebrow, title, text, left, right }) {
       <p class="taste__text">${text}</p>
     </div>
     <figure class="taste__pane taste__pane--a" data-taste-pane>
-      ${frame(left.name, { sizes: '(min-width: 64em) min(56vw, 46rem), 100vw', focus: left.focus })}
+      ${frame(left.name, { sizes: frameSizes(left.name, [['(min-width: 64em)', 'min(56vw, 46rem)', 4 / 3], ['', '100vw', 4 / 3]]), focus: left.focus })}
       <figcaption>${esc(left.caption)}</figcaption>
     </figure>
     <figure class="taste__pane taste__pane--b" data-taste-pane>
-      ${frame(right.name, { sizes: '(min-width: 64em) 20rem, (min-width: 40em) 36vw, 62vw', focus: right.focus })}
+      ${frame(right.name, { sizes: frameSizes(right.name, [['(min-width: 64em)', '20rem', 4 / 5], ['(min-width: 40em)', '36vw', 4 / 5], ['', '62vw', 4 / 5]]), focus: right.focus })}
       <figcaption>${esc(right.caption)}</figcaption>
     </figure>
   </div>
@@ -69,7 +77,7 @@ export function quietMoment({ id, eyebrow, title, text, image }) {
   return `<section class="section taste taste--quiet lc-scope" aria-labelledby="${id}" data-taste="quiet">
   <div class="container taste__quiet">
     <figure class="taste__solo" data-taste-main>
-      ${frame(image.name, { sizes: '(min-width: 48em) 22rem, 72vw', focus: image.focus })}
+      ${frame(image.name, { sizes: frameSizes(image.name, [['(min-width: 48em)', '22rem', 4 / 5], ['', '72vw', 4 / 5]]), focus: image.focus })}
     </figure>
     <div class="taste__words" data-taste-words>
       <p class="eyebrow">${esc(eyebrow)}</p>

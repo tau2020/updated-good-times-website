@@ -2,6 +2,7 @@ import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, price,
 import { rowCard } from '../partials/cards.mjs';
 import { services, types } from '../data/transfers.mjs';
 
+
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Transfers', href: 'transfers/' }];
 const requestHref = (id) => `enquire/?type=transfer&transfer=${id}`;
 const byId = (id) => types.find((t) => t.id === id);

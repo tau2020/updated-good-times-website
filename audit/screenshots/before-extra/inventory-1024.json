@@ -1,0 +1,2843 @@
+{
+ "/contact/": {
+  "errors": [],
+  "failed": [],
+  "items": [
+   {
+    "kind": "img",
+    "slot": "gt-logo-compact.svg",
+    "file": "brand/gt-logo-compact.svg",
+    "section": {
+     "tag": "header",
+     "id": "",
+     "cls": "site-header is-condensed",
+     "heading": ""
+    },
+    "component": "brand < container < site-header",
+    "caption": "",
+    "alt": "",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 1736,
+     "w": 256,
+     "h": 68
+    },
+    "natural": {
+     "w": 2121,
+     "h": 564
+    },
+    "fileW": 2121,
+    "drawnW": 256,
+    "density": 8.29,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0
+    },
+    "loading": "",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "cape-point-cliffs",
+    "file": "img/cape-point-cliffs-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge-panel__scene < gt-concierge-panel__sheet",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "bokaap-street",
+    "file": "img/bokaap-street-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "winelands-tasting-flight",
+    "file": "img/winelands-tasting-flight-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "langa-mural",
+    "file": "img/langa-mural-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Get in touch"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Get in touch"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Get in touch"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Get in touch"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1728,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "gt-logo-reversed.svg",
+    "file": "brand/gt-logo-reversed.svg",
+    "section": {
+     "tag": "footer",
+     "id": "",
+     "cls": "site-footer on-dark",
+     "heading": "Tours"
+    },
+    "component": "footer-brand < container < site-footer",
+    "caption": "",
+    "alt": "Good Times in Cape Town: Make unforgettable memories in the Mother City",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 1819,
+     "w": 233,
+     "h": 81
+    },
+    "natural": {
+     "w": 2121,
+     "h": 741
+    },
+    "fileW": 2121,
+    "drawnW": 233,
+    "density": 9.09,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0.0001
+    },
+    "loading": "lazy",
+    "complete": true
+   }
+  ],
+  "sections": []
+ },
+ "/faq/": {
+  "errors": [],
+  "failed": [],
+  "items": [
+   {
+    "kind": "img",
+    "slot": "gt-logo-compact.svg",
+    "file": "brand/gt-logo-compact.svg",
+    "section": {
+     "tag": "header",
+     "id": "",
+     "cls": "site-header is-condensed",
+     "heading": ""
+    },
+    "component": "brand < container < site-header",
+    "caption": "",
+    "alt": "",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 1623,
+     "w": 256,
+     "h": 68
+    },
+    "natural": {
+     "w": 2121,
+     "h": 564
+    },
+    "fileW": 2121,
+    "drawnW": 256,
+    "density": 8.29,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0
+    },
+    "loading": "",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "cape-point-cliffs",
+    "file": "img/cape-point-cliffs-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge-panel__scene < gt-concierge-panel__sheet",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "bokaap-street",
+    "file": "img/bokaap-street-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "winelands-tasting-flight",
+    "file": "img/winelands-tasting-flight-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "langa-mural",
+    "file": "img/langa-mural-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Frequently asked questions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Frequently asked questions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Frequently asked questions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Frequently asked questions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1615,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "gt-logo-reversed.svg",
+    "file": "brand/gt-logo-reversed.svg",
+    "section": {
+     "tag": "footer",
+     "id": "",
+     "cls": "site-footer on-dark",
+     "heading": "Tours"
+    },
+    "component": "footer-brand < container < site-footer",
+    "caption": "",
+    "alt": "Good Times in Cape Town: Make unforgettable memories in the Mother City",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 1705,
+     "w": 233,
+     "h": 81
+    },
+    "natural": {
+     "w": 2121,
+     "h": 741
+    },
+    "fileW": 2121,
+    "drawnW": 233,
+    "density": 9.09,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0.0001
+    },
+    "loading": "lazy",
+    "complete": true
+   }
+  ],
+  "sections": []
+ },
+ "/enquire/": {
+  "errors": [],
+  "failed": [],
+  "items": [
+   {
+    "kind": "img",
+    "slot": "gt-logo-compact.svg",
+    "file": "brand/gt-logo-compact.svg",
+    "section": {
+     "tag": "header",
+     "id": "",
+     "cls": "site-header is-condensed",
+     "heading": ""
+    },
+    "component": "brand < container < site-header",
+    "caption": "",
+    "alt": "",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 1297,
+     "w": 256,
+     "h": 68
+    },
+    "natural": {
+     "w": 2121,
+     "h": 564
+    },
+    "fileW": 2121,
+    "drawnW": 256,
+    "density": 8.29,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0
+    },
+    "loading": "",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "cape-point-cliffs",
+    "file": "img/cape-point-cliffs-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge-panel__scene < gt-concierge-panel__sheet",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 245,
+     "h": 184
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-480.avif",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 245,
+     "h": 196
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 56,
+     "h": 42
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "bokaap-street",
+    "file": "img/bokaap-street-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "winelands-tasting-flight",
+    "file": "img/winelands-tasting-flight-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "langa-mural",
+    "file": "img/langa-mural-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Book with us"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 64,
+     "h": 48
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-480.avif",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Book with us"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 64,
+     "h": 51
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Book with us"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Book with us"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < service-choice__media < service-choice",
+    "caption": "",
+    "alt": "",
+    "hidden": false,
+    "box": {
+     "x": 76,
+     "y": 520,
+     "w": 249,
+     "h": 140
+    },
+    "natural": {
+     "w": 340,
+     "h": 255
+    },
+    "fileW": 480,
+    "drawnW": 249,
+    "density": 1.93,
+    "crop": {
+     "fit": "cover",
+     "shownW": 1,
+     "shownH": 0.75,
+     "pos": "50% 50%"
+    },
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-480.avif",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < service-choice__media < service-choice",
+    "caption": "",
+    "alt": "",
+    "hidden": false,
+    "box": {
+     "x": 343,
+     "y": 520,
+     "w": 249,
+     "h": 140
+    },
+    "natural": {
+     "w": 340,
+     "h": 272
+    },
+    "fileW": 480,
+    "drawnW": 249,
+    "density": 1.93,
+    "crop": {
+     "fit": "cover",
+     "shownW": 1,
+     "shownH": 0.703,
+     "pos": "50% 50%"
+    },
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "African penguins on the white sand at Boulders Beach, the boardwalk and granite boulders behind",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 240,
+     "h": 180
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "bokaap-street",
+    "file": "img/bokaap-street-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "Brightly painted houses lining a Bo-Kaap street, Devil’s Peak rising behind under a clear blue sky",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "winelands-tasting-flight",
+    "file": "img/winelands-tasting-flight-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "A guest raising a glass of white wine beside a tasting flight, vineyard views through the windows",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "langa-mural",
+    "file": "img/langa-mural-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "A colourful mural painted on a building wall in Langa under a bright blue sky",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "guide-selfie-bay",
+    "file": "img/guide-selfie-bay-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "A close-up selfie of four smiling people above a white-sand bay",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "hermanus-whale-sculpture",
+    "file": "img/hermanus-whale-sculpture-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "A couple seated by the whale-tail sculpture on the clifftop in Hermanus",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "gt-mountain-trail.svg",
+    "file": "brand/gt-mountain-trail.svg",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "art-panel < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 0,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "A Marine Dynamics shark cage diving boat with guests on deck, gulls circling overhead",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "quad-bikes-convoy",
+    "file": "img/quad-bikes-convoy-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "A group on red quad bikes lined up across white sand dunes",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "gt-mountain-trail.svg",
+    "file": "brand/gt-mountain-trail.svg",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "art-panel < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 0,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "map-of-africa-viewpoint",
+    "file": "img/map-of-africa-viewpoint-800.webp",
+    "section": {
+     "tag": "section",
+     "id": "",
+     "cls": "section enquiry-section",
+     "heading": "What would you like to book?"
+    },
+    "component": "picture < booking-summary__media < booking-summary",
+    "caption": "",
+    "alt": "Two visitors beneath the Map of Africa sign above a forested river valley near Wilderness",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 1289,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "gt-logo-reversed.svg",
+    "file": "brand/gt-logo-reversed.svg",
+    "section": {
+     "tag": "footer",
+     "id": "",
+     "cls": "site-footer on-dark",
+     "heading": "Tours"
+    },
+    "component": "footer-brand < container < site-footer",
+    "caption": "",
+    "alt": "Good Times in Cape Town: Make unforgettable memories in the Mother City",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 1380,
+     "w": 233,
+     "h": 81
+    },
+    "natural": {
+     "w": 2121,
+     "h": 741
+    },
+    "fileW": 2121,
+    "drawnW": 233,
+    "density": 9.09,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0.0001
+    },
+    "loading": "lazy",
+    "complete": true
+   }
+  ],
+  "sections": [
+   {
+    "key": "01-section",
+    "y": 304,
+    "h": 1005,
+    "file": "1024-01-section.jpg",
+    "shotH": 1005
+   }
+  ]
+ },
+ "/privacy/": {
+  "errors": [],
+  "failed": [],
+  "items": [
+   {
+    "kind": "img",
+    "slot": "gt-logo-compact.svg",
+    "file": "brand/gt-logo-compact.svg",
+    "section": {
+     "tag": "header",
+     "id": "",
+     "cls": "site-header is-condensed",
+     "heading": ""
+    },
+    "component": "brand < container < site-header",
+    "caption": "",
+    "alt": "",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 5171,
+     "w": 256,
+     "h": 68
+    },
+    "natural": {
+     "w": 2121,
+     "h": 564
+    },
+    "fileW": 2121,
+    "drawnW": 256,
+    "density": 8.29,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0
+    },
+    "loading": "",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "cape-point-cliffs",
+    "file": "img/cape-point-cliffs-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge-panel__scene < gt-concierge-panel__sheet",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 245,
+     "h": 184
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-480.avif",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 245,
+     "h": 196
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 56,
+     "h": 42
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "bokaap-street",
+    "file": "img/bokaap-street-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "winelands-tasting-flight",
+    "file": "img/winelands-tasting-flight-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "langa-mural",
+    "file": "img/langa-mural-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Privacy notice and credits"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 64,
+     "h": 48
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-480.avif",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Privacy notice and credits"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 64,
+     "h": 51
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Privacy notice and credits"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Privacy notice and credits"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 5163,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "gt-logo-reversed.svg",
+    "file": "brand/gt-logo-reversed.svg",
+    "section": {
+     "tag": "footer",
+     "id": "",
+     "cls": "site-footer on-dark",
+     "heading": "Tours"
+    },
+    "component": "footer-brand < container < site-footer",
+    "caption": "",
+    "alt": "Good Times in Cape Town: Make unforgettable memories in the Mother City",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 5253,
+     "w": 233,
+     "h": 81
+    },
+    "natural": {
+     "w": 2121,
+     "h": 741
+    },
+    "fileW": 2121,
+    "drawnW": 233,
+    "density": 9.09,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0.0001
+    },
+    "loading": "lazy",
+    "complete": true
+   }
+  ],
+  "sections": []
+ },
+ "/terms/": {
+  "errors": [],
+  "failed": [],
+  "items": [
+   {
+    "kind": "img",
+    "slot": "gt-logo-compact.svg",
+    "file": "brand/gt-logo-compact.svg",
+    "section": {
+     "tag": "header",
+     "id": "",
+     "cls": "site-header is-condensed",
+     "heading": ""
+    },
+    "component": "brand < container < site-header",
+    "caption": "",
+    "alt": "",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 2432,
+     "w": 256,
+     "h": 68
+    },
+    "natural": {
+     "w": 2121,
+     "h": 564
+    },
+    "fileW": 2121,
+    "drawnW": 256,
+    "density": 8.29,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0
+    },
+    "loading": "",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "cape-point-cliffs",
+    "file": "img/cape-point-cliffs-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge-panel__scene < gt-concierge-panel__sheet",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 245,
+     "h": 184
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-480.avif",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 245,
+     "h": 196
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "div",
+     "id": "concierge",
+     "cls": "gt-concierge-panel lc-scope",
+     "heading": ""
+    },
+    "component": "picture < lc-invite__photo < lc-invite",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 56,
+     "h": 42
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "bokaap-street",
+    "file": "img/bokaap-street-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "winelands-tasting-flight",
+    "file": "img/winelands-tasting-flight-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "langa-mural",
+    "file": "img/langa-mural-800.webp",
+    "section": {
+     "tag": "nav",
+     "id": "concierge-days",
+     "cls": "gt-concierge-panel__index",
+     "heading": ""
+    },
+    "component": "picture < gt-concierge__thumb < gt-concierge__day",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "boulders-penguins-boardwalk",
+    "file": "img/boulders-penguins-boardwalk-480.avif",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Terms & Conditions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 64,
+     "h": 48
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "airport-welcome-sign",
+    "file": "img/airport-welcome-sign-480.avif",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Terms & Conditions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 64,
+     "h": 51
+    },
+    "fileW": 480,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": true
+   },
+   {
+    "kind": "img",
+    "slot": "marine-dynamics-boat",
+    "file": "img/marine-dynamics-boat-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Terms & Conditions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "private-guests-arms-raised",
+    "file": "img/private-guests-arms-raised-800.webp",
+    "section": {
+     "tag": "body",
+     "id": "",
+     "cls": "has-preview-bar has-mobile-cta",
+     "heading": "Terms & Conditions"
+    },
+    "component": "picture < gt-concierge-row__photo < gt-concierge-row",
+    "caption": "",
+    "alt": "",
+    "hidden": true,
+    "box": {
+     "x": 0,
+     "y": 2424,
+     "w": 0,
+     "h": 0
+    },
+    "natural": {
+     "w": 0,
+     "h": 0
+    },
+    "fileW": 800,
+    "drawnW": 0,
+    "density": null,
+    "crop": null,
+    "loading": "lazy",
+    "complete": false
+   },
+   {
+    "kind": "img",
+    "slot": "gt-logo-reversed.svg",
+    "file": "brand/gt-logo-reversed.svg",
+    "section": {
+     "tag": "footer",
+     "id": "",
+     "cls": "site-footer on-dark",
+     "heading": "Tours"
+    },
+    "component": "footer-brand < container < site-footer",
+    "caption": "",
+    "alt": "Good Times in Cape Town: Make unforgettable memories in the Mother City",
+    "hidden": false,
+    "box": {
+     "x": 40,
+     "y": 2515,
+     "w": 233,
+     "h": 81
+    },
+    "natural": {
+     "w": 2121,
+     "h": 741
+    },
+    "fileW": 2121,
+    "drawnW": 233,
+    "density": 9.09,
+    "crop": {
+     "fit": "fill",
+     "shownW": 1,
+     "shownH": 1,
+     "pos": "50% 50%",
+     "aspectError": 0.0001
+    },
+    "loading": "lazy",
+    "complete": true
+   }
+  ],
+  "sections": []
+ }
+}

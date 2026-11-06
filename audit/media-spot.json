@@ -1,0 +1,166 @@
+{
+ "base": "https://media-preview.good-times-in-cape-town.pages.dev",
+ "when": "2026-11-06T11:45:08.900Z",
+ "results": [
+  {
+   "name": "phone 390: /tours/#adventure filters the list to the adventure activities",
+   "ok": true,
+   "detail": "Shark Cage Diving · Quad Biking · Sky Diving · Plan a custom private day"
+  },
+  {
+   "name": "phone 390: an adventure card shows quad-bikes-convoy",
+   "ok": true,
+   "detail": {
+    "file": "quad-bikes-convoy-1200.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "phone 390: an adventure card shows skydive-tandem",
+   "ok": true,
+   "detail": {
+    "file": "skydive-tandem-1200.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "phone 390: an adventure card shows marine-dynamics-boat",
+   "ok": true,
+   "detail": {
+    "file": "marine-dynamics-boat-1200.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "phone 390: /tours/cape-agulhas-private-tour/ hero photograph loaded",
+   "ok": true,
+   "detail": {
+    "file": "agulhas-tip-marker-1200.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "phone 390: /tours/cape-agulhas-private-tour/ credit on the hero",
+   "ok": true,
+   "detail": "Photo: Shaomi72, CC BY-SA 3.0, via Wikimedia Commons"
+  },
+  {
+   "name": "phone 390: /tours/cape-agulhas-private-tour/ no placeholder artwork",
+   "ok": true,
+   "detail": "0 placeholder images"
+  },
+  {
+   "name": "phone 390: /tours/sky-diving/ hero photograph loaded",
+   "ok": true,
+   "detail": {
+    "file": "skydive-tandem-1200.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "phone 390: /tours/sky-diving/ credit on the hero",
+   "ok": true,
+   "detail": "Photo: SkydivePhoto, CC0, via Wikimedia Commons (not taken in Cape Town)"
+  },
+  {
+   "name": "phone 390: /tours/sky-diving/ no placeholder artwork",
+   "ok": true,
+   "detail": "0 placeholder images"
+  },
+  {
+   "name": "phone 390: About shows the owner's photograph",
+   "ok": true,
+   "detail": "owner-portrait-1200.avif"
+  },
+  {
+   "name": "phone 390: About owner photograph uncropped (frame shape = photograph shape)",
+   "ok": true,
+   "detail": "frame 1.5, photograph 1.5, 355px wide"
+  },
+  {
+   "name": "phone 390: no failed request or page error on these pages",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "name": "desktop 1440: /tours/#adventure filters the list to the adventure activities",
+   "ok": true,
+   "detail": "Shark Cage Diving · Quad Biking · Sky Diving · Plan a custom private day"
+  },
+  {
+   "name": "desktop 1440: an adventure card shows quad-bikes-convoy",
+   "ok": true,
+   "detail": {
+    "file": "quad-bikes-convoy-480.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "desktop 1440: an adventure card shows skydive-tandem",
+   "ok": true,
+   "detail": {
+    "file": "skydive-tandem-480.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "desktop 1440: an adventure card shows marine-dynamics-boat",
+   "ok": true,
+   "detail": {
+    "file": "marine-dynamics-boat-480.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "desktop 1440: /tours/cape-agulhas-private-tour/ hero photograph loaded",
+   "ok": true,
+   "detail": {
+    "file": "agulhas-tip-marker-1600.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "desktop 1440: /tours/cape-agulhas-private-tour/ credit on the hero",
+   "ok": true,
+   "detail": "Photo: Shaomi72, CC BY-SA 3.0, via Wikimedia Commons"
+  },
+  {
+   "name": "desktop 1440: /tours/cape-agulhas-private-tour/ no placeholder artwork",
+   "ok": true,
+   "detail": "0 placeholder images"
+  },
+  {
+   "name": "desktop 1440: /tours/sky-diving/ hero photograph loaded",
+   "ok": true,
+   "detail": {
+    "file": "skydive-tandem-1600.avif",
+    "loaded": true
+   }
+  },
+  {
+   "name": "desktop 1440: /tours/sky-diving/ credit on the hero",
+   "ok": true,
+   "detail": "Photo: SkydivePhoto, CC0, via Wikimedia Commons (not taken in Cape Town)"
+  },
+  {
+   "name": "desktop 1440: /tours/sky-diving/ no placeholder artwork",
+   "ok": true,
+   "detail": "0 placeholder images"
+  },
+  {
+   "name": "desktop 1440: About shows the owner's photograph",
+   "ok": true,
+   "detail": "owner-portrait-800.avif"
+  },
+  {
+   "name": "desktop 1440: About owner photograph uncropped (frame shape = photograph shape)",
+   "ok": true,
+   "detail": "frame 1.5, photograph 1.5, 520px wide"
+  },
+  {
+   "name": "desktop 1440: no failed request or page error on these pages",
+   "ok": true,
+   "detail": []
+  }
+ ]
+}

@@ -44,7 +44,9 @@ export const packages = [
     notIncluded: ['Accommodation', 'Meals', 'Entrance fees', 'Tips'],
     price: { from: 8500, currency: 'ZAR', unit: 'per day', tiers: [{ label: '1–4 guests', max: 4, amount: 8500 }], note: 'Per day, for 1–4 guests. Groups of 5–8: please enquire.' },
     cancellation: 'Free cancellation up to 24 hours before the scheduled departure time. Cancellations within 24 hours of departure, and no-shows, are non-refundable.',
-    images: { hero: 'rooiberg-red-chair', card: 'map-of-africa-viewpoint', gallery: ['rooiberg-red-chair', 'map-of-africa-viewpoint', 'cango-caves'] },
+    // The gallery never repeats the hero or the card (audit/image-change-register.md). The destination card for the
+    // Garden Route links to this page, so it shows this package's card, as the tour list does
+    images: { hero: 'rooiberg-red-chair', card: 'map-of-africa-viewpoint', gallery: ['cango-caves', 'garden-route-garden-path', 'mountain-road-arch'] },
     heroFocus: '40% 18%',
     related: 'cape-winelands-private-tour',
     seo: {

@@ -89,8 +89,10 @@
   grid-area: 1 / 1;
   border-radius: var(--media-radius);
 }
+/* The landscape keeps its photograph's own shape (3:2) at every width and shows its whole width: the guests at the
+   tasting table sit at both of its edges (the media audit) */
 .taste__main .taste__frame {
-  --ratio: 4 / 3;
+  --ratio: 3 / 2;
 }
 .taste__layer {
   grid-area: 1 / 1;
@@ -107,12 +109,6 @@
 .taste__layer .taste__frame {
   --ratio: 1;
 }
-/* The landscape's frame is a touch wider on the right than the photograph shows (a lamp post at the edge of
-   the vineyard photograph stays outside it) */
-.taste__main .taste__frame > picture {
-  width: 109%;
-  max-width: none;
-}
 .taste__caption {
   grid-area: 2 / 1;
   max-width: 44%;
@@ -122,9 +118,6 @@
   .taste__grid {
     grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
     align-items: center;
-  }
-  .taste__main .taste__frame {
-    --ratio: 3 / 2;
   }
   .taste__layer {
     justify-self: start;

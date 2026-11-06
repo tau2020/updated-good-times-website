@@ -1,8 +1,9 @@
-import { esc, picture, preloadFor, stars } from '../partials/ui.mjs';
+import { esc, picture, preloadFor, coverSizes, stars } from '../partials/ui.mjs';
 import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox } from '../partials/media.mjs';
 import { culinaryReveal, tasteRule } from '../partials/culinary.mjs';
+import { licensedCredit } from '../partials/cards.mjs';
 import { heroPhoneGallery } from '../partials/phone-gallery.mjs';
 import { sandJourney } from '../partials/sand-journey.mjs';
 import { imageByName } from '../data/images.mjs';
@@ -30,24 +31,18 @@ const airport = services.find((s) => s.id === 'airport');
 /** 03 · The moments between destinations: four stops along Good Times days (captions by place, nobody named). */
 const MOMENTS = [
   { key: 'a', name: 'muizenberg-huts-guests', focus: '50% 56%', caption: 'Muizenberg’s bathing huts', sizes: '(min-width: 64em) min(52vw, 46rem), 100vw', depth: 0 },
-  { key: 'b', name: 'guide-selfie-bay', focus: '56% 40%', caption: 'A selfie above the bay', sizes: '(min-width: 64em) min(26vw, 23rem), 60vw', depth: -1 },
-  { key: 'c', name: 'fairview-goat-tower', focus: '50% 46%', caption: 'The goat tower at Fairview, on a Winelands day', sizes: '(min-width: 64em) min(30vw, 27rem), 100vw', depth: 1 },
+  { key: 'b', name: 'above-the-bay-selfie', focus: '36% 62%', caption: 'A selfie above the bay', sizes: '(min-width: 64em) min(26vw, 23rem), 60vw', depth: -1 },
+  // The library's only photograph of the goat tower, now whole in a frame of its own 4:3 (the 3:2 crop cut the arch and the ramp)
+  { key: 'c', name: 'fairview-goat-tower', focus: '50% 46%', ratio: '4 / 3', caption: 'The goat tower at Fairview, on a Winelands day', sizes: '(min-width: 64em) min(30vw, 27rem), 100vw', depth: 1 },
   { key: 'd', name: 'cape-of-good-hope-sign', focus: '56% 58%', caption: 'At the Cape of Good Hope', sizes: '(min-width: 64em) min(22vw, 19rem), 48vw', depth: -1 },
 ];
 
 /**
- * 04 · The destination carousel: the six destinations (names, lines and links from tours.mjs) as
- * DestinationSlide records, each framed by its own photograph (focal points in images.mjs).
- * The label counts private tours to choose from, never a duration.
+ * 04 · The destination carousel: the six destinations (names, lines, links and photographs from tours.mjs) as
+ * DestinationSlide records, each framed by the destination's own photograph (focal points in images.mjs), the one
+ * its destinations-page card shows. The label counts private tours to choose from, never a duration.
  */
-const FILM = [
-  { id: 'peninsula', image: 'boulders-penguins-boardwalk' },
-  { id: 'city', image: 'bokaap-street' },
-  { id: 'langa', image: 'langa-mural-guests' },
-  { id: 'winelands', image: 'winelands-tasting-flight' },
-  { id: 'overberg', image: 'hermanus-whale-sculpture' },
-  { id: 'garden-route', image: 'rooiberg-red-chair' },
-];
+const FILM = [{ id: 'peninsula' }, { id: 'city' }, { id: 'langa' }, { id: 'winelands' }, { id: 'overberg' }, { id: 'garden-route' }];
 const SLIDES = FILM.map((f) => {
   const d = destinations.find((x) => x.id === f.id);
   const count = d.tours.length;
@@ -58,7 +53,7 @@ const SLIDES = FILM.map((f) => {
     title: d.name,
     description: d.text,
     href: d.href,
-    image: f.image,
+    image: d.image,
     metaLabel: count ? `${count} private ${count === 1 ? 'tour' : 'tours'}` : d.countLabel || 'Private tour',
     metaSpoken: count ? `${count} private ${count === 1 ? 'tour' : 'tours'} to choose from` : '',
     linkLabel: count > 1 ? `Explore the private tours to ${inText}` : count === 1 ? `Explore the private tour to ${inText}` : `Explore the ${d.name.replace(/^The /, '')} multi-day tour`,
@@ -81,18 +76,18 @@ const WAYS = {
  * (media.js). Every crop keeps its subject (focal points in images.mjs); the lightbox shows each photograph whole.
  */
 const GALLERY = [
-  { name: 'boulders-penguin-colony', role: 'wide', tile: { lg: [8, '3 / 2'], md: [2, '16 / 10'], sm: [2, '4 / 3'] }, title: 'African penguins at Boulders Beach', place: 'Boulders Beach, Simon’s Town', story: 'The colony lives among granite boulders on False Bay, one of the last stops of a Peninsula day.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
+  { name: 'boulders-shadows', role: 'wide', tile: { lg: [8, '3 / 2'], md: [2, '16 / 10'], sm: [2, '4 / 3'] }, title: 'Watching the penguins', place: 'Boulders Beach, Simon’s Town', story: 'Shadows from the boardwalk fall across the sand at the edge of the colony, one of the last stops of a Peninsula day.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
   { name: 'muizenberg-huts', role: 'wide', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The bathing huts at Muizenberg', place: 'Muizenberg Beach', story: 'Colourful huts and surfers on the way home along False Bay.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
-  { name: 'castle-moat', role: 'wide', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The Castle of Good Hope', place: 'Cape Town', story: 'The 17th-century fortress, Devil’s Peak in its moat: where the city tour begins.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
+  { name: 'cape-minstrels', role: 'wide', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The Cape Minstrels', place: 'Cape Town', story: 'Music and colour in the streets, met by chance on a city day. The minstrels parade when they choose: a sight like this is luck, never a promise.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
   { name: 'mandela-statue-drakenstein', tile: { lg: [3, '3 / 4'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The statue of Nelson Mandela', place: 'Drakenstein Correctional Centre', story: 'On the road to the Winelands, outside the prison from which he walked free in 1990.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
-  { name: 'district-six-museum', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The District Six Museum', place: 'Cape Town', story: 'The story of a neighbourhood and the people forced from it, told on the city tour.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
-  { name: 'marine-dynamics-boat', role: 'wide', tile: { lg: [7, '2 / 1'], md: [2, '2 / 1'], sm: [2, '2 / 1'] }, title: 'Heading out to shark territory', place: 'Gansbaai', story: 'The boat out of Gansbaai on a shark cage diving day, gulls overhead.', href: 'tours/shark-cage-diving/', link: 'Shark Cage Diving' },
-  { name: 'winelands-terrace', role: 'food', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A terrace tasting', place: 'A Winelands estate', story: 'Wine poured at the table; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
-  { name: 'company-garden-squirrel', role: 'wide', tile: { lg: [3, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A white squirrel', place: 'The Company’s Garden', story: 'Spotted in Cape Town’s oldest garden. Sightings like this are luck, never a promise.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
-  { name: 'langa-mural', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A mural in Langa', place: 'Langa, Cape Town', story: 'Part of a half day in Langa, alongside the arts centre, the museum and the old beer hall.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
-  { name: 'bokaap-selfie', tile: { lg: [3, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'A selfie in the Bo-Kaap', place: 'Bo-Kaap, Cape Town', story: 'The colourful Cape Malay streets, the last walk of the city tour.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
-  { name: 'langa-traditional-drink', role: 'table', tile: { lg: [7, '3 / 2'], md: [1, '1'], sm: [1, '1'] }, title: 'A traditional drink, shared', place: 'Langa, Cape Town', story: 'The optional traditional beer tasting on the township tour.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
-  { name: 'map-of-africa-viewpoint', role: 'wine', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'The Map of Africa viewpoint', place: 'Near Wilderness', story: 'A forested river valley on the Garden Route, three days or more from Cape Town.', href: 'packages/garden-route-private-tour/', link: 'Garden Route Private Tour' },
+  { name: 'city-heritage-plaque', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'Reading the city’s history', place: 'Central Cape Town', story: 'Parliament, the Company’s Garden and Greenmarket Square: the city’s story, read on its own streets.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
+  { name: 'cape-point-aloes', role: 'wide', tile: { lg: [7, '2 / 1'], md: [2, '2 / 1'], sm: [2, '2 / 1'] }, title: 'Aloes above the sea', place: 'The Cape Peninsula', story: 'Fynbos and aloes on the cliffs on the way to Cape Point.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
+  { name: 'burger-lunch-guide', role: 'food', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'Lunch with our guide', place: '', story: 'Lunch is never part of a tour’s price: we stop wherever you would like to eat, and you pay on the day.', href: 'tours/', link: 'All private tours' },
+  { name: 'cape-point-zebra', role: 'wide', tile: { lg: [3, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A zebra on the road', place: 'The Cape Peninsula', story: 'Zebra, eland and ostriches live in the reserve around Cape Point. Sightings like this are luck, never a promise.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
+  { name: 'lunch-spread-guests', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '4 / 3'] }, title: 'Lunch in the sun', place: '', story: 'A long lunch on a terrace between the sights, wherever you choose to stop.', href: 'tours/', link: 'All private tours' },
+  { name: 'winelands-couple-tasting', tile: { lg: [3, 'auto'], md: [1, '4 / 3'], sm: [1, '4 / 3'] }, title: 'A tasting for two', place: 'The Cape Winelands', story: 'A tasting in an estate’s tasting room; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
+  { name: 'langa-home-visit', role: 'table', tile: { lg: [7, '3 / 2'], md: [1, '4 / 3'], sm: [1, '4 / 3'] }, title: 'Welcomed into a home', place: 'Langa, Cape Town', story: 'Guests welcomed into a family’s home on a day in Langa. A visit like this depends on who is home: it is never part of the plan we promise.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
+  { name: 'winelands-red-tasting', role: 'wine', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '4 / 3'] }, title: 'A glass of red', place: 'The Cape Winelands', story: 'Red wine at a tasting on a Winelands day.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
 ];
 
 /** 10 · Words from the road: every chosen review as a compact card in the carousel. */
@@ -179,10 +174,20 @@ function storiesSection(site) {
 </section>`;
 }
 
+/** The width a full-bleed scene's photograph is drawn at: the scene's height (living-cape.css .lc-scene) and the drift's
+    7% each way, so a phone's tall scene gets a file wide enough for its crop (coverSizes) */
+const sceneSizes = (name) =>
+  coverSizes(name, [
+    ['(max-width: 47.99em)', '100vw', 'calc(1.14 * clamp(32rem, 88vh, 46rem))'],
+    ['', '100vw', 'calc(1.14 * clamp(34rem, 94vh, 60rem))'],
+  ]);
+/** The adventure chapter's photographs fill a sticky screen (living-cape.css .lc-wild__media) */
+const wildSizes = (name) => coverSizes(name, [['', '100vw', '100vh']]);
+
 /** A full-bleed scene (ScenicBackdrop): the photograph moves a little slower than the page; the words sit where the picture leaves room. */
 function scene({ id, cls, image, focus, focusTall, mark, title, line, action, credit, eager = false }) {
   return `<section class="lc-scene ${cls} lc-dark" aria-labelledby="${id}" style="--focus: ${focus}; --focus-tall: ${focusTall}" data-scene>
-  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: image, alt: '', sizes: '100vw', eager })}</div></div>
+  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: image, alt: '', sizes: sceneSizes(image), eager })}</div></div>
   <div class="lc-scene__scrim" aria-hidden="true"></div>
   <div class="container lc-scene__inner">
     <div class="lc-scene__words" data-scene-words>
@@ -270,7 +275,9 @@ ${scene({
   cls: 'lc-scene--road',
   image: 'chapmans-viewpoint-couple',
   focus: '66% 46%',
-  focusTall: '72% 50%',
+  // On a phone the scene shows about a quarter of the photograph's width, under the words: the coast and the headland,
+  // not the couple's faces behind the heading (the media audit, 6.B); wider screens show the couple beside the words
+  focusTall: '30% 50%',
   mark: chapterMark(2, 'Where the Road Meets the Ocean', 'lc-mark--light'),
   title: 'The coast road <br>is half the <em>adventure.</em>',
   line: 'Chapman’s Peak Drive, the Cape of Good Hope and Cape Point, then the penguins at Boulders Beach: the Peninsula in one private day.',
@@ -287,7 +294,7 @@ ${scene({
     </div>
     ${MOMENTS.map(
       (m) => `<figure class="lc-moments__item lc-moments__item--${m.key}" data-depth="${m.depth}" data-rise="moments">
-      <div class="lc-print-frame" style="--focus: ${m.focus}">${picture({ name: m.name, sizes: m.sizes })}</div>
+      <div class="lc-print-frame" style="--focus: ${m.focus}${m.ratio ? `; --ratio: ${m.ratio}` : ''}">${picture({ name: m.name, sizes: m.sizes })}</div>
       <figcaption>${esc(m.caption)}</figcaption>
     </figure>`,
     ).join('\n    ')}
@@ -309,7 +316,7 @@ ${scene({
 <section class="lc-wild lc-dark" aria-labelledby="wild-title" data-wild>
   <div class="lc-wild__panel lc-wild__panel--one" data-wild-panel>
     <figure class="lc-wild__media">
-      <div class="lc-wild__art" style="--focus: 34% 46%; --focus-tall: 30% 46%" data-wild-art>${picture({ name: 'cape-point-cliffs', sizes: '100vw' })}</div>
+      <div class="lc-wild__art" style="--focus: 34% 46%; --focus-tall: 30% 46%" data-wild-art>${picture({ name: 'cape-point-cliffs', sizes: wildSizes('cape-point-cliffs') })}</div>
       <div class="lc-wild__scrim" aria-hidden="true"></div>
       <div class="lc-wild__shade" aria-hidden="true" data-wild-shade></div>
     </figure>
@@ -322,7 +329,7 @@ ${scene({
   </div>
   <div class="lc-wild__panel lc-wild__panel--two" data-wild-panel>
     <figure class="lc-wild__media">
-      <div class="lc-wild__art" style="--focus: 50% 60%; --focus-tall: 52% 60%" data-wild-art>${picture({ name: 'quad-bikes-dunes', sizes: '100vw' })}</div>
+      <div class="lc-wild__art" style="--focus: 50% 60%; --focus-tall: 52% 60%" data-wild-art>${picture({ name: 'quad-bikes-dunes', sizes: wildSizes('quad-bikes-dunes') })}</div>
       <div class="lc-wild__scrim" aria-hidden="true"></div>
     </figure>
     <div class="container lc-wild__beat" data-wild-beat>
@@ -344,7 +351,7 @@ ${scene({
     <ul class="lc-ways__list" role="list">
       ${SERVICES.map(
         (s, i) => `<li class="lc-way" data-service="${s.id}" data-reveal style="--reveal-i:${i % 2}">
-        <div class="lc-way__photo" style="--focus: ${s.focus}">${picture({ name: s.image, sizes: '(min-width: 64em) min(44vw, 40rem), (min-width: 48em) 46vw, 7rem' })}</div>
+        <div class="lc-way__photo" style="--focus: ${s.focus}">${picture({ name: s.image, sizes: '(min-width: 64em) min(44vw, 40rem), (min-width: 48em) 46vw, 7rem' })}${licensedCredit(s.image)}</div>
         <div class="lc-way__body">
           <h3 class="lc-way__name"><a href="${esc(s.href)}">${esc(s.name)}</a></h3>
           <p class="lc-way__line">${esc(s.line)}</p>
@@ -379,11 +386,11 @@ ${scene({
       ${travelNote({ href: 'about/', label: 'Meet Good Times' })}
     </div>
     <figure class="lc-people__pair lc-people__pair--a" data-depth="1" data-rise="people">
-      <div class="lc-print-frame" style="--focus: 42% 60%">${picture({ name: 'castle-cannons-group', sizes: '(min-width: 64em) min(30vw, 26rem), 100vw' })}</div>
+      <div class="lc-print-frame" style="--focus: 40% 50%">${picture({ name: 'castle-table-mountain', sizes: '(min-width: 64em) min(30vw, 26rem), 100vw' })}</div>
       <figcaption>A city day at the Castle of Good Hope</figcaption>
     </figure>
     <figure class="lc-people__pair lc-people__pair--b" data-depth="-1" data-rise="people">
-      <div class="lc-print-frame" style="--focus: 50% 46%">${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(26vw, 23rem), 100vw' })}</div>
+      <div class="lc-print-frame" style="--focus: 50% 46%; --ratio: 5 / 4">${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(26vw, 23rem), 100vw' })}</div>
       <figcaption>Lunch in a Winelands garden</figcaption>
     </figure>
   </div>
@@ -396,9 +403,11 @@ ${culinaryReveal({
       ${tasteRule}
       <p class="lc-lead">On the Winelands day there is wine and cheese at Fairview, then La Motte, Franschhoek and Lanzerac. Tasting fees and lunch are paid on the day, so you choose what to taste and where to eat.</p>
       ${travelNote({ href: tourHref(WINELANDS), label: 'The Winelands day' })}`,
-  main: { name: 'winelands-host-pouring', focus: '56% 50%' },
-  layer: { name: 'winelands-tasting-table', focus: '50% 50%' },
-  caption: 'A tasting outdoors on a Winelands estate · Around the tasting table',
+  // The wide table of five fills the large frame whole; the compact pour at Waterford fits the square inset, framed on
+  // the guest and the host (the media audit: the inset cut the table's guests at both edges)
+  main: { name: 'winelands-tasting-table', focus: '50% 50%' },
+  layer: { name: 'winelands-host-pouring', focus: '71% 50%' },
+  caption: 'Around the tasting table · A tasting outdoors on a Winelands estate',
 })}
 
 <section class="lc-gallery" id="gallery" aria-labelledby="gallery-title">
@@ -466,7 +475,7 @@ ${scene({
 ${storiesSection(site)}
 
 <section class="lc-scene lc-scene--invite lc-dark" aria-labelledby="invite-title" style="--focus: 50% 34%; --focus-tall: 42% 30%" data-scene>
-  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: 'camps-bay-twelve-apostles', alt: '', sizes: '100vw' })}</div></div>
+  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: 'camps-bay-twelve-apostles', alt: '', sizes: sceneSizes('camps-bay-twelve-apostles') })}</div></div>
   <div class="lc-scene__scrim" aria-hidden="true"></div>
   <div class="container lc-scene__inner">
     <div class="lc-scene__words" data-scene-words>

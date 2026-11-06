@@ -250,10 +250,11 @@ test.describe('tours', () => {
     await page.goto('/tours/cape-peninsula-private-tour/?nomotion');
     await page.locator('#tab-gallery').click();
     const prints = page.locator('#panel-gallery [data-lc-open]');
-    await expect(prints).toHaveCount(7);
+    // Six photographs of its own: the gallery never repeats the tour's hero or card
+    await expect(prints).toHaveCount(6);
     await prints.nth(2).click();
     const dialog = page.locator('[data-lc-lightbox]');
-    await expect(dialog.locator('[data-lc-count]')).toHaveText('03 / 07');
+    await expect(dialog.locator('[data-lc-count]')).toHaveText('03 / 06');
     const boxes = await Promise.all(['[data-lc-prev]', '[data-lc-next]', '[data-lc-close]'].map((sel) => dialog.locator(sel).boundingBox()));
     const mid = (b) => b.y + b.height / 2;
     expect(Math.abs(mid(boxes[0]) - mid(boxes[1]))).toBeLessThan(2);
@@ -263,7 +264,7 @@ test.describe('tours', () => {
     const frame = await dialog.locator('[data-lc-frame]').boundingBox();
     for (const b of boxes) expect(b.y >= frame.y + frame.height || b.x >= frame.x + frame.width).toBe(true);
     await dialog.locator('[data-lc-prev]').click();
-    await expect(dialog.locator('[data-lc-count]')).toHaveText('02 / 07');
+    await expect(dialog.locator('[data-lc-count]')).toHaveText('02 / 06');
     await dialog.locator('[data-lc-close]').click();
     await expect(dialog).toBeHidden();
     await expect(prints.nth(2)).toBeFocused();
@@ -423,10 +424,15 @@ test.describe('home hero', () => {
     expect(await inPhone.evaluate((i) => getComputedStyle(i).visibility), 'the photograph has left the phone').toBe('hidden');
     expect(await page.evaluate(() => [window.__phoneGalleries[0].timeline().paused(), window.__phoneGalleries[0].state.zoomed, document.documentElement.classList.contains('pg-locked')]), 'the swipe waits; the page holds still').toEqual([true, true, true]);
     await expect(zoom.locator('.pg-zoom__img')).toHaveAttribute('alt', await inPhone.getAttribute('alt'));
-    expect(await zoom.locator('.pg-zoom__img').evaluate((i) => i.currentSrc), 'its largest rendition once landed').toMatch(/memories-[a-z-]+-(549|550|552|800)\.(avif|webp)$/);
+    // The same photograph, at a rendition at least as large as the phone's once it has landed
+    const [slot, phoneW] = /\/([a-z0-9-]+?)-(\d+)\.(?:avif|webp)$/.exec(await inPhone.evaluate((i) => i.currentSrc)).slice(1);
+    const landed = /\/([a-z0-9-]+?)-(\d+)\.(?:avif|webp)$/.exec(await zoom.locator('.pg-zoom__img').evaluate((i) => i.currentSrc));
+    expect(landed?.[1], 'the same photograph once landed').toBe(slot);
+    expect(Number(landed[2]), 'a rendition at least as large as the phone’s').toBeGreaterThanOrEqual(Number(phoneW));
     await expect(zoom.locator('.pg-zoom__place')).toHaveText(await page.locator('.phone-gallery__slide').nth(k).getAttribute('data-place'));
     await expect(zoom.locator('.pg-zoom__tour')).toHaveAttribute('href', /(^|\/)tours\/[a-z-]+\/$/);
-    await expect(zoom.locator('.pg-zoom__meta')).toHaveText(new RegExp(`^Cape Town Memories · ${k + 1} / 6 · An AI-generated illustration$`));
+    const credit = await page.locator('.phone-gallery__slide').nth(k).getAttribute('data-credit');
+    await expect(zoom.locator('.pg-zoom__meta')).toHaveText(`Cape Town Memories · ${k + 1} / 6 · ${credit}`);
     await expect(zoom.locator('.pg-zoom__close')).toBeFocused();
     // A click away (the dimmed hero, far from the photograph) puts it back, and the swipe carries on from it
     await page.mouse.click(hero.x + 24, hero.y + hero.height - 24);
@@ -456,7 +462,8 @@ test.describe('home hero', () => {
     await expect(zoom).toHaveJSProperty('open', true);
     expect(await zoom.locator('.pg-zoom__img').evaluate((i) => getComputedStyle(i).transform), 'nothing flies').toBe('none');
     await expect(zoom.locator('.pg-zoom__close')).toBeFocused();
-    await expect(zoom.locator('.pg-zoom__place')).toHaveText('Table Mountain');
+    await expect(zoom.locator('.pg-zoom__place')).toHaveText('Chapman’s Peak Drive');
+    await expect(zoom.locator('.pg-zoom__place')).toHaveText(await page.locator('.phone-gallery__slide').first().getAttribute('data-place'));
     const axe = await new AxeBuilder({ page }).include('.pg-zoom').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
     expect(axe.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
     await page.keyboard.press('Enter'); // Close
@@ -528,10 +535,11 @@ test.describe('home hero', () => {
   test('with reduced motion the scene stays a still, the gallery shows its first photograph and loads no other, and nothing is hidden', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const media = [];
-    page.on('request', (r) => /\/assets\/(video\/|img\/memories-)/.test(r.url()) && media.push(r.url().split('/').pop()));
+    const PHONE = /\/assets\/(video\/|img\/(chapmans-peak-couple|bokaap-street-pair|boulders-penguin-selfie|vineyard-couple|cape-point-lighthouse-trio|guide-selfie-peninsula)-)/;
+    page.on('request', (r) => PHONE.test(r.url()) && media.push(r.url().split('/').pop()));
     await page.goto('/');
     await page.waitForTimeout(1_200);
-    expect(media.filter((f) => !/^memories-table-mountain-/.test(f)), 'no film, and no other photograph').toEqual([]);
+    expect(media.filter((f) => !/^chapmans-peak-couple-/.test(f)), 'no film (the hero’s or the sand journey’s), and no other photograph').toEqual([]);
     await expect(page.locator('.hero__poster img')).toBeVisible();
     expect(await page.locator('.hero__video').evaluate((v) => v.currentSrc)).toBe('');
     await expect(page.locator('.hero__media')).not.toHaveClass(/\bis-playing\b/);
@@ -969,9 +977,11 @@ test.describe('home story: The Cape, A Living Story', () => {
     await expect(page.locator('.lc-way__extra')).toHaveText('The Garden Route Tour');
     for (const [i, href] of [/(^|\/)tours\/$/, /(^|\/)transfers\/#airport$/, /(^|\/)tours\/#adventure$/, /(^|\/)enquire\/\?type=tour&tour=custom$/].entries()) await expect(ways.nth(i)).toHaveAttribute('href', href);
     await expect(page.locator('.lc-way__extra')).toHaveAttribute('href', /(^|\/)packages\/$/);
-    // Each service is shown with a real Good Times photograph, not an icon card
+    // Each service is shown with a photograph of its own, not an icon card: three Good Times photographs and, for the
+    // adventures, a credited, openly licensed photograph of shark-cage diving off Gansbaai (the library's adventure
+    // photographs lead the quad-biking tour and the home page's adventure chapter)
     await expect(page.locator('.lc-way__photo img')).toHaveCount(4);
-    expect(await page.locator('.lc-way__photo img').evaluateAll((imgs) => imgs.map((i) => i.alt))).toEqual(expect.arrayContaining([expect.stringMatching(/Cape of Good Hope/), expect.stringMatching(/departures/), expect.stringMatching(/quad bikes/), expect.stringMatching(/Rooiberg/)]));
+    expect(await page.locator('.lc-way__photo img').evaluateAll((imgs) => imgs.map((i) => i.alt))).toEqual([expect.stringMatching(/Chapman’s Peak/), expect.stringMatching(/departures/), expect.stringMatching(/shark cage/), expect.stringMatching(/Cape Point/)]);
     await expect(page.locator('.lc-way .gt-engraved-icon:not(.lc-way__go .gt-engraved-icon)')).toHaveCount(0);
     await expect(page.locator('.lc-ways__book .lc-seal')).toHaveAttribute('href', /(^|\/)enquire\/$/);
     const { destinations } = await import('../../src/data/tours.mjs');
@@ -1162,13 +1172,13 @@ test.describe('home story: The Cape, A Living Story', () => {
       const prints = page.locator('[data-lc-open]');
       await expect(prints).toHaveCount(12);
       // Without JavaScript each print is a plain link to the full photograph
-      await expect(prints.first()).toHaveAttribute('href', /assets\/img\/boulders-penguin-colony-\d+\.webp$/);
+      await expect(prints.first()).toHaveAttribute('href', /assets\/img\/boulders-shadows-\d+\.webp$/);
       await prints.nth(2).scrollIntoViewIfNeeded();
       await prints.nth(2).click();
       const dialog = page.locator('[data-lc-lightbox]');
       await expect(dialog).toHaveJSProperty('open', true);
       await expect(page.locator('[data-lc-count]')).toHaveText('03 / 12');
-      await expect(page.locator('[data-lc-title]')).toHaveText('The Castle of Good Hope');
+      await expect(page.locator('[data-lc-title]')).toHaveText('The Cape Minstrels');
       await expect(page.locator('[data-lc-place]')).toHaveText('Cape Town');
       await expect(page.locator('[data-lc-link]')).toHaveAttribute('href', /tours\/cape-town-city-private-tour\/$/);
       // The credit comes from the photograph's recorded origin, with the site's photo credits
@@ -1189,12 +1199,16 @@ test.describe('home story: The Cape, A Living Story', () => {
       await expect(page.locator('[data-lc-frame] img')).toHaveAttribute('alt', /Mandela/);
       if (motion) await expect.poll(() => page.evaluate(() => window.__media.gallery.busy())).toBe(false);
       await page.keyboard.press('ArrowRight');
-      await expect(page.locator('[data-lc-title]')).toHaveText('The District Six Museum');
+      await expect(page.locator('[data-lc-title]')).toHaveText('Reading the city’s history');
       if (motion) await expect.poll(() => page.evaluate(() => window.__media.gallery.busy())).toBe(false);
-      // A photograph enlarged for the web says so in its credit
       await page.keyboard.press('ArrowRight');
-      await expect(page.locator('[data-lc-title]')).toHaveText('Heading out to shark territory');
-      await expect(page.locator('[data-lc-credit]')).toHaveText('A Good Times photograph, enlarged for the web');
+      await expect(page.locator('[data-lc-title]')).toHaveText('Aloes above the sea');
+      if (motion) await expect.poll(() => page.evaluate(() => window.__media.gallery.busy())).toBe(false);
+      // A meal is shown as a stop on the day, never as part of a tour: its link is to every tour, not one
+      await page.keyboard.press('ArrowRight');
+      await expect(page.locator('[data-lc-title]')).toHaveText('Lunch with our guide');
+      await expect(page.locator('[data-lc-link]')).toHaveAttribute('href', /(^|\/)tours\/$/);
+      await expect(page.locator('[data-lc-credit]')).toHaveText('A Good Times photograph');
       // Once landed, the lightbox asks for a larger rendition than the wall's thumbnail
       if (!isMobile) await expect.poll(() => page.locator('[data-lc-frame] img').evaluate((img) => Number(/-(\d+)\.(?:avif|webp)$/.exec(img.currentSrc)?.[1] || 0))).toBeGreaterThanOrEqual(1200);
       // The page behind cannot scroll
@@ -1604,7 +1618,7 @@ const photos = (page) =>
         const drawn = getComputedStyle(img).objectFit === 'cover' ? Math.max(r.width, (r.height * img.naturalWidth) / img.naturalHeight) : r.width;
         const source = [...img.closest('picture').querySelectorAll('source')].find((s) => !s.media || matchMedia(s.media).matches);
         const widths = (source?.srcset || '').split(',').map((s) => parseInt(s.trim().split(/\s+/)[1])).filter(Boolean);
-        return { file: img.currentSrc.split('/').pop(), hero: !!img.closest('.hero__media'), cssW: r.width, drawn, chosen: parseInt(/-(\d+)\.\w+$/.exec(img.currentSrc)?.[1] || '0'), max: Math.max(...widths) };
+        return { file: img.currentSrc.split('/').pop(), hero: !!img.closest('.hero__media'), film: !!img.closest('[data-sand-photo]'), cssW: r.width, drawn, chosen: parseInt(/-(\d+)\.\w+$/.exec(img.currentSrc)?.[1] || '0'), max: Math.max(...widths) };
       });
   });
 
@@ -1626,14 +1640,14 @@ test.describe('design remediation (stage 1)', () => {
   test('the About banner draws its photograph within its largest rendition at desktop width', async ({ page, isMobile }) => {
     test.skip(isMobile, 'desktop check at 1440 px');
     await page.goto('/about/?nomotion');
-    const hero = (await photos(page)).find((p) => p.file.startsWith('peninsula-bench-view'));
-    expect(hero, 'peninsula-bench-view in the banner').toBeTruthy();
+    const hero = (await photos(page)).find((p) => p.file.startsWith('cape-coastline'));
+    expect(hero, 'cape-coastline in the banner').toBeTruthy();
     // The largest rendition is 1600 px wide; at 1x it must never upscale.
     expect(hero.drawn, 'drawn within the largest rendition').toBeLessThanOrEqual(hero.max + 1);
     expect(hero.chosen, 'the largest rendition is served').toBe(hero.max);
   });
 
-  test('the small-source tour heroes are framed at native size, never stretched; tours without a photograph show the logo artwork, never a stand-in photograph', async ({ page }) => {
+  test('the small-source tour heroes are framed at native size, never stretched; every tour leads with a photograph, and one that is not Good Times’ is credited on the hero itself', async ({ page }) => {
     // Whale watching leads with a 1200 px portrait from Hermanus: framed, not stretched to full bleed
     await page.goto('/tours/whale-watching-private-tour/?nomotion');
     await expect(page.locator('.tour-hero--framed')).toBeVisible();
@@ -1644,21 +1658,27 @@ test.describe('design remediation (stage 1)', () => {
     await page.goto('/tours/shark-cage-diving/?nomotion');
     await expect(page.locator('.tour-hero--framed')).toHaveCount(0);
     expect((await photos(page)).find((p) => p.file.startsWith('marine-dynamics-boat')), 'marine-dynamics-boat in the hero').toBeTruthy();
-    // Cape Agulhas and Sky Diving have no Good Times photograph yet: the approved mountain-trail artwork, decorative
-    for (const path of ['/tours/cape-agulhas-private-tour/', '/tours/sky-diving/']) {
+    // Cape Agulhas and Sky Diving have no Good Times photograph yet: no placeholder artwork any more, but an openly
+    // licensed photograph of the place or the activity, its author, licence and source named on the hero
+    for (const [path, slot] of [['/tours/cape-agulhas-private-tour/', 'agulhas-tip-marker'], ['/tours/sky-diving/', 'skydive-tandem']]) {
       await page.goto(`${path}?nomotion`);
-      await expect(page.locator('.tour-hero .art-panel img[src$="gt-mountain-trail.svg"]'), path).toHaveCount(1);
-      await expect(page.locator('.tour-hero .art-panel img'), path).toHaveAttribute('alt', '');
-      await expect(page.locator('.tour-hero picture'), path).toHaveCount(0);
+      await expect(page.locator('.tour-hero .art-panel'), path).toHaveCount(0);
+      expect((await photos(page)).find((p) => p.file.startsWith(slot)), `${slot} in the hero`).toBeTruthy();
+      await expect(page.locator('.tour-hero__credit'), path).toContainText(/^Photo: .+, (CC0|CC BY-SA [\d.]+), via Wikimedia Commons/);
     }
+    // No Good Times photograph, no credit badge
+    await page.goto('/tours/cape-winelands-private-tour/?nomotion');
+    await expect(page.locator('.tour-hero__credit')).toHaveCount(0);
   });
 
   test('no photo is drawn wider than its largest rendition', async ({ page }) => {
     test.setTimeout(120_000);
     for (const path of PAGES) {
       await page.goto(`${path}?nomotion`);
-      // The home hero photograph is drawn full bleed on purpose.
-      const over = (await photos(page)).filter((p) => !p.hero && p.drawn > p.max + 1);
+      // The home hero photograph is drawn full bleed on purpose. So is the sand journey's poster: it is the owner's film's
+      // own first frame at the film's own size (1280 × 720, the largest the film has), and the film plays over it at
+      // the same size (audit/image-quality-report.md).
+      const over = (await photos(page)).filter((p) => !p.hero && !p.film && p.drawn > p.max + 1);
       expect(over.map((p) => `${p.file}: drawn ${Math.round(p.drawn)} px, largest ${p.max} px`), path).toEqual([]);
     }
   });
@@ -1666,11 +1686,11 @@ test.describe('design remediation (stage 1)', () => {
 
 test.describe('taste compositions and About’s photographs', () => {
   const PLACES = [
-    ['/', '[data-taste="reveal"]', ['winelands-host-pouring', 'winelands-tasting-table']],
-    ['/tours/cape-winelands-private-tour/', '[data-taste="diptych"]', ['winelands-pergola-lunch', 'winelands-garden-lunch']],
-    ['/destinations/', '[data-taste="quiet"]', ['winelands-pergola-lunch']],
+    ['/', '[data-taste="reveal"]', ['winelands-tasting-table', 'winelands-host-pouring']],
+    ['/tours/cape-winelands-private-tour/', '[data-taste="diptych"]', ['winelands-pergola-lunch', 'winelands-estate-terrace']],
+    ['/destinations/', '[data-taste="quiet"]', ['pergola-lunch-table']],
     // About's penguins and Langa mural share the Reveal's choreography
-    ['/about/', '[data-taste="reveal"]', ['boulders-penguins-boardwalk', 'langa-mural']],
+    ['/about/', '[data-taste="reveal"]', ['boulders-beach-penguins', 'langa-mural-visit']],
   ];
   const settled = (sel) =>
     `[...document.querySelectorAll('${sel} [data-taste-main], ${sel} [data-taste-frame], ${sel} [data-taste-layer], ${sel} [data-taste-words] > *, ${sel} figcaption')].every((e) => { const cs = getComputedStyle(e); return Number(cs.opacity) === 1 && cs.visibility === 'visible' && cs.clipPath === 'none'; })`;

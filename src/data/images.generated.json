@@ -1,4 +1,35 @@
 {
+  "above-the-bay-selfie": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
+  },
+  "agulhas-lighthouse": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1920,
+    "height": 1275
+  },
+  "agulhas-tip-marker": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "width": 1920,
+    "height": 1285
+  },
   "airport-arrivals-group": {
     "widths": [
       480,
@@ -7,6 +38,27 @@
       1600
     ],
     "width": 2048,
+    "height": 1152
+  },
+  "airport-departures-group": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 3105,
+    "height": 2071
+  },
+  "airport-departures-trolley": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
     "height": 1152
   },
   "airport-departures-wave": {
@@ -58,14 +110,51 @@
     "width": 1000,
     "height": 800
   },
+  "beach-film-poster": {
+    "widths": [
+      640,
+      960,
+      1280
+    ],
+    "width": 1280,
+    "height": 720
+  },
+  "beach-thrones": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
+  },
+  "beyerskloof-estate": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1152
+  },
+  "bokaap-pink-wall": {
+    "widths": [
+      480,
+      768
+    ],
+    "width": 768,
+    "height": 512
+  },
   "bokaap-selfie": {
     "widths": [
       480,
       800,
-      1000
+      1200,
+      1600
     ],
-    "width": 1000,
-    "height": 800
+    "width": 1824,
+    "height": 1216
   },
   "bokaap-street": {
     "widths": [
@@ -77,6 +166,35 @@
     "width": 2000,
     "height": 1600
   },
+  "bokaap-street-pair": {
+    "widths": [
+      480,
+      800
+    ],
+    "width": 810,
+    "height": 1080,
+    "ambient": true
+  },
+  "boulders-beach-penguins": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2016,
+    "height": 1512
+  },
+  "boulders-couple-selfie": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
+  },
   "boulders-penguin-colony": {
     "widths": [
       480,
@@ -87,6 +205,16 @@
     "width": 1536,
     "height": 1024
   },
+  "boulders-penguin-selfie": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1280,
+    "height": 960,
+    "ambient": true
+  },
   "boulders-penguins-boardwalk": {
     "widths": [
       480,
@@ -96,6 +224,46 @@
     ],
     "width": 2048,
     "height": 1536
+  },
+  "boulders-shadows": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 4608,
+    "height": 2076
+  },
+  "boulders-two-penguins": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 1616
+  },
+  "boulders-welcome-sign": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2754,
+    "height": 1836
+  },
+  "burger-lunch-guide": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 4032,
+    "height": 2268
   },
   "camps-bay-twelve-apostles": {
     "widths": [
@@ -117,6 +285,16 @@
     "width": 1200,
     "height": 1100
   },
+  "cape-coastline": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1616,
+    "height": 1080
+  },
   "cape-minstrels": {
     "widths": [
       480,
@@ -126,6 +304,16 @@
     ],
     "width": 2754,
     "height": 1836
+  },
+  "cape-of-good-hope-cove": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
   },
   "cape-of-good-hope-sign": {
     "widths": [
@@ -137,6 +325,36 @@
     "width": 1536,
     "height": 1024
   },
+  "cape-point-aloes": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1616,
+    "height": 1080
+  },
+  "cape-point-boardwalk": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1616,
+    "height": 1080
+  },
+  "cape-point-boardwalk-walk": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
+  },
   "cape-point-cliffs": {
     "widths": [
       480,
@@ -147,6 +365,16 @@
     ],
     "width": 2048,
     "height": 1365
+  },
+  "cape-point-coast-view": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1600,
+    "height": 1200
   },
   "cape-point-headland": {
     "widths": [
@@ -168,7 +396,27 @@
     "width": 1092,
     "height": 1365
   },
-  "castle-cannons-group": {
+  "cape-point-lighthouse-trio": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1200,
+    "height": 1600,
+    "ambient": true
+  },
+  "cape-point-ostrich": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1616,
+    "height": 1080
+  },
+  "cape-point-sign-trio": {
     "widths": [
       480,
       800,
@@ -176,7 +424,37 @@
       1600
     ],
     "width": 2048,
-    "height": 1152
+    "height": 1365
+  },
+  "cape-point-zebra": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
+  },
+  "castle-cannon-couple": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2754,
+    "height": 1836
+  },
+  "castle-cannon-pair": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
   },
   "castle-moat": {
     "widths": [
@@ -198,6 +476,36 @@
     "width": 3240,
     "height": 2160
   },
+  "chapmans-peak-couple": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2268,
+    "height": 4032,
+    "ambient": true
+  },
+  "chapmans-peak-guide-selfie": {
+    "widths": [
+      480,
+      800,
+      1152
+    ],
+    "width": 1152,
+    "height": 2048
+  },
+  "chapmans-peak-wall-trio": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1365
+  },
   "chapmans-viewpoint-couple": {
     "widths": [
       480,
@@ -209,6 +517,25 @@
     "width": 3120,
     "height": 2081
   },
+  "city-heritage-plaque": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 3120,
+    "height": 2081
+  },
+  "coast-sunset-couple": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1200,
+    "height": 1600
+  },
   "company-garden-squirrel": {
     "widths": [
       480,
@@ -217,6 +544,16 @@
     ],
     "width": 1000,
     "height": 800
+  },
+  "diaz-beach-cove": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1616,
+    "height": 1080
   },
   "district-six-museum": {
     "widths": [
@@ -238,7 +575,26 @@
     "width": 2048,
     "height": 1536
   },
-  "guide-selfie-bay": {
+  "garden-route-garden-path": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 5712,
+    "height": 4284
+  },
+  "good-hope-walk-couple": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
+  },
+  "guide-selfie-peninsula": {
     "widths": [
       480,
       800,
@@ -246,7 +602,8 @@
       1600
     ],
     "width": 2048,
-    "height": 1364
+    "height": 1536,
+    "ambient": true
   },
   "heritage-building-guests": {
     "widths": [
@@ -294,6 +651,76 @@
     "width": 1280,
     "height": 853
   },
+  "hout-bay-from-chapmans": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1616,
+    "height": 1080
+  },
+  "hout-bay-viewpoint-couple": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 2048,
+    "height": 1536
+  },
+  "hout-bay-viewpoint-pair": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
+  },
+  "langa-blue-home": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1350
+    ],
+    "width": 1350,
+    "height": 900
+  },
+  "langa-home-visit": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
+    "height": 1152
+  },
+  "langa-homes": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1350
+    ],
+    "width": 1350,
+    "height": 900
+  },
+  "langa-marches-1960": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 3024,
+    "height": 4032
+  },
   "langa-mural": {
     "widths": [
       480,
@@ -314,6 +741,24 @@
     "width": 2560,
     "height": 1440
   },
+  "langa-mural-visit": {
+    "widths": [
+      480,
+      720
+    ],
+    "width": 720,
+    "height": 480
+  },
+  "langa-museum-room": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048
+  },
   "langa-traditional-drink": {
     "widths": [
       480,
@@ -323,6 +768,35 @@
     ],
     "width": 2048,
     "height": 1364
+  },
+  "langa-walk-guide": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
+    "height": 1152
+  },
+  "langa-womens-anti-pass": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 3024,
+    "height": 4032
+  },
+  "lunch-spread-guests": {
+    "widths": [
+      480,
+      800,
+      1200
+    ],
+    "width": 1280,
+    "height": 853
   },
   "mandela-statue-drakenstein": {
     "widths": [
@@ -354,59 +828,14 @@
     "width": 2000,
     "height": 1600
   },
-  "memories-bokaap": {
+  "mountain-road-arch": {
     "widths": [
       480,
-      550
+      800,
+      1200
     ],
-    "width": 550,
-    "height": 461,
-    "ambient": true
-  },
-  "memories-boulders": {
-    "widths": [
-      480,
-      549
-    ],
-    "width": 549,
-    "height": 461,
-    "ambient": true
-  },
-  "memories-camps-bay": {
-    "widths": [
-      480,
-      549
-    ],
-    "width": 549,
-    "height": 461,
-    "ambient": true
-  },
-  "memories-cape-of-good-hope": {
-    "widths": [
-      480,
-      800
-    ],
-    "width": 828,
-    "height": 457,
-    "ambient": true
-  },
-  "memories-sunset": {
-    "widths": [
-      480,
-      800
-    ],
-    "width": 828,
-    "height": 457,
-    "ambient": true
-  },
-  "memories-table-mountain": {
-    "widths": [
-      480,
-      552
-    ],
-    "width": 552,
-    "height": 462,
-    "ambient": true
+    "width": 1200,
+    "height": 1150
   },
   "muizenberg-huts": {
     "widths": [
@@ -428,15 +857,15 @@
     "width": 3240,
     "height": 2160
   },
-  "ocean-footprints-reveal": {
+  "owner-portrait": {
     "widths": [
       480,
       800,
       1200,
       1600
     ],
-    "width": 1672,
-    "height": 941
+    "width": 3240,
+    "height": 2160
   },
   "peninsula-bench-view": {
     "widths": [
@@ -447,6 +876,15 @@
     ],
     "width": 2048,
     "height": 1365
+  },
+  "pergola-lunch-table": {
+    "widths": [
+      480,
+      800,
+      900
+    ],
+    "width": 900,
+    "height": 1600
   },
   "private-guests-arms-raised": {
     "widths": [
@@ -491,6 +929,37 @@
     "width": 2000,
     "height": 1600
   },
+  "shark-cage-gansbaai": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1920,
+    "height": 1272
+  },
+  "skydive-tandem": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "width": 1920,
+    "height": 908
+  },
+  "table-mountain-garden-couple": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
+  },
   "table-mountain-sparkling": {
     "widths": [
       480,
@@ -501,6 +970,27 @@
     ],
     "width": 3120,
     "height": 2081
+  },
+  "transfer-driver-selfie": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 4032,
+    "height": 3024
+  },
+  "vineyard-couple": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048,
+    "ambient": true
   },
   "winelands-cape-dutch-group": {
     "widths": [
@@ -513,6 +1003,24 @@
     "width": 2880,
     "height": 2160
   },
+  "winelands-couple-tasting": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
+  },
+  "winelands-estate-terrace": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
+  },
   "winelands-garden-lunch": {
     "widths": [
       480,
@@ -522,6 +1030,23 @@
     ],
     "width": 2000,
     "height": 1600
+  },
+  "winelands-glasses-up": {
+    "widths": [
+      480,
+      768
+    ],
+    "width": 768,
+    "height": 512
+  },
+  "winelands-group-tasting": {
+    "widths": [
+      480,
+      800,
+      960
+    ],
+    "width": 960,
+    "height": 640
   },
   "winelands-host-pouring": {
     "widths": [
@@ -542,6 +1067,33 @@
     ],
     "width": 1728,
     "height": 1152
+  },
+  "winelands-red-tasting": {
+    "widths": [
+      480,
+      800,
+      900
+    ],
+    "width": 900,
+    "height": 600
+  },
+  "winelands-tasting-counter": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
+  },
+  "winelands-tasting-deli": {
+    "widths": [
+      480,
+      800,
+      1080
+    ],
+    "width": 1080,
+    "height": 720
   },
   "winelands-tasting-flight": {
     "widths": [
@@ -571,5 +1123,15 @@
     ],
     "width": 1728,
     "height": 1152
+  },
+  "winelands-terrace-guide": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2048,
+    "height": 1536
   }
 }

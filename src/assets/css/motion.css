@@ -244,6 +244,29 @@
   object-fit: cover;
   object-position: 0% 25%;
 }
+/* The destination's film: on its own first frame (the picture under it), in the picture's place and crop in every
+   layout, transparent until a frame has been presented (sand-journey.js), then faded in: the hand-over is invisible.
+   Never shown with reduced motion. Nothing else animates it. */
+.sand-journey__film {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 0% 25%;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+.sand-journey__beach.is-playing .sand-journey__film {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sand-journey__film {
+    display: none;
+  }
+}
 .sand-journey__sand {
   position: absolute;
   inset: 0;
@@ -353,6 +376,15 @@
     height: 100%;
     object-fit: fill;
   }
+  /* The film in the same box: its width from its own proportions (a video has none until its metadata arrives), so
+     nothing is cropped or stretched */
+  .sand-journey__beach .sand-journey__film {
+    right: auto;
+    left: min(0px, calc(100% - 1.4241 * var(--frame-h)));
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1280 / 720;
+  }
   /* Its lower edge is sand: it melts into the sand below */
   .sand-journey__beach::after {
     content: '';
@@ -401,6 +433,13 @@
     width: auto;
     height: 100%;
     object-fit: fill;
+  }
+  .sand-journey__beach .sand-journey__film {
+    right: auto;
+    left: calc(100% - var(--frame-w));
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1280 / 720;
   }
   .sand-journey__beach::after {
     content: '';

@@ -27,7 +27,132 @@
   var src = (doc.currentScript && doc.currentScript.src) || '';
   var api = (window.__sandJourney = { mode: 'static', tier: 'static', p: 0, pinAt: 0 });
 
-  var live = html.classList.contains('cine') && !!gsap && !!ST && !!src && typeof window.WebGL2RenderingContext !== 'undefined' && query !== 'static';
+  /* The destination's film (the owner's section-2-video as a 7-second loop: the surf and the wind in her dress; she, the
+     camera and her prints never move). It plays on its own clock over its own first frame (the poster picture under
+     it); the scroll never scrubs it. It plays only with motion allowed (no reduced motion, no ?nomotion), the data saver
+     off, the tab visible and the scene on screen: in the scroll scene (html.cine with WebGL2) once the renderer has
+     drawn its sand and the sweep is near (p 0.5; the sweep begins at 0.605), never under the sand and never while the
+     visitor is still in the hero; without the scroll scene, once a quarter of the picture is in view. It starts loading
+     a little before (p 0.4) so it is ready when uncovered, and nothing is fetched before then. It fades in once a frame
+     has been presented, pauses whenever one of those stops being true, and if autoplay is refused or the file fails the
+     poster simply stays. Muted, inline, no controls, hidden from assistive technology. */
+  var filmSync = function () {};
+  (function () {
+    var beach = stage.querySelector('[data-sand-photo]');
+    var film = beach && beach.querySelector('[data-sand-film]');
+    if (!film || typeof film.play !== 'function') return;
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    var conn = navigator.connection || {};
+    var inView = false;
+    var attached = false;
+    var gone = false;
+    var retry = false;
+    var wanted = null;
+    var io = null;
+    film.muted = true;
+    film.defaultMuted = true;
+    var saving = function () {
+      return !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '');
+    };
+    // The scroll scene owns the picture until its sweep: before the renderer is ready the visitor is still in the hero
+    var scene = function () {
+      var c = section.classList;
+      return c.contains('is-live') && !c.contains('is-static') && !c.contains('is-lost');
+    };
+    var reached = function (at) {
+      return !scene() || (section.classList.contains('is-ready') && api.p >= at);
+    };
+    var permitted = function () {
+      return !gone && !reduce.matches && !/[?&]nomotion\b/.test(location.search) && !saving() && inView && !doc.hidden;
+    };
+    var allowed = function () {
+      return permitted() && reached(0.5);
+    };
+    var ready = function () {
+      beach.classList.add('is-playing');
+    };
+    var fail = function () {
+      // No playable source or a network failure: keep the poster, drop the element so no broken box can appear
+      gone = true;
+      beach.classList.remove('is-playing');
+      if (io) io.disconnect();
+      if (film.parentNode) film.parentNode.removeChild(film);
+      api.film = 'failed';
+    };
+    var attach = function () {
+      if (attached) return;
+      attached = true;
+      var source = doc.createElement('source');
+      source.src = film.getAttribute('data-mp4');
+      source.type = 'video/mp4';
+      source.addEventListener('error', fail);
+      film.appendChild(source);
+      film.load();
+    };
+    var play = function () {
+      attach();
+      if (gone) return;
+      var attempt = film.play();
+      if (attempt && typeof attempt.catch === 'function') {
+        attempt.catch(function (err) {
+          if (!err || err.name === 'AbortError') return; // paused or reloaded before it started
+          if (err.name === 'NotSupportedError') return fail();
+          // Autoplay refused (no gesture yet, a low-power mode): the poster stays; one quiet retry on the first touch
+          if (retry) return;
+          retry = true;
+          var once = function () {
+            if (allowed()) film.play().catch(function () {});
+          };
+          ['pointerdown', 'keydown', 'touchstart'].forEach(function (t) {
+            doc.addEventListener(t, once, { once: true, passive: true });
+          });
+        });
+      }
+    };
+    filmSync = function () {
+      var want = allowed();
+      if (reduce.matches) beach.classList.remove('is-playing'); // reduced motion switched on: back to the poster
+      if (!attached && permitted() && reached(0.4)) attach(); // load a little ahead of the sweep
+      if (want === wanted) return;
+      wanted = want;
+      if (want) play();
+      else if (!film.paused) film.pause();
+    };
+    film.addEventListener('playing', function () {
+      // Fade in only once a frame has actually been presented, never over an empty box
+      if (typeof film.requestVideoFrameCallback === 'function') film.requestVideoFrameCallback(ready);
+      else ready();
+    });
+    film.addEventListener('error', fail);
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(
+        function (entries) {
+          inView = entries.some(function (e) {
+            return e.isIntersecting;
+          });
+          filmSync();
+        },
+        { threshold: 0.25 }
+      );
+      io.observe(beach);
+    } else inView = true;
+    doc.addEventListener('visibilitychange', filmSync);
+    if (reduce.addEventListener) reduce.addEventListener('change', filmSync);
+    if (conn.addEventListener) conn.addEventListener('change', filmSync);
+    window.addEventListener('pagehide', function () {
+      if (!film.paused) film.pause();
+      wanted = null;
+    });
+    window.addEventListener('pageshow', function (e) {
+      if (!e.persisted) return;
+      wanted = null;
+      filmSync();
+    });
+    api.film = film;
+    filmSync();
+  })();
+
+  var live =html.classList.contains('cine') && !!gsap && !!ST && !!src && typeof window.WebGL2RenderingContext !== 'undefined' && query !== 'static';
   if (!live) {
     section.classList.add('is-static');
     // The final scene at once; only its words fade in (opacity, nothing moves), once, as it comes into view
@@ -78,6 +203,7 @@
     }
     if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
     section.classList.remove('is-ready');
+    filmSync();
     if (section.getBoundingClientRect().top >= 0) {
       section.classList.remove('is-live');
       if (trigger) trigger.kill();
@@ -97,12 +223,16 @@
   };
 
   // Where the stylesheet put the destination image on the stage ({ k: CSS px per image px, ox, oy }): the animated
-  // trail is laid out from it, so its last prints land on the image's own
+  // trail is laid out from it, so its last prints land on the image's own. "Image px" are the pixels of the still the
+  // prints were measured on (motion/sand/scene.js PHOTO, 1672 wide); the picture shown is the film's first frame, the
+  // same picture at 1280 × 720 (it registers on the still at zero offset), so its scale is converted to the still's
+  var PHOTO_W = 1672;
   var photoImg = stage.querySelector('[data-sand-photo] img');
   var placement = function () {
     if (!photoImg) return null;
-    var nw = Number(photoImg.getAttribute('width')) || 1672;
+    var nw = Number(photoImg.getAttribute('width')) || PHOTO_W;
     var nh = Number(photoImg.getAttribute('height')) || 941;
+    var unit = nw / PHOTO_W; // picture px per still px
     var sr = stage.getBoundingClientRect();
     var r = photoImg.getBoundingClientRect();
     var cs = getComputedStyle(photoImg);
@@ -111,9 +241,9 @@
       var pos = cs.objectPosition.split(' ');
       var px = parseFloat(pos[0]) / 100 || 0;
       var py = parseFloat(pos[1]) / 100 || 0;
-      return { k: k, ox: r.left - sr.left + (r.width - nw * k) * px, oy: r.top - sr.top + (r.height - nh * k) * py };
+      return { k: k * unit, ox: r.left - sr.left + (r.width - nw * k) * px, oy: r.top - sr.top + (r.height - nh * k) * py };
     }
-    return { k: r.height / nh, ox: r.left - sr.left, oy: r.top - sr.top };
+    return { k: (r.height / nh) * unit, ox: r.left - sr.left, oy: r.top - sr.top };
   };
   var headerHeight = function () {
     var hd = doc.querySelector('[data-header]');
@@ -150,6 +280,7 @@
       renderer.renderAt(state.p);
       watch();
     }
+    filmSync(); // the film starts as the sweep nears and rests while the sand covers it (it is never scrubbed)
   };
 
   var measure = function () {
@@ -205,12 +336,14 @@
           }
           section.classList.add('is-ready');
           section.classList.remove('is-lost');
+          filmSync();
         };
         canvas.addEventListener('webglcontextlost', function (e) {
           e.preventDefault(); // ask for it back
           section.classList.add('is-lost');
           renderer = null;
           api.tier = 'static';
+          filmSync();
         });
         canvas.addEventListener('webglcontextrestored', function () {
           try {

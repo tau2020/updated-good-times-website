@@ -1,7 +1,9 @@
 /**
  * The tour and package galleries (D71, design.md §05): every Gallery tab hangs the media system's exhibition
  * and its lightbox, not the old gallery dialog; each photograph is named, every row of the wall is full,
- * a portrait never takes a wide place, and the photo band opens the lightbox on its own photograph.
+ * a portrait never takes a wide place, and the photo band opens the lightbox on its own photograph. A gallery shows the
+ * tour's own photographs only: never its hero or its card, which the page and the tour list already show
+ * (audit/image-change-register.md: one photograph, one place).
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,9 +20,17 @@ import { pages as packagePages } from '../src/pages/packages.mjs';
 
 const preview = { ...site, preview: true, env: 'preview' };
 const sets = [
-  ...tours.map((t) => ({ path: `tours/${t.slug}/index.html`, names: [...new Set([t.images.hero, ...t.images.gallery, t.images.card])] })),
+  ...tours.map((t) => ({ path: `tours/${t.slug}/index.html`, names: [...new Set(t.images.gallery)].filter((n) => n !== t.images.hero && n !== t.images.card) })),
   ...packages.map((p) => ({ path: `packages/${p.slug}/index.html`, names: p.images.gallery || [] })),
 ].filter((s) => s.names.length > 1);
+
+test('a gallery never repeats its tour’s hero or card, nor its package’s', () => {
+  for (const t of [...tours, ...packages]) {
+    assert.ok(!t.images.gallery.includes(t.images.hero), `${t.slug}: the hero is not in the gallery`);
+    assert.ok(!t.images.gallery.includes(t.images.card), `${t.slug}: the card is not in the gallery`);
+    assert.equal(new Set(t.images.gallery).size, t.images.gallery.length, `${t.slug}: no photograph twice`);
+  }
+});
 
 test('every gallery photograph has a short title, and a place only where one is recorded', () => {
   for (const { names } of sets) {

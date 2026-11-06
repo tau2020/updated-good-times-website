@@ -1,0 +1,111 @@
+# Perceptual duplicate scan, 2026-11-06: 113 photographs in use (largest WebP rendition of each), 6,328 pairs
+
+## near.py (dHash / pHash / thumbnail correlation)
+113 photographs, 6328 pairs compared, 0 flagged
+
+## sift.py, validation on two deliberate crops
+4 photographs, 6 pairs, 2 flagged (>= 25 RANSAC inliers)
+ 555 inliers of  562 matches  castle-table-mountain  ~  zz-castle-reframed
+ 453 inliers of  467 matches  winelands-garden-lunch  ~  zz-lunch-tightcrop
+
+## sift.py on the photographs in use (>= 20 RANSAC inliers listed; reviewed by eye, see image-quality-report.md)
+113 photographs, 6328 pairs, 99 flagged (>= 20 RANSAC inliers)
+ 181 inliers of  211 matches  langa-mural-guests  ~  langa-mural-visit
+ 100 inliers of  137 matches  airport-departures-trolley  ~  airport-guests-luggage
+  63 inliers of   92 matches  langa-walk-guide  ~  winelands-red-tasting
+  62 inliers of   67 matches  cape-coastline  ~  chapmans-viewpoint-couple
+  54 inliers of   69 matches  airport-departures-group  ~  castle-moat
+  47 inliers of   85 matches  cango-caves  ~  good-hope-walk-couple
+  45 inliers of   83 matches  airport-departures-group  ~  airport-guests-luggage
+  44 inliers of   74 matches  langa-walk-guide  ~  shark-cage-gansbaai
+  43 inliers of   83 matches  airport-departures-wave  ~  airport-guests-luggage
+  43 inliers of   61 matches  airport-departures-group  ~  castle-cannon-pair
+  42 inliers of   60 matches  airport-departures-wave  ~  guide-selfie-peninsula
+  38 inliers of   83 matches  airport-departures-wave  ~  lunch-spread-guests
+  38 inliers of   70 matches  langa-walk-guide  ~  table-mountain-garden-couple
+  38 inliers of   55 matches  airport-departures-trolley  ~  airport-departures-wave
+  37 inliers of   65 matches  airport-departures-wave  ~  winelands-cape-dutch-group
+  37 inliers of   56 matches  langa-womens-anti-pass  ~  winelands-red-tasting
+  37 inliers of   51 matches  airport-guests-luggage  ~  boulders-penguins-boardwalk
+  36 inliers of   70 matches  cape-point-cliffs  ~  cape-point-headland
+  35 inliers of   51 matches  airport-departures-group  ~  peninsula-bench-view
+  34 inliers of   78 matches  airport-departures-group  ~  airport-departures-trolley
+  33 inliers of   57 matches  langa-walk-guide  ~  table-mountain-sparkling
+  32 inliers of   75 matches  city-heritage-plaque  ~  langa-mural-guests
+  31 inliers of   58 matches  airport-guests-luggage  ~  peninsula-bench-view
+  31 inliers of   42 matches  airport-guests-luggage  ~  castle-moat
+  29 inliers of   59 matches  hermanus-whale-sculpture  ~  winelands-terrace-guide
+  29 inliers of   53 matches  airport-departures-wave  ~  table-mountain-garden-couple
+  29 inliers of   39 matches  airport-departures-trolley  ~  castle-moat
+  29 inliers of   38 matches  airport-departures-group  ~  chapmans-peak-guide-selfie
+  28 inliers of   57 matches  city-heritage-plaque  ~  vineyard-couple
+  28 inliers of   57 matches  airport-departures-wave  ~  peninsula-bench-view
+  27 inliers of  128 matches  langa-womens-anti-pass  ~  map-of-africa-viewpoint
+  27 inliers of   46 matches  airport-departures-wave  ~  langa-mural-visit
+  26 inliers of   71 matches  map-of-africa-viewpoint  ~  table-mountain-garden-couple
+  26 inliers of   64 matches  airport-departures-group  ~  bokaap-pink-wall
+  26 inliers of   58 matches  city-heritage-plaque  ~  langa-marches-1960
+  26 inliers of   58 matches  airport-departures-group  ~  guide-selfie-peninsula
+  26 inliers of   53 matches  map-of-africa-viewpoint  ~  winelands-cape-dutch-group
+  26 inliers of   46 matches  airport-departures-wave  ~  langa-homes
+  26 inliers of   45 matches  airport-departures-wave  ~  cape-point-lighthouse-trio
+  26 inliers of   43 matches  airport-departures-trolley  ~  castle-cannon-pair
+  25 inliers of   78 matches  langa-walk-guide  ~  winelands-cape-dutch-group
+  25 inliers of   63 matches  hout-bay-flag-frame  ~  winelands-terrace-guide
+  25 inliers of   61 matches  langa-walk-guide  ~  winelands-garden-lunch
+  25 inliers of   57 matches  transfer-driver-selfie  ~  winelands-terrace-guide
+  25 inliers of   57 matches  airport-guests-luggage  ~  beach-thrones
+  25 inliers of   47 matches  hermanus-whale-sculpture  ~  langa-marches-1960
+  25 inliers of   47 matches  cape-point-cliffs  ~  langa-mural-guests
+  24 inliers of   73 matches  langa-walk-guide  ~  owner-portrait
+  24 inliers of   64 matches  airport-guests-luggage  ~  castle-cannon-pair
+  24 inliers of   60 matches  langa-walk-guide  ~  winelands-estate-terrace
+  24 inliers of   54 matches  langa-walk-guide  ~  winelands-couple-tasting
+  24 inliers of   51 matches  city-heritage-plaque  ~  winelands-cape-dutch-group
+  24 inliers of   43 matches  airport-departures-wave  ~  langa-museum-room
+  24 inliers of   42 matches  airport-departures-wave  ~  cape-minstrels
+  24 inliers of   41 matches  airport-departures-group  ~  table-mountain-garden-couple
+  23 inliers of   80 matches  langa-walk-guide  ~  winelands-pergola-lunch
+  23 inliers of   73 matches  boulders-beach-penguins  ~  boulders-penguins-boardwalk
+  23 inliers of   46 matches  airport-guests-luggage  ~  langa-marches-1960
+  23 inliers of   46 matches  airport-arrivals-group  ~  airport-departures-group
+  23 inliers of   43 matches  airport-departures-group  ~  winelands-tasting-counter
+  23 inliers of   39 matches  airport-departures-wave  ~  bokaap-pink-wall
+  23 inliers of   33 matches  city-heritage-plaque  ~  hout-bay-viewpoint-pair
+  22 inliers of   53 matches  airport-departures-group  ~  boulders-penguins-boardwalk
+  22 inliers of   51 matches  airport-guests-luggage  ~  shark-cage-gansbaai
+  22 inliers of   48 matches  beyerskloof-estate  ~  lunch-spread-guests
+  22 inliers of   46 matches  winelands-cape-dutch-group  ~  winelands-terrace-guide
+  22 inliers of   46 matches  airport-departures-group  ~  marine-dynamics-boat
+  22 inliers of   38 matches  airport-guests-luggage  ~  boulders-shadows
+  22 inliers of   34 matches  cape-of-good-hope-cove  ~  diaz-beach-cove
+  21 inliers of   83 matches  langa-marches-1960  ~  langa-museum-room
+  21 inliers of   64 matches  airport-departures-group  ~  airport-departures-wave
+  21 inliers of   56 matches  airport-departures-wave  ~  hero-moment-poster
+  21 inliers of   51 matches  winelands-tasting-flight  ~  winelands-terrace-guide
+  21 inliers of   51 matches  langa-walk-guide  ~  lunch-spread-guests
+  21 inliers of   51 matches  city-heritage-plaque  ~  peninsula-bench-view
+  21 inliers of   50 matches  airport-departures-group  ~  boulders-couple-selfie
+  21 inliers of   48 matches  airport-departures-group  ~  cape-point-lighthouse-trio
+  21 inliers of   45 matches  city-heritage-plaque  ~  district-six-museum
+  21 inliers of   44 matches  airport-guests-luggage  ~  langa-traditional-drink
+  21 inliers of   42 matches  airport-departures-trolley  ~  winelands-cape-dutch-group
+  21 inliers of   41 matches  hout-bay-flag-frame  ~  langa-homes
+  21 inliers of   41 matches  airport-departures-trolley  ~  boulders-shadows
+  21 inliers of   41 matches  airport-departures-group  ~  boulders-shadows
+  21 inliers of   40 matches  city-heritage-plaque  ~  garden-route-garden-path
+  21 inliers of   31 matches  city-heritage-plaque  ~  langa-mural-visit
+  21 inliers of   27 matches  airport-departures-trolley  ~  table-mountain-sparkling
+  20 inliers of   61 matches  airport-departures-group  ~  winelands-cape-dutch-group
+  20 inliers of   60 matches  airport-departures-wave  ~  castle-cannon-pair
+  20 inliers of   54 matches  hout-bay-flag-frame  ~  langa-mural-guests
+  20 inliers of   49 matches  langa-mural  ~  table-mountain-garden-couple
+  20 inliers of   44 matches  airport-guests-luggage  ~  langa-home-visit
+  20 inliers of   40 matches  airport-departures-wave  ~  beach-thrones
+  20 inliers of   39 matches  airport-departures-trolley  ~  table-mountain-garden-couple
+  20 inliers of   38 matches  airport-departures-group  ~  fairview-goat-tower
+  20 inliers of   36 matches  airport-departures-wave  ~  chapmans-peak-guide-selfie
+  20 inliers of   35 matches  city-heritage-plaque  ~  lunch-spread-guests
+  20 inliers of   33 matches  rooiberg-red-chair  ~  table-mountain-garden-couple
+  20 inliers of   32 matches  airport-departures-group  ~  langa-walk-guide
+  20 inliers of   29 matches  airport-guests-luggage  ~  chapmans-peak-guide-selfie

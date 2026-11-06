@@ -1,5 +1,11 @@
 import { esc, icon, breadcrumb } from '../partials/ui.mjs';
-import { images, ORIGIN_NOTES as ORIGIN } from '../data/images.mjs';
+import { images, generated, ORIGIN_NOTES as ORIGIN } from '../data/images.mjs';
+
+/** One line of the photo list: what it shows, where it comes from, and for a licensed photograph its author, licence and source */
+const creditLine = (i) =>
+  i.origin === 'L'
+    ? `<li>${esc(i.alt)}: ${esc(ORIGIN.L)}. ${esc(i.credit)} (<a href="${esc(i.licenseUrl)}" rel="noopener">${esc(i.license)}</a>, <a href="${esc(i.source)}" rel="noopener">source</a>)</li>`
+    : `<li>${esc(i.alt)}: ${esc(ORIGIN[i.origin] || 'Good Times in Cape Town')}</li>`;
 
 /**
  * The privacy notice (POPIA s.18; GDPR and UK GDPR Art. 13 for travellers from the UK and EU).
@@ -105,11 +111,11 @@ export const page = {
     ${mail ? `<p>Questions about this notice or your data? Contact us at ${mail}.</p>` : ''}
 
     <h2 id="credits">Photo credits</h2>
-    <p>Every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing. One is edited for privacy (a guest’s name on a welcome sign is blurred). The exceptions are not photographs: the café scene at the top of the home page and the photographs in its phone are AI-generated illustrations of five friends, and the woman standing at the water’s edge after the footprints below it is an AI-generated illustration too; none of them is a picture of our guests. The logo is Good Times’ own approved artwork.</p>
+    <p>Nearly every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing, and a few are guests’ own photographs from our tours that Good Times chose for this website. One is edited for privacy (a guest’s name on a welcome sign is blurred). Four are not ours: photographs of Cape Agulhas, a tandem skydive and shark cage diving off Gansbaai, used under their open licences from Wikimedia Commons where we have none of our own: each is credited below, and on the photograph itself wherever it is shown larger than a small thumbnail. Two pictures are not photographs: the café scene at the top of the home page is an AI-generated illustration of five friends, and the short film of the woman standing at the water’s edge after the footprints below it is AI-generated too; neither is a picture of our guests. The logo is Good Times’ own approved artwork.</p>
     <details>
       <summary>Photo list and origins</summary>
       <ul class="small">
-        ${images.map((i) => `<li>${esc(i.alt)}: ${esc(ORIGIN[i.origin] || 'Good Times in Cape Town')}</li>`).join('\n        ')}
+        ${[...images, ...generated].map(creditLine).join('\n        ')}
       </ul>
     </details>
     <p class="small muted">Fonts: Plus Jakarta Sans and Inter, used under the SIL Open Font Licence.</p>

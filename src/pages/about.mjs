@@ -1,5 +1,7 @@
 import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead } from '../partials/ui.mjs';
 import { focusOf } from '../partials/media.mjs';
+import { frameSizes } from '../partials/culinary.mjs';
+
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'About', href: 'about/' }];
 
@@ -11,15 +13,20 @@ const crumbs = [{ label: 'Home', href: './' }, { label: 'About', href: 'about/' 
  * Beside "Good journeys begin with good people": the penguins at Boulders Beach as the dominant
  * photograph and the Langa mural laid over its corner. They reveal in turn as they scroll into view
  * (culinary.js, the layered reveal); without motion they are simply in place.
+ *
+ * "Meet our team" shows the owner's own photograph (about-image.jpg, the owner's approved file, 6 Nov 2026), whole: its
+ * frame has the photograph's own 3:2 proportions at every width, so nothing of the owner is cropped. Every photograph on this
+ * page appears nowhere else on the site (audit/image-change-register.md).
  */
-const frame = (name, sizes, focus) => `<div class="taste__frame" style="--focus: ${focusOf(name, focus)}" data-taste-frame>${picture({ name, sizes })}</div>`;
+const frame = (name, sizes, focus, ratio) =>
+  `<div class="taste__frame" style="--focus: ${focusOf(name, focus)}${ratio ? `; --ratio: ${ratio}` : ''}" data-taste-frame>${picture({ name, sizes })}</div>`;
 
 /** Real faces, real journeys: Good Times photographs (origins in the rights register), small placements only. */
 const FACES = [
-  { name: 'castle-cannons-group', caption: 'A city day at the Castle of Good Hope', focus: '42% 60%' },
-  { name: 'cape-of-good-hope-sign', caption: 'At the Cape of Good Hope', focus: '56% 58%' },
-  { name: 'langa-mural-guests', caption: 'At the Langa mural', focus: '40% 56%' },
-  { name: 'winelands-cape-dutch-group', caption: 'A Winelands estate', focus: '50% 50%' },
+  { name: 'castle-cannon-pair', caption: 'At the Castle of Good Hope', focus: '40% 62%' },
+  { name: 'good-hope-walk-couple', caption: 'On the Cape of Good Hope walk', focus: '50% 45%' },
+  { name: 'winelands-tasting-deli', caption: 'A Winelands tasting stop', focus: '50% 70%' },
+  { name: 'hout-bay-viewpoint-pair', caption: 'Above Hout Bay', focus: '56% 50%' },
 ];
 
 export const page = {
@@ -29,12 +36,12 @@ export const page = {
   description: 'Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides.',
   priority: 0.7,
   breadcrumbs: crumbs,
-  preload: [preloadFor('peninsula-bench-view')],
+  preload: [preloadFor('cape-coastline')],
   styles: ['assets/css/culinary.css'],
   scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/culinary.js'],
   body: ({ site }) => `
-<section class="banner" style="--focus: 62% 58%; --focus-mobile: 66% 60%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
-  <div class="banner__media">${picture({ name: 'peninsula-bench-view', eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 60% 50%; --focus-mobile: 66% 50%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
+  <div class="banner__media">${picture({ name: 'cape-coastline', eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbs)}
@@ -53,8 +60,10 @@ export const page = {
       <p>Every tour we run is private and shaped around the people on it: the Cape Peninsula and its penguins, the city and its history, Langa, the Winelands, the coast and the Garden Route, with pickup from your accommodation on most days.</p>
     </div>
     <figure class="about-pair lc-scope" data-taste="reveal">
-      <div class="about-pair__main" data-taste-main>${frame('boulders-penguins-boardwalk', '(min-width: 64em) min(44vw, 38rem), 100vw', '66% 64%')}</div>
-      <div class="about-pair__layer" data-taste-layer>${frame('langa-mural', '(min-width: 64em) 13rem, 38vw', '50% 50%')}</div>
+      <div class="about-pair__main" data-taste-main>${frame('boulders-beach-penguins', frameSizes('boulders-beach-penguins', [['(min-width: 64em)', 'min(44vw, 38rem)', 5 / 4], ['', '100vw', 5 / 4]]))}</div>
+      <!-- Square, not the pair's usual 4:5: the four people in front of the mural span 54% of the photograph's width, more
+           than a 4:5 inset shows (48%); a square shows 61% -->
+      <div class="about-pair__layer" data-taste-layer>${frame('langa-mural-visit', frameSizes('langa-mural-visit', [['(min-width: 64em)', '13rem', 1], ['', '38vw', 1]]), undefined, '1')}</div>
       <figcaption class="about-pair__caption" data-taste-caption><span>Boulders Beach penguins</span><span class="about-pair__sep" aria-hidden="true"> · </span><span>A mural in Langa</span></figcaption>
     </figure>
   </div>
@@ -63,8 +72,8 @@ export const page = {
 <section class="section section--paper" aria-labelledby="people-title">
   <div class="container people">
     <figure class="people__photo" data-reveal>
-      <div class="media-frame" style="--ratio: 3 / 2">${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(40vw, 34rem), 100vw' })}</div>
-      <figcaption>Guests and their guide at lunch on a Winelands day</figcaption>
+      <div class="media-frame" style="--ratio: 3 / 2; --focus: ${focusOf('owner-portrait')}">${picture({ name: 'owner-portrait', sizes: '(min-width: 64em) min(40vw, 34rem), 100vw' })}</div>
+      <figcaption>The owner of Good Times in Cape Town, across the bay from Table Mountain</figcaption>
     </figure>
     <div class="people__body" data-reveal style="--reveal-i:1">
       <p class="eyebrow">Meet our team</p>

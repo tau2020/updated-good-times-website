@@ -1946,6 +1946,44 @@ h4 {
   background: var(--forest-deep);
   overflow: hidden;
 }
+/* A licensed photograph's credit (origin L, not a Good Times photograph), on the photograph itself: small, at its top
+   right (clear of the subject at the foot, such as the Agulhas sign), readable on any picture */
+.tour-hero__credit {
+  position: absolute;
+  top: 0.6rem;
+  right: var(--gutter);
+  z-index: 1;
+  max-width: calc(100% - 2 * var(--gutter));
+  margin: 0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(7, 16, 18, 0.58);
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+.tour-hero__frame:has(.tour-hero__credit) {
+  position: relative;
+}
+/* The same credit on a third party's photograph in a card or a service's frame (cards.mjs licensedCredit) */
+.photo-credit {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 1;
+  display: block;
+  max-width: calc(100% - 1rem);
+  margin: 0;
+  padding: 0.15rem 0.55rem;
+  border-radius: 0.75rem;
+  background: rgba(7, 16, 18, 0.62);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: right;
+  pointer-events: none;
+}
 .tour-hero__media {
   position: absolute;
   inset: 0;

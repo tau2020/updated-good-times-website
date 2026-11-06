@@ -188,6 +188,31 @@ export function picture({ name, alt, sizes = '100vw', cls = '', eager = false, f
 </picture>`;
 }
 
+/**
+ * The `sizes` for a photograph that covers its frame (object-fit: cover): about the width it is really drawn at. A frame
+ * of another shape than the photograph crops it, and where the frame is narrower in shape (a phone's tall banner, a
+ * portrait frame for a landscape photograph) the photograph is drawn wider than the frame: sized for the frame alone,
+ * the browser would pick a file too small and enlarge it (the media audit, image-quality-report.md).
+ *   frames: [media condition or '', frame width (a CSS length), frame height (a CSS length) or frame shape (width / height)]
+ * The drawn width is asked at 85% (COVER_ASK): the renditions step in large jumps (800, 1200, 1600, 2000), and asking
+ * for all of it would often take the next file up for a few pixels; at 85% a phone gets at least about 0.85 source
+ * pixels per device pixel, without the larger file's bytes. Only the file the browser chooses changes; nothing moves.
+ */
+const COVER_ASK = 0.85;
+export function coverSizes(name, frames) {
+  const { width, height } = imageSize(name);
+  const a = width && height ? width / height : 0;
+  const k = (n) => +n.toFixed(3);
+  return frames
+    .map(([media, w, h]) => {
+      let v = w;
+      if (a && typeof h === 'number') v = (a / h) * COVER_ASK > 1 ? `calc(${w} * ${k((a / h) * COVER_ASK)})` : w;
+      else if (a && h) v = `max(${w}, calc(${h} * ${k(a * COVER_ASK)}))`;
+      return media ? `${media} ${v}` : v;
+    })
+    .join(', ');
+}
+
 /** The pipeline's record for an image ({ widths, width, height, ambient? }), or null before `npm run images`. */
 export const renditionsOf = (name) => renditions[name] || null;
 /** Intrinsic width of an image's original (0 if unknown). */

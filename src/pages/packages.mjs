@@ -15,6 +15,7 @@ import { packages } from '../data/packages.mjs';
 import { tourBySlug } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
 
+
 const crumbsList = [
   { label: 'Home', href: './' },
   { label: 'Multi-day tours', href: 'packages/' },
@@ -89,10 +90,10 @@ function listPage() {
     description: 'Private multi-day tours from Cape Town with Good Times: the Garden Route over three days or more, planned with you, with the route and price confirmed in your quote.',
     priority: 0.8,
     breadcrumbs: crumbsList,
-    preload: [preloadFor('camps-bay-twelve-apostles')],
+    preload: [preloadFor('hout-bay-from-chapmans')],
     body: ({ site }) => `
-<section class="banner" style="--focus: 50% 42%; --banner-h: clamp(22rem, 16rem + 16vw, 32rem)">
-  <div class="banner__media">${picture({ name: 'camps-bay-twelve-apostles', eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 50% 45%; --banner-h: clamp(22rem, 16rem + 16vw, 32rem)">
+  <div class="banner__media">${picture({ name: 'hout-bay-from-chapmans', eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbsList)}

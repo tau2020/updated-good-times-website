@@ -13,7 +13,7 @@ export const page = {
   description: 'Good Times in Cape Town is rated 5.0 from 264 Tripadvisor reviews. Read summaries of guests’ reviews, each linking to the original.',
   priority: 0.7,
   breadcrumbs: crumbs,
-  preload: [preloadFor('table-mountain-sparkling')],
+  preload: [preloadFor('diaz-beach-cove')],
   body: ({ site }) => {
     const ta = site.tripadvisor;
     const total = Object.values(ta.distribution).reduce((a, b) => a + b, 0);
@@ -22,8 +22,8 @@ export const page = {
     const breakdown = day(ta.distributionChecked || ta.checked);
     const checkedLong = day(reviewSource.checked, 'long');
     return `
-<section class="reviews-photo reviews-photo--page" aria-labelledby="reviews-title" style="--focus: 36% 40%">
-  <div class="reviews-photo__media">${picture({ name: 'table-mountain-sparkling', alt: '', sizes: '100vw', eager: true, fetchpriority: 'high' })}</div>
+<section class="reviews-photo reviews-photo--page" aria-labelledby="reviews-title" style="--focus: 40% 62%">
+  <div class="reviews-photo__media">${picture({ name: 'diaz-beach-cove', alt: '', sizes: '100vw', eager: true, fetchpriority: 'high' })}</div>
   <div class="container">
     <div class="section-head" data-reveal>
       <div>
