@@ -4,7 +4,8 @@
    of "in" (brand-plane.js), and its landing starts the navigation titles one by one; then the one call to action,
    Good Times start Here!, rises into the bottom-left corner and a single sheen crosses it. Whole elements only,
    opacity and small transforms (y, a touch of scale on the wordmark and the call to action), overlapping so it reads
-   as one piece: about 3.7 s on desktop, 3.1 s on tablets and 2.3 s on phones.
+   as one piece: about 4.8 s on desktop, 4.0 s on tablets and 2.9 s on phones (the aircraft at the owner's slower pace,
+   6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s).
    The phone is not part of it: its first photograph is there from the first paint, and its gallery
    (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
    (html.cine from the inline gate) and GSAP has loaded; otherwise nothing is hidden or moved and the logo is whole.
@@ -67,14 +68,14 @@
     if (brand) tl.to(brand, { opacity: 1, y: 0, scale: 1, duration: plane ? 0.5 : 1.2 }, 'brand');
     if (bookNow) tl.to(bookNow, { opacity: 1, y: 0, duration: 1 }, 'brand+=0.15');
 
-    // The aircraft (0.15–1.55 s): in from the left, along the logo's route, landing as the "i" of "in"
+    // The aircraft (0.15–4.8 s): in from the left, along the logo's route, landing as the "i" of "in"
     var landing = 0.7;
     if (plane) {
       tl.add(plane.timeline, 'brand+=0.15');
       landing = 0.15 + plane.landsAt + 0.08;
     }
 
-    // Act II — the navigation titles, one after another, from the landing (1.55–2.2 s) or from 0.7 s without it
+    // Act II — the navigation titles, one after another, from the landing (about 4.1–4.8 s) or from 0.7 s without it
     tl.addLabel('titles', landing);
     if (titles.length) tl.to(titles, { opacity: 1, y: 0, duration: plane ? 0.3 : 0.9, stagger: plane ? 0.085 : 0.28 }, 'titles');
 

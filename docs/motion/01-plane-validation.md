@@ -9,11 +9,16 @@ Gate 1. Files: `src/partials/aircraft.mjs` (geometry and markup), `src/assets/js
 1. From the first frame the logo's own airliner (the "i" of "in") is held back by a mask hole the size of its box. Nothing else in either lockup falls inside that hole (tested).
 2. At 0.15 s a flying copy enters from the left, already at speed, about 55 px wide on desktop and 41 px on phones. It crosses the hero's sky (above every face), with a short dotted trail like the logo's own dots, a soft shadow that shrinks as it descends, and a bank of up to about 15° drawn from its turn rate.
 3. It makes a climbing turn to the right of the logo, reaches the location pin and then **follows the logo's dotted route, dot by dot** (MotionPathPlugin along a path measured from the page), shrinking to the glyph's size.
-4. It touches down nose-down on the glyph at 1.37 s, squares up and settles 1.5 px past and back, while its flight detail (fuselage highlight, wing shading, cockpit glass, engine nacelles, red and green navigation lights) fades away. In the first build that detail never showed: the flat landed glyph was drawn on top of it for the whole flight. The independent review caught this (05, A1); now the landed glyph stays hidden until touchdown (`qa/plane-detail-zoom.jpg`).
-5. At 1.62 s it hands over to the logo in one frame. The copy is the glyph's exact outline at the glyph's measured box, so the swap is invisible.
-6. The navigation titles start at the landing (1.45 s) at 85 ms intervals and are all in by 2.1 s. Then, as before, the call to action rises at 2.2 s and the sheen crosses it at 2.82 s.
+4. It touches down nose-down on the glyph at 4.02 s, squares up and settles 1.5 px past and back, while its flight detail (fuselage highlight, wing shading, cockpit glass, engine nacelles, red and green navigation lights) fades away. In the first build that detail never showed: the flat landed glyph was drawn on top of it for the whole flight. The independent review caught this (05, A1); now the landed glyph stays hidden until touchdown (`qa/plane-detail-zoom.jpg`).
+5. At 4.82 s it hands over to the logo in one frame. The copy is the glyph's exact outline at the glyph's measured box, so the swap is invisible.
+6. The navigation titles start at the landing (4.10 s) at 85 ms intervals and are all in by 4.75 s. The call to action keeps its own moment: it rises at 2.2 s, while the aircraft is still in the air, and the sheen crosses it at 2.82 s.
 
-Times are on desktop; tablets run 1.2× faster and phones 1.65× faster (the existing entrance's rule).
+Times are on desktop; tablets run 1.2× faster and phones 1.65× faster (the existing entrance's rule). On a phone it
+touches down at 2.44 s and the entrance ends at 2.92 s.
+
+**Pace:** the owner asked for the flight 65 % slower, then 10 % slower again (6 Nov 2026). The aircraft now flies at
+31.5 % of the first build's speed (0.35 × 0.9), the package's 0.55–1.28 s flight window included: every time in the
+flight is stretched by 1 / 0.315 (`PACE` in `brand-plane.js`). The bank gain follows the pace, so the turns bank as much as before.
 
 ## The aircraft: an owner approval item (M1)
 
@@ -62,13 +67,13 @@ The browser test (`test/e2e/motion.spec.mjs`) asserts an error under 0.5 px on d
 
 ## Screenshots
 
-- `qa/plane-1440x900-flight.jpg`: t = 0.40, 0.70, 0.95, 1.15, 1.30, 1.45 s, desktop
-- `qa/plane-390x844-flight.jpg`: the same moments on a phone (1.65× faster)
+- `qa/plane-1440x900-flight.jpg`: timeline t = 0.7, 1.4, 2.1, 2.7, 3.3, 3.9 s, desktop
+- `qa/plane-390x844-flight.jpg`: timeline t = 0.7, 1.4, 2.1, 2.7, 3.3, 4.4 s on a phone (played 1.65× faster)
 - `qa/plane-1440x900-landed-zoom.jpg`: the lockup after the landing, magnified
-- `qa/plane-detail-zoom.jpg`: the airliner in flight at 2×, t = 0.5, 0.75, 1.0, 1.25 s (bank visible in the turn)
+- `qa/plane-detail-zoom.jpg`: the airliner in flight at 2× (captured at the first build's pace; the drawing is the same)
 - `qa/motion-1280x800.mp4`: the whole entrance, then the sand journey
 
 ## Owner approval items
 
 - **M1** the aircraft (above);
-- **M2** the flight: the final leg follows the logo's own dotted route from the pin, and the titles' pace is 85 ms apart, as the package specifies (it was 280 ms).
+- **M2** the flight: the final leg follows the logo's own dotted route from the pin, at the slower pace the owner asked for, and the titles are 85 ms apart, as the package specifies (it was 280 ms).

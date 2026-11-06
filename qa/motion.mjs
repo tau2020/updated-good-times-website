@@ -57,13 +57,14 @@ for (const size of sizes) {
   await page.waitForFunction(() => window.__heroEntrance);
 
   if (doPlane) {
-    const times = [0, 0.4, 0.7, 0.95, 1.15, 1.3, 1.45, 1.75, 3.8];
+    // Timeline seconds (desktop pace; tablets and phones play the same timeline 1.2× and 1.65× faster)
+    const times = [0, 0.7, 1.4, 2.1, 2.7, 3.3, 3.9, 4.4, 6.0];
     await page.evaluate(() => {
       window.__heroEntrance.pause(0);
     });
     for (const t of times) {
       await page.evaluate((t) => {
-        window.__heroEntrance.seek(t / window.__heroEntrance.timeScale(), false);
+        window.__heroEntrance.seek(t, false);
       }, t);
       await page.waitForTimeout(80);
       await page.screenshot({ path: join(out, `plane-${size}-t${t.toFixed(2)}.png`), clip: { x: 0, y: 0, width: w, height: Math.round(h * 0.42) } });

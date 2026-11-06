@@ -88,6 +88,14 @@
     return [path.poly[lo][0] + (path.poly[hi][0] - path.poly[lo][0]) * k, path.poly[lo][1] + (path.poly[hi][1] - path.poly[lo][1]) * k];
   }
 
+  /* The flight's pace. The owner asked for it 65% slower, then 10% slower again (6 Nov 2026): the aircraft now flies at
+     31.5% of the first build's speed (0.35 × 0.9), so every time in the flight (the path, the touchdown and the
+     hand-over) is stretched by 1 / 0.315. */
+  var PACE = 1 / (0.35 * 0.9);
+  var at_ = function (seconds) {
+    return seconds * PACE;
+  };
+
   function shown(el) {
     return !!el && el.getClientRects().length > 0 && getComputedStyle(el).display !== 'none';
   }
@@ -195,9 +203,9 @@
 
       var big = g.portrait ? 3.4 : 4.6;
       var state = { bank: 0, rot: null };
-      var T = 1.2;
-      var dockAt = 0.02 + T;
-      var handover = dockAt + 0.25;
+      var T = at_(1.2);
+      var dockAt = at_(0.02) + T;
+      var handover = dockAt + at_(0.25);
       // Which of the two is shown follows the playhead, so any seek (forwards, backwards, a replay) is exact: until
       // the handover the logo's airliner is held back (its place is empty from the first frame, as the brief asks)
       // and, once the flight has begun, the copy flies; from the handover on the logo is whole and the layer gone
@@ -238,7 +246,7 @@
               var dr = rot - state.rot;
               while (dr > 180) dr -= 360;
               while (dr < -180) dr += 360;
-              var target = clamp(dr * 2.4, -15, 15);
+              var target = clamp(dr * 2.4 * PACE, -15, 15); // per-frame turn × pace: the same bank at any speed
               state.bank += (target - state.bank) * 0.22;
             }
             state.rot = rot;
@@ -262,19 +270,19 @@
             }
           },
         },
-        0.02,
+        at_(0.02),
       );
 
       // Touchdown: square to the glyph, settle 1.5 px past and back, flight detail away, then hand over to the logo
-      flight.to(plane, { rotation: 0, duration: 0.24, ease: 'power2.out' }, dockAt);
-      flight.to(plane, { y: g.G[1] + 1.5, duration: 0.1, ease: 'sine.out' }, dockAt);
-      flight.to(plane, { y: g.G[1], x: g.G[0], scale: 1, duration: 0.14, ease: 'sine.inOut' }, dockAt + 0.1);
-      flight.to(bankEl, { scaleX: 1, duration: 0.18 }, dockAt);
-      flight.to(shadow, { opacity: 0, duration: 0.12 }, dockAt);
-      flight.to(detail, { opacity: 0, duration: 0.2, ease: 'power1.out' }, dockAt);
+      flight.to(plane, { rotation: 0, duration: at_(0.24), ease: 'power2.out' }, dockAt);
+      flight.to(plane, { y: g.G[1] + 1.5, duration: at_(0.1), ease: 'sine.out' }, dockAt);
+      flight.to(plane, { y: g.G[1], x: g.G[0], scale: 1, duration: at_(0.14), ease: 'sine.inOut' }, dockAt + at_(0.1));
+      flight.to(bankEl, { scaleX: 1, duration: at_(0.18) }, dockAt);
+      flight.to(shadow, { opacity: 0, duration: at_(0.12) }, dockAt);
+      flight.to(detail, { opacity: 0, duration: at_(0.2), ease: 'power1.out' }, dockAt);
       if (variant === 'prop') {
-        flight.to(prop, { opacity: 0, duration: 0.2 }, dockAt + 0.02);
-        flight.to(finalGlyph, { opacity: 1, duration: 0.2 }, dockAt + 0.02);
+        flight.to(prop, { opacity: 0, duration: at_(0.2) }, dockAt + at_(0.02));
+        flight.to(finalGlyph, { opacity: 1, duration: at_(0.2) }, dockAt + at_(0.02));
       }
       // An empty tween holds the timeline open to the handover, where sync() gives the logo back
       flight.to({}, { duration: 0.001 }, handover - 0.001);

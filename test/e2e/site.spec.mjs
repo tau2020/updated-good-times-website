@@ -510,9 +510,10 @@ test.describe('home hero', () => {
     expect(startOf('hero__cta-sheen')).toBeCloseTo(2.82, 2);
     expect(plan.tweens.some((t) => t.targets.some((n) => /phone-gallery|hero__poster|hero__video/.test(n))), 'the scene and the phone are not part of it').toBe(false);
     const seconds = plan.duration / plan.timeScale;
-    if (isMobile) expect(seconds).toBeLessThanOrEqual(2.5);
+    // With the brand aircraft at the owner's slower pace (6 Nov 2026) the entrance ends with the landing and the titles
+    if (isMobile) expect(seconds).toBeLessThanOrEqual(3.1);
     else expect(seconds).toBeGreaterThan(3.4);
-    expect(seconds).toBeLessThanOrEqual(3.8);
+    expect(seconds).toBeLessThanOrEqual(5);
     // Nothing invisible can take focus while its entrance is pending
     expect(await page.locator('.hero__cta').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
