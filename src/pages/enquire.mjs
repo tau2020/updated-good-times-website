@@ -26,6 +26,7 @@ import { routeArt } from '../partials/route-art.mjs';
 import { tours } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
 import { types as transferTypes } from '../data/transfers.mjs';
+import { SERVICES } from '../partials/living-cape.mjs';
 import { FIELDS, CUSTOM_TOUR, FLIGHT_TYPES, PACKAGE_SLUGS } from '../assets/js/enquiry-schema.js';
 import { site as siteData } from '../data/site.mjs';
 
@@ -234,8 +235,10 @@ const customSummary = () => `<div class="booking-summary booking-summary--plain"
 /* ---------- the steps ---------- */
 
 function serviceStep() {
-  const card = (value, img, title, hint) => `<label class="service-choice" for="enq-type-${value}">
-          <span class="service-choice__media">${picture({ name: img, alt: '', sizes: '(min-width: 64em) 340px, (min-width: 40em) 44vw, 92vw' })}</span>
+  // Each choice shows its service's own photograph (the home page's card and the concierge's row: one per service)
+  const service = (id) => SERVICES.find((s) => s.id === id);
+  const card = (value, s, title, hint) => `<label class="service-choice" for="enq-type-${value}">
+          <span class="service-choice__media" style="--focus: ${s.focus}">${picture({ name: s.image, alt: '', sizes: '(min-width: 64em) 340px, (min-width: 40em) 44vw, 92vw' })}</span>
           <span class="service-choice__body">
             <input class="service-choice__input" type="radio" id="enq-type-${value}" name="enquiry_type" value="${value}" aria-labelledby="enq-type-${value}-title" aria-describedby="enq-type-${value}-hint">
             <span class="service-choice__title" id="enq-type-${value}-title">${title}</span>
@@ -247,8 +250,8 @@ function serviceStep() {
       <fieldset class="fieldset field-group" id="enq-enquiry-type" data-group="enquiry_type">
         <legend class="visually-hidden">Service</legend>
         <div class="service-choices">
-        ${card('tour', 'boulders-penguins-boardwalk', 'A private tour', 'Choose a tour or activity, a date and your pickup area')}
-        ${card('transfer', 'airport-welcome-sign', 'A transfer', 'The airport or another route: tell us when and where')}
+        ${card('tour', service('tours'), 'A private tour', 'Choose a tour or activity, a date and your pickup area')}
+        ${card('transfer', service('airport'), 'A transfer', 'The airport or another route: tell us when and where')}
         </div>
         ${errorEl('enq-enquiry-type', 'enquiry_type')}
       </fieldset>

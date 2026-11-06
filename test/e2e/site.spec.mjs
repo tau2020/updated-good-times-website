@@ -423,10 +423,15 @@ test.describe('home hero', () => {
     expect(await inPhone.evaluate((i) => getComputedStyle(i).visibility), 'the photograph has left the phone').toBe('hidden');
     expect(await page.evaluate(() => [window.__phoneGalleries[0].timeline().paused(), window.__phoneGalleries[0].state.zoomed, document.documentElement.classList.contains('pg-locked')]), 'the swipe waits; the page holds still').toEqual([true, true, true]);
     await expect(zoom.locator('.pg-zoom__img')).toHaveAttribute('alt', await inPhone.getAttribute('alt'));
-    expect(await zoom.locator('.pg-zoom__img').evaluate((i) => i.currentSrc), 'its largest rendition once landed').toMatch(/memories-[a-z-]+-(549|550|552|800)\.(avif|webp)$/);
+    // The same photograph, at a rendition at least as large as the phone's once it has landed
+    const [slot, phoneW] = /\/([a-z0-9-]+?)-(\d+)\.(?:avif|webp)$/.exec(await inPhone.evaluate((i) => i.currentSrc)).slice(1);
+    const landed = /\/([a-z0-9-]+?)-(\d+)\.(?:avif|webp)$/.exec(await zoom.locator('.pg-zoom__img').evaluate((i) => i.currentSrc));
+    expect(landed?.[1], 'the same photograph once landed').toBe(slot);
+    expect(Number(landed[2]), 'a rendition at least as large as the phone’s').toBeGreaterThanOrEqual(Number(phoneW));
     await expect(zoom.locator('.pg-zoom__place')).toHaveText(await page.locator('.phone-gallery__slide').nth(k).getAttribute('data-place'));
     await expect(zoom.locator('.pg-zoom__tour')).toHaveAttribute('href', /(^|\/)tours\/[a-z-]+\/$/);
-    await expect(zoom.locator('.pg-zoom__meta')).toHaveText(new RegExp(`^Cape Town Memories · ${k + 1} / 6 · An AI-generated illustration$`));
+    const credit = await page.locator('.phone-gallery__slide').nth(k).getAttribute('data-credit');
+    await expect(zoom.locator('.pg-zoom__meta')).toHaveText(`Cape Town Memories · ${k + 1} / 6 · ${credit}`);
     await expect(zoom.locator('.pg-zoom__close')).toBeFocused();
     // A click away (the dimmed hero, far from the photograph) puts it back, and the swipe carries on from it
     await page.mouse.click(hero.x + 24, hero.y + hero.height - 24);
@@ -528,10 +533,11 @@ test.describe('home hero', () => {
   test('with reduced motion the scene stays a still, the gallery shows its first photograph and loads no other, and nothing is hidden', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const media = [];
-    page.on('request', (r) => /\/assets\/(video\/|img\/memories-)/.test(r.url()) && media.push(r.url().split('/').pop()));
+    const PHONE = /\/assets\/(video\/|img\/(chapmans-peak-couple|bokaap-street-pair|boulders-penguin-selfie|vineyard-couple|cape-point-lighthouse-trio|guide-selfie-peninsula)-)/;
+    page.on('request', (r) => PHONE.test(r.url()) && media.push(r.url().split('/').pop()));
     await page.goto('/');
     await page.waitForTimeout(1_200);
-    expect(media.filter((f) => !/^memories-table-mountain-/.test(f)), 'no film, and no other photograph').toEqual([]);
+    expect(media.filter((f) => !/^chapmans-peak-couple-/.test(f)), 'no film (the hero’s or the sand journey’s), and no other photograph').toEqual([]);
     await expect(page.locator('.hero__poster img')).toBeVisible();
     expect(await page.locator('.hero__video').evaluate((v) => v.currentSrc)).toBe('');
     await expect(page.locator('.hero__media')).not.toHaveClass(/\bis-playing\b/);
@@ -1667,10 +1673,10 @@ test.describe('design remediation (stage 1)', () => {
 test.describe('taste compositions and About’s photographs', () => {
   const PLACES = [
     ['/', '[data-taste="reveal"]', ['winelands-host-pouring', 'winelands-tasting-table']],
-    ['/tours/cape-winelands-private-tour/', '[data-taste="diptych"]', ['winelands-pergola-lunch', 'winelands-garden-lunch']],
-    ['/destinations/', '[data-taste="quiet"]', ['winelands-pergola-lunch']],
+    ['/tours/cape-winelands-private-tour/', '[data-taste="diptych"]', ['winelands-pergola-lunch', 'winelands-estate-terrace']],
+    ['/destinations/', '[data-taste="quiet"]', ['pergola-lunch-table']],
     // About's penguins and Langa mural share the Reveal's choreography
-    ['/about/', '[data-taste="reveal"]', ['boulders-penguins-boardwalk', 'langa-mural']],
+    ['/about/', '[data-taste="reveal"]', ['boulders-beach-penguins', 'langa-mural-visit']],
   ];
   const settled = (sel) =>
     `[...document.querySelectorAll('${sel} [data-taste-main], ${sel} [data-taste-frame], ${sel} [data-taste-layer], ${sel} [data-taste-words] > *, ${sel} figcaption')].every((e) => { const cs = getComputedStyle(e); return Number(cs.opacity) === 1 && cs.visibility === 'visible' && cs.clipPath === 'none'; })`;

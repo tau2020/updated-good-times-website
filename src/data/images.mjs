@@ -88,7 +88,6 @@ export const images = [
 
   // Cape Town: the city and its history
   { name: 'castle-table-mountain', src: `${T}castle-table-mountain.jpg`, origin: 'T', full: true, focus: '50% 40%', alt: 'A couple at the Castle of Good Hope, Table Mountain rising behind' },
-  { name: 'castle-cannons-group', src: `${T}castle-cannons-group.jpg`, origin: 'T', focus: '42% 60%', alt: 'A group beside the old cannons at the Castle of Good Hope, Table Mountain behind' },
   { name: 'castle-moat', src: `${W}castle-moat.jpg`, origin: 'W', focus: '50% 46%', alt: 'The reed-lined moat of the Castle of Good Hope reflecting Devil’s Peak and the slopes of Table Mountain' },
   { name: 'district-six-museum', src: `${T}district-six-museum.jpg`, origin: 'T', focus: '60% 40%', alt: 'Newspaper pages and photographs on display at the District Six Museum in Cape Town' },
   { name: 'heritage-building-guests', src: `${T}heritage-building-guests.jpg`, origin: 'T', focus: '44% 56%', alt: 'A couple in front of a historic stone building in central Cape Town' },

@@ -35,7 +35,6 @@ People: **none** = no person; **far** = people too small or turned away to ident
 | cape-of-good-hope-sign | Tripadvisor collection, file 002 | T | guests | In use, consent P1 |
 | hout-bay-flag-frame | Tripadvisor collection, file 019 | T | guests | In use, consent P1 |
 | castle-table-mountain | Tripadvisor collection, file 056 | T | guests | In use, consent P1 |
-| castle-cannons-group | Tripadvisor collection, file 076 | T | guests | In use, consent P1 |
 | district-six-museum | Tripadvisor collection, file 052 | T | far | In use |
 | heritage-building-guests | Tripadvisor collection, file 055 | T | guests | In use, consent P1 |
 | cape-minstrels | Tripadvisor collection, file 050 | T | guests, street performers (adults) | In use, consent P1 |
@@ -154,6 +153,7 @@ Each was checked one by one for what it shows (several file names did not match:
 |---|---|---|---|
 | guide-selfie-bay | Tripadvisor collection, file 003 | The frame cut one guest's face at its edge ("A selfie above the bay" now shows `above-the-bay-selfie`); it was also the tailored day's card | Deleted (in git history) |
 | memories-table-mountain, memories-boulders, memories-bokaap, memories-camps-bay, memories-cape-of-good-hope, memories-sunset | `goodtimes_phone_gallery_assets.zip` (G) | The phone gallery shows real photographs at the owner's direction (6.A of the brief); these were AI-generated and 549–828 px wide | Deleted (in git history; the package stays in Drive › NEW-HERO) |
+| castle-cannons-group | Tripadvisor collection, file 076 | "A city day at the Castle of Good Hope" showed Table Mountain more than the Castle (6.G of the brief); both its places (the home page and About) now show photographs in which the Castle is the subject | Deleted (in git history) |
 | ocean-footprints-reveal | `Golden Shoreline Footprints.png` (G) | The sand journey's destination is now the owner's film made from it (`section-2-video.mp4`) | Deleted (master kept in `media-src/journey/` and Drive) |
 
 ## The home hero (AI-generated, G)

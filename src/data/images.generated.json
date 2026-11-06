@@ -456,16 +456,6 @@
     "width": 1080,
     "height": 720
   },
-  "castle-cannons-group": {
-    "widths": [
-      480,
-      800,
-      1200,
-      1600
-    ],
-    "width": 2048,
-    "height": 1152
-  },
   "castle-moat": {
     "widths": [
       480,
