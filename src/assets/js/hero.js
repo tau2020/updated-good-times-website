@@ -5,7 +5,8 @@
    Good Times start Here!, rises into the bottom-left corner and a single sheen crosses it. Whole elements only,
    opacity and small transforms (y, a touch of scale on the wordmark and the call to action), overlapping so it reads
    as one piece: about 4.8 s on desktop, 4.0 s on tablets and 2.9 s on phones (the aircraft at the owner's slower pace,
-   6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s).
+   6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s). Once the logo is
+   whole (the landing), the company statement under it is drawn in from left to right, softly (Addendum, 6 Nov 2026).
    The phone is not part of it: its first photograph is there from the first paint, and its gallery
    (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
    (html.cine from the inline gate) and GSAP has loaded; otherwise nothing is hidden or moved and the logo is whole.
@@ -36,6 +37,7 @@
 
   var header = document.querySelector('.site-header--overlay');
   var brand = header && one('.brand', header);
+  var statement = header && one('.brand-lockup__statement', header);
   var bookNow = header && one('.header-cta', header);
   var titles = header ? list('.primary-nav a', header) : [];
   var cta = one('.hero__cta');
@@ -52,10 +54,12 @@
   var built = false;
   var ctx = gsap.context(function () {
     // Starting states, written before the stylesheet's holding state is released
-    var staged = [brand, bookNow].concat(titles).filter(Boolean);
+    var staged = [brand, statement, bookNow].concat(titles).filter(Boolean);
     gsap.set(staged, { opacity: 0 });
     if (cta) gsap.set(cta, { autoAlpha: 0 });
     if (brand) gsap.set(brand, { y: 12, scale: 0.985, transformOrigin: 'left center' });
+    // The clip reaches past the line's box so its soft shadow over the film is never cut while it draws in
+    if (statement) gsap.set(statement, { y: 4, clipPath: 'inset(-1em 100% -1em -1em)' });
     if (bookNow) gsap.set(bookNow, { y: 10 });
     if (titles.length) gsap.set(titles, { y: 8 });
     if (cta) gsap.set(cta, { y: 16, scale: 0.96, transformOrigin: 'left bottom' });
@@ -78,6 +82,12 @@
     // Act II — the navigation titles, one after another, from the landing (about 4.1–4.8 s) or from 0.7 s without it
     tl.addLabel('titles', landing);
     if (titles.length) tl.to(titles, { opacity: 1, y: 0, duration: plane ? 0.3 : 0.9, stagger: plane ? 0.085 : 0.28 }, 'titles');
+
+    // The company statement, once the logo entrance is complete: a beat after the landing, or once the brand has arrived
+    // (1.2 s) without the aircraft. A soft left-to-right draw (0.6 s) under the wordmark, ending before the aircraft's
+    // handover, so the entrance is no longer than before; nothing else moves.
+    tl.addLabel('statement', plane ? landing + 0.1 : 1.2);
+    if (statement) tl.to(statement, { opacity: 1, y: 0, clipPath: 'inset(-1em 0% -1em -1em)', duration: 0.6, ease: 'power2.out', clearProps: 'transform,clipPath' }, 'statement');
 
     // Act III — the call to action rises into its corner and settles, then one sheen crosses it (2.2–3.7 s)
     tl.addLabel('cta', 2.2);

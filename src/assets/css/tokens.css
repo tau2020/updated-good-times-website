@@ -55,6 +55,7 @@
   --on-dark-muted: rgba(255, 255, 255, 0.7);
   /* Over the hero photograph and on navy: white words, the logo's light green for rules and accents */
   --champagne: #6fed8f; /* rule, borders and hover tone over the hero */
+  --logo-green-on-dark: #45e375; /* the reversed logo's own green (Approved Logo Pack v2): the statement on dark grounds */
   --hero-ivory: #ffffff; /* navigation titles, headline and lead over the photograph */
   --champagne-deep: #2fbe60; /* medallion and button edges */
   --champagne-ink: #062314; /* text on light-green surfaces */
@@ -131,7 +132,7 @@
 }
 @media (min-width: 64em) {
   :root {
-    --header-h: 84px;
+    --header-h: 96px; /* the logo and the company statement under it (84 px before the statement, 6 Nov 2026) */
   }
 }
 @media (min-width: 112.5em) {

@@ -104,7 +104,7 @@ npm run video             # freeze the people, keep the cloud and the sea moving
 
 It holds every frame on the first one except inside a feathered mask (`src/tools/hero-moment-mask.mjs`) around the cloud over Table Mountain and the sea, kept clear of every face, then crossfades the loop and encodes H.264 and VP9 with one keyframe per loop (`src/assets/video/`, about 350 KB and 210 KB). The scene and the six pictures in the hero's phone are AI-generated, supplied by the owner for the home hero only (basis G in `docs/RIGHTS_REGISTER.md`, approval P5).
 
-The logo files in `src/assets/brand/` are the approved Good Times Logo Pack v2, used as supplied (no redraws).
+The logo files in `src/assets/brand/` are the approved Good Times Logo Pack v2, used as supplied (no redraws). The company statement under the logo (`site.statement`) is text set beside the artwork, in the header, the footer and the emails; the share image (`src/assets/img/og-default.jpg`) is drawn from the same lockup by `node src/tools/build-og.mjs`.
 
 ## Enquiries
 

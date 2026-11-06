@@ -40,11 +40,11 @@ test('production values: Good Times’ own domain, indexable, enquiries still in
   assert.equal(v.PUBLIC_SITE_URL, ORIGIN);
   assert.equal(v.SITE_ENV, 'production');
   assert.equal(v.ENQUIRY_MODE, 'preview', 'no live bookings until Good Times’ own database, sending domain and secrets are in place and approved');
-  assert.equal(v.FROM_EMAIL, 'Good Times in Cape Town <info@goodtimesincapetown.co.za>');
-  // Notifications and replies would go to Good Times' published address (pending its confirmation).
-  assert.equal(v.ENQUIRY_TEAM_EMAIL, 'info@goodtimesincapetown.co.za');
-  assert.equal(v.REPLY_TO_EMAIL, 'info@goodtimesincapetown.co.za');
-  assert.equal(v.ADMIN_EMAILS, 'info@goodtimesincapetown.co.za');
+  assert.equal(v.FROM_EMAIL, 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>');
+  // Notifications and replies would go to Good Times' primary address (pending its confirmation).
+  assert.equal(v.ENQUIRY_TEAM_EMAIL, 'hello@goodtimesincapetown.co.za');
+  assert.equal(v.REPLY_TO_EMAIL, 'hello@goodtimesincapetown.co.za');
+  assert.equal(v.ADMIN_EMAILS, 'hello@goodtimesincapetown.co.za');
   assert.equal(v.EMAIL_PROVIDER, 'resend');
   for (const [name, env] of Object.entries(ENVIRONMENTS)) {
     for (const value of Object.values(env.vars)) assert.doesNotMatch(value, /japshuttlesandtours|shuttlejap|\banesu\b/i, name); // brand-guard-allow: proves no former operator's address remains
@@ -99,9 +99,9 @@ test('no other business’s name or domain, and no preview placeholder, appears 
 
 test('booking links stay on the site; only the verified email addresses are published', () => {
   const contact = read('contact/index.html');
-  // Good Times' published address (goodtimesincapetown.co.za, read on 5 Nov 2026): exactly this one, never a guessed one
+  // Good Times' own addresses (its instruction of 6 Nov 2026): exactly these, never a guessed one
   const mailto = [...new Set([...contact.matchAll(/href="mailto:([^"]+)"/g)].map((m) => m[1]))].sort();
-  assert.deepEqual(mailto, ['info@goodtimesincapetown.co.za']);
+  assert.deepEqual(mailto, ['hello@goodtimesincapetown.co.za', 'stuart@goodtimesincapetown.co.za']);
   const tel = [...new Set([...contact.matchAll(/href="tel:([^"]+)"/g)].map((m) => m[1]))];
   assert.deepEqual(tel, ['+27723768432'], 'the published number');
   assert.doesNotMatch(contact, /wa\.me/, 'no WhatsApp link until Good Times confirms the number takes WhatsApp');

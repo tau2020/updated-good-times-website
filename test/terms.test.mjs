@@ -44,11 +44,13 @@ const source = readFileSync(new URL('./fixtures/terms-source.md', import.meta.ur
 
 /**
  * Where this website's text differs from the published one, and why (docs/APPROVAL_REGISTER.md):
- * the site has no "My Bookings" page and no "Safety & Trust" page to point to.
+ * the site has no "My Bookings" page and no "Safety & Trust" page to point to, and the closing line
+ * names hello@, which replaced info@ as Good Times' address on 6 Nov 2026 (the page reads it from site data).
  */
 const ADAPTATIONS = [
   ['contact us as soon as possible — either through your My Bookings page or directly by phone or email.', 'contact us as soon as possible, directly by phone or email.'],
   ['keep guests safe (see our Safety & Trust page).', 'keep guests safe.'],
+  ['info@goodtimesincapetown.co.za', 'hello@goodtimesincapetown.co.za'],
 ];
 const adapted = source.map((b) => ADAPTATIONS.reduce((t, [from, to]) => t.replace(from, to), b));
 
@@ -130,7 +132,7 @@ test('every figure in the source, and no other, appears on the page', () => {
   const figures = (t) => [...t.matchAll(/\d+%?/g)].map((m) => m[0]);
   const text = textBlocks(production).join(' ');
   assert.deepEqual(figures(text), figures(source.join(' ')));
-  for (const f of ['South African Rand (ZAR)', 'the amount actually charged is always in ZAR', 'an alternative date or a full refund', 'end a tour early, without refund', 'the laws of South Africa', 'the jurisdiction of the South African courts', 'info@goodtimesincapetown.co.za', '+27 72 376 8432']) {
+  for (const f of ['South African Rand (ZAR)', 'the amount actually charged is always in ZAR', 'an alternative date or a full refund', 'end a tour early, without refund', 'the laws of South Africa', 'the jurisdiction of the South African courts', 'hello@goodtimesincapetown.co.za', '+27 72 376 8432']) {
     assert.ok(text.includes(f), f);
   }
   // No commercial term the published text does not give: no deposit, percentage or notice period is invented.

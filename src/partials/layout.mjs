@@ -209,7 +209,7 @@ ${site.analytics.cloudflareToken ? `<meta name="gt-analytics" content="${esc(sit
 <meta property="og:image" content="${site.url}/${og}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(page.ogAlt || 'The Good Times in Cape Town logo: Table Mountain, a dotted flight path and the words Make unforgettable memories in the Mother City')}">
+<meta property="og:image:alt" content="${esc(page.ogAlt || `The Good Times in Cape Town logo, Table Mountain and a dotted flight path over the name, and beneath it: ${site.statement}`)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
@@ -233,11 +233,14 @@ ${signatureDesc()}
 ${site.preview ? `<div class="preview-bar" data-preview-bar role="note"><div class="container preview-bar__inner">${icon('info')}<span>Staging preview, not yet live.${site.enquiry.mode === 'live' ? ' Test booking requests are delivered to the configured inbox.' : ' Booking requests made here are not sent.'}</span>${flight ? '<button type="button" class="preview-bar__replay" data-intro-replay hidden>Replay the intro</button>' : ''}</div></div>` : ''}
 <header class="site-header${overlay ? ' site-header--overlay' : ''}" data-header${overlay ? ' data-condense-at="40"' : ''}>
   <div class="container header-bar">
-    <a class="brand" href="./" aria-label="${esc(site.name)}, home" data-intro${flight ? ` style="${dockBox().style}"` : ''}>
-      <img class="brand__logo brand__logo--ink" src="assets/brand/gt-logo-compact.svg" alt="" width="2121" height="564">
-      ${overlay ? `<img class="brand__logo brand__logo--gold" src="assets/brand/gt-logo-reversed-compact.svg" alt="" width="2121" height="564">` : ''}
-      ${flight ? aircraftDock() : ''}
-    </a>
+    <div class="brand-lockup">
+      <a class="brand" href="./" aria-label="${esc(site.name)}, home" data-intro${flight ? ` style="${dockBox().style}"` : ''}>
+        <img class="brand__logo brand__logo--ink" src="assets/brand/gt-logo-compact.svg" alt="" width="2121" height="564">
+        ${overlay ? `<img class="brand__logo brand__logo--gold" src="assets/brand/gt-logo-reversed-compact.svg" alt="" width="2121" height="564">` : ''}
+        ${flight ? aircraftDock() : ''}
+      </a>
+      <p class="brand-lockup__statement" data-intro data-statement>${esc(site.statement)}</p>
+    </div>
     <nav class="primary-nav" aria-label="Primary">
       <ul>
         ${site.nav.map((n) => `<li><a href="${n.href}"${current(n.href)} data-intro>${esc(n.label)}</a></li>`).join('\n        ')}
@@ -276,7 +279,10 @@ ${main}
 <footer class="site-footer on-dark">
   <div class="container footer-main">
     <div class="footer-brand">
-      <img src="assets/brand/gt-logo-reversed.svg" alt="${esc(site.name)}: ${esc(site.logoTagline)}" width="2121" height="741" loading="lazy" decoding="async">
+      <div class="brand-lockup brand-lockup--footer">
+        <img src="assets/brand/gt-logo-reversed-compact.svg" alt="${esc(site.name)}" width="2121" height="564" loading="lazy" decoding="async">
+        <p class="brand-lockup__statement">${esc(site.statement)}</p>
+      </div>
       <p>Private, guide-led tours of Cape Town and the Western Cape since ${site.founded}, founded by ${esc(site.founder)}.</p>
       <div class="footer-contact mt-5">
         ${contacts}

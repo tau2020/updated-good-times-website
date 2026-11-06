@@ -493,16 +493,24 @@ h4 {
   gap: var(--space-5);
   min-height: var(--header-h);
 }
+/* The brand lockup (Addendum, 6 Nov 2026): the logo link and, beneath it, the company statement. The link keeps
+   exactly the logo's box (the aircraft's dock is placed in fractions of it, motion.css), so the statement is its
+   sibling, not part of it */
+.brand-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0; /* the wordmark keeps its size and proportions; the navigation gives way first */
+  margin-right: auto;
+}
 .brand {
   display: inline-flex;
-  flex-shrink: 0; /* the wordmark keeps its size and proportions; the navigation gives way first */
   align-items: center;
   text-decoration: none;
-  margin-right: auto;
 }
 /* The approved compact lockup (Approved Logo Pack v2: Table Mountain and the trail over the wordmark,
    2121:564), never clipped: width-led on phones, where the row is the limit (the header
-   grows to hold it, see below), height-led from 40em */
+   grows to hold it, see below), height-led from 40em (--logo-h) */
 .brand__logo {
   width: var(--brand-w, 260px);
   height: auto;
@@ -511,26 +519,54 @@ h4 {
   display: none;
 }
 @media (min-width: 40em) {
+  body {
+    --logo-h: 60px;
+  }
+  body.has-overlay-header {
+    --logo-h: 68px;
+  }
   .brand__logo {
     width: auto;
-    height: 60px;
-  }
-  .has-overlay-header .brand__logo {
-    height: 68px;
+    height: var(--logo-h);
   }
 }
 @media (min-width: 64em) {
-  .brand__logo {
-    height: 68px;
+  body {
+    --logo-h: 68px;
   }
-  .has-overlay-header .brand__logo {
-    height: clamp(64px, 5.6vw, 86px);
+  body.has-overlay-header {
+    --logo-h: clamp(64px, 5.6vw, 86px);
   }
+}
+/* The company statement, exactly as supplied, under the artwork: DM Sans on one line, sized from the logo's width
+   (2121:564) so that it spans the artwork, from its left edge, and scales with it; never under 10 px or over 13 px.
+   The logo itself is untouched. Green as in the logo: the leaf green on light grounds (5.2:1 on white), the reversed
+   logo's own #45E375 on dark ones. Phones narrower than 360 px leave it out of the header, where the row has no room;
+   the footer's lockup always has it. */
+body {
+  --lockup-w: calc(var(--logo-h, 69.1px) * 3.7606);
+  --statement-size: clamp(10px, calc(var(--lockup-w) / 25), 13px);
+  --statement-h: calc(var(--statement-size) * 1.2 + 2px);
+}
+.brand-lockup__statement {
+  margin: 2px 0 0;
+  padding-left: calc(var(--lockup-w) * 0.012);
+  font-family: var(--font-body);
+  font-size: var(--statement-size);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--green-primary);
+  transition: color var(--dur) var(--ease-out);
+}
+.on-dark .brand-lockup__statement {
+  color: var(--logo-green-on-dark);
 }
 /* Small desktops (1024–1199 px): the lockup, the titles and Book Now share the bar at compact sizes */
 @media (min-width: 64em) and (max-width: 74.99em) {
-  .has-overlay-header .brand__logo {
-    height: 64px;
+  body.has-overlay-header {
+    --logo-h: 64px;
   }
   .has-overlay-header .primary-nav ul {
     gap: 1.25rem;
@@ -738,7 +774,7 @@ h4 {
   .primary-nav {
     margin-inline: auto;
   }
-  .brand {
+  .brand-lockup {
     margin-right: 0;
   }
   .nav-toggle {
@@ -750,15 +786,26 @@ h4 {
 @media (max-width: 39.99em) {
   body {
     --brand-w: min(300px, calc(100vw - 2 * var(--gutter) - 62px));
-    --header-h: calc(var(--brand-w) * 0.2659 + 14px); /* the compact lockup is 2121:564 */
+    --lockup-w: var(--brand-w);
+    /* the compact lockup is 2121:564; the statement's line below it */
+    --header-h: calc(var(--brand-w) * 0.2659 + var(--statement-h) + 14px);
   }
   body.has-overlay-header {
     --brand-w: min(300px, calc(100vw - 2 * var(--hero-edge) - 62px));
   }
 }
+@media (max-width: 22.49em) {
+  body {
+    --statement-h: 0px;
+  }
+  .site-header .brand-lockup__statement {
+    display: none;
+  }
+}
+/* Tablets: a taller bar for the 60–68 px logo and the statement under it (84 px before the statement) */
 @media (min-width: 40em) and (max-width: 63.99em) {
   body {
-    --header-h: 84px;
+    --header-h: 96px;
   }
 }
 /* Overlay header (home only, every width): transparent over the hero film until the
@@ -778,6 +825,10 @@ h4 {
 }
 .site-header--overlay:not(.is-condensed) .brand__logo--gold {
   display: block;
+}
+.site-header--overlay:not(.is-condensed) .brand-lockup__statement {
+  color: var(--logo-green-on-dark);
+  text-shadow: 0 1px 2px rgba(3, 16, 32, 0.6), 0 0 6px rgba(3, 16, 32, 0.28);
 }
 .site-header--overlay:not(.is-condensed) .primary-nav a:hover,
 .site-header--overlay:not(.is-condensed) .primary-nav a[aria-current='page'] {
@@ -3055,10 +3106,20 @@ h4 {
     grid-template-columns: 1.6fr repeat(4, minmax(0, 1fr));
   }
 }
+/* The footer's lockup: the reversed compact logo (the full artwork carries the logo pack's own, older tagline) with the
+   company statement under it, sized from the logo's width as in the header */
+.brand-lockup--footer {
+  --lockup-w: clamp(240px, 26vw, 320px);
+  --statement-size: clamp(10px, calc(var(--lockup-w) / 25), 13px);
+}
 .footer-brand img {
-  width: clamp(240px, 26vw, 320px);
+  width: var(--lockup-w, clamp(240px, 26vw, 320px));
   max-width: 100%;
   height: auto;
+}
+.footer-brand .brand-lockup__statement {
+  max-width: none;
+  margin-top: 0.3em;
 }
 .footer-brand p {
   margin-top: var(--space-4);

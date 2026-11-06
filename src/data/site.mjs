@@ -29,8 +29,12 @@ export const site = {
   name: 'Good Times in Cape Town',
   shortName: 'Good Times',
   tagline: 'Private tours in Cape Town since 2014',
-  // The approved logo's own two-line tagline (Approved Logo Pack v2)
+  // The approved logo's own two-line tagline (Approved Logo Pack v2), part of the full artwork (gt-logo-primary.svg,
+  // gt-logo-reversed.svg). The site shows the compact artwork, which has none, with the statement below set under it.
   logoTagline: 'Make unforgettable memories in the Mother City',
+  // The company statement, exactly as Good Times supplied it (Addendum, 6 Nov 2026): set beneath the logo wherever the
+  // logo lockup appears (the header and the footer; partials/layout.mjs), never inside the artwork.
+  statement: 'Make Unforgettable Experience In The Mother City',
   descriptor: 'Private tours and transfers, Cape Town',
   founded: 2014,
   founder: 'Stuart Matanhire',
@@ -62,13 +66,22 @@ export const site = {
       source: 'Not yet confirmed: the official site lists this number for calls only',
       verified: false,
     },
+    // The primary address. hello@ replaces info@ (published on the official site on 5 Nov 2026) wherever the site
+    // names an address: Good Times' instruction of 6 Nov 2026 (Addendum, docs/APPROVAL_REGISTER.md › C3).
     email: {
-      address: 'info@goodtimesincapetown.co.za',
-      label: 'Email',
-      source: `${OFFICIAL}: contact page, safety page and footer`,
+      address: 'hello@goodtimesincapetown.co.za',
+      label: 'Email us',
+      source: 'Good Times’ instruction of 6 Nov 2026 (Addendum): hello@ is the primary contact and replaces info@',
       verified: true,
     },
-    emailGeneral: { address: '', label: 'Bookings', source: '', verified: false },
+    // The additional address from the same instruction: on the contact page only, after the primary one
+    // (contactList(site, { additional: true })); the footer, the menu and the enquiry page keep to hello@.
+    emailGeneral: {
+      address: 'stuart@goodtimesincapetown.co.za',
+      label: 'Email Stuart',
+      source: 'Good Times’ instruction of 6 Nov 2026 (Addendum): an additional contact option on the contact page',
+      verified: true,
+    },
     // The office, exactly as the official site writes it (it matches the Google Business Profile and Tripadvisor).
     office: {
       lines: ['277 Main Road, Adelphi Centre', 'Sea Point, Cape Town, 8005'],

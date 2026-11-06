@@ -10,7 +10,8 @@ export const page = {
   priority: 0.7,
   breadcrumbs: crumbs,
   body: ({ site }) => {
-    const direct = contactList(site);
+    // The contact section also lists the additional address (Stuart's, 6 Nov 2026) after the primary one
+    const direct = contactList(site, { additional: true });
     return `
 <section class="page-head">
   <div class="container">

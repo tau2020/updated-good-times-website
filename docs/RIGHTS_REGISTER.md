@@ -196,7 +196,7 @@ The rights log also excludes the Langa files with identifiable children (GT-A-03
 |---|---|---|
 | Logos, symbol, favicons, social avatar | Good Times Approved Logo Pack v2 (Drive), used as supplied: `src/assets/brand/` | Approved by the owner (the pack's own README). Not redrawn; the email logo is a PNG export of the pack's reversed logo |
 | Mountain-trail artwork (art panels for tours without a photograph) | Logo Pack v2 › `04-mountain-trail.svg` | As above |
-| Share image (`og-default.jpg`) | The pack's primary logo on the site's paper colour | As above |
+| Share image (`og-default.jpg`) | The pack's compact logo, drawn from its SVG as supplied, with the company statement set beneath it in DM Sans as on the site (Addendum, 6 Nov 2026), on the site's paper colour (`node src/tools/build-og.mjs`). It replaced the pack's primary logo, whose own artwork carries the older tagline | As above |
 | The home page's flying aircraft (motion layer) | The lockup's own airliner glyph and dotted route, read from `gt-logo-compact.svg` at build time; the logo files are not edited | As above |
 | The propeller aircraft (preview builds only, the owner's alternative) | The owner's motion package (5 Nov 2026): `src/assets/motion/gtict-real-aircraft.svg`, an original vector, recoloured to the logo's greens | Supplied by the owner; not a claim about any aircraft Good Times operates (M1) |
 | The sand, the footprints and their grains | Procedural, drawn by this repository's own WebGL2 code (`src/assets/js/motion/sand/`); no texture or photograph of sand is used | Original |

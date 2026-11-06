@@ -517,6 +517,10 @@ test.describe('home hero', () => {
     }
     expect(startOf('cta')).toBeCloseTo(2.2, 2);
     expect(startOf('hero__cta-sheen')).toBeCloseTo(2.82, 2);
+    // The company statement under the logo (Addendum, 6 Nov 2026): drawn in a beat after the aircraft lands, once the
+    // logo entrance is complete, and done before the aircraft's handover, so the entrance is no longer than before
+    expect(plan.landsAt).toBeGreaterThan(1);
+    expect(startOf('brand-lockup__statement')).toBeCloseTo(0.15 + plan.landsAt + 0.08 + 0.1, 2);
     expect(plan.tweens.some((t) => t.targets.some((n) => /phone-gallery|hero__poster|hero__video/.test(n))), 'the scene and the phone are not part of it').toBe(false);
     const seconds = plan.duration / plan.timeScale;
     // With the brand aircraft at the owner's slower pace (6 Nov 2026) the entrance ends with the landing and the titles
@@ -547,6 +551,8 @@ test.describe('home hero', () => {
     await expect(page.locator('.hero__media')).not.toHaveClass(/\bis-playing\b/);
     await expect(page.locator('.hero h1')).toHaveCount(1);
     expect(await page.locator('.hero__cta').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none']);
+    // The statement under the logo is simply there: no reveal, no clip
+    expect(await page.locator('.site-header .brand-lockup__statement').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).clipPath, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none', 'none']);
     // No timeline is built under reduced motion (the gallery's lift still works: it simply does not fly)
     expect(await page.evaluate(() => [window.__heroEntrance, window.__phoneGalleries[0].timeline()]), 'no timeline under reduced motion').toEqual([undefined, null]);
     await expect(page.locator('[data-phone-toggle]')).toBeHidden();
@@ -1219,7 +1225,7 @@ test.describe('travel concierge', () => {
       await expect(panel.locator('.gt-concierge-panel__cta')).toHaveText('Make It Yours');
       // The direct line calls or writes, exactly; WhatsApp is not offered until the number is confirmed for it
       const reach = panel.locator('.gt-concierge-panel__reach a');
-      expect(await reach.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['tel:+27723768432', 'mailto:info@goodtimesincapetown.co.za']);
+      expect(await reach.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['tel:+27723768432', 'mailto:hello@goodtimesincapetown.co.za']);
       await expect(reach.locator('.gt-concierge-reach__name')).toHaveText(['Call Us', 'Email Us']);
       await expect(panel.locator('a[href*="wa.me"]')).toHaveCount(0);
       // Every other link in the sheet answers
@@ -1442,6 +1448,56 @@ test.describe('taste compositions and About’s photographs', () => {
 });
 
 test.describe('header', () => {
+  test('the brand lockup: the statement, exactly as supplied, directly beneath the logo at every width, inside the header; never inside the logo link', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'widths set explicitly');
+    for (const [w, h] of [[320, 640], [360, 780], [390, 844], [768, 1024], [1024, 768], [1440, 900], [1920, 1080]]) {
+      await page.setViewportSize({ width: w, height: h });
+      for (const path of ['/', '/tours/', '/contact/']) {
+        await page.goto(`${path}?nomotion`);
+        const r = await page.evaluate(() => {
+          const box = (el) => { const b = el.getBoundingClientRect(); return { x: b.x, y: b.y, w: b.width, right: b.right, bottom: b.bottom }; };
+          const header = document.querySelector('.site-header');
+          const logo = [...header.querySelectorAll('.brand .brand__logo')].find((i) => i.getClientRects().length);
+          const st = header.querySelector('.brand-lockup__statement');
+          const cs = getComputedStyle(st);
+          return { text: st.textContent, inLink: !!st.closest('a'), shown: cs.display !== 'none', logo: box(logo), st: box(st), header: box(header), size: parseFloat(cs.fontSize), family: cs.fontFamily, opacity: cs.opacity, toggle: document.querySelector('.nav-toggle').getClientRects().length ? box(document.querySelector('.nav-toggle')) : null, overflow: document.documentElement.scrollWidth - innerWidth };
+        });
+        const at = `${path} at ${w}px`;
+        expect(r.text, at).toBe('Make Unforgettable Experience In The Mother City');
+        expect(r.inLink, `${at}: beside the logo link, not in it (the aircraft's dock is measured from the link)`).toBe(false);
+        expect(r.overflow, at).toBe(0);
+        if (w < 360) {
+          expect(r.shown, `${at}: no room in the row, so left out of the header`).toBe(false);
+          continue;
+        }
+        expect(r.shown, at).toBe(true);
+        expect(r.opacity, at).toBe('1');
+        expect(r.st.y - r.logo.bottom, `${at}: directly beneath the logo`).toBeGreaterThanOrEqual(0);
+        expect(r.st.y - r.logo.bottom, `${at}: directly beneath the logo`).toBeLessThan(6);
+        expect(Math.abs(r.st.x - r.logo.x), `${at}: from the artwork's left edge`).toBeLessThan(1);
+        expect(r.st.right - r.logo.right, `${at}: about the artwork's width`).toBeLessThan(26);
+        expect(r.st.bottom, `${at}: inside the header`).toBeLessThanOrEqual(r.header.bottom);
+        if (r.toggle) expect(r.st.right, `${at}: clear of the menu button`).toBeLessThan(r.toggle.x);
+        expect(r.size, at).toBeGreaterThanOrEqual(10);
+        expect(r.size, at).toBeLessThanOrEqual(13);
+        expect(r.family, at).toMatch(/^"?DM Sans/);
+      }
+    }
+  });
+
+  test('the footer’s lockup: the reversed compact logo with the statement under it; the logo pack’s older tagline is never shown beside it', async ({ page }) => {
+    await page.goto('/tours/?nomotion');
+    const lockup = page.locator('.site-footer .brand-lockup');
+    await expect(lockup.locator('img')).toHaveAttribute('src', /gt-logo-reversed-compact\.svg$/);
+    await expect(lockup.locator('img')).toHaveAttribute('alt', 'Good Times in Cape Town');
+    await expect(lockup.locator('.brand-lockup__statement')).toHaveText('Make Unforgettable Experience In The Mother City');
+    await expect(page.locator('img[src*="gt-logo-reversed.svg"], img[src*="gt-logo-primary.svg"]')).toHaveCount(0);
+    const [img, st] = await Promise.all([lockup.locator('img').boundingBox(), lockup.locator('.brand-lockup__statement').boundingBox()]);
+    expect(st.y - (img.y + img.height)).toBeGreaterThanOrEqual(0);
+    expect(st.y - (img.y + img.height)).toBeLessThan(8);
+    expect(await lockup.locator('.brand-lockup__statement').evaluate((el) => getComputedStyle(el).color)).toBe('rgb(69, 227, 117)');
+  });
+
   test('the header carries no contact links and Make It Yours never leaves the bar', async ({ page, isMobile }) => {
     test.skip(isMobile, 'desktop widths set explicitly');
     for (const [w, h] of [[1024, 768], [1280, 800], [1440, 900], [1600, 900], [1920, 1080]]) {
@@ -1593,7 +1649,11 @@ test.describe('content honesty', () => {
     await page.goto('/contact/?nomotion');
     const main = page.locator('main');
     await expect(main.locator('a[href="tel:+27723768432"]')).toHaveCount(1);
-    await expect(main.locator('a[href="mailto:info@goodtimesincapetown.co.za"]')).toHaveCount(1);
+    // hello@ is the primary address and stuart@ the additional one, in that order (Good Times, 6 Nov 2026); info@ is gone
+    await expect(main.locator('a[href^="mailto:"]')).toHaveCount(2);
+    expect(await main.locator('a[href^="mailto:"]').evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['mailto:hello@goodtimesincapetown.co.za', 'mailto:stuart@goodtimesincapetown.co.za']);
+    await expect(main.locator('.contact-list__label')).toContainText(['Email us', 'Email Stuart']);
+    await expect(page.locator('a[href*="info@"]')).toHaveCount(0);
     // The number is confirmed for calls only, so nothing offers WhatsApp on it yet
     await expect(page.locator('a[href*="wa.me"], .brand-mark--whatsapp')).toHaveCount(0);
     // Call sits under the number in its familiar colour; Tripadvisor is named plainly

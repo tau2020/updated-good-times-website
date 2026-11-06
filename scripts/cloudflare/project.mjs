@@ -50,17 +50,21 @@ export const DOMAIN = {
   approved: false,
 };
 
-/** Good Times' published address on the domain (goodtimesincapetown.co.za, read on 5 Nov 2026). */
+/**
+ * Good Times' primary address on the domain: hello@, which replaced the published info@ on the owner's
+ * instruction of 6 Nov 2026 (Addendum). stuart@, the additional public address, is a personal mailbox:
+ * it is not routed here.
+ */
 export const MAILBOXES = {
-  info: `info@${DOMAIN.apex}`,
+  hello: `hello@${DOMAIN.apex}`,
 };
 
 /**
  * Where new enquiry notifications would go, and where customers' replies come
- * back: Good Times' published address. Pending the owner's confirmation; it is
+ * back: Good Times' primary address. Pending the owner's confirmation; it is
  * used only once an environment is live, and none is.
  */
-export const TEAM_INBOX = MAILBOXES.info;
+export const TEAM_INBOX = MAILBOXES.hello;
 
 export const SECRETS = ['DATABASE_URL', 'RESEND_API_KEY', 'ENQUIRY_SIGNING_SECRET'];
 
@@ -84,7 +88,7 @@ export const ENVIRONMENTS = {
       ENQUIRY_MODE: 'preview',
       ENQUIRY_SYSTEM_ENABLED: 'true',
       EMAIL_PROVIDER: 'resend',
-      FROM_EMAIL: `Good Times in Cape Town <${MAILBOXES.info}>`,
+      FROM_EMAIL: `Good Times in Cape Town <${MAILBOXES.hello}>`,
       ENQUIRY_TEAM_EMAIL: TEAM_INBOX,
       REPLY_TO_EMAIL: TEAM_INBOX,
       // Staff who may sign in to the bookings dashboard (/admin/), comma-separated.

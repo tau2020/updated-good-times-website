@@ -115,6 +115,7 @@ does not shrink the token.
 | Caption, credit, metadata | `figcaption`, `.source-note`, `.story-card__source` | DM Sans 400–500 | `--text-small` / `--text-xs` | Sentence |
 | Hand-written note (home page) | `.lc-moments figcaption`, `.lc-memory__place`, `.gt-credentials__eyebrow` | Caveat 600, rotated −1° to −2° | `--text-accent` | Sentence |
 | Buttons | `.gt-button` | DM Sans 600; `--large` Bricolage 650 | 0.875–1.0625 rem | Title Case, as the brief writes them ("Plan My Day") |
+| Company statement, under the logo (Addendum, 6 Nov 2026) | `.brand-lockup__statement` | DM Sans 600, 0.01 em, one line | `--statement-size`: the logo's width ÷ 25, 10–13 px | **Exactly as supplied**: "Make Unforgettable Experience In The Mother City" |
 
 Rules:
 
@@ -131,6 +132,16 @@ Rules:
    preview at 360, 390, 768, 1024 and 1440 px (`qa/surgical-change-report.md`).
 6. **Caveat sparingly.** At most one hand-written element per section, always beside or under a photograph or a title,
    always repeating or decorating information that is also available in plain text (the alt text, the heading).
+7. **The brand lockup** (Addendum, 6 Nov 2026). The company statement sits directly beneath the logo wherever the
+   lockup appears (every page's header, the footer, the share image and the emails' header), set as text, never in
+   the artwork: the logo files are untouched, and the site shows the pack's compact artwork, which has no tagline of
+   its own (the full artwork's older tagline is never shown beside the statement). One line in DM Sans 600, starting
+   at the artwork's left edge and spanning about its width: its size is the logo's width ÷ 25, so the two scale
+   together (11.2–11.7 px on 390 px phones, 10.2 px beside the 68 px desktop logo, 12.1 px on the home page at
+   1440 px), never under 10 px or over 13 px. Green as in the logo: the leaf green `--green-primary` on light grounds
+   (5.2:1 on white), the reversed logo's own `#45E375` (`--logo-green-on-dark`) on the footer's navy (8.4:1) and over
+   the home film, there with a soft shadow. Phones narrower than 360 px leave it out of the header, where the row has
+   no room beside the menu button; the footer always has it. The case is the client's, kept as written.
 
 ## 5. Examples
 
@@ -143,7 +154,8 @@ Rules:
 
 ## 6. Prohibited
 
-- Setting or re-setting the logo, or any part of it, in a web font.
+- Setting or re-setting the logo, or any part of it, in a web font. (The company statement under it is text beside
+  the artwork, not part of it; the full artwork's own older tagline is not re-set or shown with it.)
 - Caveat for paragraphs, prices, times, conditions, form fields, labels, validation, navigation or buttons.
 - Faux italics or faux bold (no `font-style: italic` on Bricolage; weights only within each face's axis).
 - Naming a font family in a component (`test/naturally.test.mjs` enforces `var(--font-*)`).

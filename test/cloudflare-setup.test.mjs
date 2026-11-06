@@ -297,11 +297,11 @@ test('no environment takes live enquiries yet, and the preview sends nothing any
   const preview = project.ENVIRONMENTS.preview.vars;
   for (const k of ['EMAIL_PROVIDER', 'FROM_EMAIL', 'ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'ADMIN_EMAILS', 'DATABASE_URL', 'WEB_ANALYTICS_TOKEN']) assert.equal(preview[k], undefined, `preview has no ${k}`);
   assert.equal(preview.SITE_ENV, 'preview', 'staging is kept out of search indexes');
-  // Production's addresses are Good Times' own published one, used only once production goes live.
-  assert.deepEqual(project.MAILBOXES, { info: 'info@goodtimesincapetown.co.za' });
+  // Production's addresses are Good Times' own primary one (hello@, 6 Nov 2026), used only once production goes live.
+  assert.deepEqual(project.MAILBOXES, { hello: 'hello@goodtimesincapetown.co.za' });
   const prod = project.ENVIRONMENTS.production.vars;
-  for (const k of ['ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'ADMIN_EMAILS']) assert.equal(prod[k], 'info@goodtimesincapetown.co.za', k);
-  assert.equal(prod.FROM_EMAIL, 'Good Times in Cape Town <info@goodtimesincapetown.co.za>');
+  for (const k of ['ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'ADMIN_EMAILS']) assert.equal(prod[k], 'hello@goodtimesincapetown.co.za', k);
+  assert.equal(prod.FROM_EMAIL, 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>');
   assert.equal(prod.WEB_ANALYTICS_TOKEN, undefined, 'no analytics token until Good Times has its own');
 });
 
@@ -419,16 +419,16 @@ test('email: an existing mail provider is kept (no change); without a confirmed 
   assert.deepEqual(google.writes(), []);
   const fresh = mockApi({ zones: [activeZone] });
   await exec(['email', '--apply'], fresh, { cfg: cutover });
-  assert.match(out(), /Email Routing needs the mailbox that info@goodtimesincapetown\.co\.za forwards to: pass --forward-to <address> once Good Times has confirmed it/);
+  assert.match(out(), /Email Routing needs the mailbox that hello@goodtimesincapetown\.co\.za forwards to: pass --forward-to <address> once Good Times has confirmed it/);
   assert.deepEqual(fresh.writes(), []);
 });
 
-test('email --forward-to … --apply (approved): routing on, info@ forwarded, DMARC at p=none; then nothing', async () => {
+test('email --forward-to … --apply (approved): routing on, hello@ forwarded, DMARC at p=none; then nothing', async () => {
   const api = mockApi({ zones: [activeZone] });
   await exec(['email', '--forward-to', 'owner@example.com', '--apply'], api, { cfg: cutover });
   assert.equal(api.s.routing.enabled, true);
   assert.deepEqual(api.s.addresses.map((a) => a.email), ['owner@example.com']);
-  assert.deepEqual(api.s.rules.map((r) => [r.name, r.matchers[0].value, r.actions[0].value]), [['Good Times: info@goodtimesincapetown.co.za', 'info@goodtimesincapetown.co.za', ['owner@example.com']]]);
+  assert.deepEqual(api.s.rules.map((r) => [r.name, r.matchers[0].value, r.actions[0].value]), [['Good Times: hello@goodtimesincapetown.co.za', 'hello@goodtimesincapetown.co.za', ['owner@example.com']]]);
   assert.deepEqual(api.s.records.filter((r) => r.name === '_dmarc.goodtimesincapetown.co.za').map((r) => r.content), ['"v=DMARC1; p=none"']);
   const before = api.writes().length;
   await exec(['email', '--forward-to', 'owner@example.com', '--apply'], api, { cfg: cutover });

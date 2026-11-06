@@ -2,8 +2,9 @@
  * Direct contact as rendered by the layout on every page: nothing appears
  * until a channel is verified in src/data/site.mjs; once it is, the mobile
  * contact bar, the footer, the concierge panel and the enquiry page show it.
- * Good Times publishes one number (for calls; WhatsApp is not yet confirmed)
- * and one address, info@goodtimesincapetown.co.za.
+ * Good Times publishes one number (for calls; WhatsApp is not yet confirmed);
+ * its primary address is hello@goodtimesincapetown.co.za, with
+ * stuart@goodtimesincapetown.co.za as an additional one on the contact page.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -175,31 +176,39 @@ test('only the phone verified (Good Times today): every page gets a Call + Make 
   assert.match(footer, new RegExp(`href="tel:\\${c.phone.e164}"`));
 });
 
-test('the published contacts (goodtimesincapetown.co.za, 5 Nov 2026): one number for calls, WhatsApp unconfirmed, info@ for email; a second address shows only once verified', () => {
+test('the contacts: the published number for calls (5 Nov 2026), WhatsApp unconfirmed; hello@ the primary address and stuart@ the additional one (Good Times, 6 Nov 2026)', () => {
   assert.equal(c.phone.e164, '+27723768432');
   assert.equal(c.phone.display, '+27 72 376 8432');
   assert.equal(c.phone.verified, true);
   assert.equal(c.whatsapp.e164, c.phone.e164, 'the same number, if it takes WhatsApp');
   assert.equal(c.whatsapp.verified, false, 'WhatsApp waits for Good Times to confirm it');
-  assert.equal(c.email.address, 'info@goodtimesincapetown.co.za');
+  assert.equal(c.email.address, 'hello@goodtimesincapetown.co.za');
   assert.equal(c.email.verified, true);
-  assert.equal(c.emailGeneral.verified, false, 'no second address is published');
-  // The site as configured, in production: the call and the address, and nothing unconfirmed.
+  assert.equal(c.emailGeneral.address, 'stuart@goodtimesincapetown.co.za');
+  assert.equal(c.emailGeneral.verified, true);
+  // The site as configured, in production: the call and the primary address, and nothing unconfirmed.
   const live = variant({ preview: false, contact: c });
   const footer = section(render('index.html', live), '<footer', '</footer>');
-  assert.match(footer, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:info@goodtimesincapetown\.co\.za">/);
+  assert.match(footer, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:hello@goodtimesincapetown\.co\.za">/);
   assert.match(footer, new RegExp(`href="tel:\\${c.phone.e164}"`));
   assert.doesNotMatch(footer, /wa\.me/);
-  // Two verified addresses: each with its own label, the primary first; one alone is plain "Email".
+  // The former address is gone everywhere; the additional one is on the contact page only.
+  for (const p of pages) {
+    const html = layout(p, live);
+    assert.doesNotMatch(html, /info@/, `${p.path}: no info@ left`);
+    if (p.path !== 'contact/index.html') assert.doesNotMatch(html, /stuart@/, `${p.path}: the additional address belongs to the contact section`);
+  }
+  // The contact section: both addresses, each with its own label, the primary first.
+  const direct = section(render('contact/index.html', live), '<h2>Phone, email and our office</h2>', '<h3>');
+  assert.match(direct, /<span class="contact-list__label">Email us<\/span>\s*<a class="contact-list__value" href="mailto:hello@goodtimesincapetown\.co\.za">/);
+  assert.match(direct, /<span class="contact-list__label">Email Stuart<\/span>\s*<a class="contact-list__value" href="mailto:stuart@goodtimesincapetown\.co\.za">/);
+  assert.ok(direct.indexOf('mailto:hello@') < direct.indexOf('mailto:stuart@'), 'the primary address first');
+  // Should the primary address ever be withdrawn, the additional one stands in everywhere, as plain "Email".
   const second = { address: 'second@example.com', label: 'Bookings', verified: true };
-  const both = section(render('index.html', variant({ preview: false, contact: { ...c, emailGeneral: second } })), '<footer', '</footer>');
-  assert.match(both, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:info@goodtimesincapetown\.co\.za">/);
-  assert.match(both, /<span class="contact-list__label">Bookings<\/span>\s*<a class="contact-list__value" href="mailto:second@example\.com">/);
-  assert.ok(both.indexOf('mailto:info@') < both.indexOf('mailto:second@'), 'the primary address first');
   const one = variant({ preview: false, contact: set({ emailGeneral: second }) });
   const single = section(render('index.html', one), '<footer', '</footer>');
   assert.match(single, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:second@example\.com">/);
-  assert.doesNotMatch(single, /info@/, 'only the verified address');
+  assert.doesNotMatch(single, /hello@/, 'only the verified address');
   // Nowhere is an unconfirmed channel announced as pending
   for (const p of pages) assert.doesNotMatch(layout(p, variant()), /awaiting confirmation|appear here once/, p.path);
 });

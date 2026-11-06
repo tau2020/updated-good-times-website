@@ -139,6 +139,16 @@ action, unchanged).
 
 | Booking form · "What happens next" (aside and confirmation) | Share your plans · Receive your personalised quote · Confirm your experience (aside); We check availability · You receive your personalised quote · Confirm your experience (confirmation) | Tell us what you’re after · Get your personalised quote · Say yes, and we confirm (aside); We check availability · You receive your personalised quote · Say yes, and we confirm (confirmation) | The same three steps in the same words as the home page's chapter 08; the explanations under them unchanged ("Once you’re happy with the arrangements, we’ll finalise your booking") |
 
+## Addendum, 6 Nov 2026: contact addresses and the company statement
+
+| Where | Before | After | Why |
+|---|---|---|---|
+| Every page's header, under the logo; the footer's lockup; the share image; the emails' header | (none: the footer showed the logo pack's full artwork, with its own tagline "Make unforgettable memories in the Mother City" drawn in) | **Make Unforgettable Experience In The Mother City** | The client's statement, exactly as supplied (words, case and the singular "Experience"); the footer and the share image now use the compact artwork, so the older tagline is never shown beside it (`design/font-design.md` §4.7) |
+| Footer logo's alt text | Good Times in Cape Town: Make unforgettable memories in the Mother City | Good Times in Cape Town | The statement is now real text beside the logo |
+| Share image description (`og:image:alt`) | The Good Times in Cape Town logo: Table Mountain, a dotted flight path and the words Make unforgettable memories in the Mother City | The Good Times in Cape Town logo, Table Mountain and a dotted flight path over the name, and beneath it: Make Unforgettable Experience In The Mother City | Describes the new image |
+| Primary email: footer, mobile menu, Travel Concierge ("Email Us"), contact page, booking form aside, privacy and terms pages, emails' footer, JSON-LD | info@goodtimesincapetown.co.za | hello@goodtimesincapetown.co.za | The client's instruction: hello@ replaces info@ in every public place |
+| Contact page, "Phone, email and our office" | Email · info@goodtimesincapetown.co.za | Email us · hello@goodtimesincapetown.co.za, then **Email Stuart · stuart@goodtimesincapetown.co.za** | Stuart's address as the additional contact option, in the contact section only; each address labelled once there are two |
+
 ## Deliberately unchanged
 
 - **The booking wizard and its confirmation states** (`src/pages/enquire.mjs`, `src/assets/js/enquiry*.js`): labels,

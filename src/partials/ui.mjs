@@ -353,8 +353,11 @@ export function contactNumbers(site) {
  * Verified channels as a list: each number as plain, selectable text with its
  * WhatsApp and call links beside it, then the email address. Empty when nothing
  * is verified; callers decide whether a preview build shows a pending note.
+ * `additional` adds the second address (site.contact.emailGeneral) after the
+ * primary one: the contact page asks for it (6 Nov 2026); elsewhere it shows
+ * only if the primary address is not verified.
  */
-export function contactList(site) {
+export function contactList(site, { additional = false } = {}) {
   // Each number with its two actions in their familiar colours: WhatsApp and Call (25 Oct 2026, from the header)
   const rows = contactNumbers(site).map(
     (n) => `<li class="contact-list__item">${icon(n.tel ? 'phone' : 'whatsapp', 'contact-list__icon')}<span class="contact-list__body">
@@ -363,15 +366,16 @@ export function contactList(site) {
       <span class="contact-list__actions">${n.wa ? `<a class="contact-action" href="${waHref(n.wa)}" rel="noopener" target="_blank">${brandMark('whatsapp')}<span>WhatsApp</span><span class="visually-hidden"> (opens in a new tab)</span></a>` : ''}${n.tel ? `<a class="contact-action" href="${telHref(n.tel)}">${brandMark('phone')}<span>Call</span></a>` : ''}</span>
     </span></li>`,
   );
-  // The primary address, then the secondary one (24 Oct 2026): each with its own label once both are verified, plain "Email" for one.
+  // The primary address, then the additional one where asked for: each with its own label when both show, plain "Email" for one.
   const { email, emailGeneral } = site.contact;
-  const both = email.verified && emailGeneral?.verified;
+  const second = Boolean(emailGeneral?.verified) && (additional || !email.verified);
+  const both = email.verified && second;
   const mail = (address, label) => `<li class="contact-list__item">${icon('mail', 'contact-list__icon')}<span class="contact-list__body">
-      <span class="contact-list__label">${label}</span>
+      <span class="contact-list__label">${esc(label)}</span>
       <a class="contact-list__value" href="mailto:${esc(address)}">${esc(address).replace('@', '@<wbr>')}</a>
     </span></li>`;
   if (email.verified) rows.push(mail(email.address, both ? email.label || 'Email' : 'Email'));
-  if (emailGeneral?.verified) rows.push(mail(emailGeneral.address, both ? emailGeneral.label || 'Email' : 'Email'));
+  if (second) rows.push(mail(emailGeneral.address, both ? emailGeneral.label || 'Email' : 'Email'));
   return rows.length ? `<ul class="contact-list" role="list">${rows.join('')}</ul>` : '';
 }
 
