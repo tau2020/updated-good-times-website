@@ -151,7 +151,7 @@ export const images = [
   // The Cape Peninsula
   { name: 'hout-bay-viewpoint-couple', src: `${D}good-times-cape-town-022.jpg`, origin: 'S', full: true, focus: '54% 58%', alt: 'A couple at a viewpoint above Hout Bay, the Sentinel and the mountains across the blue water behind them' },
   { name: 'chapmans-peak-wall-trio', src: `${D}Cape Peninsula Private Tour - operator 10.jpg`, origin: 'T', focus: '58% 62%', alt: 'Three guests sitting on a stone wall on Chapman’s Peak Drive, the cliffs and the Atlantic behind them' },
-  { name: 'boulders-shadows', src: `${D}second-scene-after-hero-section.jpg`, origin: 'S', full: true, focus: '50% 48%', alt: 'African penguins gathered on the white sand at Boulders Beach, the long shadows of a group of guests watching them' },
+  { name: 'boulders-shadows', src: `${D}second-scene-after-hero-section.jpg`, origin: 'S', full: true, focus: '50% 48%', alt: 'African penguins gathered on the white sand at Boulders Beach, the long shadows of people watching them from the boardwalk' },
   { name: 'cape-point-ostrich', src: `${D}Good Times profile page - 12.jpg`, origin: 'T', focus: '62% 45%', alt: 'An ostrich among the green fynbos on a hillside under a blue sky' },
   { name: 'boulders-welcome-sign', src: `${D}Cape Peninsula Private Tour - operator 11.jpg`, origin: 'T', focus: '46% 55%', alt: 'Two guests beside the Welcome to Boulders sign, home of the African penguin' },
   { name: 'cape-point-sign-trio', src: `${D}Cape Peninsula Private Tour - operator 09.jpg`, origin: 'T', focus: '50% 58%', alt: 'Three guests behind the Cape Point sign with its latitude and longitude, the hills of the reserve behind' },

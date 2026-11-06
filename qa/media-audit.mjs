@@ -131,7 +131,10 @@ for (const w of widths) {
       document.querySelectorAll('img, video').forEach((el) => {
         const r = el.getBoundingClientRect();
         const isVideo = el.tagName === 'VIDEO';
-        const src = isVideo ? el.currentSrc || el.getAttribute('poster') || '' : el.currentSrc || el.src;
+        // A photograph a script fills in later (the phone gallery's next slides) shows a placeholder until then: name it
+        // by the file it is waiting for
+        const lazy = () => el.getAttribute('data-src') || (el.closest('picture')?.querySelector('source[data-srcset]')?.getAttribute('data-srcset') || '').split(' ')[0];
+        const src = isVideo ? el.currentSrc || el.getAttribute('poster') || '' : /^data:/.test(el.currentSrc || el.src) && lazy() ? lazy() : el.currentSrc || el.src;
         const nw = isVideo ? el.videoWidth : el.naturalWidth;
         const nh = isVideo ? el.videoHeight : el.naturalHeight;
         out.push({

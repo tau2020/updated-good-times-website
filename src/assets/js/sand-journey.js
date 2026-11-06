@@ -30,9 +30,11 @@
   /* The destination's film (the owner's section-2-video as a 7-second loop: the surf and the wind in her dress; she, the
      camera and her prints never move). It plays on its own clock over its own first frame (the poster picture under
      it); the scroll never scrubs it. It plays only with motion allowed (no reduced motion, no ?nomotion), the data saver
-     off, the tab visible and the scene on screen and not buried under the sand (the renderer's layer covers the whole
-     picture until the sweep is near), in every tier. Nothing is fetched before it may play. It fades in once a frame has
-     been presented, pauses whenever one of those stops being true, and if autoplay is refused or the file fails the
+     off, the tab visible and the scene on screen: in the scroll scene (html.cine with WebGL2) once the renderer has
+     drawn its sand and the sweep is near (p 0.5; the sweep begins at 0.605), never under the sand and never while the
+     visitor is still in the hero; without the scroll scene, once a quarter of the picture is in view. It starts loading
+     a little before (p 0.4) so it is ready when uncovered, and nothing is fetched before then. It fades in once a frame
+     has been presented, pauses whenever one of those stops being true, and if autoplay is refused or the file fails the
      poster simply stays. Muted, inline, no controls, hidden from assistive technology. */
   var filmSync = function () {};
   (function () {
@@ -52,12 +54,19 @@
     var saving = function () {
       return !!conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '');
     };
-    var buried = function () {
+    // The scroll scene owns the picture until its sweep: before the renderer is ready the visitor is still in the hero
+    var scene = function () {
       var c = section.classList;
-      return c.contains('is-ready') && !c.contains('is-lost') && api.p < 0.5;
+      return c.contains('is-live') && !c.contains('is-static') && !c.contains('is-lost');
+    };
+    var reached = function (at) {
+      return !scene() || (section.classList.contains('is-ready') && api.p >= at);
+    };
+    var permitted = function () {
+      return !gone && !reduce.matches && !/[?&]nomotion\b/.test(location.search) && !saving() && inView && !doc.hidden;
     };
     var allowed = function () {
-      return !gone && !reduce.matches && !/[?&]nomotion\b/.test(location.search) && !saving() && inView && !doc.hidden && !buried();
+      return permitted() && reached(0.5);
     };
     var ready = function () {
       beach.classList.add('is-playing');
@@ -103,6 +112,7 @@
     filmSync = function () {
       var want = allowed();
       if (reduce.matches) beach.classList.remove('is-playing'); // reduced motion switched on: back to the poster
+      if (!attached && permitted() && reached(0.4)) attach(); // load a little ahead of the sweep
       if (want === wanted) return;
       wanted = want;
       if (want) play();
@@ -122,7 +132,7 @@
           });
           filmSync();
         },
-        { rootMargin: '200px 0px' }
+        { threshold: 0.25 }
       );
       io.observe(beach);
     } else inView = true;
