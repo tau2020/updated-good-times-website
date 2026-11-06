@@ -39,6 +39,15 @@ node scripts/cloudflare/setup.mjs [check|pages|domain|email|resend] [--apply]  #
 npm run qa:screens        # screenshot matrix → docs/qa/screens (server must be running on :8090)
 node qa/hero.mjs [--motion] [--video]   # the home hero at 18 sizes: screenshots, and proof nothing covers a face (server on :8090)
 node qa/motion.mjs --out=<dir> [--engine=webkit]   # the aircraft's landing and the sand journey's states, with checksums (server on :8090)
+npm run video:beach       # the sand journey's film: the owner's section-2-video as a 7 s web loop and its poster (media-src/video/)
+# The media audit's checks, run against a deployed preview (see audit/):
+node qa/media-audit.mjs --base=<url> --out=<dir> [--shots]   # every photograph and film per route and width: slot, crop, source pixels
+node qa/media-duplicates.mjs <inventory.json>               # one photograph, one placement (exit 1 on a repeat)
+node qa/beach-film.mjs --base=<url> --out=<dir> [--record]  # the reveal, the film's playback and its fallbacks
+node qa/media-crops.mjs --base=<url> --out=<dir>            # each photograph's own crop at six widths
+node qa/media-spot.mjs --base=<url>                         # #adventure, the credited heroes, the owner's photograph
+node qa/media-perf.mjs --base=<url> --out=<file>            # LCP, layout shift and media bytes
+node qa/layout-compare.mjs --before=<url> --after=<url> --out=<file>   # layout geometry between two deployments
 ```
 
 ## Build switches
@@ -64,7 +73,7 @@ node qa/motion.mjs --out=<dir> [--engine=webkit]   # the aircraft's landing and 
 | FAQ (each answer with its source) | `src/data/faq.mjs` |
 | Image slots, alt text, focal points and origins | `src/data/images.mjs`, gallery captions in `src/data/photo-captions.mjs` |
 | The home hero: the scene, the one call to action, the phone gallery ("Cape Town Memories": order, captions, the tour each picture belongs to) | `src/pages/index.mjs`, `src/data/phone-gallery.json`; the component is `src/partials/phone-gallery.mjs`, `src/assets/css/phone-gallery.css`, `src/assets/js/phone-gallery.js`; where the faces are, `src/data/hero-scene.mjs` |
-| The brand aircraft (the logo's airliner flies in and lands as the "i" of "in") and the sand journey after the hero (footprints, then the sweep onto the owner's destination image, a woman at the water's edge at the end of the same trail, and the Cape Peninsula tour) | `src/partials/aircraft.mjs`, `src/assets/js/brand-plane.js`, `src/partials/sand-journey.mjs`, `src/assets/js/sand-journey.js`, `src/assets/js/motion/sand/` (the foot, the scene, the shaders), `src/assets/css/motion.css`; reports and evidence in `docs/motion/` |
+| The brand aircraft (the logo's airliner flies in and lands as the "i" of "in") and the sand journey after the hero (footprints, then the sweep onto the owner's destination film, a woman at the water's edge at the end of the same trail, playing over its own first frame, and the Cape Peninsula tour) | `src/partials/aircraft.mjs`, `src/assets/js/brand-plane.js`, `src/partials/sand-journey.mjs`, `src/assets/js/sand-journey.js`, `src/assets/js/motion/sand/` (the foot, the scene, the shaders), `src/assets/css/motion.css`; reports and evidence in `docs/motion/` |
 | Home page story below the hero | `src/pages/index.mjs` |
 | Design tokens (the Good Times palette and type scale) | `src/assets/css/tokens.css` |
 | Display currencies: base ZAR; the country → currency map and symbols (`currency-core.js`, shared with the API); the rate source (`lib/currency/rates.mjs`, `EXCHANGE_RATES_URL`, `off` shows ZAR everywhere) | `src/assets/js/currency-core.js` |
@@ -145,6 +154,7 @@ The build writes `site/_headers`: the Content-Security-Policy with the inline sc
 - `docs/APPROVAL_REGISTER.md`: every decision and fact still waiting for the owner, and what each one unlocks
 - `docs/motion/`: the cinematic motion layer (brand aircraft, sand journey): discovery, validation, performance, critique, delivery, and the evidence in `docs/motion/qa/`
 - `docs/RIGHTS_REGISTER.md`: origin and status of every photograph, the logo, reviews, prices and facts
+- `audit/`: the media audit of 6 Nov 2026 (the beach film, the owner's photograph, one photograph per placement): baseline, change register, asset manifest, quality, regression and final verification reports, with the screenshots and recordings
 - `docs/CONVERSION_REPORT.md`: what changed from the template, and how each Good Times offering was mapped
 - `docs/TEST_REPORT.md`: build, static QA, unit, browser and deployment checks
 - `docs/RESIDUE_AUDIT.md`: the final check that no identifier of the template's earlier operator remains
