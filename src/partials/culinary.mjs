@@ -16,12 +16,11 @@ import { focusOf } from './media.mjs';
 
 /**
  * The width a frame's photograph is drawn at, for its `sizes` (coverSizes): the picture is 10% taller than its frame (the
- * scroll drift, culinary.css) and, in the Reveal's landscape, 9% wider (`wider`), and it covers the frame, so a
- * landscape photograph in a square or portrait frame is drawn much wider than the frame.
+ * scroll drift, culinary.css) and it covers the frame, so a landscape photograph in a square or portrait frame is drawn
+ * much wider than the frame.
  *   frames: [media condition or '', frame width, frame shape (width / height)] per breakpoint, as in culinary.css
  */
-export const frameSizes = (name, frames, wider = 1) =>
-  coverSizes(name, frames.map(([media, w, shape]) => [media, wider > 1 ? `calc(${w} * ${wider})` : w, (shape * wider) / 1.1]));
+export const frameSizes = (name, frames) => coverSizes(name, frames.map(([media, w, shape]) => [media, w, shape / 1.1]));
 
 const frame = (name, { sizes, focus, ratio, cls = '' }) =>
   `<div class="taste__frame${cls ? ` ${cls}` : ''}" style="--focus: ${focusOf(name, focus)}${ratio ? `; --ratio: ${ratio}` : ''}" data-taste-frame>${picture({ name, sizes })}</div>`;
@@ -40,7 +39,7 @@ export function culinaryReveal({ id, words, main, layer, caption }) {
       ${words}
     </div>
     <figure class="taste__stage">
-      <div class="taste__main" data-taste-main>${frame(main.name, { sizes: frameSizes(main.name, [['(min-width: 64em)', 'min(58vw, 57rem)', 3 / 2], ['', '100vw', 4 / 3]], 1.09), focus: main.focus })}</div>
+      <div class="taste__main" data-taste-main>${frame(main.name, { sizes: frameSizes(main.name, [['(min-width: 64em)', 'min(58vw, 57rem)', 3 / 2], ['', '100vw', 3 / 2]]), focus: main.focus })}</div>
       <div class="taste__layer" data-taste-layer>${frame(layer.name, { sizes: frameSizes(layer.name, [['(min-width: 64em)', 'min(24vw, 21rem)', 1], ['', '52vw', 1]]), focus: layer.focus })}</div>
       <figcaption class="taste__caption" data-taste-caption>${caption}</figcaption>
     </figure>

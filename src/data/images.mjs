@@ -181,7 +181,7 @@ export const images = [
   // Langa: its streets, its museum, its homes and its people
   { name: 'langa-mural-visit', src: `${D}Langa Township Private Tour - operator 01.jpg`, origin: 'T', focus: '52% 55%', alt: 'Four guests in front of a colourful mural that spells out Langa' },
   { name: 'langa-walk-guide', src: `${D}Langa Township Private Tour - operator 04.jpg`, origin: 'T', focus: '40% 55%', alt: 'A local guide talking with two guests between homes on a walk through Langa' },
-  { name: 'langa-home-visit', src: `${D}Langa Township Private Tour - operator 07.jpg`, origin: 'T', focus: '50% 55%', alt: 'Two guests welcomed into a family home in Langa, sitting in its living room' },
+  { name: 'langa-home-visit', src: `${D}Langa Township Private Tour - operator 07.jpg`, origin: 'T', focus: '10% 55%', alt: 'Two guests welcomed into a family home in Langa, sitting in its living room' },
   { name: 'langa-homes', src: `${D}Langa Township Private Tour - operator 08.jpg`, origin: 'T', focus: '50% 55%', alt: 'A street of homes made from shipping containers in Langa under a cloudy sky' },
   { name: 'langa-blue-home', src: `${D}Langa Township Private Tour - operator 12.jpg`, origin: 'T', focus: '45% 50%', alt: 'A home of blue-painted corrugated iron in Langa, its window and door framed in weathered wood' },
   { name: 'langa-womens-anti-pass', src: `${D}Langa Township Private Tour - traveller 26-approved.jpg`, origin: 'O', focus: '50% 40%', alt: 'A museum panel on the Women’s Anti-Pass Campaign of 1955, with archive photographs of women carrying placards' },
@@ -192,7 +192,7 @@ export const images = [
   { name: 'beyerskloof-estate', src: `${D}Good Times profile page - 24.jpg`, origin: 'T', focus: '94% 55%', alt: 'Guests beside the entrance sign of Beyerskloof, the home of Pinotage, on a Stellenbosch wine estate' },
   { name: 'winelands-estate-terrace', src: `${D}Cape Winelands Private Tour - operator 08.jpg`, origin: 'T', focus: '97% 30%', alt: 'Two guests at a table on a wine estate’s restaurant terrace as a waiter serves them' },
   { name: 'winelands-tasting-counter', src: `${D}Cape Winelands Private Tour - operator 14.jpg`, origin: 'T', focus: '50% 55%', alt: 'Two guests at a wooden tasting counter with bottles of wine and tasting sheets' },
-  { name: 'winelands-couple-tasting', src: `${D}People 04 - Couple at a tasting [operator].jpg`, origin: 'T', focus: '58% 42%', alt: 'A smiling couple raising their glasses at a wine tasting in an estate’s cellar' },
+  { name: 'winelands-couple-tasting', src: `${D}People 04 - Couple at a tasting [operator].jpg`, origin: 'T', focus: '58% 42%', alt: 'A smiling couple raising their glasses at a wine tasting in an estate’s tasting room' },
   { name: 'winelands-tasting-deli', src: `${D}People 07 - Trio at the wine tasting deli [operator].jpg`, origin: 'T', focus: '50% 70%', alt: 'Three guests in front of a white Wine Tasting & Deli with wooden doors' },
   { name: 'winelands-group-tasting', src: `${D}People 02 - Group tasting with bottles lined up [operator].jpg`, origin: 'T', focus: '50% 45%', alt: 'Four guests at a tasting bar, a row of wine bottles lined up in front of them' },
   { name: 'winelands-red-tasting', src: `${D}People 06 - Savouring a red [operator].jpg`, origin: 'T', focus: '55% 40%', alt: 'A guest in sunglasses savouring a glass of red wine' },
