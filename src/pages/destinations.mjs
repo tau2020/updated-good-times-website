@@ -39,7 +39,7 @@ ${quietMoment({
   eyebrow: 'Beyond the scenery',
   title: 'Discover the Cape’s flavours',
   text: 'Between the views come the tables: wine and cheese at Fairview, a long lunch under the vines wherever you choose to stop. Tell us what you’d love to taste, and we’ll plan a private day around it.',
-  image: { name: 'pergola-lunch-table', focus: '50% 62%' },
+  image: { name: 'pergola-lunch-table' },
 })}
 
 <section class="section cta" aria-labelledby="destinations-cta">
