@@ -197,7 +197,7 @@ export const images = [
   { name: 'winelands-group-tasting', src: `${D}People 02 - Group tasting with bottles lined up [operator].jpg`, origin: 'T', focus: '50% 45%', alt: 'Four guests at a tasting bar, a row of wine bottles lined up in front of them' },
   { name: 'winelands-red-tasting', src: `${D}People 06 - Savouring a red [operator].jpg`, origin: 'T', focus: '55% 40%', alt: 'A guest in sunglasses savouring a glass of red wine' },
   { name: 'winelands-glasses-up', src: `${D}People 01 - Glasses up in the garden [operator].jpg`, origin: 'T', focus: '50% 45%', alt: 'Guests raising their glasses at a table in a garden on a wine estate' },
-  { name: 'winelands-terrace-guide', src: `${D}Good Times profile page - 21.jpg`, origin: 'T', focus: '50% 52%', alt: 'Two guests and their guide at a terrace table with bottles of red wine, trees beyond the railings' },
+  { name: 'winelands-terrace-guide', src: `${D}Good Times profile page - 21.jpg`, origin: 'T', focus: '50% 52%', alt: 'Three people at a terrace table with bottles of red wine, trees beyond the railings' },
 
   // Food: meals on Good Times days (lunch is never included in a tour price: paid on the day, wherever you choose)
   { name: 'lunch-spread-guests', src: `${D}Food 01 - Lunch spread with smiling guests [operator].jpg`, origin: 'T', focus: '50% 55%', alt: 'Four guests raising their glasses over plates of pasta and burgers at a sunny terrace restaurant' },

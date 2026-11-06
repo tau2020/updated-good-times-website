@@ -46,7 +46,7 @@ export const CAPTIONS = {
   'boulders-couple-selfie': { title: 'A selfie with the penguins', place: 'Boulders Beach, Simon’s Town' },
   'winelands-tasting-counter': { title: 'At the tasting counter', place: 'The Cape Winelands' },
   'winelands-group-tasting': { title: 'A row of bottles to taste', place: 'The Cape Winelands' },
-  'winelands-terrace-guide': { title: 'Wine at the table, with our guide', place: '' },
+  'winelands-terrace-guide': { title: 'Wine at a terrace table', place: '' },
   'langa-homes': { title: 'Homes in Langa', place: 'Langa, Cape Town' },
   'langa-womens-anti-pass': { title: 'The Women’s Anti-Pass Campaign', place: 'The museum, Langa' },
   'langa-blue-home': { title: 'A home along the walk', place: 'Langa, Cape Town' },
