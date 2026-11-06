@@ -12,6 +12,7 @@ behind the target preview and checked on Cloudflare Pages preview deployments, n
 | Final site commit | `cd1668d` (the report and its evidence are committed after it and change nothing on the site) |
 | Feature preview | <https://naturally-preview.good-times-in-cape-town.pages.dev>, deployment `89a1dcf6` from `cd1668d` (built with `node scripts/cloudflare/build.mjs preview`, deployed with `wrangler pages deploy site --project-name good-times-in-cape-town --branch naturally-preview`) |
 | Not touched | Production (never deployed), `main`, the `staging` alias (`7e19bd48`), `media-preview` (`b017d12f`) and `media-baseline` (`9d9bc87a`); no project setting, domain or DNS changed. Merging and release wait for the owner |
+| Addendum (6 Nov 2026) | Contact emails and the company statement under the logo: §10. Commits `e6a7514` and `67cea72`; the feature preview now serves deployment `ab1a914c` |
 
 ## 1. What changed
 
@@ -214,3 +215,90 @@ re-deployed before the final run:
 7. **Retired files kept:** `peninsula-bench-view` renditions and the illustrated avatars (`assets/img/avatars/`) are no
    longer used by any page; they can be deleted in a follow-up if the owner agrees.
 8. **Not deployed to production, not merged.** The work is on `ultraxen/kind-hopper-4usue2` and its preview only.
+
+## 10. Addendum, 6 Nov 2026: contact emails and the company statement
+
+The client's addendum ("Contact Information & Logo Branding"), made on the same branch as surgical changes and checked
+on the same preview alias, against the deployment this report describes above.
+
+| | |
+|---|---|
+| Before | deployment `89a1dcf6`, from `cd1668d` (the feature preview above) |
+| After | <https://naturally-preview.good-times-in-cape-town.pages.dev>, deployment `ab1a914c`, from `67cea72` (the Addendum is `e6a7514` and `67cea72`) |
+| Evidence | `qa/surgical/addendum/<width>/`: `header-home.jpg`, `header-tours.jpg`, `footer.jpg`, `contact.jpg`, and `menu.jpg` below 1024 px, each before (left) and after (right); `reveal-desktop.jpg`, `reveal-phone.jpg` (the GSAP reveal, four frames each); `metrics.json`. Made by `node qa/addendum-shots.mjs --before=<url> --after=<url>` |
+
+### 10.1 What changed
+
+| Request | Change | Where |
+|---|---|---|
+| hello@ as the primary contact; replace every public info@ | `hello@goodtimesincapetown.co.za` wherever the site names an address: the footer, the mobile menu, the Travel Concierge's "Email Us", the contact page, the booking form's aside, the privacy and terms pages, the emails' footer and the JSON-LD (`"email"`). No page of the built site contains `info@`. The planned production sender, team inbox and dashboard address (`MAILBOXES`, `TEAM_INBOX`) follow it; nothing was applied to Cloudflare or Resend, as no environment is live | `src/data/site.mjs`, `scripts/cloudflare/project.mjs`, `local-pages.mjs`, `.env.example` |
+| Stuart's address in the Contact section | `stuart@goodtimesincapetown.co.za` under "Phone, email and our office", after the primary address, each labelled ("Email us", "Email Stuart"). Only there: the footer, the menu and the booking form keep to one address, so they do not grow | `contactList(site, { additional: true })` in `src/pages/contact.mjs` |
+| The statement beneath the logo, as part of the lockup | **"Make Unforgettable Experience In The Mother City"**, exactly as supplied, set as text directly under the artwork: one line of DM Sans 600 that starts at the artwork's left edge and spans about its width (its size is the logo's width ÷ 25, never under 10 px or over 13 px), leaf green on the white header, the reversed logo's own `#45E375` on navy and over the home film. The logo link is unchanged (the aircraft's dock is measured from it), so the statement is its sibling | `src/partials/layout.mjs`, `styles.css` (`.brand-lockup`), `design/font-design.md` §4.7 |
+| Wherever the full lockup appears | Every page's header; the footer, which now shows the pack's compact artwork with the statement (the full artwork carries the pack's own older tagline, "Make unforgettable memories in the Mother City", which would have shown two taglines); the share image, redrawn from the same lockup (`src/tools/build-og.mjs`); and the emails' header, as a text line under the PNG logo. The system pages (booking-link confirmations, the staff dashboard) show the logo at 40 px or less, where the line would be under 7 px: they keep the logo alone | as left; `lib/email/layout.mjs` |
+| Without overcrowding the mobile navigation | The bar keeps the logo and the menu button only; the statement adds one line under the logo (the header grows by that line: 14–16 px on phones, §10.3) and never sits beside the menu button; below 360 px wide, where the row has no room, the header leaves it out (the footer keeps it). The open menu is unchanged | `styles.css` (phones' `--header-h`) |
+| The header's height | 84 → 96 px on every page from 640 px, except the home page from 1024 px, whose 112 px header already had room and is unchanged. Everything that sits under the header reads `--header-h`, so nothing is covered | `tokens.css`, `styles.css` |
+| GSAP reveal after the logo's entrance | On the home page with motion, the statement is drawn in from left to right with a soft fade (0.5 s: `clip-path`, opacity and 4 px) once the logo entrance is complete: when the aircraft, having landed as the "i" and settled, hands the logo back whole (4.82 s into the entrance; 1.2 s if there is no aircraft). It is the entrance's last step, so the entrance is 0.5 s longer (5.32 s on desktop, 3.22 s on phones) and the two things that wait for its end follow by the same 0.5 s: the home page's concierge button fading in and the sand journey's preparation. With reduced motion, `?nomotion` or no script it is simply there, never hidden; on other pages it is static. A first version started it 0.1 s after the touchdown, while the aircraft was still settling over the "i"; the frames on the preview showed that, and `67cea72` moved it to the hand-over | `src/assets/js/hero.js` |
+
+### 10.2 Kept as it was
+
+The logo files (byte for byte, `test/lockup.test.mjs`), the logo's animation (the aircraft still lands to the pixel on
+its glyph: the motion tests below), the home page's structure, the hero's composition, the navigation, Make It Yours,
+the menu and the Travel Concierge, the enquiry forms and their logic (only the address in their aside changed), every
+URL, title and description.
+
+### 10.3 Checks (on the preview)
+
+| Check | Where | Result |
+|---|---|---|
+| Build (`node scripts/cloudflare/build.mjs preview`) | Cloud container | 25 pages |
+| Static QA (`npm run check`) and brand guard (`npm run guard`) | The build and the repository | 25 pages, no problems; 2,849 files clean |
+| Unit and integration tests (`npm test`) | Cloud container | **308 / 308** (300 before). `test/lockup.test.mjs` adds 8: the exact statement; the header's and footer's lockups on every page, in preview and production builds; the logo files byte for byte; the type and colour rules; the header heights; the reveal's timing and holding state; the share image's description and the emails' header. The contact, terms, config, Cloudflare set-up, Pages Functions and production-build tests now expect hello@ and stuart@ |
+| Deployed smoke check (`scripts/cloudflare/smoke.mjs --env preview`) | Final preview | **23 / 23** |
+| Browser suite (Playwright, desktop 1440 × 900 and Pixel 7) | Final preview | **317 passed, 2 failed, 37 skipped** (356; skips are tests for the other device). The two failures are the Pixel 7 tests that already failed in the first round (§8): the phone-gallery lift-out also fails on the before-deployment (`89a1dcf6`) run alone, and the taste compositions' motion test passes run alone on both deployments (load timing). The new tests pass: the lockup at seven widths from 320 to 1920 px on three pages, the footer's lockup, the statement's reveal at the hand-over with nothing after it, the reduced-motion check that it is never hidden, and the contact page's two addresses in order with no info@ anywhere |
+| The brand aircraft (`test/e2e/motion.spec.mjs`) | Final preview | Every test passes on desktop and Pixel 7: it still lands exactly on the logo's own airliner, to the pixel, hands the logo back whole, and lands at once on a resize or a scroll |
+| Five widths (`qa/addendum-shots.mjs`) | Both deployments | **0** horizontal overflow, **0** console errors, **0** failed requests on the 15 page loads of each side; the header heights below |
+| Hero faces (`qa/hero.mjs`, 15 viewports from 412 × 915 to 2560 × 1440) | Both deployments | Every face clear on both. The hero's phone keeps its size everywhere except portrait tablets (768 × 1024: 156 → 150 px; 820 × 1180: 212 → 206 px), where the header is 12 px taller. Only on a phone held sideways (844 × 390) does the header's box reach a face, as it did before (2,493 → 3,601 px²): the header is transparent there, and Make It Yours, centred in it, sits 6 px lower over the top of one guest's hair, which it already overlapped |
+| Font swap (`qa/surgical-fontswap.mjs`) | Final preview | **0 of 66** first blocks change height when the fonts arrive |
+| The phone's lift-out (the same photograph, both deployments) | Both deployments | It lands 308 px wide against 317 px before on a Pixel 7 (315 / 324 at 390 × 844, 284 / 292 at 360 × 780): its landing area starts below the header, now about 16 px taller on that phone. Still about 1.9 times the phone's copy; with motion it flies out and lands in about 0.6 s on both |
+| Performance (`qa/media-perf.mjs`) | Both deployments | Unchanged within noise; one preview-only shift slightly larger on phones (below) |
+
+The header's height (px, its box with the 1 px hairline), and the statement's size:
+
+| Width | Home page, before → after | Inner pages, before → after | Statement (home / inner) |
+|---|---|---|---|
+| 360 | 82.8 → 97.0 | 85.4 → 100.1 | 10.2 / 10.6 px |
+| 390 | 89.8 → 105.3 | 92.8 → 108.9 | 11.2 / 11.7 px |
+| 768 | 85 → 97 | 85 → 97 | 10.2 / 10 px |
+| 1024 | 113 → 113 | 85 → 97 | 10 / 10.2 px |
+| 1440 | 113 → 113 | 85 → 97 | 12.1 / 10.2 px |
+
+`qa/media-perf.mjs` on `/`, `/tours/` and `/contact/`, three cold runs each, medians (desktop 1440 × 900 unthrottled; Pixel 7 on Slow 4G with a 4× slower CPU), the before-deployment at 22:50 and the after at 22:57 UTC (`qa/surgical/addendum/perf-before.json`, `perf-after.json`):
+
+| Route | Profile | LCP ms (median of 3) | LCP element (after) | CLS at load | CLS over the visit | All bytes at load, KB | Failed media |
+|---|---|---|---|---|---|---|---|
+| `/` | desktop | 628 → 600 | img hero-moment-poster-1280.avif | 0.0006 → 0.0006 | 0.0006 → 0.0006 | 1197 → 1199 | 0 / 0 |
+| `/tours/` | desktop | 520 → 500 | img cape-point-headland-1600.avif | 0.0008 → 0.0007 | 0.0008 → 0.0007 | 622 → 623 | 0 / 0 |
+| `/contact/` | desktop | 468 → 448 | p.lead | 0.0006 → 0.0006 | 0.0006 → 0.0006 | 231 → 228 | 0 / 0 |
+| `/` | mobile | 3000 → 3028 | img hero-moment-poster-1280.avif | 0.008 → 0.0106 | 0.008 → 0.0106 | 1078 → 1079 | 0 / 0 |
+| `/tours/` | mobile | 2644 → 2656 | img cape-point-headland-1200.avif | 0 → 0 | 0 → 0 | 612 → 613 | 0 / 0 |
+| `/contact/` | mobile | 936 → 984 | p.lead | 0 → 0 | 0 → 0 | 219 → 220 | 0 / 0 |
+
+- **LCP** is within noise on every route and profile (desktop 20–28 ms faster, phones 12–48 ms slower), on the same elements; bytes at load are unchanged (±3 KB; the share image, 97 → 58 KB, is not loaded by pages); no media failed.
+- **Layout shift** is unchanged, except on the home page on phones (0.008 → 0.0106, against 0.1 for "good"). Its one shift is the preview build's own bar: `main.js` measures it and sets `--preview-h`, and the hero's call to action and phone move up by that much. With `main.js` held back 1.5 s the shift waits for it; with `main.js` blocked there is none. Production builds have no preview bar. It is a little larger than before because, on a Pixel 7, the hero's phone is sized from the height left under the header, which is now taller.
+
+### 10.4 For the owner
+
+1. **The wording is kept exactly as supplied**, including the singular "Experience". If "Experiences" was meant, it is
+   one word in `site.statement` (`src/data/site.mjs`), then `node src/tools/build-og.mjs` for the share image (S5).
+2. **The mailboxes.** hello@ and stuart@ must exist with Good Times' mail provider before the site goes live; the
+   planned production sender and inbox are hello@ (A4). Email Routing (`setup.mjs email`) would route hello@ only, as
+   stuart@ is a personal mailbox.
+3. **The logo pack's full artwork** (`gt-logo-primary.svg`, `gt-logo-reversed.svg`) still carries the older tagline. The
+   site no longer shows those files; an updated pack with the new statement would be the designer's change, not the
+   website's.
+4. **On a phone held sideways** (844 × 390, the home page), Make It Yours sits 6 px lower than before, over the top of
+   one guest's hair (it already overlapped it); every face stays clear. Keeping the header's buttons centred on the
+   logo alone, rather than on the logo and its statement, would put it back, at the cost of uneven space under the
+   statement; it was left as it is.
+5. **Not deployed to production, not merged.** The Addendum is on `ultraxen/kind-hopper-4usue2` (`e6a7514`, `67cea72`
+   and the evidence in `c4ebfa6`) and its preview only.
