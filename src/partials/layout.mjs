@@ -1,5 +1,6 @@
 import { esc, icon, brandMark, button, coinButton, contactList, waHref, telHref, SIGNATURE_CTA, SIGNATURE_ATTRS, signatureDesc } from './ui.mjs';
 import { conciergeTrigger, conciergePanel, drawerServices } from './living-cape.mjs';
+import { aircraftDock, aircraftFlight, dockBox } from './aircraft.mjs';
 import { tours } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
 
@@ -177,6 +178,8 @@ function render(page, site) {
   const contacts = contactList(site);
   const bar = contactBar(page, site) || (typeof page.mobileCta === 'function' ? page.mobileCta({ site }) : page.mobileCta || '');
   const overlay = Boolean(page.overlayHeader);
+  // The brand aircraft's entrance (the home page): the dock anchor in the logo link and the flight layer in the header
+  const flight = overlay && Boolean(page.brandFlight);
   const bodyClass = [page.bodyClass, overlay ? 'has-overlay-header' : '', site.preview ? 'has-preview-bar' : '', bar ? 'has-mobile-cta' : ''].filter(Boolean).join(' ');
   const bookHref = page.enquireHref || 'enquire/';
   const main = page.body({ site });
@@ -228,12 +231,13 @@ ${(page.styles || []).map((s) => `<link rel="stylesheet" href="${s}">`).join('\n
 <a class="skip-link" href="#main">Skip to content</a>
 ${consentBanner()}
 ${signatureDesc()}
-${site.preview ? `<div class="preview-bar" data-preview-bar role="note"><div class="container preview-bar__inner">${icon('info')}<span>Staging preview, not yet live.${site.enquiry.mode === 'live' ? ' Test booking requests are delivered to the configured inbox.' : ' Booking requests made here are not sent.'}</span></div></div>` : ''}
+${site.preview ? `<div class="preview-bar" data-preview-bar role="note"><div class="container preview-bar__inner">${icon('info')}<span>Staging preview, not yet live.${site.enquiry.mode === 'live' ? ' Test booking requests are delivered to the configured inbox.' : ' Booking requests made here are not sent.'}</span>${flight ? '<button type="button" class="preview-bar__replay" data-intro-replay hidden>Replay the intro</button>' : ''}</div></div>` : ''}
 <header class="site-header${overlay ? ' site-header--overlay' : ''}" data-header${overlay ? ' data-condense-at="40"' : ''}>
   <div class="container header-bar">
-    <a class="brand" href="./" aria-label="${esc(site.name)}, home" data-intro>
+    <a class="brand" href="./" aria-label="${esc(site.name)}, home" data-intro${flight ? ` style="${dockBox().style}"` : ''}>
       <img class="brand__logo brand__logo--ink" src="assets/brand/gt-logo-compact.svg" alt="" width="2121" height="564">
       ${overlay ? `<img class="brand__logo brand__logo--gold" src="assets/brand/gt-logo-reversed-compact.svg" alt="" width="2121" height="564">` : ''}
+      ${flight ? aircraftDock() : ''}
     </a>
     <nav class="primary-nav" aria-label="Primary">
       <ul>
@@ -247,6 +251,7 @@ ${site.preview ? `<div class="preview-bar" data-preview-bar role="note"><div cla
       ${icon('menu')}${icon('close')}
     </button>
   </div>
+  ${flight ? aircraftFlight({ preview: site.preview }) : ''}
 </header>
 ${conciergePanel({ bookHref, reach: conciergeReach(site) })}
 

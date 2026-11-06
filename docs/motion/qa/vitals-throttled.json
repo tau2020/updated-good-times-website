@@ -1,0 +1,178 @@
+{
+ "main · desktop 1440x900": {
+  "lcpMedianMs": 3600,
+  "clsEntranceMedian": 0.0006,
+  "clsAfterScrollMedian": 0.0006,
+  "runs": [
+   {
+    "lcp": 3600,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3588,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3652,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   }
+  ]
+ },
+ "main · phone (Pixel 7)": {
+  "lcpMedianMs": 3736,
+  "clsEntranceMedian": 0.0075,
+  "clsAfterScrollMedian": 0.0075,
+  "runs": [
+   {
+    "lcp": 3736,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3756,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3124,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   }
+  ]
+ },
+ "branch · desktop 1440x900": {
+  "lcpMedianMs": 3416,
+  "clsEntranceMedian": 0.0006,
+  "clsAfterScrollMedian": 0.0006,
+  "runs": [
+   {
+    "lcp": 3416,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3416,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3424,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   }
+  ]
+ },
+ "branch · phone (Pixel 7)": {
+  "lcpMedianMs": 3420,
+  "clsEntranceMedian": 0.0075,
+  "clsAfterScrollMedian": 0.0075,
+  "runs": [
+   {
+    "lcp": 3420,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3468,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3420,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   }
+  ]
+ },
+ "main (again) · desktop 1440x900": {
+  "lcpMedianMs": 3580,
+  "clsEntranceMedian": 0.0006,
+  "clsAfterScrollMedian": 0.0006,
+  "runs": [
+   {
+    "lcp": 3580,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3652,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3580,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   }
+  ]
+ },
+ "main (again) · phone (Pixel 7)": {
+  "lcpMedianMs": 3744,
+  "clsEntranceMedian": 0.0075,
+  "clsAfterScrollMedian": 0.0075,
+  "runs": [
+   {
+    "lcp": 3744,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3708,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3848,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   }
+  ]
+ },
+ "branch (again) · desktop 1440x900": {
+  "lcpMedianMs": 3440,
+  "clsEntranceMedian": 0.0006,
+  "clsAfterScrollMedian": 0.0006,
+  "runs": [
+   {
+    "lcp": 3424,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3440,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   },
+   {
+    "lcp": 3472,
+    "cls": 0.0006,
+    "clsAfterScroll": 0.0006
+   }
+  ]
+ },
+ "branch (again) · phone (Pixel 7)": {
+  "lcpMedianMs": 3424,
+  "clsEntranceMedian": 0.0075,
+  "clsAfterScrollMedian": 0.0075,
+  "runs": [
+   {
+    "lcp": 3424,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3512,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   },
+   {
+    "lcp": 3404,
+    "cls": 0.0075,
+    "clsAfterScroll": 0.0075
+   }
+  ]
+ }
+}

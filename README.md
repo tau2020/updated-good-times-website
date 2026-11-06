@@ -38,6 +38,7 @@ node scripts/cloudflare/smoke.mjs <url> --env preview|production [--domain]   # 
 node scripts/cloudflare/setup.mjs [check|pages|domain|email|resend] [--apply]  # the Cloudflare and Resend set-up (read-only by default)
 npm run qa:screens        # screenshot matrix → docs/qa/screens (server must be running on :8090)
 node qa/hero.mjs [--motion] [--video]   # the home hero at 18 sizes: screenshots, and proof nothing covers a face (server on :8090)
+node qa/motion.mjs --out=<dir> [--engine=webkit]   # the aircraft's landing and the sand journey's states, with checksums (server on :8090)
 ```
 
 ## Build switches
@@ -63,6 +64,7 @@ node qa/hero.mjs [--motion] [--video]   # the home hero at 18 sizes: screenshots
 | FAQ (each answer with its source) | `src/data/faq.mjs` |
 | Image slots, alt text, focal points and origins | `src/data/images.mjs`, gallery captions in `src/data/photo-captions.mjs` |
 | The home hero: the scene, the one call to action, the phone gallery ("Cape Town Memories": order, captions, the tour each picture belongs to) | `src/pages/index.mjs`, `src/data/phone-gallery.json`; the component is `src/partials/phone-gallery.mjs`, `src/assets/css/phone-gallery.css`, `src/assets/js/phone-gallery.js`; where the faces are, `src/data/hero-scene.mjs` |
+| The brand aircraft (the logo's airliner flies in and lands as the "i" of "in") and the sand journey after the hero (footprints, then the sweep onto the owner's destination image, a woman at the water's edge at the end of the same trail, and the Cape Peninsula tour) | `src/partials/aircraft.mjs`, `src/assets/js/brand-plane.js`, `src/partials/sand-journey.mjs`, `src/assets/js/sand-journey.js`, `src/assets/js/motion/sand/` (the foot, the scene, the shaders), `src/assets/css/motion.css`; reports and evidence in `docs/motion/` |
 | Home page story below the hero | `src/pages/index.mjs` |
 | Design tokens (the Good Times palette and type scale) | `src/assets/css/tokens.css` |
 | Display currencies: base ZAR; the country → currency map and symbols (`currency-core.js`, shared with the API); the rate source (`lib/currency/rates.mjs`, `EXCHANGE_RATES_URL`, `off` shows ZAR everywhere) | `src/assets/js/currency-core.js` |
@@ -141,6 +143,7 @@ The build writes `site/_headers`: the Content-Security-Policy with the inline sc
 ## Documentation
 
 - `docs/APPROVAL_REGISTER.md`: every decision and fact still waiting for the owner, and what each one unlocks
+- `docs/motion/`: the cinematic motion layer (brand aircraft, sand journey): discovery, validation, performance, critique, delivery, and the evidence in `docs/motion/qa/`
 - `docs/RIGHTS_REGISTER.md`: origin and status of every photograph, the logo, reviews, prices and facts
 - `docs/CONVERSION_REPORT.md`: what changed from the template, and how each Good Times offering was mapped
 - `docs/TEST_REPORT.md`: build, static QA, unit, browser and deployment checks

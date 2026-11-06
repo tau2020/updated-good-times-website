@@ -1,0 +1,363 @@
+{
+  "base": "http://127.0.0.1:8093",
+  "engine": "webkit",
+  "when": "2026-11-05T23:14:57.458Z",
+  "sizes": {
+    "1440x900": {
+      "errors": [],
+      "plane": {
+        "variant": "jet",
+        "landsAt": 3.8730158730158726,
+        "handoverAt": 4.666666666666666,
+        "landingErrorPx": 0.07,
+        "maskedAfter": false,
+        "layerHiddenAfter": true
+      },
+      "sand": {
+        "mode": "live",
+        "start": 252,
+        "end": 2700,
+        "shots": [
+          {
+            "p": 0,
+            "scrollY": 252,
+            "settled": 0
+          },
+          {
+            "p": 0.1,
+            "scrollY": 497,
+            "settled": 0.1001
+          },
+          {
+            "p": 0.2,
+            "scrollY": 742,
+            "settled": 0.2002
+          },
+          {
+            "p": 0.36,
+            "scrollY": 1133,
+            "settled": 0.3599
+          },
+          {
+            "p": 0.48,
+            "scrollY": 1427,
+            "settled": 0.48
+          },
+          {
+            "p": 0.65,
+            "scrollY": 1843,
+            "settled": 0.6499
+          },
+          {
+            "p": 0.8,
+            "scrollY": 2210,
+            "settled": 0.7998
+          },
+          {
+            "p": 1,
+            "scrollY": 2700,
+            "settled": 1
+          }
+        ],
+        "readyAfterMs": 47,
+        "tier": "full",
+        "checksums": [
+          {
+            "p": 0,
+            "forward": "dc1cb37",
+            "backward": "dc1cb37",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.1,
+            "forward": "307f8c30",
+            "backward": "307f8c30",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.2,
+            "forward": "22b50814",
+            "backward": "22b50814",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.36,
+            "forward": "2274cd84",
+            "backward": "2274cd84",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.48,
+            "forward": "980584dd",
+            "backward": "980584dd",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.65,
+            "forward": "4c96de81",
+            "backward": "4c96de81",
+            "same": true,
+            "meanAlpha": 0.867
+          },
+          {
+            "p": 0.8,
+            "forward": "6a5b4a12",
+            "backward": "6a5b4a12",
+            "same": true,
+            "meanAlpha": 0.0002
+          },
+          {
+            "p": 1,
+            "forward": "1f376fc5",
+            "backward": "1f376fc5",
+            "same": true,
+            "meanAlpha": 0
+          }
+        ]
+      }
+    },
+    "390x844": {
+      "errors": [],
+      "plane": {
+        "variant": "jet",
+        "landsAt": 3.8730158730158726,
+        "handoverAt": 4.666666666666666,
+        "landingErrorPx": 0.063,
+        "maskedAfter": false,
+        "layerHiddenAfter": true
+      },
+      "sand": {
+        "mode": "live",
+        "start": 236,
+        "end": 2278,
+        "shots": [
+          {
+            "p": 0,
+            "scrollY": 236,
+            "settled": 0
+          },
+          {
+            "p": 0.1,
+            "scrollY": 440,
+            "settled": 0.0999
+          },
+          {
+            "p": 0.2,
+            "scrollY": 644,
+            "settled": 0.1998
+          },
+          {
+            "p": 0.36,
+            "scrollY": 971,
+            "settled": 0.3599
+          },
+          {
+            "p": 0.48,
+            "scrollY": 1216,
+            "settled": 0.4799
+          },
+          {
+            "p": 0.65,
+            "scrollY": 1563,
+            "settled": 0.6499
+          },
+          {
+            "p": 0.8,
+            "scrollY": 1870,
+            "settled": 0.8002
+          },
+          {
+            "p": 1,
+            "scrollY": 2278,
+            "settled": 1
+          }
+        ],
+        "readyAfterMs": 50,
+        "tier": "full",
+        "checksums": [
+          {
+            "p": 0,
+            "forward": "71955211",
+            "backward": "71955211",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.1,
+            "forward": "e6817f8e",
+            "backward": "e6817f8e",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.2,
+            "forward": "a3e76f9f",
+            "backward": "a3e76f9f",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.36,
+            "forward": "cd78fc0b",
+            "backward": "cd78fc0b",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.48,
+            "forward": "abbdc55f",
+            "backward": "abbdc55f",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.65,
+            "forward": "81714cb8",
+            "backward": "81714cb8",
+            "same": true,
+            "meanAlpha": 0.8828
+          },
+          {
+            "p": 0.8,
+            "forward": "b88ec343",
+            "backward": "b88ec343",
+            "same": true,
+            "meanAlpha": 0.0709
+          },
+          {
+            "p": 1,
+            "forward": "30923c65",
+            "backward": "30923c65",
+            "same": true,
+            "meanAlpha": 0
+          }
+        ]
+      }
+    },
+    "360x740": {
+      "errors": [],
+      "plane": {
+        "variant": "jet",
+        "landsAt": 3.8730158730158726,
+        "handoverAt": 4.666666666666666,
+        "landingErrorPx": 0.048,
+        "maskedAfter": false,
+        "layerHiddenAfter": true
+      },
+      "sand": {
+        "mode": "live",
+        "start": 207,
+        "end": 1998,
+        "shots": [
+          {
+            "p": 0,
+            "scrollY": 207,
+            "settled": 0
+          },
+          {
+            "p": 0.1,
+            "scrollY": 386,
+            "settled": 0.0999
+          },
+          {
+            "p": 0.2,
+            "scrollY": 565,
+            "settled": 0.1999
+          },
+          {
+            "p": 0.36,
+            "scrollY": 852,
+            "settled": 0.3601
+          },
+          {
+            "p": 0.48,
+            "scrollY": 1067,
+            "settled": 0.4802
+          },
+          {
+            "p": 0.65,
+            "scrollY": 1371,
+            "settled": 0.6499
+          },
+          {
+            "p": 0.8,
+            "scrollY": 1640,
+            "settled": 0.8001
+          },
+          {
+            "p": 1,
+            "scrollY": 1998,
+            "settled": 1
+          }
+        ],
+        "readyAfterMs": 50,
+        "tier": "full",
+        "checksums": [
+          {
+            "p": 0,
+            "forward": "e2d158b3",
+            "backward": "e2d158b3",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.1,
+            "forward": "10789139",
+            "backward": "10789139",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.2,
+            "forward": "92c30aea",
+            "backward": "92c30aea",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.36,
+            "forward": "39e65916",
+            "backward": "39e65916",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.48,
+            "forward": "b4823415",
+            "backward": "b4823415",
+            "same": true,
+            "meanAlpha": 1
+          },
+          {
+            "p": 0.65,
+            "forward": "aee247c4",
+            "backward": "aee247c4",
+            "same": true,
+            "meanAlpha": 0.8669
+          },
+          {
+            "p": 0.8,
+            "forward": "d00de09f",
+            "backward": "d00de09f",
+            "same": true,
+            "meanAlpha": 0.0483
+          },
+          {
+            "p": 1,
+            "forward": "e9dbbe45",
+            "backward": "e9dbbe45",
+            "same": true,
+            "meanAlpha": 0
+          }
+        ]
+      }
+    }
+  },
+  "planeRemeasured": "2026-11-05T23:47:11.997Z",
+  "sandRemeasured": "2026-11-06T01:17:43.814Z"
+}

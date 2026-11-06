@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" role="img" aria-labelledby="title desc">
+  <title id="title">Single-engine light aircraft — top-view vector</title>
+  <desc id="desc">An original clean vector silhouette of a real propeller-driven light aircraft, with full wings, cockpit, horizontal stabilizer, fin and propeller. Nose points up.</desc>
+  <defs>
+    <linearGradient id="paint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#43D66C"/>
+      <stop offset="1" stop-color="#138C4A"/>
+    </linearGradient>
+    <linearGradient id="canopy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#123B4A"/>
+      <stop offset="1" stop-color="#0D2433"/>
+    </linearGradient>
+  </defs>
+  <g id="aircraft" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Two-blade propeller and spinner: aircraft faces the top of the SVG. -->
+    <path id="propeller" d="M52 16 Q70 9 98 14 Q127 9 149 16 Q126 22 100 18 Q74 23 52 16Z" fill="#163F36"/>
+    <ellipse cx="100" cy="15" rx="7" ry="10" fill="#155A43"/>
+    <!-- Main wings: recognisable near-straight light-aircraft planform, not folded paper. -->
+    <path id="wings" d="M94 80 L22 79 Q16 79 14 84 L8 101 Q7 106 12 108 L89 111 L111 111 L188 108 Q193 106 192 101 L186 84 Q184 79 178 79 L106 80Z" fill="url(#paint)" stroke="#0A743E" stroke-width="1.8"/>
+    <path d="M18 99 L89 100 M111 100 L182 99" fill="none" stroke="#BDF8C7" stroke-width="1.4" opacity=".58"/>
+    <!-- Tailplane with slight dihedral-style geometry -->
+    <path id="tailplane" d="M94 166 L55 171 Q51 172 51 177 L51 184 Q51 188 56 187 L97 182 L103 182 L144 187 Q149 188 149 184 L149 177 Q149 172 145 171 L106 166Z" fill="url(#paint)" stroke="#0A743E" stroke-width="1.6"/>
+    <path d="M58 179 L95 175 M105 175 L142 179" fill="none" stroke="#BDF8C7" stroke-width="1.2" opacity=".56"/>
+    <!-- Tapered fuselage, with rounded nose and a distinct rear tail cone -->
+    <path id="fuselage" d="M100 22 C91 22 84 34 83 52 L84 89 C85 112 89 139 94 168 L98 198 Q100 208 102 198 L106 168 C111 139 115 112 116 89 L117 52 C116 34 109 22 100 22Z" fill="url(#paint)" stroke="#0A743E" stroke-width="2"/>
+    <!-- Cockpit glass indicates a real piloted plane, not a messaging symbol -->
+    <path id="cockpit" d="M100 40 C92 40 90 50 90 62 L90 79 Q100 87 110 79 L110 62 C110 50 108 40 100 40Z" fill="url(#canopy)" stroke="#C6F7D4" stroke-width="1.5"/>
+    <path d="M92 59 L108 59 M100 60 L100 82" fill="none" stroke="#88C6C3" stroke-width="1" opacity=".75"/>
+    <path d="M97 114 L99 159" fill="none" stroke="#D2FFDC" stroke-width="1.5" opacity=".7"/>
+    <path id="fin" d="M100 142 L94 174 L99 193 Q101 197 103 193 L106 174Z" fill="#14964B" stroke="#0A743E" stroke-width="1.2"/>
+    <!-- Small landing wheels distinguish a light propeller aircraft -->
+    <path d="M80 118 L73 124 M120 118 L127 124" fill="none" stroke="#174B3A" stroke-width="3"/>
+    <ellipse cx="72" cy="127" rx="4" ry="7" fill="#193D39"/>
+    <ellipse cx="128" cy="127" rx="4" ry="7" fill="#193D39"/>
+    <ellipse cx="100" cy="22" rx="5" ry="7" fill="#1EAD55"/>
+  </g>
+</svg>

@@ -492,7 +492,7 @@ test.describe('home hero', () => {
     const plan = await page.evaluate(() => {
       const tl = window.__heroEntrance;
       const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero__cta') ? 'cta' : el.className.split(' ')[0]);
-      return { duration: tl.duration(), timeScale: tl.timeScale(), tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), targets: t.targets().map(name) })) };
+      return { duration: tl.duration(), timeScale: tl.timeScale(), landsAt: window.__brandPlane && window.__brandPlane.landsAt, tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), targets: t.targets().map(name) })) };
     });
     const startOf = (n) => plan.tweens.find((t) => t.targets.includes(n))?.at;
     expect(startOf('brand')).toBe(0);
@@ -500,7 +500,9 @@ test.describe('home hero', () => {
       expect(startOf('bookNow')).toBeCloseTo(0.15, 2);
       const titles = plan.tweens.find((t) => t.targets[0]?.startsWith('title:')).targets;
       expect(titles).toEqual(['title:Tours', 'title:Transfers', 'title:Destinations', 'title:About', 'title:Contact']);
-      expect(startOf('title:Tours')).toBeCloseTo(0.7, 2);
+      // The brand aircraft (brand-plane.js) flies from 0.15 s; its landing starts the titles
+      expect(plan.landsAt).toBeGreaterThan(1);
+      expect(startOf('title:Tours')).toBeCloseTo(0.15 + plan.landsAt + 0.08, 2);
     } else {
       expect(plan.tweens.some((t) => t.targets.some((n) => n.startsWith('title:') || n === 'bookNow')), 'hidden desktop titles and Book Now are left alone on phones').toBe(false);
     }
@@ -508,9 +510,10 @@ test.describe('home hero', () => {
     expect(startOf('hero__cta-sheen')).toBeCloseTo(2.82, 2);
     expect(plan.tweens.some((t) => t.targets.some((n) => /phone-gallery|hero__poster|hero__video/.test(n))), 'the scene and the phone are not part of it').toBe(false);
     const seconds = plan.duration / plan.timeScale;
-    if (isMobile) expect(seconds).toBeLessThanOrEqual(2.5);
+    // With the brand aircraft at the owner's slower pace (6 Nov 2026) the entrance ends with the landing and the titles
+    if (isMobile) expect(seconds).toBeLessThanOrEqual(3.1);
     else expect(seconds).toBeGreaterThan(3.4);
-    expect(seconds).toBeLessThanOrEqual(3.8);
+    expect(seconds).toBeLessThanOrEqual(5);
     // Nothing invisible can take focus while its entrance is pending
     expect(await page.locator('.hero__cta').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
@@ -929,7 +932,8 @@ test.describe('home story: The Cape, A Living Story', () => {
     await page.goto('/?nomotion');
     // The hero is the first thing in <main>; the story is one scoped block beneath it
     await expect(page.locator('main > :first-child')).toHaveClass(/^hero$/);
-    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className))).toEqual(['hero', 'living-cape']);
+    // Between them, the sand journey (partials/sand-journey.mjs; test/e2e/motion.spec.mjs)
+    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero', 'sand-journey', 'living-cape']);
     expect(await page.locator('.living-cape > section').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(CHAPTERS);
     const heroBottom = await page.locator('.hero').evaluate((el) => el.getBoundingClientRect().bottom + scrollY);
     expect(await page.locator('.living-cape').evaluate((el) => el.getBoundingClientRect().top + scrollY)).toBeGreaterThanOrEqual(heroBottom - 1);

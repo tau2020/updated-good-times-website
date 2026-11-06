@@ -12,9 +12,9 @@ Being in Drive does not, on its own, make a photograph usable. Each one below ha
 | **W** | Published by Good Times on goodtimesincapetown.co.za (Drive › media-library › originals › other › website-cdn) | Company-owned website photographs | Guest consent, as for T (P1) |
 | **U** | A goodtimesincapetown.co.za photograph enlarged for the web by the owner (Drive › Upscaled Images) | As W; the enlargement was supplied by the owner | Guest consent (P1) |
 | **S** | Supplied by the owner in Drive › Website Images | Supplied for the website by the owner; no further record | Provenance (who took it) and guest consent (P2) |
-| **G** | AI-generated, supplied by the owner on 5 Nov 2026 for the home hero (below) | The owner's direction for the home hero; illustrations of five fictional friends, not photographs, never presented as guests or as Good Times photographs, and credited as AI-generated (privacy/#credits) | Approval of AI-generated people on the home page, and their replacement with real client photographs when there are some (P5) |
+| **G** | AI-generated, supplied by the owner on 5 Nov 2026 for the home hero, and on 6 Nov 2026 for the sand journey's destination (below) | The owner's direction for each; illustrations of fictional people, not photographs, never presented as guests or as Good Times photographs, and credited as AI-generated (privacy/#credits, and beside the destination image) | Approval of AI-generated people on the home page, and their replacement with real client photographs when there are some (P5) |
 
-Not used, by rule: guest photos attached to Tripadvisor reviews (256) and the listing gallery's traveller photos (13), which are the travellers' own (the rights log marks them "permission required"); reviewer profile photos; stock or third-party images; AI-generated scenes anywhere except the home hero (G, the owner's decision of 5 Nov 2026); and any photograph of a child or of anyone who may be under 18. Drive is never the image host: every photograph is served from the site's own renditions (`src/assets/img/`, AVIF and WebP, never upscaled by the pipeline).
+Not used, by rule: guest photos attached to Tripadvisor reviews (256) and the listing gallery's traveller photos (13), which are the travellers' own (the rights log marks them "permission required"); reviewer profile photos; stock or third-party images; AI-generated scenes anywhere except the home hero and the sand journey's destination after it (G, the owner's decisions of 5 and 6 Nov 2026); and any photograph of a child or of anyone who may be under 18. Drive is never the image host: every photograph is served from the site's own renditions (`src/assets/img/`, AVIF and WebP, never upscaled by the pipeline).
 
 ## Photographs in use (50)
 
@@ -90,6 +90,14 @@ Supplied by the owner on 5 Nov 2026 with the "frozen moment" brief, which names 
 | memories-cape-of-good-hope | › `05_cape_of_good_hope.webp` | Phone gallery 5 · Cape Peninsula Private Tour (the Cape of Good Hope sign) | In use, P5 |
 | memories-sunset | › `06_sunset_lookout.webp` | Phone gallery 6 · Private Cape Town Experience (no itinerary lists a sunset lookout; a tailored day can, P6) | In use, P5 and P6 |
 
+## The sand journey's destination (AI-generated, G; on `main` since 6 Nov 2026, not yet deployed)
+
+Supplied by the owner on 6 Nov 2026 with the "footprint reveal image replacement" brief, which names the image and asks for it in place of the Camps Bay photograph at the end of the home page's sand journey. It shows one fictional woman, from behind, standing at the water's edge with her footprints behind her; no real person is depicted or named, and it is not presented as a photograph of a tour stop. Two copies were supplied: `Golden Shoreline Footprints.png` and `goodtimes-ocean-footprints-reveal (1).webp` (both 1672 × 941, the same picture; the PNG is the master). It is credited beside the image ("An AI-generated illustration") and on the privacy page. The brief does not say it is AI-generated; its look (and the owner's other supplied scenes) does, so the owner is asked to confirm (M5).
+
+| Item | Supplied file | Where | Status |
+|---|---|---|---|
+| ocean-footprints-reveal | `Golden Shoreline Footprints.png` (kept as `media-src/journey/goodtimes-ocean-footprints-reveal.png`; renditions 480–1600 px, AVIF and WebP, never upscaled) | The home page's sand journey, after the animated footprints (`src/partials/sand-journey.mjs`); the animated trail ends on its four prints | In use on `main` (not yet deployed), P5 and M5 |
+
 The package's 9:16 `*_phone.webp` versions are not used: their sharp picture fills only 61% of the screen's width. The phone shows each original across the full width instead, over a soft wash of its own colours (`ambient` in `src/data/images.mjs`).
 
 ## Withdrawn
@@ -112,6 +120,9 @@ The rights log also excludes the Langa files with identifiable children (GT-A-03
 | Logos, symbol, favicons, social avatar | Good Times Approved Logo Pack v2 (Drive), used as supplied: `src/assets/brand/` | Approved by the owner (the pack's own README). Not redrawn; the email logo is a PNG export of the pack's reversed logo |
 | Mountain-trail artwork (art panels for tours without a photograph) | Logo Pack v2 › `04-mountain-trail.svg` | As above |
 | Share image (`og-default.jpg`) | The pack's primary logo on the site's paper colour | As above |
+| The home page's flying aircraft (motion layer) | The lockup's own airliner glyph and dotted route, read from `gt-logo-compact.svg` at build time; the logo files are not edited | As above |
+| The propeller aircraft (preview builds only, the owner's alternative) | The owner's motion package (5 Nov 2026): `src/assets/motion/gtict-real-aircraft.svg`, an original vector, recoloured to the logo's greens | Supplied by the owner; not a claim about any aircraft Good Times operates (M1) |
+| The sand, the footprints and their grains | Procedural, drawn by this repository's own WebGL2 code (`src/assets/js/motion/sand/`); no texture or photograph of sand is used | Original |
 
 ## Reviews and ratings
 
