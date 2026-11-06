@@ -217,7 +217,7 @@ export const images = [
   { name: 'chapmans-peak-guide-selfie', src: `${D}Good Times profile page - 22.jpg`, origin: 'T', focus: '50% 55%', alt: 'Three friends sitting on a stone wall above the sea, the cliffs of the coast behind them' },
 
   // About: the owner (about-image.jpg, supplied and approved by the owner for the About page, 5 Nov 2026)
-  { name: 'owner-portrait', src: 'about/about-image.jpg', origin: 'S', focus: '72% 45%', alt: 'The owner of Good Times in Cape Town raising a glass of white wine on a terrace, Table Mountain across the bay behind him' },
+  { name: 'owner-portrait', src: 'about/about-image.jpg', origin: 'S', focus: '72% 45%', alt: 'The owner of Good Times in Cape Town raising a glass of white wine on a terrace, Table Mountain across the bay in the background' },
 
   // Not Good Times photographs (L): openly licensed, credited, used only where Good Times has none
   { name: 'agulhas-tip-marker', src: `${C}Southernmost_tip_of_Africa.JPG`, origin: 'L', full: true, focus: '50% 62%', credit: 'Photo: Shaomi72, CC BY-SA 3.0, via Wikimedia Commons', license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', source: 'https://commons.wikimedia.org/wiki/File:Southernmost_tip_of_Africa.JPG', alt: 'The stone marker at Cape Agulhas, the southernmost tip of Africa, a sign below it pointing to the Indian Ocean and the Atlantic Ocean' },

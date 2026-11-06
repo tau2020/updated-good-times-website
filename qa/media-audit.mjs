@@ -11,7 +11,8 @@
  * Writes <out>/inventory-<width>.json: for each route, each media element with its slot (the image's name in
  * src/data/images.mjs, read from the file it loaded), the section and heading it sits under, its caption and alt
  * text, its box on the page, the size of the file it loaded and how much of the photograph the frame shows (for
- * object-fit: cover, the fraction of width and height left after the crop) and the pixels it has per device pixel.
+ * object-fit: cover, the fraction of width and height left after the crop) and the file's pixels per device pixel
+ * across the photograph as drawn (density; below 1 the browser enlarges it).
  * --shots also saves a JPEG of every section that holds a photograph (<out>/shots/<route>/<width>-<section>.jpg).
  * Uses ?nomotion (the finished, static composition) unless --motion is passed. Nothing is written into docs/ or
  * audit/ unless --out says so.
@@ -137,6 +138,14 @@ for (const w of widths) {
         const src = isVideo ? el.currentSrc || el.getAttribute('poster') || '' : /^data:/.test(el.currentSrc || el.src) && lazy() ? lazy() : el.currentSrc || el.src;
         const nw = isVideo ? el.videoWidth : el.naturalWidth;
         const nh = isVideo ? el.videoHeight : el.naturalHeight;
+        // The file's own pixel width: a srcset rendition is named by it (naturalWidth is divided by the srcset density,
+        // so it reads as the sizes value, not the file's width)
+        const fileW = (() => {
+          const m = /-(\d+)\.(?:avif|webp|jpe?g|png)(?:\?|$)/.exec(src || '');
+          return m ? Number(m[1]) : nw;
+        })();
+        const fitNow = getComputedStyle(el).objectFit;
+        const drawnW = fitNow === 'cover' && nw && nh ? Math.max(r.width, (r.height * nw) / nh) : r.width;
         out.push({
           kind: isVideo ? 'video' : 'img',
           slot: isVideo ? slotOf(el.getAttribute('poster') || src) : slotOf(src),
@@ -148,7 +157,10 @@ for (const w of widths) {
           hidden: hidden(el) || r.width < 2 || r.height < 2,
           box: { x: Math.round(r.left + window.scrollX), y: Math.round(r.top + window.scrollY), w: Math.round(r.width), h: Math.round(r.height) },
           natural: { w: nw, h: nh },
-          density: nw && r.width ? +(nw / (r.width * dpr)).toFixed(2) : null,
+          fileW,
+          drawnW: Math.round(drawnW),
+          // Source pixels per device pixel across the photograph as drawn (below 1: the browser enlarges it)
+          density: fileW && drawnW ? +(fileW / (drawnW * dpr)).toFixed(2) : null,
           crop: crop(el, nw, nh, r),
           loading: el.getAttribute('loading') || '',
           complete: isVideo ? el.readyState >= 2 : el.complete && nw > 0,
@@ -183,8 +195,10 @@ for (const w of widths) {
         });
         return list;
       });
+      // Where each shot sits on the page, so a photograph's own crop can be cut from it later (its box is in the inventory)
+      inv[route].sections = sections.map((s) => ({ ...s, file: `${w}-${s.key}.jpg`, shotH: Math.min(s.h, (HEIGHTS[w] || 900) * 2) }));
       for (const s of sections) {
-        // A section taller than two screens (the sand journey's held stretch) is shot one screen high from its top
+        // A section taller than two screens (the sand journey's held stretch) is shot two screens high from its top
         const h = Math.min(s.h, (HEIGHTS[w] || 900) * 2);
         await page.evaluate((y) => window.scrollTo(0, Math.max(0, y - 60)), s.y);
         await page.waitForTimeout(250);

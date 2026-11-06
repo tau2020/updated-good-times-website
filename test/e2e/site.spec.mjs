@@ -264,7 +264,7 @@ test.describe('tours', () => {
     const frame = await dialog.locator('[data-lc-frame]').boundingBox();
     for (const b of boxes) expect(b.y >= frame.y + frame.height || b.x >= frame.x + frame.width).toBe(true);
     await dialog.locator('[data-lc-prev]').click();
-    await expect(dialog.locator('[data-lc-count]')).toHaveText('02 / 07');
+    await expect(dialog.locator('[data-lc-count]')).toHaveText('02 / 06');
     await dialog.locator('[data-lc-close]').click();
     await expect(dialog).toBeHidden();
     await expect(prints.nth(2)).toBeFocused();

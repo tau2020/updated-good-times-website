@@ -76,7 +76,8 @@ async function reveal(name, ctxOpts) {
     const t = window.__sandJourney.trigger;
     return t ? [t.start, t.end] : null;
   });
-  const targets = [0.15, 0.35, 0.5, 0.62, 0.7, 0.8, 0.9, 1];
+  // From the footprints (p 0.15) through the sweep (0.605 to about 0.84) to the words and the end of the section
+  const targets = [0.15, 0.35, 0.42, 0.5, 0.6, 0.66, 0.72, 0.8, 0.9, 1];
   for (const p of targets) {
     const y = span ? span[0] + (span[1] - span[0]) * p : top + innerHeightGuess(ctxOpts) * p;
     await page.evaluate((y) => window.scrollTo(0, y), Math.round(y));
@@ -110,14 +111,23 @@ async function reveal(name, ctxOpts) {
     };
     const copy = v.cloneNode(true); // a second element, so the visible film is never disturbed
     copy.removeAttribute('data-sand-film');
+    copy.preload = 'auto'; // the page's film is preload="none": a detached copy would otherwise never load
     copy.src = v.currentSrc;
     copy.muted = true;
-    await new Promise((r) => {
-      copy.addEventListener('loadeddata', r, { once: true });
-      copy.load();
-    });
-    copy.currentTime = 0;
-    await new Promise((r) => (copy.readyState >= 2 && copy.currentTime === 0 ? r() : copy.addEventListener('seeked', r, { once: true })));
+    const within = (promise, ms) => Promise.race([promise, new Promise((_, no) => setTimeout(() => no(new Error(`no frame within ${ms} ms`)), ms))]);
+    try {
+      await within(
+        new Promise((r) => {
+          copy.addEventListener('loadeddata', r, { once: true });
+          copy.load();
+        }),
+        20_000,
+      );
+      copy.currentTime = 0;
+      await within(new Promise((r) => (copy.readyState >= 2 && copy.currentTime === 0 ? r() : copy.addEventListener('seeked', r, { once: true }))), 10_000);
+    } catch (e) {
+      return { error: e.message };
+    }
     g.drawImage(copy, 0, 0, 320, 180);
     const film = mean();
     const pic = new Image();
@@ -135,14 +145,22 @@ async function reveal(name, ctxOpts) {
     return { film: film.map((x) => +x.toFixed(1)), poster: poster.map((x) => +x.toFixed(1)), meanAbsDiff: +(sum / ((a.length / 4) * 3)).toFixed(2), posterFile: img.currentSrc.split('/').pop() };
   });
   // Back up into the sand: the film rests (paused) while it is buried again
-  await page.evaluate((y) => window.scrollTo(0, y), Math.round(span ? span[0] + (span[1] - span[0]) * 0.3 : top));
+  const at = (p) => Math.round(span ? span[0] + (span[1] - span[0]) * p : top);
+  await page.evaluate((y) => window.scrollTo(0, y), at(0.3));
   await page.waitForTimeout(1300);
   const reburied = await state(page);
-  // And down again past the section: off screen it rests too
+  // Down into the scene again: it plays again from where it rested
+  await page.evaluate((y) => window.scrollTo(0, y), at(0.9));
+  await page.waitForTimeout(1800);
+  const reentered = await state(page);
+  // On to the following section: the film's section leaves the screen and the film rests too
+  await page.evaluate(() => window.scrollTo(0, document.querySelector('[data-sand-journey]').getBoundingClientRect().bottom + scrollY + innerHeight * 0.1));
+  await page.waitForTimeout(1300);
+  await page.screenshot({ path: join(dir, 'next-section.jpg'), type: 'jpeg', quality: 62 });
   await page.evaluate(() => window.scrollTo(0, document.querySelector('[data-sand-journey]').getBoundingClientRect().bottom + scrollY + innerHeight * 1.5));
   await page.waitForTimeout(1300);
   const below = await state(page);
-  report.scenarios[name] = { viewport: ctxOpts.viewport, stops, clock, posterVsFrame0, reburied, below, filmRequests: filmRequests.length, firstFilmRequestMs: filmRequests[0] ? filmRequests[0].at - t0 : null, errors };
+  report.scenarios[name] = { viewport: ctxOpts.viewport, stops, clock, posterVsFrame0, reburied, reentered, below, filmRequests: filmRequests.length, firstFilmRequestMs: filmRequests[0] ? filmRequests[0].at - t0 : null, errors };
   await ctx.close();
   if (RECORD) {
     const files = (await readdir(dir)).filter((f) => f.endsWith('.webm'));

@@ -1,4 +1,4 @@
-import { esc, picture, preloadFor, stars } from '../partials/ui.mjs';
+import { esc, picture, preloadFor, coverSizes, stars } from '../partials/ui.mjs';
 import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox } from '../partials/media.mjs';
@@ -83,7 +83,7 @@ const GALLERY = [
   { name: 'cape-point-aloes', role: 'wide', tile: { lg: [7, '2 / 1'], md: [2, '2 / 1'], sm: [2, '2 / 1'] }, title: 'Aloes above the sea', place: 'The Cape Peninsula', story: 'Fynbos and aloes on the cliffs on the way to Cape Point.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
   { name: 'burger-lunch-guide', role: 'food', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'Lunch with our guide', place: '', story: 'Lunch is never part of a tour’s price: we stop wherever you would like to eat, and you pay on the day.', href: 'tours/', link: 'All private tours' },
   { name: 'cape-point-zebra', role: 'wide', tile: { lg: [3, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A zebra on the road', place: 'The Cape Peninsula', story: 'Zebra, eland and ostriches live in the reserve around Cape Point. Sightings like this are luck, never a promise.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
-  { name: 'winelands-couple-tasting', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A tasting for two', place: 'The Cape Winelands', story: 'Wine in an estate’s cellar; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
+  { name: 'winelands-couple-tasting', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A tasting for two', place: 'The Cape Winelands', story: 'A tasting in an estate’s tasting room; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
   { name: 'lunch-spread-guests', tile: { lg: [3, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'Lunch in the sun', place: '', story: 'A long lunch on a terrace between the sights, wherever you choose to stop.', href: 'tours/', link: 'All private tours' },
   { name: 'langa-home-visit', role: 'table', tile: { lg: [7, '3 / 2'], md: [1, '1'], sm: [1, '1'] }, title: 'Welcomed into a home', place: 'Langa, Cape Town', story: 'Part of a half day in Langa, with the arts centre, the museum and the old beer hall.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
   { name: 'winelands-red-tasting', role: 'wine', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'A glass of red', place: 'The Cape Winelands', story: 'Red wine at a tasting on a Winelands day.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
@@ -173,10 +173,20 @@ function storiesSection(site) {
 </section>`;
 }
 
+/** The width a full-bleed scene's photograph is drawn at: the scene's height (living-cape.css .lc-scene) and the drift's
+    7% each way, so a phone's tall scene gets a file wide enough for its crop (coverSizes) */
+const sceneSizes = (name) =>
+  coverSizes(name, [
+    ['(max-width: 47.99em)', '100vw', 'calc(1.14 * clamp(32rem, 88vh, 46rem))'],
+    ['', '100vw', 'calc(1.14 * clamp(34rem, 94vh, 60rem))'],
+  ]);
+/** The adventure chapter's photographs fill a sticky screen (living-cape.css .lc-wild__media) */
+const wildSizes = (name) => coverSizes(name, [['', '100vw', '100vh']]);
+
 /** A full-bleed scene (ScenicBackdrop): the photograph moves a little slower than the page; the words sit where the picture leaves room. */
 function scene({ id, cls, image, focus, focusTall, mark, title, line, action, credit, eager = false }) {
   return `<section class="lc-scene ${cls} lc-dark" aria-labelledby="${id}" style="--focus: ${focus}; --focus-tall: ${focusTall}" data-scene>
-  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: image, alt: '', sizes: '100vw', eager })}</div></div>
+  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: image, alt: '', sizes: sceneSizes(image), eager })}</div></div>
   <div class="lc-scene__scrim" aria-hidden="true"></div>
   <div class="container lc-scene__inner">
     <div class="lc-scene__words" data-scene-words>
@@ -303,7 +313,7 @@ ${scene({
 <section class="lc-wild lc-dark" aria-labelledby="wild-title" data-wild>
   <div class="lc-wild__panel lc-wild__panel--one" data-wild-panel>
     <figure class="lc-wild__media">
-      <div class="lc-wild__art" style="--focus: 34% 46%; --focus-tall: 30% 46%" data-wild-art>${picture({ name: 'cape-point-cliffs', sizes: '100vw' })}</div>
+      <div class="lc-wild__art" style="--focus: 34% 46%; --focus-tall: 30% 46%" data-wild-art>${picture({ name: 'cape-point-cliffs', sizes: wildSizes('cape-point-cliffs') })}</div>
       <div class="lc-wild__scrim" aria-hidden="true"></div>
       <div class="lc-wild__shade" aria-hidden="true" data-wild-shade></div>
     </figure>
@@ -316,7 +326,7 @@ ${scene({
   </div>
   <div class="lc-wild__panel lc-wild__panel--two" data-wild-panel>
     <figure class="lc-wild__media">
-      <div class="lc-wild__art" style="--focus: 50% 60%; --focus-tall: 52% 60%" data-wild-art>${picture({ name: 'quad-bikes-dunes', sizes: '100vw' })}</div>
+      <div class="lc-wild__art" style="--focus: 50% 60%; --focus-tall: 52% 60%" data-wild-art>${picture({ name: 'quad-bikes-dunes', sizes: wildSizes('quad-bikes-dunes') })}</div>
       <div class="lc-wild__scrim" aria-hidden="true"></div>
     </figure>
     <div class="container lc-wild__beat" data-wild-beat>
@@ -460,7 +470,7 @@ ${scene({
 ${storiesSection(site)}
 
 <section class="lc-scene lc-scene--invite lc-dark" aria-labelledby="invite-title" style="--focus: 50% 34%; --focus-tall: 42% 30%" data-scene>
-  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: 'camps-bay-twelve-apostles', alt: '', sizes: '100vw' })}</div></div>
+  <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: 'camps-bay-twelve-apostles', alt: '', sizes: sceneSizes('camps-bay-twelve-apostles') })}</div></div>
   <div class="lc-scene__scrim" aria-hidden="true"></div>
   <div class="container lc-scene__inner">
     <div class="lc-scene__words" data-scene-words>

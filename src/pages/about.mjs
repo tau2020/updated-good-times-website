@@ -1,5 +1,10 @@
-import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead } from '../partials/ui.mjs';
+import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead } from '../partials/ui.mjs';
 import { focusOf } from '../partials/media.mjs';
+import { frameSizes } from '../partials/culinary.mjs';
+
+/** The banner's height, and the width its photograph is drawn at inside it (a phone's tall banner crops it wider) */
+const BANNER_H = 'clamp(26rem, 18rem + 22vw, 42rem)';
+const BANNER_SIZES = coverSizes('cape-coastline', [['', '100vw', BANNER_H]]);
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'About', href: 'about/' }];
 
@@ -13,7 +18,7 @@ const crumbs = [{ label: 'Home', href: './' }, { label: 'About', href: 'about/' 
  * (culinary.js, the layered reveal); without motion they are simply in place.
  *
  * "Meet our team" shows the owner's own photograph (about-image.jpg, the owner's approved file, 6 Nov 2026), whole: its
- * frame has the photograph's own 3:2 proportions at every width, so nothing of him is cropped. Every photograph on this
+ * frame has the photograph's own 3:2 proportions at every width, so nothing of the owner is cropped. Every photograph on this
  * page appears nowhere else on the site (audit/image-change-register.md).
  */
 const frame = (name, sizes, focus) => `<div class="taste__frame" style="--focus: ${focusOf(name, focus)}" data-taste-frame>${picture({ name, sizes })}</div>`;
@@ -33,12 +38,12 @@ export const page = {
   description: 'Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides.',
   priority: 0.7,
   breadcrumbs: crumbs,
-  preload: [preloadFor('cape-coastline')],
+  preload: [preloadFor('cape-coastline', { sizes: BANNER_SIZES })],
   styles: ['assets/css/culinary.css'],
   scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/culinary.js'],
   body: ({ site }) => `
-<section class="banner" style="--focus: 60% 50%; --focus-mobile: 66% 50%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
-  <div class="banner__media">${picture({ name: 'cape-coastline', eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 60% 50%; --focus-mobile: 66% 50%; --banner-h: ${BANNER_H}">
+  <div class="banner__media">${picture({ name: 'cape-coastline', sizes: BANNER_SIZES, eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbs)}
@@ -57,8 +62,8 @@ export const page = {
       <p>Every tour we run is private and shaped around the people on it: the Cape Peninsula and its penguins, the city and its history, Langa, the Winelands, the coast and the Garden Route, with pickup from your accommodation on most days.</p>
     </div>
     <figure class="about-pair lc-scope" data-taste="reveal">
-      <div class="about-pair__main" data-taste-main>${frame('boulders-beach-penguins', '(min-width: 64em) min(44vw, 38rem), 100vw')}</div>
-      <div class="about-pair__layer" data-taste-layer>${frame('langa-mural-visit', '(min-width: 64em) 13rem, 38vw')}</div>
+      <div class="about-pair__main" data-taste-main>${frame('boulders-beach-penguins', frameSizes('boulders-beach-penguins', [['(min-width: 64em)', 'min(44vw, 38rem)', 5 / 4], ['', '100vw', 5 / 4]]))}</div>
+      <div class="about-pair__layer" data-taste-layer>${frame('langa-mural-visit', frameSizes('langa-mural-visit', [['(min-width: 64em)', '13rem', 4 / 5], ['', '38vw', 4 / 5]]))}</div>
       <figcaption class="about-pair__caption" data-taste-caption><span>Boulders Beach penguins</span><span class="about-pair__sep" aria-hidden="true"> · </span><span>A mural in Langa</span></figcaption>
     </figure>
   </div>

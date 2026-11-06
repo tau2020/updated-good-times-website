@@ -1,4 +1,4 @@
-import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, imageWidth, imageSize, showRating, ratingRow, stars, sfield, travellersField, moneyTag, currencyPicker, priceBasis, artPanel } from '../partials/ui.mjs';
+import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead, imageWidth, imageSize, showRating, ratingRow, stars, sfield, travellersField, moneyTag, currencyPicker, priceBasis, artPanel } from '../partials/ui.mjs';
 import { tourCard, reviewCard, enquireTourHref, packageCard } from '../partials/cards.mjs';
 import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS } from '../partials/media.mjs';
 import { diningDiptych } from '../partials/culinary.mjs';
@@ -6,6 +6,14 @@ import { tours, categories, themes } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
 import { reviews } from '../data/reviews.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
+
+/** Heights of the full-bleed photographs on these pages (styles.css), for the width each photograph is drawn at: a
+    phone's tall frame crops a landscape photograph wider than the screen (coverSizes) */
+const BANNER_H = 'clamp(24rem, 18rem + 18vw, 36rem)';
+const TOUR_HERO_H = 'clamp(18rem, 14rem + 22vw, 34rem)'; // .tour-hero
+const BAND_H = 'clamp(16rem, 12rem + 18vw, 30rem)'; // .photo-band
+const BANNER_SIZES = coverSizes('cape-point-headland', [['', '100vw', BANNER_H]]);
+const heroSizes = (name) => coverSizes(name, [['', '100vw', TOUR_HERO_H]]);
 
 const ITINERARY_NOTE = {
   listed: 'The stops as we list them. Every tour is private, so the route can be shaped around you; we confirm it with your quote.',
@@ -61,8 +69,9 @@ const CULINARY = {
     title: 'The pleasures along the way',
     text: 'Wine and cheese at Fairview, then the tasting rooms of La Motte and Lanzerac. Tasting fees and lunch aren’t included, so what you taste and where you stop to eat are entirely up to you.',
     left: { name: 'winelands-pergola-lunch', caption: 'Lunch under the vines on a Winelands estate' },
-    // The garden lunch with the guide is the home page's (one photograph, one place): here, another real Winelands table
-    right: { name: 'winelands-estate-terrace', caption: 'Lunch on an estate terrace on a Winelands day' },
+    // The garden lunch is the home page's (one photograph, one place): here, another real Winelands table, captioned
+    // for what it shows (wine served at the table; no food is in the frame)
+    right: { name: 'winelands-estate-terrace', caption: 'Wine served at the table on an estate terrace, on a Winelands day' },
   },
 };
 
@@ -74,10 +83,10 @@ function listPage() {
     description: `${tours.length} private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving.`,
     priority: 0.9,
     breadcrumbs: crumbsList,
-    preload: [preloadFor('cape-point-headland')],
+    preload: [preloadFor('cape-point-headland', { sizes: BANNER_SIZES })],
     body: ({ site }) => `
-<section class="banner" style="--focus: 58% 44%; --banner-h: clamp(24rem, 18rem + 18vw, 36rem)">
-  <div class="banner__media">${picture({ name: 'cape-point-headland', eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 58% 44%; --banner-h: ${BANNER_H}">
+  <div class="banner__media">${picture({ name: 'cape-point-headland', sizes: BANNER_SIZES, eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbsList)}
@@ -242,7 +251,7 @@ function detailPage(t) {
   </div>
 </section>`
     : `<section class="tour-hero" data-mobile-cta-after style="--focus: ${esc(t.heroFocus || '50% 50%')}">
-  <div class="tour-hero__media">${picture({ name: t.images.hero, eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="tour-hero__media">${picture({ name: t.images.hero, sizes: heroSizes(t.images.hero), eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container banner__back"><a class="back-link" href="tours/">Back to all tours</a></div>
   ${heroCredit}
 </section>
@@ -263,7 +272,7 @@ function detailPage(t) {
     description: t.seo.description,
     priority: 0.8,
     breadcrumbs: crumbs,
-    preload: t.images.hero ? [preloadFor(t.images.hero, { sizes: framed ? '(min-width: 56em) 50vw, 100vw' : '100vw' })] : [],
+    preload: t.images.hero ? [preloadFor(t.images.hero, { sizes: framed ? '(min-width: 56em) 50vw, 100vw' : heroSizes(t.images.hero) })] : [],
     enquireHref: href,
     // The gallery's exhibition and lightbox (media.css, media.js) and, on the Winelands day, the dining diptych (culinary)
     styles: [...(hasGallery ? GALLERY_ASSETS.styles : []), ...(CULINARY[t.slug] ? ['assets/css/culinary.css'] : [])],
@@ -408,7 +417,7 @@ ${CULINARY[t.slug] ? diningDiptych(CULINARY[t.slug]) : ''}
 ${
   band
     ? `<section class="photo-band" aria-label="Photos of this tour" style="--focus: 50% 50%">
-  ${picture({ name: band, sizes: '100vw', alt: '' })}
+  ${picture({ name: band, sizes: coverSizes(band, [['', '100vw', BAND_H]]), alt: '' })}
   <div class="photo-band__action">
     <button type="button" class="gt-button gt-button--secondary gt-button--on-dark photo-band__btn" data-lc-show="${gallery.findIndex((g) => g.name === band)}" aria-haspopup="dialog" hidden>View Gallery<span class="photo-band__count">${photos.length} photos</span></button>
   </div>
