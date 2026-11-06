@@ -14,7 +14,7 @@ directly, if a face is missing or not WOFF2, or if a licence is missing.
 |---|---|---|---|
 | Display | **Bricolage Grotesque** | Quirky, friendly, confident, a little unconventional. Its optical-size axis gives large sizes ink traps and personality and small sizes a sturdier, calmer cut | Section and chapter headlines, tour names and headings, large statements over photographs, key promotional lines, the big rating number, the hero's "Good Times start Here!", "Make It Yours" and the large (52 px) buttons, reviewer names on the cards |
 | Body and interface | **DM Sans** | Clear, warm, open, very readable at 14–20 px | Paragraphs, navigation (bar, drawer, concierge), tour facts and metadata, booking details, forms, labels and validation messages, review summaries, captions and credits, the standard and compact buttons |
-| Accent (occasional) | **Caveat** | Hand-written, relaxed | Only short, non-critical notes: the hand-written place labels under the home page's "moments" prints, the label under the owner's Cape Peninsula photograph, the credentials strip's "Good Times since 2014", and the labels on the tour page's route-collage prints (decorative, hidden from screen readers) |
+| Accent (occasional) | **Caveat** | Hand-written, relaxed | Only short, non-critical notes, on the home page only: the hand-written place labels under the "moments" prints, the label under the owner's Cape Peninsula photograph and the credentials strip's "Good Times since 2014". (The tours page's route-collage labels were tried in Caveat and moved to the display face: 75 KB for four decorative labels was not worth it on a landing page.) |
 
 The logo is a protected brand asset (Approved Logo Pack v2, `src/assets/brand/`). It is artwork, never set or re-set in
 any of these faces.
@@ -50,14 +50,19 @@ any of these faces.
   fontTools (letter-frequency weighted average advance, `OS/2` typo metrics), so a line keeps its length and height while
   the faces load:
 
-  | Fallback face | Over | `size-adjust` | `ascent-override` | `descent-override` | `line-gap-override` |
-  |---|---|---|---|---|---|
-  | Bricolage Grotesque Fallback | Arial, Helvetica, Liberation Sans | 95% | 98% | 28.4% | 0% |
-  | DM Sans Fallback | same | 106% | 93.5% | 29.2% | 0% |
-  | Caveat Fallback | same | 77.4% | 124% | 38.7% | 0% |
+  | Fallback face | Weights | Over | `size-adjust` | `ascent-override` | `descent-override` | `line-gap-override` |
+  |---|---|---|---|---|---|---|
+  | Bricolage Grotesque Fallback | 100–549 | Arial, Helvetica, Liberation Sans | 108% | 86.1% | 25% | 0% |
+  | Bricolage Grotesque Fallback | 550–1000 | Arial Bold, Helvetica Bold, Liberation Sans Bold | 98.5% | 94.4% | 27.4% | 0% |
+  | DM Sans Fallback | 100–549 | Arial, Helvetica, Liberation Sans | 106% | 93.5% | 29.2% | 0% |
+  | DM Sans Fallback | 550–1000 | Arial Bold, Helvetica Bold, Liberation Sans Bold | 101% | 98.2% | 30.7% | 0% |
+  | Caveat Fallback | all | Arial, Helvetica, Liberation Sans | 77.4% | 124% | 38.7% | 0% |
 
-  (Bricolage's average advance is 0.468 em at opsz 48 and 0.439 em at opsz 96; 95% sits between the two, for the
-  headline sizes.)
+  Bold headings must fall back to a **real bold face**: they carry `font-synthesis: none`, so with a regular fallback
+  they were set in plain Arial, narrower than Bricolage Bold (which is 98–100% of Arial Bold's width at 34–44 px, but
+  106–110% of Arial Regular's), and some wrapped onto one line less until the web font arrived. The first preview
+  showed it as a 16–45 px jump at 412 px on the tours, contact and reviews pages; the weight-split faces fixed it
+  (`qa/surgical-change-report.md`).
 
 ## 3. Tokens
 
@@ -104,7 +109,7 @@ does not shrink the token.
 | Chapter mark | `.lc-mark` | DM Sans 600 | 0.9375 rem | **Sentence case** (was spaced capitals) |
 | Eyebrow | `.eyebrow` | DM Sans 600, 0.08 em | `--text-eyebrow` | Capitals, short only |
 | Caption, credit, metadata | `figcaption`, `.source-note`, `.story-card__source` | DM Sans 400–500 | `--text-small` / `--text-xs` | Sentence |
-| Hand-written note | `.lc-moments figcaption`, `.lc-memory__place`, `.gt-credentials__eyebrow`, `.route-collage__print figcaption` | Caveat 600, rotated −1° to −2° | `--text-accent` (route collage 0.95–1.25 rem) | Sentence |
+| Hand-written note (home page) | `.lc-moments figcaption`, `.lc-memory__place`, `.gt-credentials__eyebrow` | Caveat 600, rotated −1° to −2° | `--text-accent` | Sentence |
 | Buttons | `.gt-button` | DM Sans 600; `--large` Bricolage 650 | 0.875–1.0625 rem | Title Case, as the brief writes them ("Plan My Day") |
 
 Rules:
