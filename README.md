@@ -49,6 +49,9 @@ node qa/media-spot.mjs --base=<url>                         # #adventure, the cr
 node qa/media-fixes.mjs --base=<url> --out=<dir>            # the elements the independent review flagged, after their fixes
 node qa/media-perf.mjs --base=<url> --out=<file>            # LCP, layout shift and media bytes
 node qa/layout-compare.mjs --before=<url> --after=<url> --out=<file>   # layout geometry between two deployments
+# "Good Times, Naturally" (qa/surgical-change-report.md), against deployed previews:
+node qa/surgical-shots.mjs --base=<url> --out=<dir> --sections --motion   # every route at 360/390/768/1024/1440: sections, type, buttons, overflow, errors
+node qa/surgical-compare.mjs --before=<dir> --after=<dir> --out=qa/surgical/compare   # before/after composites per section and width
 ```
 
 ## Build switches
