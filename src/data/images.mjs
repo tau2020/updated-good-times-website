@@ -147,6 +147,11 @@ export const images = [
   { name: 'vineyard-couple', src: `${D}good-times-cape-town-050.jpg`, origin: 'S', ambient: true, focus: '48% 58%', alt: 'A couple standing in a vineyard on a sunny day, a white farm building and mountains behind them' },
   { name: 'guide-selfie-peninsula', src: `${D}replace-goats-on-home-page-Cape Peninsula Private Tour - traveller 106.jpg`, origin: 'O', ambient: true, focus: '62% 58%', alt: 'Two guests and their guide in a smiling selfie above the coast of the Cape Peninsula, a mountain and the sea behind them' },
 
+  // ── Added in the "Good Times, Naturally" enhancement (qa/surgical-change-report.md, 6 Nov 2026) ──
+  // Supplied by the owner for the home page's Cape Peninsula story (Drive file 1emxrC_RVorRLgK_0OsCvCfv2ctSBSWXu,
+  // SHA-256 ee94541f…f6cd1, 2268 × 4032): a guest's photograph, basis O. Shown whole, in its own 9:16 shape, once.
+  { name: 'chapmans-lookout-travellers', src: `${D}Cape Peninsula Private Tour - traveller 077.jpg`, origin: 'O', focus: '50% 55%', alt: 'Two travellers standing together at a stone-walled viewpoint on Chapman’s Peak Drive, with Hout Bay, its harbour and the mountains across the water behind them' },
+
   // ── Added in the media audit of 6 Nov 2026 (audit/image-change-register.md): one photograph per editorial place ──
   // The Cape Peninsula
   { name: 'hout-bay-viewpoint-couple', src: `${D}good-times-cape-town-022.jpg`, origin: 'S', full: true, focus: '54% 58%', alt: 'A couple at a viewpoint above Hout Bay, the Sentinel and the mountains across the blue water behind them' },

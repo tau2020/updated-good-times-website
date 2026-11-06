@@ -939,7 +939,7 @@
 }
 .wizard-result__subtitle {
   margin-top: var(--space-6);
-  font-size: var(--text-h3);
+  font-size: var(--text-h4);
 }
 .wizard-result .next-steps {
   max-width: 30rem;
@@ -994,7 +994,7 @@
   color: var(--on-dark);
 }
 .aside-card__title {
-  font-size: var(--text-h3);
+  font-size: var(--text-h4);
   color: var(--white);
 }
 .aside-card .next-steps__title {

@@ -28,10 +28,13 @@ export const SAND_TOUR = 'cape-peninsula-private-tour';
 export const SAND_IMAGE = 'beach-film-poster';
 /** The film (H.264, fast start; served with byte ranges by functions/assets/video for Safari) */
 export const SAND_FILM = { mp4: 'assets/video/beach-film-1280.mp4', width: 1280, height: 720 };
+/* The owner's words of 6 Nov 2026, in the site's sentence case since the "Good Times, Naturally" refresh (the same
+   day): the headline and the call to action unchanged in substance; the line keeps the private day, the coast and the
+   penguins, without "breathtaking" and "unforgettable" (content/copy-audit.md) */
 export const SAND_WORDS = {
-  eyebrow: 'Cape Peninsula · Coastal Journey',
-  title: 'Look Where Your Footsteps Led.',
-  line: 'One private journey. Breathtaking coastlines, penguins, and unforgettable Cape Town moments.',
+  eyebrow: 'Cape Peninsula · Coastal journey',
+  title: 'Look where your footsteps led.',
+  line: 'One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop.',
   cta: 'Explore the Cape Peninsula Tour',
 };
 

@@ -215,9 +215,8 @@ ${site.analytics.cloudflareToken ? `<meta name="gt-analytics" content="${esc(sit
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon-180.png">
 <link rel="manifest" href="assets/brand/site.webmanifest">
-<link rel="preload" href="assets/fonts/PlusJakartaSans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin>
-${page.path === 'index.html' ? '<link rel="preload" href="assets/fonts/PlusJakartaSans-Italic.woff2" as="font" type="font/woff2" crossorigin>' : ''}
+<link rel="preload" href="assets/fonts/BricolageGrotesque.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/DMSans.woff2" as="font" type="font/woff2" crossorigin>
 ${(page.preload || []).filter(Boolean).map((p) => `<link rel="preload" as="image" href="${p.href}" type="${p.type}" imagesrcset="${p.srcset}" imagesizes="${p.sizes}"${p.media ? ` media="${p.media}"` : ''} fetchpriority="high">`).join('\n')}
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/styles.css">

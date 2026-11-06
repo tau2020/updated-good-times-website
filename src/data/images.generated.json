@@ -476,6 +476,16 @@
     "width": 3240,
     "height": 2160
   },
+  "chapmans-lookout-travellers": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2268,
+    "height": 4032
+  },
   "chapmans-peak-couple": {
     "widths": [
       480,

@@ -6,11 +6,12 @@ import { culinaryReveal, tasteRule } from '../partials/culinary.mjs';
 import { licensedCredit } from '../partials/cards.mjs';
 import { heroPhoneGallery } from '../partials/phone-gallery.mjs';
 import { sandJourney } from '../partials/sand-journey.mjs';
-import { imageByName } from '../data/images.mjs';
+import { imageByName, creditFor } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
 import { reviews } from '../data/reviews.mjs';
 import { reviewerPhoto } from '../partials/reviewer-photo.mjs';
+import { credentialsStrip } from '../partials/credentials.mjs';
 
 const initials = (name) => name.replace(/[^A-Za-z ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('') || name.slice(0, 1).toUpperCase();
 const tour = (slug) => tours.find((t) => t.slug === slug);
@@ -28,7 +29,11 @@ const airport = services.find((s) => s.id === 'airport');
  * pages, the review research); people in photographs are never named.
  */
 
-/** 03 · The moments between destinations: four stops along Good Times days (captions by place, nobody named). */
+/** 01 · The Cape Peninsula, continued: the owner's guest photograph from the lookout above Hout Bay (images.mjs), shown
+    whole in its own 9:16 shape. Its caption names the place, never the people (nobody is named or tied to a review). */
+const MEMORY = { name: 'chapmans-lookout-travellers', place: 'Chapman’s Peak Drive, above Hout Bay' };
+
+/** 02 · The moments between destinations: four stops along Good Times days (captions by place, nobody named). */
 const MOMENTS = [
   { key: 'a', name: 'muizenberg-huts-guests', focus: '50% 56%', caption: 'Muizenberg’s bathing huts', sizes: '(min-width: 64em) min(52vw, 46rem), 100vw', depth: 0 },
   { key: 'b', name: 'above-the-bay-selfie', focus: '36% 62%', caption: 'A selfie above the bay', sizes: '(min-width: 64em) min(26vw, 23rem), 60vw', depth: -1 },
@@ -90,19 +95,29 @@ const GALLERY = [
   { name: 'winelands-red-tasting', role: 'wine', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '4 / 3'] }, title: 'A glass of red', place: 'The Cape Winelands', story: 'Red wine at a tasting on a Winelands day.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
 ];
 
-/** 10 · Words from the road: every chosen review as a compact card in the carousel. */
-const LANGUAGES = { fr: 'French', de: 'German' };
-/** Ten original illustrated avatars (src/assets/img/avatars, drawn for this site, nobody's likeness): the stand-in on a
-    card until the reviewer's own photo is supplied (partials/reviewer-photo.mjs) */
-const AVATARS = 10;
-const avatarFor = (i) => `assets/img/avatars/guest-${String((i % AVATARS) + 1).padStart(2, '0')}.svg`;
-
 /**
- * A review card: the reviewer's photo (or an illustrated avatar until it is supplied), the reviewer's name and place, their own rating where it is
- * recorded, our labelled summary of the review (a verbatim passage only with the reviewer's permission,
- * `quoteApproval`, none recorded yet) and the link to the original.
+ * 09 · The people behind the good times (the brief §7): the chosen Tripadvisor reviews as a grid of cards, several in
+ * view at once (six on wide screens, four on tablets, three on phones, the rest a press away; all of them without
+ * JavaScript). Each card: the reviewer's own photo where the owner has supplied an approved file
+ * (partials/reviewer-photo.mjs), otherwise their initials, never a stand-in face; the name and place as Tripadvisor
+ * shows them; their own rating; the tour; our labelled one-line summary (a verbatim passage only with the reviewer's
+ * permission, `quoteApproval`, none recorded); the month it was written; and the link to the full review.
+ * Sources and permissions: content/reviews-source-audit.md.
  */
-function storyCard(r, i) {
+const LANGUAGES = { fr: 'French', de: 'German' };
+/** The order on the page: a different tour in each of the first six places, so the first row is not one reviewer twice */
+const STORY_ORDER = [0, 1, 5, 8, 9, 2, 3, 6, 7, 4];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthYear = (iso) => {
+  const m = /^(\d{4})-(\d{2})/.exec(iso || '');
+  return m ? `${MONTHS[Number(m[2]) - 1]} ${m[1]}` : '';
+};
+const longDate = (iso) => {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  return m ? `${Number(m[3])} ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][Number(m[2]) - 1]} ${m[1]}` : '';
+};
+
+function storyCard(r) {
   const lang = r.quoteLang && r.quoteLang !== 'en' ? r.quoteLang : '';
   const real = reviewerPhoto(r.avatar);
   const quoted = Boolean(r.excerpt && r.quote && r.quoteApproval);
@@ -111,64 +126,62 @@ function storyCard(r, i) {
   // Where the review goes on, an ellipsis says so: in place of a closing full stop, after any other closing mark
   const passage = !goesOn ? text : /\.$/.test(text) ? `${text.slice(0, -1)}…` : /[!?]$/.test(text) ? `${text} …` : `${text}…`;
   const rated = Number.isFinite(r.rating) && r.rating >= 1 && r.rating <= 5;
+  // The initials are always drawn; an approved photo, where supplied, covers them (and if it fails to load, reviews.js
+  // removes it and the initials show). The name beside it is the text: the initials are decoration.
   const avatar = `<span class="story-card__avatar"><span class="story-card__initials" aria-hidden="true">${esc(initials(r.author))}</span>${
-    real
-      ? `<img src="${real}" alt="${esc(r.author)}’s Tripadvisor profile photo" width="84" height="84" loading="lazy" decoding="async">`
-      : `<img src="${avatarFor(i)}" alt="" width="84" height="84" loading="lazy" decoding="async">`
+    real ? `<img src="${real}" alt="${esc(r.author)}’s Tripadvisor profile photo" width="104" height="104" loading="lazy" decoding="async">` : ''
   }</span>`;
   const t = r.tour ? tour(r.tour) : null;
   const about = t ? t.shortTitle : r.label || '';
+  const when = monthYear(r.written);
   return `<li class="story-card" data-story-card>
-        <article class="story-card__inner">
+        <article class="story-card__inner" aria-label="${esc(`${r.author}’s review${about ? ` of the ${about}` : ''}`)}">
           <div class="story-card__head">
             ${avatar}
             <div class="story-card__who">
               <p class="story-card__name">${esc(r.author)}</p>
               ${r.origin ? `<p class="story-card__place">${esc(r.origin)}</p>` : ''}
-              ${rated ? `<p class="story-card__stars">${stars({ count: r.rating })}<span class="visually-hidden">Rated ${r.rating} out of 5</span></p>` : ''}
             </div>
           </div>
+          <p class="story-card__meta">${rated ? `${stars({ count: r.rating })}<span class="visually-hidden">Rated ${r.rating} out of 5. </span>` : ''}${about ? `<span class="story-card__tour">${esc(about)}</span>` : ''}</p>
           ${
             quoted
               ? `<blockquote class="story-card__quote" cite="${esc(r.url)}"${lang ? ` lang="${lang}"` : ''}><p>“${esc(passage)}”</p></blockquote>`
-              : `<div class="story-card__quote story-card__quote--summary"><p class="story-card__label">Review summary${about ? ` · ${esc(about)}` : ''}</p><p>${esc(text)}</p></div>`
+              : `<div class="story-card__quote story-card__quote--summary"><p class="story-card__label">The review in short, in our words</p><p>${esc(text)}</p></div>`
           }
-          <p class="story-card__source"><a href="${esc(r.url)}" rel="noopener" target="_blank">Read the full review<span class="visually-hidden"> on Tripadvisor (opens in a new tab)</span></a>${lang ? ` · Written in ${LANGUAGES[lang] || lang}` : ''}</p>
+          <p class="story-card__source"><a href="${esc(r.url)}" rel="noopener" target="_blank">Read the full review<span class="visually-hidden"> by ${esc(r.author)} on Tripadvisor (opens in a new tab)</span></a> on Tripadvisor${when ? ` · <time datetime="${esc(r.written)}">${when}</time>` : ''}${lang ? ` · Written in ${LANGUAGES[lang] || lang}` : ''}</p>
         </article>
       </li>`;
 }
 
 /**
- * 10 · Words from the road: the heading beside the listing's two verified figures (counted up once in
- * view, reviews.js), the chosen reviews as cards in the carousel (one GSAP move at a time with
- * motion, a native snapping scroller without), and the one link to the listing.
+ * 09 · The heading, the listing's rating (dated, linked, kept apart from the cards; no review count, which changes),
+ * the grid and the way to every review.
  */
 function storiesSection(site) {
   const ta = site.tripadvisor;
-  return `<section class="stories lc-dark" id="reviews" aria-labelledby="stories-title">
+  const ordered = STORY_ORDER.filter((i) => reviews[i]).map((i) => reviews[i]).concat(reviews.filter((_, i) => !STORY_ORDER.includes(i)));
+  return `<section class="stories" id="reviews" aria-labelledby="stories-title">
   <div class="container stories__inner">
     <div class="stories__head">
       <div class="stories__intro">
-        ${chapterMark(10, 'Words from the road', 'lc-mark--light stories__eyebrow')}
-        <h2 class="stories__title" id="stories-title">Beautiful places. <br><em>Beautifully remembered.</em></h2>
+        ${chapterMark(9, 'The people behind the good times', 'stories__eyebrow')}
+        <h2 class="lc-title stories__title" id="stories-title">Good times, <em>by the people who had them.</em></h2>
+        <p class="lc-lead stories__lead" data-reveal>Don’t just take our word for it. Here’s what travellers said about their days in the Cape: each card sums up a real review in a line, and the whole review is a tap away on Tripadvisor.</p>
       </div>
-      <ul class="stories__stats" role="list" aria-label="Verified Tripadvisor figures" data-story-stats>
-        <li class="stories__stat">${engraved('binoculars', { cls: 'stories__stat-icon' })}<strong class="stories__stat-value" data-count="${ta.reviewCount}">${ta.reviewCount}</strong><span class="stories__stat-label">Tripadvisor reviews</span></li>
-        <li class="stories__stat">${engraved('star', { cls: 'stories__stat-icon' })}<strong class="stories__stat-value" data-count="${ta.rating.toFixed(1)}" data-decimals="1">${ta.rating.toFixed(1)}</strong><span class="stories__stat-label">Average rating</span><span class="stories__stat-sub">out of 5</span></li>
-      </ul>
+      <a class="stories__rating" href="${esc(ta.url)}" rel="noopener" target="_blank">
+        <span class="stories__rating-score" aria-hidden="true">${ta.rating.toFixed(1)}</span>
+        ${stars()}
+        <span class="stories__rating-label">Rated ${ta.rating.toFixed(1)} out of 5 on Tripadvisor</span>
+        <span class="stories__rating-date">As listed on ${longDate(ta.checked)}<span class="visually-hidden">. See the listing (opens in a new tab)</span></span>
+      </a>
     </div>
-    <div class="stories__carousel" data-stories role="region" aria-roledescription="carousel" aria-label="Guest reviews">
-      <button class="gt-button gt-button--utility gt-button--on-dark stories__arrow stories__arrow--prev" type="button" data-stories-prev>Previous<span class="visually-hidden"> review</span></button>
-      <div class="stories__viewport" data-stories-viewport role="group" aria-label="Review cards" tabindex="0">
-        <ul class="stories__track" data-stories-track role="list">
-      ${reviews.map((r, i) => storyCard(r, i)).join('\n      ')}
-        </ul>
-      </div>
-      <button class="gt-button gt-button--utility gt-button--on-dark stories__arrow stories__arrow--next" type="button" data-stories-next>Next<span class="visually-hidden"> review</span></button>
-      <button class="stories__toggle" type="button" data-stories-toggle aria-label="Pause the reviews" hidden>${engraved('pause', { cls: 'stories__toggle-pause' })}${engraved('play', { cls: 'stories__toggle-play' })}</button>
-    </div>
+    <ul class="stories__grid" id="stories-grid" role="list" data-stories>
+      ${ordered.map((r) => storyCard(r)).join('\n      ')}
+    </ul>
     <div class="stories__foot">
-      <a class="gt-button gt-button--secondary gt-button--on-dark stories__cta lc-quiet lc-quiet--light" href="${esc(ta.url)}" rel="noopener" target="_blank">${engraved('quote', { cls: 'lc-quiet__icon' })}<span>Read All Our Reviews on Tripadvisor</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+      <button class="gt-button gt-button--outline stories__more" type="button" aria-expanded="true" aria-controls="stories-grid" data-stories-more hidden>Show more reviews</button>
+      <a class="gt-button gt-button--secondary stories__cta" href="${esc(ta.url)}" rel="noopener" target="_blank"><span>Read every review on Tripadvisor</span><span class="visually-hidden"> (opens in a new tab)</span></a>
     </div>
   </div>
 </section>`;
@@ -248,27 +261,10 @@ export const page = {
 
 ${sandJourney()}
 
+${credentialsStrip(site)}
+
 <div class="living-cape" data-living-cape>
 
-<section class="lc-sun" aria-labelledby="sun-title" data-sun>
-  <div class="container lc-sun__inner">
-    <svg class="lc-sun__water" aria-hidden="true" focusable="false" data-sun-water></svg>
-    <div class="lc-sun__words">
-      ${chapterMark(1, 'Good Times Since 2014')}
-      <h2 class="lc-statement" id="sun-title">A private day, <span class="lc-statement__turn">shaped <em>around you.</em></span></h2>
-      <p class="lc-lead" data-reveal>Every Good Times tour is private: only your group, a guide who knows the Cape, and a route planned around what you most want to see. We have been showing visitors the Mother City since 2014.</p>
-    </div>
-    <figure class="lc-sun__plate">
-      <div class="lc-sun__frame" data-sun-frame style="--focus: 62% 60%; --focus-tall: 66% 62%">
-        ${picture({ name: 'peninsula-bench-view', alt: imageByName('peninsula-bench-view').alt, sizes: '(min-width: 90em) 88rem, calc(100vw - 2 * clamp(1rem, 0.25rem + 3.5vw, 4rem))' })}
-      </div>
-      <figcaption class="lc-sun__caption">
-        <span>A pause above a long white beach on a Cape Peninsula day. A Good Times photograph.</span>
-        ${travelNote({ href: tourHref(PENINSULA), label: 'The Cape Peninsula day' })}
-      </figcaption>
-    </figure>
-  </div>
-</section>
 
 ${scene({
   id: 'road-title',
@@ -278,19 +274,36 @@ ${scene({
   // On a phone the scene shows about a quarter of the photograph's width, under the words: the coast and the headland,
   // not the couple's faces behind the heading (the media audit, 6.B); wider screens show the couple beside the words
   focusTall: '30% 50%',
-  mark: chapterMark(2, 'Where the Road Meets the Ocean', 'lc-mark--light'),
-  title: 'The coast road <br>is half the <em>adventure.</em>',
-  line: 'Chapman’s Peak Drive, the Cape of Good Hope and Cape Point, then the penguins at Boulders Beach: the Peninsula in one private day.',
+  mark: chapterMark(1, 'Where the road meets the ocean', 'lc-mark--light'),
+  title: 'Follow the coast. <br><em>Forget the clock.</em>',
+  line: 'Ocean roads, dramatic cliffs and plenty of reasons to stop for a photo, with a guide who knows the route and the stories behind it.',
   action: travelNote({ href: tourHref(PENINSULA), label: 'Follow the coast road', tone: 'light' }),
   credit: 'A viewpoint above the Atlantic, Cape Peninsula · A Good Times photograph',
 })}
 
+<section class="lc-memory" aria-labelledby="memory-title">
+  <div class="container lc-memory__grid">
+    <figure class="lc-memory__photo" data-rise="memory">
+      <div class="lc-memory__frame">${picture({ name: MEMORY.name, sizes: '(min-width: 64em) 27rem, (min-width: 48em) 40vw, min(78vw, 22rem)' })}</div>
+      <figcaption class="lc-memory__caption"><span class="lc-memory__place">${esc(MEMORY.place)}</span><span class="lc-memory__credit">${esc(creditFor(MEMORY.name))}</span></figcaption>
+    </figure>
+    <div class="lc-memory__words">
+      <p class="lc-mark"><span class="lc-mark__rule" aria-hidden="true"></span><span class="lc-mark__label">On the Cape Peninsula day</span></p>
+      <h2 class="lc-title" id="memory-title">The best bits? <span class="lc-title__turn">They’re yours <em>to remember.</em></span></h2>
+      <p class="lc-lead" data-reveal>Two travellers at a lookout on Chapman’s Peak Drive, with Hout Bay, its harbour and the Sentinel behind them. On a private day your group sets the pace, so there’s time for the photo stops, and your guide knows which lookouts are worth pulling over for.</p>
+      <div class="lc-memory__actions">
+        ${quietOutline({ href: `enquire/?type=tour&tour=${PENINSULA}`, label: 'Plan a Peninsula Day' })}
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="lc-moments" aria-labelledby="moments-title">
   <div class="container lc-moments__grid">
     <div class="lc-moments__head">
-      ${chapterMark(3, 'The Moments Between Destinations')}
-      <h2 class="lc-title" id="moments-title">It’s not only where you go. <span class="lc-title__turn">It’s everything <em>along the way.</em></span></h2>
-      <p class="lc-lead" data-reveal>Between the famous stops are the moments people keep: a row of beach huts, a selfie above the bay, the goats at Fairview, a sign at the edge of a continent. Photographs from our own days out.</p>
+      ${chapterMark(2, 'The bits between the big sights')}
+      <h2 class="lc-title" id="moments-title">The big sights are great. <span class="lc-title__turn">The bits in between? <em>Even better.</em></span></h2>
+      <p class="lc-lead" data-reveal>Between the famous stops are the moments people keep: a row of beach huts, a selfie above the bay, the goats at Fairview, a sign at the edge of a continent. All of them photographed on our own days out.</p>
     </div>
     ${MOMENTS.map(
       (m) => `<figure class="lc-moments__item lc-moments__item--${m.key}" data-depth="${m.depth}" data-rise="moments">
@@ -303,12 +316,12 @@ ${scene({
 
 <section class="lc-film" aria-labelledby="film-title" data-film>
   ${destinationCarousel({
-    heading: `${chapterMark(4, 'The Cape Is Yours to Discover')}
-      <h2 class="lc-title lc-title--compact" id="film-title">Which side of the Cape will you <em>fall in love with?</em></h2>`,
+    heading: `${chapterMark(3, 'Pick a direction')}
+      <h2 class="lc-title lc-title--compact" id="film-title">Which side of the Cape will you <em>fall for first?</em></h2>`,
     slides: SLIDES,
     // Cape Town leads at first: the clearest photograph of the six at the featured width
     initial: 1,
-    foot: `<p class="lc-film__note">Six directions from Cape Town, each a private day or more with us.</p>
+    foot: `<p class="lc-film__note">Six directions from Cape Town, each one a private day (or more) with us.</p>
       ${travelNote({ href: 'destinations/', label: 'All destinations' })}`,
   })}
 </section>
@@ -322,8 +335,8 @@ ${scene({
     </figure>
     <div class="container lc-wild__beat" data-wild-beat>
       <div class="lc-wild__words">
-        <p class="lc-mark lc-mark--light"><span class="lc-mark__rule" aria-hidden="true"></span><span class="lc-mark__label">An interlude</span></p>
-        <h2 class="lc-statement lc-statement--scene lc-wild__title" id="wild-title">The best journeys leave room for the <em>unexpected.</em></h2>
+        <p class="lc-mark lc-mark--light"><span class="lc-mark__rule" aria-hidden="true"></span><span class="lc-mark__label">An interlude, with adrenaline</span></p>
+        <h2 class="lc-statement lc-statement--scene lc-wild__title" id="wild-title">For the stories you’ll <em>tell twice.</em></h2>
       </div>
     </div>
   </div>
@@ -334,8 +347,8 @@ ${scene({
     </figure>
     <div class="container lc-wild__beat" data-wild-beat>
       <div class="lc-wild__words">
-        <p class="lc-scene__line">Quad bikes on the dunes, a tandem skydive with the Cape below you, a cage dive with great white sharks off Gansbaai: add an adventure to your days with us.</p>
-        ${travelNote({ href: 'tours/#adventure', label: 'Adventure activities', tone: 'light' })}
+        <p class="lc-scene__line">Fancy something with a little more adrenaline? Quad bikes on the dunes, a tandem skydive with the Cape below you, a cage dive with great white sharks off Gansbaai. Each runs with a safety briefing and depends on the weather and the season, so tell us your dates and we’ll help you work out what fits your Cape Town days.</p>
+        ${travelNote({ href: 'tours/#adventure', label: 'Explore adventure options', tone: 'light' })}
       </div>
     </div>
   </div>
@@ -344,7 +357,7 @@ ${scene({
 <section class="lc-ways" aria-labelledby="ways-title">
   <div class="container lc-ways__grid">
     <div class="lc-ways__head">
-      ${chapterMark(5, 'Your Journey, Your Way')}
+      ${chapterMark(4, 'Your day, your way')}
       <h2 class="lc-title" id="ways-title">Four ways to see the Cape <em>with us.</em></h2>
       <p class="lc-lead" data-reveal>Each one private, and confirmed with you before anything is booked.</p>
     </div>
@@ -363,8 +376,8 @@ ${scene({
       ).join('\n      ')}
     </ul>
     <div class="lc-ways__book">
-      ${sunSeal({ href: 'enquire/', label: 'Get a Quote' })}
-      <p>Nothing is booked or charged until we’ve confirmed the arrangements with you.</p>
+      ${sunSeal({ href: 'enquire/', label: 'Plan My Day' })}
+      <p>Tell us what you have in mind and we’ll reply with a quote. Nothing is booked or charged until we’ve confirmed the arrangements with you.</p>
     </div>
   </div>
 </section>
@@ -376,14 +389,14 @@ ${scene({
       <figcaption>Friends in a South African flag frame above the coast</figcaption>
     </figure>
     <div class="lc-people__words">
-      ${chapterMark(6, 'The People Make the Journey')}
-      <h2 class="lc-title" id="people-title">The beautiful places are only <em>part of the story.</em></h2>
+      ${chapterMark(5, 'The people make it')}
+      <h2 class="lc-title" id="people-title">The views do half the work. <em>We do the rest.</em></h2>
       <ul class="lc-people__ways" role="list">
-        <li data-reveal style="--reveal-i:1">${engraved('group')}<span><strong>Personal service.</strong> Every tour is private and shaped around the people on it, with pickup from your accommodation.</span></li>
-        <li data-reveal style="--reveal-i:2">${engraved('guide')}<span><strong>Accredited local guides.</strong> The stories behind the famous places, and the hidden gems between them.</span></li>
+        <li data-reveal style="--reveal-i:1">${engraved('group')}<span><strong>Personal service.</strong> Every tour is private and shaped around the people on it, and most start with pickup from your accommodation.</span></li>
+        <li data-reveal style="--reveal-i:2">${engraved('guide')}<span><strong>Accredited local guides.</strong> The stories behind the famous places, and the good bits in between.</span></li>
         <li data-reveal style="--reveal-i:3">${engraved('check')}<span><strong>Safety first.</strong> Weather-aware plans, and a team you can reach before, during and after your tour.</span></li>
       </ul>
-      ${travelNote({ href: 'about/', label: 'Meet Good Times' })}
+      ${travelNote({ href: 'about/', label: 'Meet the Good Times team' })}
     </div>
     <figure class="lc-people__pair lc-people__pair--a" data-depth="1" data-rise="people">
       <div class="lc-print-frame" style="--focus: 40% 50%">${picture({ name: 'castle-table-mountain', sizes: '(min-width: 64em) min(30vw, 26rem), 100vw' })}</div>
@@ -399,9 +412,9 @@ ${scene({
 ${culinaryReveal({
   id: 'taste-title',
   words: `<p class="lc-mark"><span class="lc-mark__rule" aria-hidden="true"></span><span class="lc-mark__label">Beyond the scenery</span></p>
-      <h2 class="lc-title lc-title--compact" id="taste-title">The Cape is also something <em>you taste.</em></h2>
+      <h2 class="lc-title lc-title--compact" id="taste-title">Good views. <em>Better pours.</em></h2>
       ${tasteRule}
-      <p class="lc-lead">On the Winelands day there is wine and cheese at Fairview, then La Motte, Franschhoek and Lanzerac. Tasting fees and lunch are paid on the day, so you choose what to taste and where to eat.</p>
+      <p class="lc-lead">Take the scenic route through the Cape Winelands, where mountain views, beautiful estates and long lunches are all part of the appeal: wine and cheese at Fairview, then La Motte, Franschhoek and Lanzerac. Tastings and lunch are optional and paid on the day, so you choose what to taste and where to eat.</p>
       ${travelNote({ href: tourHref(WINELANDS), label: 'The Winelands day' })}`,
   // The wide table of five fills the large frame whole; the compact pour at Waterford fits the square inset, framed on
   // the guest and the host (the media audit: the inset cut the table's guests at both edges)
@@ -413,8 +426,8 @@ ${culinaryReveal({
 <section class="lc-gallery" id="gallery" aria-labelledby="gallery-title">
   <div class="container">
     <div class="lc-gallery__head">
-      ${chapterMark(7, 'The Living Travel Exhibition')}
-      <h2 class="lc-title" id="gallery-title">Some memories never <em>leave the frame.</em></h2>
+      ${chapterMark(6, 'From our camera roll')}
+      <h2 class="lc-title" id="gallery-title">Snapshots from <em>real days out.</em></h2>
       <p class="lc-body" data-reveal>Twelve photographs from our days out with guests. Open one to see where it was taken and which day it belongs to.</p>
     </div>
     ${photoExhibition({ items: GALLERY })}
@@ -428,7 +441,7 @@ ${scene({
   image: 'table-mountain-sparkling',
   focus: '36% 40%',
   focusTall: '40% 38%',
-  mark: chapterMark(8, 'The Golden Cape', 'lc-mark--light'),
+  mark: chapterMark(7, 'Golden hour', 'lc-mark--light'),
   title: 'Some days you wish could last <em>a little longer.</em>',
   line: 'Table Mountain across the bay, and a glass raised to the day.',
   action: travelNote({ href: 'tours/', label: 'Choose your day', tone: 'light' }),
@@ -438,7 +451,7 @@ ${scene({
 <section class="lc-ease" aria-labelledby="ease-title">
   <div class="container">
     <div class="lc-ease__head">
-      ${chapterMark(9, 'The Art of Making It Easy')}
+      ${chapterMark(8, 'Easy does it')}
       <h2 class="lc-title" id="ease-title">All the wonder. <em>None of the worry.</em></h2>
     </div>
     <div class="lc-ease__journey" data-journey>
@@ -448,20 +461,20 @@ ${scene({
         <li class="lc-ease__step">
           <span class="lc-ease__stop" aria-hidden="true">${engraved('travel-folio')}</span>
           <p class="lc-ease__num">Step 1</p>
-          <h3>Tell us your plans.</h3>
-          <p>Share the places you’d love to see or the transfer you need: one of our ${tours.length} private tours and activities, a day built around you, or the Garden Route.</p>
+          <h3>Tell us what you’re after.</h3>
+          <p>The places you’d love to see or the transfer you need: one of our ${tours.length} private tours and activities, a day built around you, or the Garden Route.</p>
         </li>
         <li class="lc-ease__step">
           <span class="lc-ease__stop" aria-hidden="true">${engraved('contact', { size: 30 })}</span>
           <p class="lc-ease__num">Step 2</p>
-          <h3>Receive your personalised quote.</h3>
-          <p>One of our team checks availability and replies with the details and your price, through your preferred contact method.</p>
+          <h3>Get your personalised quote.</h3>
+          <p>One of our team checks availability and replies with the details and your price, however you prefer to be contacted.</p>
         </li>
         <li class="lc-ease__step">
           <span class="lc-ease__stop" aria-hidden="true">${engraved('sun-seal')}</span>
           <p class="lc-ease__num">Step 3</p>
-          <h3>Confirm your experience.</h3>
-          <p>Once you’re happy with the arrangements, we confirm your booking, and on the day your guide collects you.</p>
+          <h3>Say yes, and we confirm.</h3>
+          <p>Once you’re happy with the arrangements, we confirm your booking. On the day, your guide collects you.</p>
         </li>
       </ol>
     </div>
@@ -480,13 +493,13 @@ ${storiesSection(site)}
   <div class="container lc-scene__inner">
     <div class="lc-scene__words" data-scene-words>
       <span class="lc-invite-seal" aria-hidden="true">${engraved('sun-seal')}<svg class="lc-invite-seal__thread" viewBox="0 0 240 8" preserveAspectRatio="none" focusable="false"><path pathLength="1" data-thread d="M0 4C40 1 80 7 120 4S200 1 240 4"/></svg></span>
-      ${chapterMark(11, 'Your Story Begins Here', 'lc-mark--light')}
-      <h2 class="lc-statement lc-statement--scene" id="invite-title">The Cape is waiting. <span class="lc-statement__turn">Make the journey <em>yours.</em></span></h2>
+      ${chapterMark(10, 'Your turn', 'lc-mark--light')}
+      <h2 class="lc-statement lc-statement--scene" id="invite-title">Your kind of Cape Town <span class="lc-statement__turn"><em>starts here.</em></span></h2>
     </div>
     <div class="lc-scene__close" data-scene-words>
-      <p class="lc-scene__line">Tell us where you’d like to go. You’ll receive availability and a personalised quote, and nothing is booked or charged until we’ve confirmed it with you.</p>
+      <p class="lc-scene__line">Tell us who’s coming, what you love and when you’ll be here. We’ll help shape a day worth looking forward to, and reply with availability and a personalised quote. Nothing is booked or charged until we’ve confirmed it with you.</p>
       <div class="lc-scene__actions">
-        ${sunSeal({ href: 'enquire/?type=tour', label: 'Request Your Tour', tone: 'light' })}
+        ${sunSeal({ href: 'enquire/?type=tour', label: 'Plan My Day', tone: 'light' })}
         ${quietOutline({ href: 'enquire/?type=transfer&transfer=airport-arrival', label: 'Arrange a Transfer', tone: 'light' })}
       </div>
     </div>

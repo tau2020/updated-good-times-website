@@ -113,6 +113,35 @@ export const site = {
     association: 'A registered associate of the Cape Tourist Guides Association',
     operator: 'A Western Cape Tourism registered operator',
     source: `${OFFICIAL}: About (Accreditations) and Safety & Trust`,
+    /**
+     * The credentials strip on the home page (partials/credentials.mjs): the points each rest on the statements above.
+     */
+    points: [
+      { title: 'Accredited local guides', text: 'Recognised by the Western Cape tourism authorities.' },
+      { title: 'A registered operator', text: 'Registered with Western Cape Tourism.' },
+      { title: 'Private by design', text: 'Only your group, your guide and a day planned around you.' },
+    ],
+    /**
+     * The Cape Tourist Guides Association (CTGA), a professional association, not an award. Its logo is the
+     * association's own vector file, unaltered (tourguides.capetown/images/logo.svg, read 6 Nov 2026, SHA-256
+     * 632f01f5…d705; assets/img/credentials/ctga-logo.svg). CTGA lets its associate members place the logo on their
+     * websites "advertising that you only employ/promote legal/registered guides" (Becoming an Associate Member,
+     * read 6 Nov 2026). Good Times states it is "a registered associate" (above), but CTGA's own list of current
+     * associate members (tourguides.capetown/our-associates.html, read 6 Nov 2026) does not name it, so the
+     * membership is not independently verified: the logo and its line show only in preview builds, marked "preview
+     * only", until the owner confirms it (a current certificate or the listing) and `verified` is set:
+     * docs/APPROVAL_REGISTER.md › T1.
+     */
+    ctga: {
+      name: 'Cape Tourist Guides Association',
+      short: 'CTGA',
+      url: 'https://tourguides.capetown/',
+      logo: 'assets/img/credentials/ctga-logo.svg',
+      line: 'Connected to the Cape’s professional guiding community.',
+      source: 'tourguides.capetown: logo, Our Associates and Becoming an Associate Member, read 6 Nov 2026',
+      checked: '2026-11-06',
+      verified: false,
+    },
   },
 
   /**

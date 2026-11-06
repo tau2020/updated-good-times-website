@@ -281,15 +281,19 @@ test('the scene in the page: between the hero and the first chapter, static and 
   const s = html.slice(sand, chapter);
   assert.match(s, /aria-labelledby="sand-journey-title"/);
   assert.doesNotMatch(s, /<canvas/, 'the canvas is the script’s, decorative and added only with motion');
-  // The owner's words (6 Nov 2026), the headline naming the section, the link an ordinary HTML link to the existing tour
+  // The owner's words (6 Nov 2026), in the site's sentence case and without "breathtaking" or "unforgettable" since the
+  // copy refresh of the same day (content/copy-audit.md); the headline names the section, the link an ordinary HTML
+  // link to the existing tour
   assert.deepEqual(SAND_WORDS, {
-    eyebrow: 'Cape Peninsula · Coastal Journey',
-    title: 'Look Where Your Footsteps Led.',
-    line: 'One private journey. Breathtaking coastlines, penguins, and unforgettable Cape Town moments.',
+    eyebrow: 'Cape Peninsula · Coastal journey',
+    title: 'Look where your footsteps led.',
+    line: 'One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop.',
     cta: 'Explore the Cape Peninsula Tour',
   });
-  assert.match(s, /<div class="sand-journey__head">\s*<p class="sand-journey__eyebrow">Cape Peninsula · Coastal Journey<\/p>\s*<h2 class="sand-journey__title" id="sand-journey-title">Look Where Your Footsteps Led\.<\/h2>\s*<\/div>/);
-  assert.match(s, /<div class="sand-journey__foot">\s*<p class="sand-journey__line">One private journey\. Breathtaking coastlines, penguins, and unforgettable Cape Town moments\.<\/p>\s*<a class="btn gt-button gt-button--primary sand-journey__cta" href="tours\/cape-peninsula-private-tour\/"><span>Explore the Cape Peninsula Tour<\/span><\/a>\s*<\/div>/);
+  assert.match(s, /<div class="sand-journey__head">\s*<p class="sand-journey__eyebrow">Cape Peninsula · Coastal journey<\/p>\s*<h2 class="sand-journey__title" id="sand-journey-title">Look where your footsteps led\.<\/h2>\s*<\/div>/);
+  assert.match(s, /<div class="sand-journey__foot">\s*<p class="sand-journey__line">One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop\.<\/p>\s*<a class="btn gt-button gt-button--primary sand-journey__cta" href="tours\/cape-peninsula-private-tour\/"><span>Explore the Cape Peninsula Tour<\/span><\/a>\s*<\/div>/);
+  // Next comes the credentials strip, where the removed water chapter was (qa/surgical-change-report.md)
+  assert.ok(s.indexOf('<section class="gt-credentials"') > s.indexOf('</section>'), 'the credentials strip follows the scene');
   const t = tours.find((x) => x.slug === SAND_TOUR);
   assert.ok(t && tourPages.some((pg) => pg.path === `tours/${t.slug}/index.html`), 'the link goes to an existing tour page');
   assert.ok(existsSync(new URL(`../src/pages/tours.mjs`, import.meta.url)), 'tour pages exist');

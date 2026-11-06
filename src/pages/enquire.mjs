@@ -168,7 +168,7 @@ function stepHead({ n, id, eyebrow, title, lead }) {
 }
 
 const nav = ({ back = true, next }) => `<div class="wizard-nav" data-requires-js>
-        ${back ? `<button type="button" class="btn gt-button gt-button--secondary wizard-nav__back" data-back><span>Back</span></button>` : '<span></span>'}
+        ${back ? `<button type="button" class="btn gt-button gt-button--secondary gt-button--plain wizard-nav__back" data-back><span>Back</span></button>` : '<span></span>'}
         <button type="button" class="btn gt-button gt-button--primary wizard-nav__next" data-next><span>${esc(next)}</span></button>
       </div>`;
 
@@ -406,7 +406,7 @@ function reviewStep(site) {
       ${preview ? `<p class="preview-note">${icon('info')}<span><strong>Preview build.</strong> Pressing send will not contact us; nothing leaves this page.</span></p>` : ''}
       <div class="notice notice--error submit-error" data-submit-error tabindex="-1" hidden>${icon('alert')}<p data-submit-error-text></p></div>
       <div class="wizard-nav">
-        <button type="button" class="btn gt-button gt-button--secondary wizard-nav__back" data-back><span>Back</span></button>
+        <button type="button" class="btn gt-button gt-button--secondary gt-button--plain wizard-nav__back" data-back><span>Back</span></button>
         <button type="submit" class="btn gt-button gt-button--primary wizard-nav__next wizard-submit" data-submit disabled><span class="spinner" aria-hidden="true"></span><span data-submit-label>Send Enquiry</span></button>
       </div>
     </div>`;
@@ -427,7 +427,7 @@ function liveResults(site) {
       <ol class="next-steps next-steps--compact">
         <li><span class="next-steps__title">We check availability</span><span class="next-steps__text">for the date, time and group you gave.</span></li>
         <li><span class="next-steps__title">You receive your personalised quote</span><span class="next-steps__text">through the contact method you chose.</span></li>
-        <li><span class="next-steps__title">Confirm your experience</span><span class="next-steps__text">Once you’re happy with the arrangements, we’ll finalise your booking.</span></li>
+        <li><span class="next-steps__title">Say yes, and we confirm</span><span class="next-steps__text">Once you’re happy with the arrangements, we’ll finalise your booking.</span></li>
       </ol>`;
   return `<div class="wizard-result wizard-result--success" data-result="success" hidden>
       <div class="wizard-result__icon">${icon('check')}</div>
@@ -494,9 +494,9 @@ function aside(site) {
       <section class="aside-card" aria-labelledby="enq-next-title">
         <h2 class="aside-card__title" id="enq-next-title">What happens next</h2>
         <ol class="next-steps">
-          <li><span class="next-steps__title">Share your plans</span><span class="next-steps__text">Choose a tour or a transfer and tell us what you need.</span></li>
-          <li><span class="next-steps__title">Receive your personalised quote</span><span class="next-steps__text">We’ll check availability and reply by email, WhatsApp or phone, as you prefer.</span></li>
-          <li><span class="next-steps__title">Confirm your experience</span><span class="next-steps__text">Once you’re happy with the arrangements, we’ll finalise your booking.</span></li>
+          <li><span class="next-steps__title">Tell us what you’re after</span><span class="next-steps__text">Choose a tour or a transfer and tell us what you need.</span></li>
+          <li><span class="next-steps__title">Get your personalised quote</span><span class="next-steps__text">We’ll check availability and reply by email, WhatsApp or phone, as you prefer.</span></li>
+          <li><span class="next-steps__title">Say yes, and we confirm</span><span class="next-steps__text">Once you’re happy with the arrangements, we’ll finalise your booking.</span></li>
         </ol>
       </section>
       <section class="aside-card aside-card--summary" aria-labelledby="enq-summary-title" data-aside-summary data-requires-js>

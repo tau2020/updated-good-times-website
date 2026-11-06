@@ -81,11 +81,11 @@ test('home: the hero, the four ways in, the closing actions and the concierge ca
     ['Custom Journeys', 'Tailor Your Journey', 'enquire/?type=tour&tour=custom'],
   ]);
   assert.match(html, /<a class="lc-way__extra" href="packages\/">The Garden Route Tour<\/a>/);
-  assert.equal(hrefOf(control(html.slice(html.indexOf('lc-ways__book')), 'Get a Quote')[0]), 'enquire/', '05 closes with Get a Quote');
-  assert.equal(hrefOf(control(html.slice(html.indexOf('lc-ease__foot')), 'Get a Quote')[0]), 'enquire/', '09 closes with Get a Quote');
+  assert.equal(hrefOf(control(html.slice(html.indexOf('lc-ways__book')), 'Plan My Day')[0]), 'enquire/', '04 closes with Plan My Day (an enquiry, never a booking)');
+  assert.equal(hrefOf(control(html.slice(html.indexOf('lc-ease__foot')), 'Get a Quote')[0]), 'enquire/', '08 closes with Get a Quote');
   assert.match(html, /href="faq\/"><span class="lc-note__label">Questions first\? Read the FAQ<\/span>/);
   const invite = html.slice(html.indexOf('id="invite-title"'));
-  assert.equal(hrefOf(control(invite, 'Request Your Tour')[0]), 'enquire/?type=tour');
+  assert.equal(hrefOf(control(invite, 'Plan My Day')[0]), 'enquire/?type=tour');
   assert.equal(hrefOf(control(invite, 'Arrange a Transfer')[0]), 'enquire/?type=transfer&transfer=airport-arrival');
   // The concierge and the phone menu name each card by its action, to the same routes
   const cards = [...html.matchAll(/<p class="lc-invite__name"><a href="([^"]*)">([^<]*)<\/a><\/p>/g)].map((m) => [m[2], m[1].replace(/&amp;/g, '&')]);

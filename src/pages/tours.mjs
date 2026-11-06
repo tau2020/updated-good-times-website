@@ -43,16 +43,30 @@ const routeCollage = () => `<div class="route-collage" aria-hidden="true">
 
 /** Editorial first lines for the overview: scene-setting, no facts beyond the official tour page. */
 const OVERVIEW_HEADING = {
-  'cape-peninsula-private-tour': 'The Peninsula in one private day',
-  'cape-town-city-private-tour': 'Cape Town’s story, street by street',
-  'cape-winelands-private-tour': 'A private day among the vines',
-  'township-private-tour': 'Langa, with the people who know it',
+  // The four flagship days take the "Good Times, Naturally" headlines (content/copy-audit.md); the lead under each is
+  // OVERVIEW_LEAD below, and the facts stay in the tour's own intro (src/data/tours.mjs)
+  'cape-peninsula-private-tour': 'Follow the coast. Forget the clock.',
+  'cape-town-city-private-tour': 'Meet the city, not just its landmarks.',
+  'cape-winelands-private-tour': 'Good views. Better pours.',
+  'township-private-tour': 'Real places. Real people. Real stories.',
   'private-cape-town-experience': 'Your day, your way',
   'whale-watching-private-tour': 'Whales off the Cape coast, in season',
   'cape-agulhas-private-tour': 'To the very tip of Africa',
   'shark-cage-diving': 'Face to face with great white sharks',
   'quad-biking': 'Dunes, trails and a little adrenaline',
   'sky-diving': 'The Cape from above',
+};
+
+/**
+ * One line under the overview heading, in the site's voice, before the tour's own facts. Nothing here adds a stop, an
+ * inclusion or a promise the tour's page does not already make: tastings and lunch stay optional and paid on the day,
+ * and Langa is a neighbourhood people live in, visited with a guide who knows it, never a show.
+ */
+const OVERVIEW_LEAD = {
+  'cape-peninsula-private-tour': 'Ocean roads, dramatic cliffs and plenty of reasons to stop for a photo. Discover the Cape Peninsula with a guide who knows the route, and the stories behind it.',
+  'cape-town-city-private-tour': 'From familiar landmarks to the neighbourhoods that give Cape Town its character, get to know the stories behind the sights.',
+  'cape-winelands-private-tour': 'Take the scenic route through the Cape Winelands, where mountain views, beautiful estates and long lunches are all part of the appeal. Tastings and lunch are optional and paid on the day.',
+  'township-private-tour': 'Langa is a living neighbourhood, and you visit it as a guest: its history, its art and its everyday life, with a guide who knows it well.',
 };
 
 /**
@@ -88,8 +102,8 @@ function listPage() {
     <div class="banner__content">
       ${breadcrumb(crumbsList)}
       <h1>Tours &amp; Experiences</h1>
-      <p class="banner__sub">Private, guide-led days from Cape Town.</p>
-      <p class="banner__text">Every tour is private and tailored to your group, and most start with pickup from your accommodation. Choose a day below, or tell us what you have in mind.</p>
+      <p class="banner__sub">Same Cape. Your own kind of day.</p>
+      <p class="banner__text">Big views, good stories, unexpected stops. Explore Cape Town at your own pace, with a local guide and a day planned around your people. Every tour is private, and most start with pickup from your accommodation.</p>
     </div>
   </div>
 </section>
@@ -112,7 +126,7 @@ function listPage() {
         ${routeCollage()}
         <p class="eyebrow mt-0">Your own route</p>
         <h3 class="card__title"><a href="enquire/?type=tour&amp;tour=custom" data-carry-plan>Plan a custom private day</a></h3>
-        <p class="card__text">Mix the Peninsula, the city and the Winelands, or ask for somewhere else. Tell us what you’d like to see and you’ll receive a quote.</p>
+        <p class="card__text">Mix the Peninsula, the city and the Winelands, or ask for somewhere else entirely. Tell us what you’d like to see and we’ll come back with a plan and a quote.</p>
       </article>
     </div>
     ${site.prices.show ? `<p class="source-note mt-6">${esc(site.prices.disclaimer)}</p>` : ''}
@@ -121,7 +135,7 @@ function listPage() {
 
 <section class="section" aria-labelledby="packages-title">
   <div class="container">
-    ${sectionHead({ eyebrow: 'More than a day', title: 'Multi-day tours', id: 'packages-title', lead: 'A private journey of several days, planned with you. We confirm the route, what is included and the price with your quote.', aside: `<a class="gt-button gt-button--tertiary link-arrow" href="packages/">Explore Multi-day Tours</a>` })}
+    ${sectionHead({ eyebrow: 'More than a day', title: 'Multi-day tours', id: 'packages-title', lead: 'One day not enough? Take a few, with your own guide. We plan the route with you and confirm what’s included and the price with your quote.', aside: `<a class="gt-button gt-button--tertiary link-arrow" href="packages/">Explore Multi-day Tours</a>` })}
     <div class="grid grid--3">
       ${packages.map((p, i) => packageCard(p, site, { i })).join('\n      ')}
     </div>
@@ -305,6 +319,7 @@ ${hero}
       <section class="tab-panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
         <div class="detail__intro">
           <h2>${esc(OVERVIEW_HEADING[t.slug] || t.shortTitle)}</h2>
+          ${OVERVIEW_LEAD[t.slug] ? `<p class="lead detail__lead">${esc(OVERVIEW_LEAD[t.slug])}</p>` : ''}
           <div class="prose">
             ${t.intro.map((p) => `<p>${esc(p)}</p>`).join('\n            ')}
           </div>
@@ -361,7 +376,7 @@ ${hero}
         tourReviews.length
           ? `<section class="tab-panel" id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" tabindex="0">
         <h2 class="tab-panel__title">Reviews</h2>
-        <p class="lead">Our short summaries of guests’ reviews on Tripadvisor; each links to the original.</p>
+        <p class="lead">What guests said about this day on Tripadvisor, summed up by us in a line; each links to the full review.</p>
         <div class="review-grid mt-5">${tourReviews.map((r, i) => reviewCard(r, { i, showTour: false })).join('')}</div>
       </section>`
           : ''

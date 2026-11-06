@@ -16,7 +16,7 @@ export const page = {
   <div class="container">
     ${breadcrumb(crumbs)}
     <p class="eyebrow">Contact</p>
-    <h1>Get in touch</h1>
+    <h1>Let’s talk Cape Town.</h1>
     <p class="lead">Call us, send an email, drop by our office in Sea Point, or start a booking request: tell us the tour or transfer, your dates and your group, and we’ll reply with availability and a quote.</p>
   </div>
 </section>

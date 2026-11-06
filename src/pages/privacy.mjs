@@ -118,7 +118,7 @@ export const page = {
         ${[...images, ...generated].map(creditLine).join('\n        ')}
       </ul>
     </details>
-    <p class="small muted">Fonts: Plus Jakarta Sans and Inter, used under the SIL Open Font Licence.</p>
+    <p class="small muted">Fonts: Bricolage Grotesque, DM Sans and Caveat, used under the SIL Open Font Licence. The Cape Tourist Guides Association’s logo is the association’s own and is shown only as described on the home page.</p>
   </div>
 </section>`;
   },

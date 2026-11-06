@@ -10,7 +10,7 @@ export const page = {
   path: 'reviews/index.html',
   nav: 'reviews/',
   title: 'What Our Guests Say: Tripadvisor reviews',
-  description: 'Good Times in Cape Town is rated 5.0 from 264 Tripadvisor reviews. Read summaries of guests’ reviews, each linking to the original.',
+  description: 'Good Times in Cape Town is rated 5.0 on Tripadvisor. Read short summaries of guests’ reviews, each linking to the full review.',
   priority: 0.7,
   breadcrumbs: crumbs,
   preload: [preloadFor('diaz-beach-cove')],
@@ -29,7 +29,7 @@ export const page = {
       <div>
         ${breadcrumb(crumbs)}
         <p class="eyebrow">Reviews on Tripadvisor</p>
-        <h1 id="reviews-title">What Our Guests Say</h1>
+        <h1 id="reviews-title">What our guests say</h1>
         <p class="lead">Real stories from real travellers on Tripadvisor: ${ta.rating.toFixed(1)} from ${ta.reviewCount} reviews, checked ${esc(checked)}.</p>
       </div>
     </div>

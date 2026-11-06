@@ -340,8 +340,10 @@ test.describe('home hero', () => {
     await expect(header.locator('.header-cta')).toHaveAttribute('href', /(^|\/)enquire\/$/);
     await expect(header.locator('.header-cta .btn-coin__coin svg')).toHaveCount(1);
     await expect(header.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
-    const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.family === 'Plus Jakarta Sans' && f.status === 'loaded').map((f) => f.style));
-    expect(fonts, 'Plus Jakarta Sans roman and italic loaded (“Here!” leans)').toEqual(expect.arrayContaining(['normal', 'italic']));
+    const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/['"]/g, '')));
+    expect(fonts, 'Bricolage Grotesque (display) and DM Sans (body) loaded').toEqual(expect.arrayContaining(['Bricolage Grotesque', 'DM Sans']));
+    // “Here!” leans by a drawn skew, never a browser's faux italic
+    expect(await page.locator('.hero__cta-label em').evaluate((el) => [getComputedStyle(el).fontStyle, getComputedStyle(el).transform !== 'none'])).toEqual(['normal', true]);
   });
 
   test('with motion the film fades in over its own first frame, muted and looping, with no controls or play button', async ({ page }) => {
@@ -570,398 +572,112 @@ test.describe('home hero', () => {
 });
 
 test.describe('guest stories', () => {
-  const real = (page) => page.locator('.stories [data-story-card]:not(.is-clone)');
-  const running = (page) => page.evaluate(() => window.__stories.running());
-  const index = (page) => page.evaluate(() => window.__stories.state.index);
-  const trackX = (page) => page.evaluate(() => new DOMMatrixReadOnly(getComputedStyle(document.querySelector('[data-stories-track]')).transform).m41);
-  /** The real cards whose boxes lie within the viewport's inner box */
-  const inView = (page) =>
-    page.evaluate(() => {
-      const v = document.querySelector('[data-stories-viewport]').getBoundingClientRect();
-      const cs = getComputedStyle(document.querySelector('[data-stories-viewport]'));
-      const left = v.left + parseFloat(cs.paddingLeft);
-      const right = v.right - parseFloat(cs.paddingRight);
-      return [...document.querySelectorAll('.stories [data-story-card]')].filter((c) => {
-        const r = c.getBoundingClientRect();
-        return r.left >= left - 1 && r.right <= right + 1;
-      }).map((c) => (c.classList.contains('is-clone') ? 'clone:' : '') + c.querySelector('.story-card__name').textContent.trim());
-    });
+  // Chapter 09, "The people behind the good times" (the brief of 6 Nov 2026, §7): a light grid of review cards in place
+  // of the auto-advancing carousel. Several in view at once, nothing moving by itself, the rest a press away.
+  const cards = (page) => page.locator('.stories [data-story-card]');
+  const visible = (page) => page.locator('.stories [data-story-card]').evaluateAll((els) => els.filter((el) => el.offsetParent !== null).length);
 
-  test('shows the compact design in the Living Cape surfaces: the heading beside the two listing figures, every review as a card with an illustrated avatar, our labelled summary, the reviewer’s rating and the link, and one Tripadvisor action', async ({ page, isMobile }) => {
+  test('shows real reviews as friendly cards on a soft leaf ground: initials, name, place, rating, tour, our labelled summary, the month and the link; the listing’s rating dated beside the heading', async ({ page }) => {
     await page.goto('/?nomotion');
     const section = page.locator('section.stories#reviews');
     await expect(section).toHaveCount(1);
-    // Chapter 10, "Words from the road", on deep navy
-    await expect(section.locator('.stories__eyebrow .lc-mark__num')).toHaveText('10');
-    await expect(section.locator('.stories__eyebrow .lc-mark__label')).toHaveText('Words from the road');
-    await expect(section.locator('h2')).toHaveText('Beautiful places. Beautifully remembered.');
-    await expect(section.locator('h2 em')).toHaveText('Beautifully remembered.');
-    // Exactly two figures, the listing's own (site.tripadvisor), and nothing of the old strip: no breakdown, no checked date, no lead
-    const stats = section.locator('[data-story-stats] .stories__stat');
-    await expect(stats).toHaveCount(2);
-    await expect(section.locator('.stories__stat-value')).toHaveText(['264', '5.0']);
-    await expect(section.locator('.stories__stat-label')).toHaveText(['Tripadvisor reviews', 'Average rating']);
-    await expect(section.locator('.stories__stat-sub')).toHaveText('out of 5');
-    await expect(section.locator('.stories__stat-icon')).toHaveCount(2);
-    await expect(section).not.toContainText(/259|Excellent reviews|Other reviews|Checked|names and places are as the reviewers gave them/);
-    await expect(section.locator('.guest__lead, .guest__attribution, .guest__note, .guest__trio, .guest-card, [data-guest-dialog]')).toHaveCount(0);
-    if (!isMobile) {
-      const [head, statsBox] = await Promise.all([section.locator('.stories__intro').boundingBox(), section.locator('[data-story-stats]').boundingBox()]);
-      expect(statsBox.x, 'the figures sit to the right of the heading on desktop').toBeGreaterThan(head.x + head.width);
-    }
-    // Every review, once, as a compact card: an illustrated avatar, name, place where given, our labelled summary
-    // (never the reviewer's words: no permission to quote is recorded), the reviewer's own rating and the link to the review
-    const cards = real(page);
+    await expect(section.locator('.stories__eyebrow .lc-mark__num')).toHaveText('09');
+    await expect(section.locator('.stories__eyebrow .lc-mark__label')).toHaveText('The people behind the good times');
+    await expect(section.locator('h2')).toHaveText('Good times, by the people who had them.');
+    expect(await section.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(239, 248, 240)');
+    // The listing's own rating, dated, linked, and no review count that would go stale
+    const rating = section.locator('.stories__rating');
+    await expect(rating).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
+    await expect(rating).toHaveAttribute('target', '_blank');
+    await expect(rating.locator('.stories__rating-label')).toHaveText('Rated 5.0 out of 5 on Tripadvisor');
+    await expect(rating.locator('.stories__rating-date')).toContainText('As listed on 5 November 2026');
+    await expect(section).not.toContainText('264');
     const { reviews } = await import('../../src/data/reviews.mjs');
-    const { tours } = await import('../../src/data/tours.mjs');
-    await expect(cards).toHaveCount(reviews.length);
-    for (const [i, r] of reviews.entries()) {
-      const card = cards.nth(i);
-      await expect(card.locator('.story-card__name'), r.author).toHaveText(r.author);
+    await expect(cards(page)).toHaveCount(reviews.length);
+    // Open the collapsed grid first: a hidden card's link has no accessible name to check
+    const more = page.locator('[data-stories-more]');
+    if (await more.isVisible()) await more.click();
+    for (const r of reviews) {
+      const card = section.locator('[data-story-card]', { has: page.locator(`.story-card__source a[href="${r.url}"]`) });
+      await expect(card, r.author).toHaveCount(1);
+      await expect(card.locator('.story-card__name')).toHaveText(r.author);
       if (r.origin) await expect(card.locator('.story-card__place')).toHaveText(r.origin);
-      else await expect(card.locator('.story-card__place')).toHaveCount(0);
-      const about = r.tour ? tours.find((t) => t.slug === r.tour).shortTitle : r.label;
-      await expect(card.locator('.story-card__label'), r.author).toHaveText(about ? `Review summary · ${about}` : 'Review summary');
-      await expect(card.locator('.story-card__quote--summary p').last(), r.author).toHaveText(r.summary);
-      await expect(card.locator('blockquote'), `${r.author}: no verbatim quote`).toHaveCount(0);
-      await expect(card.locator('.story-card__source a')).toHaveAttribute('href', r.url);
-      await expect(card.locator('.story-card__source a')).toHaveAttribute('target', '_blank');
+      // Initials, never a stand-in face; an approved photo would cover them (none is supplied yet)
+      await expect(card.locator('.story-card__initials')).toHaveAttribute('aria-hidden', 'true');
+      await expect(card.locator('.story-card__avatar img')).toHaveCount(0);
+      await expect(card.locator('.story-card__label')).toHaveText('The review in short, in our words');
+      await expect(card.locator('.story-card__quote--summary p').last()).toHaveText(r.summary);
+      if (r.rating) await expect(card.locator('.story-card__meta .visually-hidden')).toHaveText(`Rated ${r.rating} out of 5.`);
       await expect(card.locator('.story-card__source a')).toHaveAttribute('rel', /\bnoopener\b/);
-      // The reviewer's own profile photo once its file is supplied (named in the alt), otherwise an original illustration
-      // over the initials (nobody's likeness, no alt)
-      const src = await card.locator('.story-card__avatar img').getAttribute('src');
-      if (src.startsWith('assets/img/reviewers/')) {
-        expect(src, r.author).toBe(`assets/img/reviewers/${r.avatar}`);
-        await expect(card.locator('.story-card__avatar img')).toHaveAttribute('alt', `${r.author}’s Tripadvisor profile photo`);
-      } else {
-        expect(src, r.author).toMatch(/^assets\/img\/avatars\/guest-\d{2}\.svg$/);
-        await expect(card.locator('.story-card__avatar img')).toHaveAttribute('alt', '');
-      }
-      // Stars only where the review's own rating is recorded
-      await expect(card.locator('.stars')).toHaveCount(r.rating ? 1 : 0);
-      if (r.rating) await expect(card.locator('.story-card__stars .visually-hidden')).toHaveText(`Rated ${r.rating} out of 5`);
+      await expect(card.locator('.story-card__source a')).toHaveAccessibleName(`Read the full review by ${r.author} on Tripadvisor (opens in a new tab)`);
     }
-    // The avatars are lazy; load every one so a missing file would fail here, and check their size
-    const avatars = await cards.locator('.story-card__avatar').evaluateAll((els) =>
-      Promise.all(
-        els.map(async (el) => {
-          const img = el.querySelector('img');
-          img.loading = 'eager';
-          const loaded = await img.decode().then(() => img.naturalWidth > 0, () => false);
-          const r = el.getBoundingClientRect();
-          return { size: Math.round(r.width), loaded, round: getComputedStyle(el).borderRadius };
-        }),
-      ),
-    );
-    for (const a of avatars) {
-      expect(a.loaded).toBe(true);
-      expect(a.size).toBe(isMobile ? 48 : 56); // compact, human-scale portraits (design.md §06: 40–56 px)
-      expect(a.round).toBe('50%');
-    }
-    // No avatar strip or marquee and no backdrop photograph: the only images in the section are one avatar per card
-    expect(await section.locator('img').count()).toBe(reviews.length);
-    await expect(section.locator('.stories__avatars, .stories__marquee, [class*="strip"]')).toHaveCount(0);
-    // One action beneath the cards, to the listing
-    const cta = section.locator('.stories__cta');
-    await expect(cta).toHaveCount(1);
-    await expect(cta).toHaveText(/Read All Our Reviews on Tripadvisor/);
-    await expect(cta).toHaveAttribute('href', /^https:\/\/www\.tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200-/);
-    await expect(cta).toHaveAttribute('target', '_blank');
-    await expect(cta).toHaveAttribute('rel', /\bnoopener\b/);
-    await expect(section.locator('a.btn, a[href$="reviews/"]')).toHaveCount(0);
-    const [ctaBox, carouselBox] = await Promise.all([cta.boundingBox(), section.locator('[data-stories]').boundingBox()]);
-    expect(ctaBox.y).toBeGreaterThanOrEqual(carouselBox.y + carouselBox.height - 1);
-    // Compact: the whole section on a 1440 × 900 desktop stays well under a screen and a half (each card carries a
-    // summary label and the reviewer's stars, a line more than a bare quote)
-    if (!isMobile) expect((await section.boundingBox()).height, 'section height').toBeLessThanOrEqual(760);
-    // Deep navy ground and white review panels; nothing overflows the page
-    expect(await section.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(11, 34, 51)');
-    expect(await section.locator('.story-card__inner').first().evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+    // White, rounded cards; no giant quotation marks, no carousel controls, nothing that plays by itself
+    expect(await section.locator('.story-card__inner').first().evaluate((el) => [getComputedStyle(el).backgroundColor, parseFloat(getComputedStyle(el).borderTopLeftRadius) >= 20])).toEqual(['rgb(255, 255, 255)', true]);
+    await expect(section.locator('blockquote, [data-stories-prev], [data-stories-next], [data-stories-toggle], .is-clone')).toHaveCount(0);
+    await expect(section.locator('.stories__cta')).toHaveAttribute('href', /tripadvisor/);
   });
 
-  test('the rating is promoted here alone: the Tripadvisor band, the medallion and the duplicate figures are gone from every page', async ({ page }) => {
-    for (const path of ['/', '/about/', '/contact/', '/tours/', '/transfers/', '/reviews/']) {
-      await page.goto(`${path}?nomotion`);
-      await expect(page.locator('.ta-band, .medallion'), path).toHaveCount(0);
-      if (path !== '/reviews/') await expect(page.locator('.reviews-photo'), `${path} (the Reviews page keeps its own photo hero)`).toHaveCount(0);
-      await expect(page.locator('body'), path).not.toContainText(/Rated 5\.0 on Tripadvisor|traveller reviews|271 of them Excellent|what guests say about their days/i);
-    }
+  test('several reviews are in view at once and the rest open with a real button; without JavaScript every card shows', async ({ page, isMobile, browser }) => {
     await page.goto('/?nomotion');
-    await expect(page.locator('.band')).toHaveCount(0); // no trust band: its cues are part of the home story
-    await expect(page.locator('.stories')).toHaveCount(1);
-    // The only star rows on the home page are the reviewers' own ratings, one per review card
+    const more = page.locator('[data-stories-more]');
     const { reviews } = await import('../../src/data/reviews.mjs');
-    await expect(page.locator('main .stars')).toHaveCount(reviews.filter((r) => r.rating).length);
-    expect(await page.locator('main .stars').evaluateAll((els) => els.every((el) => el.closest('[data-story-card]')))).toBe(true);
-    await page.goto('/about/?nomotion');
-    await expect(page.locator('.stats, .themes .stars')).toHaveCount(0); // no figures strip on About
-    await expect(page.locator('main')).not.toContainText(/tripadvisor|264|5\.0/i);
-    await page.goto('/contact/?nomotion');
-    await expect(page.locator('main')).not.toContainText(/Rated \d|264/);
-    await expect(page.locator('main a[href$="reviews/"]')).toHaveCount(1);
-  });
-
-  test('the two figures count up once, from zero to the exact values, when they scroll into view; without motion they are simply there', async ({ page }) => {
-    const values = () => page.locator('[data-story-stats] [data-count]').evaluateAll((els) => els.map((el) => el.textContent));
-    const show = () => page.evaluate(() => { const r = document.querySelector('[data-story-stats]').getBoundingClientRect(); window.scrollTo({ top: window.scrollY + r.top - window.innerHeight * 0.6, behavior: 'instant' }); });
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    expect(await values(), 'zero until the figures are in view').toEqual(['0', '0.0']);
-    expect(await page.evaluate(() => window.__guestCounters.timeline.isActive())).toBe(false);
-    await show();
-    await page.waitForTimeout(700);
-    const mid = await values();
-    expect(Number(mid[0])).toBeGreaterThan(0);
-    expect(Number(mid[0])).toBeLessThan(264);
-    expect(mid[1]).toMatch(/^\d\.\d$/);
-    await expect.poll(values, { timeout: 4_000 }).toEqual(['264', '5.0']);
-    await expect(page.locator('[data-story-stats]')).toHaveAttribute('data-counted', '');
-    // Once only: leaving and returning changes nothing
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-    await page.waitForTimeout(200);
-    await show();
-    await page.waitForTimeout(400);
-    expect(await values()).toEqual(['264', '5.0']);
-    // Reduced motion and ?nomotion: the exact figures from the first paint, no timeline
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-    expect(await values()).toEqual(['264', '5.0']);
-    expect(await page.evaluate(() => window.__guestCounters)).toBeUndefined();
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/?nomotion');
-    expect(await values()).toEqual(['264', '5.0']);
-    expect(await page.evaluate(() => window.__guestCounters)).toBeUndefined();
-  });
-
-  test('with motion the carousel moves a card at a time under GSAP, loops without a visible seam, advances by itself about every 5 s, and rests for the pointer, focus, the Pause control and the page scrolling on', async ({ page, isMobile }) => {
-    test.setTimeout(90_000);
-    const errors = [];
-    page.on('pageerror', (e) => errors.push(e.message));
-    page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    const carousel = page.locator('[data-stories]');
-    await carousel.scrollIntoViewIfNeeded();
-    await expect(carousel).toHaveClass(/\bis-motion\b/);
-    expect(await page.evaluate(() => window.__stories.mounted())).toBe(true);
-    const total = await real(page).count();
-    const visible = isMobile ? 1 : 3;
-    // The cloned run at each end: hidden from assistive technology, inert, never a tab stop
-    const clones = page.locator('.stories [data-story-card].is-clone');
-    await expect(clones).toHaveCount(2 * visible);
-    expect(await clones.evaluateAll((els) => els.every((el) => el.getAttribute('aria-hidden') === 'true' && el.hasAttribute('inert')))).toBe(true);
-    expect(await clones.locator('a, button').evaluateAll((els) => els.every((el) => el.tabIndex === -1))).toBe(true);
-    // Exactly `visible` real cards in view, starting with the first; no clone on screen at rest
-    // (checked before the axe scan: on the long home page the scan can outlast the 5 s autoplay)
-    const first = await real(page).first().locator('.story-card__name').textContent();
-    expect(await inView(page)).toHaveLength(visible);
-    expect((await inView(page))[0]).toBe(first.trim());
-    const axe = await new AxeBuilder({ page }).include('.stories').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
-    expect(axe.violations.filter((v) => ['serious', 'critical'].includes(v.impact)).map((v) => v.id)).toEqual([]);
-    // Next glides exactly one card; Previous glides back; the transform alone moves the track
-    const step = await page.evaluate(() => {
-      const track = document.querySelector('[data-stories-track]');
-      return track.children[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap);
-    });
-    // The scan may have outlasted an autoplay step: start the button checks from the first card, settled
-    if ((await index(page)) !== 0) {
-      await page.locator('[data-stories-viewport]').hover();
-      await expect.poll(() => running(page)).toBe(false);
-      while ((await index(page)) !== 0) {
-        await page.locator('[data-stories-prev]').click();
-        await page.waitForTimeout(850);
-      }
-    }
-    const x0 = await trackX(page);
-    await page.locator('[data-stories-next]').click();
-    await expect.poll(() => index(page)).toBe(1);
-    await page.waitForTimeout(900);
-    expect(Math.abs((await trackX(page)) - (x0 - step))).toBeLessThan(1);
-    expect(await page.locator('[data-stories-viewport]').evaluate((el) => [getComputedStyle(el).overflowX, el.scrollLeft])).toEqual(['hidden', 0]);
-    await page.locator('[data-stories-prev]').click();
-    await expect.poll(() => index(page)).toBe(0);
-    await page.waitForTimeout(900);
-    expect(Math.abs((await trackX(page)) - x0)).toBeLessThan(1);
-    // Round the whole collection: after `total` presses the first card leads again at the same x, with no clone left in view
-    for (let i = 0; i < total; i++) {
-      await page.locator('[data-stories-next]').click();
-      await page.waitForTimeout(850);
-    }
-    await expect.poll(() => index(page)).toBe(0);
-    expect(Math.abs((await trackX(page)) - x0), 'seamless loop').toBeLessThan(1);
-    expect((await inView(page)).some((n) => n.startsWith('clone:'))).toBe(false);
-    expect((await inView(page))[0]).toBe(first.trim());
-    // Backwards past the start: the last card comes round
-    await page.locator('[data-stories-prev]').click();
-    await expect.poll(() => index(page)).toBe(total - 1);
-    await page.waitForTimeout(900);
-    expect((await inView(page))[0]).toBe((await real(page).nth(total - 1).locator('.story-card__name').textContent()).trim());
-    await page.locator('[data-stories-next]').click();
-    await expect.poll(() => index(page)).toBe(0);
-    await page.waitForTimeout(900);
-    // Autoplay: with the pointer away and nothing focused, the next card comes by itself within about six seconds
-    await page.evaluate(() => document.activeElement.blur());
-    await page.mouse.move(2, 2);
-    await expect.poll(() => running(page), { timeout: 3_000 }).toBe(true);
-    const before = await index(page);
-    await expect.poll(() => index(page), { timeout: 7_000 }).toBe((before + 1) % total);
-    // Rest while the pointer is over it
-    const box = await page.locator('[data-stories-viewport]').boundingBox();
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await expect.poll(() => running(page)).toBe(false);
-    const held = await index(page);
-    await page.waitForTimeout(5_600);
-    expect(await index(page), 'nothing moves under the pointer').toBe(held);
-    await page.mouse.move(2, 2);
-    await expect.poll(() => running(page)).toBe(true);
-    // Rest while anything inside has focus; the keyboard steps a card from the scroller
-    const viewport = page.locator('[data-stories-viewport]');
-    await viewport.focus();
-    await expect.poll(() => running(page)).toBe(false);
-    const at = await index(page);
-    await page.keyboard.press('ArrowRight');
-    await expect.poll(() => index(page)).toBe((at + 1) % total);
-    await page.keyboard.press('ArrowLeft');
-    await expect.poll(() => index(page)).toBe(at);
-    await page.evaluate(() => document.activeElement.blur());
-    await expect.poll(() => running(page)).toBe(true);
-    // The explicit control
-    const toggle = page.locator('[data-stories-toggle]');
-    await expect(toggle).toBeVisible();
-    await expect(toggle).toHaveAttribute('aria-label', 'Pause the reviews');
-    await toggle.click();
-    await expect(toggle).toHaveAttribute('aria-label', 'Play the reviews');
-    await expect(toggle).toHaveClass(/\bis-paused\b/);
-    await page.mouse.move(2, 2);
-    await page.evaluate(() => document.activeElement.blur());
-    expect(await running(page)).toBe(false);
-    await toggle.click();
-    await page.mouse.move(2, 2);
-    await page.evaluate(() => document.activeElement.blur());
-    await expect.poll(() => running(page)).toBe(true);
-    // Rest while the section is off screen
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-    await expect.poll(() => page.evaluate(() => window.__stories.state.offscreen)).toBe(true);
-    expect(await running(page)).toBe(false);
-    // Tabbing through the region reaches the arrows, the scroller, each real card's link and the control, never a clone
-    await carousel.scrollIntoViewIfNeeded();
-    await page.locator('[data-stories-prev]').focus();
-    const visited = [];
-    for (let i = 0; i < 40; i++) {
-      await page.keyboard.press('Tab');
-      const where = await page.evaluate(() => {
-        const el = document.activeElement;
-        return { inside: !!el.closest('[data-stories]'), clone: !!el.closest('.is-clone'), inCard: !!el.closest('[data-story-card]') };
-      });
-      if (!where.inside) break;
-      visited.push(where);
-    }
-    expect(visited.some((v) => v.clone), 'a clone took focus').toBe(false);
-    expect(visited.filter((v) => v.inCard).length, 'each real card’s link once').toBe(total);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-    expect(errors).toEqual([]);
-  });
-
-  test('a swipe moves the carousel a card', async ({ page, isMobile }) => {
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    const carousel = page.locator('[data-stories]');
-    await carousel.scrollIntoViewIfNeeded();
-    await expect(carousel).toHaveClass(/\bis-motion\b/);
-    const box = await page.locator('[data-stories-viewport]').boundingBox();
-    const y = box.y + box.height / 2;
-    const swipe = async (from, to) => {
-      await page.mouse.move(from, y);
-      await page.mouse.down();
-      for (let i = 1; i <= 8; i++) await page.mouse.move(from + ((to - from) * i) / 8, y + (i % 2));
-      await page.mouse.up();
-    };
-    await swipe(box.x + box.width * 0.7, box.x + box.width * 0.2);
-    await expect.poll(() => index(page), { timeout: 3_000 }).toBe(1);
-    await expect(carousel).not.toHaveClass(/is-dragging/);
-    await page.waitForTimeout(900);
-    if (isMobile) expect((await inView(page))[0]).toBe((await real(page).nth(1).locator('.story-card__name').textContent()).trim());
-    await swipe(box.x + box.width * 0.2, box.x + box.width * 0.7);
-    await expect.poll(() => index(page), { timeout: 3_000 }).toBe(0);
-    // A short drag lands back where it was
-    await swipe(box.x + box.width * 0.5, box.x + box.width * 0.5 - 12);
-    await page.waitForTimeout(900);
-    expect(await index(page)).toBe(0);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-  });
-
-  test('with reduced motion or ?nomotion the carousel is a native snapping scroller with no autoplay and no clones, and the arrows scroll it a card at a time', async ({ page, isMobile }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-    const carousel = page.locator('[data-stories]');
-    await carousel.scrollIntoViewIfNeeded();
-    await expect(carousel).not.toHaveClass(/is-motion/);
-    await expect(page.locator('.stories .is-clone')).toHaveCount(0);
-    expect(await page.evaluate(() => window.__stories.mounted())).toBe(false);
-    await expect(page.locator('[data-stories-toggle]')).toBeHidden();
-    const viewport = page.locator('[data-stories-viewport]');
-    expect(await viewport.evaluate((el) => [getComputedStyle(el).overflowX, getComputedStyle(el).scrollSnapType])).toEqual(['auto', expect.stringMatching(/^x/)]);
-    expect(await page.locator('[data-stories-track]').evaluate((el) => getComputedStyle(el).transform)).toBe('none');
-    const at = () => viewport.evaluate((el) => el.scrollLeft);
-    const x0 = await at();
-    await page.waitForTimeout(5_600);
-    expect(await at(), 'nothing moves by itself').toBe(x0);
-    const card = await real(page).first().boundingBox();
-    const box = await viewport.boundingBox();
-    if (isMobile) {
-      expect(card.width / box.width).toBeGreaterThan(0.8);
-      expect(card.width / box.width).toBeLessThan(1);
-    }
-    for (const sel of ['[data-stories-prev]', '[data-stories-next]']) await expect(page.locator(sel)).toBeVisible();
-    await page.locator('[data-stories-next]').click();
-    await expect.poll(at).toBeGreaterThan(card.width * 0.9);
-    await page.locator('[data-stories-prev]').click();
-    await expect.poll(at).toBeLessThan(2);
-    if (isMobile) {
-      // A swipe (here a horizontal wheel over the scroller) scrolls the row, not the page
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-      await page.mouse.wheel(260, 0);
-      await expect.poll(at).toBeGreaterThan(100);
-    }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/?nomotion');
-    await expect(page.locator('[data-stories]')).not.toHaveClass(/is-motion/);
-    await expect(page.locator('.stories .is-clone')).toHaveCount(0);
+    const first = isMobile ? 3 : 6;
+    await expect.poll(() => visible(page)).toBe(first);
+    await expect(more).toBeVisible();
+    await expect(more).toHaveAttribute('aria-expanded', 'false');
+    await expect(more).toHaveAttribute('aria-controls', 'stories-grid');
+    await expect(more).toHaveText(`Show ${reviews.length - first} more reviews`);
+    await more.click();
+    await expect.poll(() => visible(page)).toBe(reviews.length);
+    await expect(more).toHaveAttribute('aria-expanded', 'true');
+    await expect(more).toHaveText('Show fewer reviews');
+    // Focus moves to the first review that was hidden, so a keyboard user lands on the new cards
+    expect(await page.evaluate(() => Boolean(document.activeElement && document.activeElement.closest('[data-story-card]')))).toBe(true);
+    await more.click();
+    await expect.poll(() => visible(page)).toBe(first);
+    // No script: the whole grid, and no button
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: page.viewportSize() || undefined });
+    const plain = await ctx.newPage();
+    await plain.goto('/?nomotion');
+    await expect.poll(() => visible(plain)).toBe(reviews.length);
+    await expect(plain.locator('[data-stories-more]')).toBeHidden();
+    await ctx.close();
   });
 });
 
 test.describe('home story: The Cape, A Living Story', () => {
   // The taste composition (`taste`) is a second, unnumbered interlude between 07 and 08
-  const CHAPTERS = ['lc-sun', 'lc-scene', 'lc-moments', 'lc-film', 'lc-wild', 'lc-ways', 'lc-people', 'taste', 'lc-gallery', 'lc-scene', 'lc-ease', 'stories', 'lc-scene'];
+  // The water chapter that followed the sand journey was removed on 6 Nov 2026 (qa/surgical-change-report.md); the
+  // owner's Cape Peninsula photograph (lc-memory) continues chapter 01, and the review grid is chapter 09
+  const CHAPTERS = ['lc-scene', 'lc-memory', 'lc-moments', 'lc-film', 'lc-wild', 'lc-ways', 'lc-people', 'taste', 'lc-gallery', 'lc-scene', 'lc-ease', 'stories', 'lc-scene'];
 
-  test('tells one story in order below the hero: eleven chapters and two interludes, each with its own heading', async ({ page }) => {
+  test('tells one story in order below the hero: ten chapters and two interludes, each with its own heading', async ({ page }) => {
     await page.goto('/?nomotion');
     // The hero is the first thing in <main>; the story is one scoped block beneath it
     await expect(page.locator('main > :first-child')).toHaveClass(/^hero$/);
     // Between them, the sand journey (partials/sand-journey.mjs; test/e2e/motion.spec.mjs)
-    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero', 'sand-journey', 'living-cape']);
+    // then the credentials strip, where the removed water chapter was
+    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero', 'sand-journey', 'gt-credentials', 'living-cape']);
     expect(await page.locator('.living-cape > section').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(CHAPTERS);
     const heroBottom = await page.locator('.hero').evaluate((el) => el.getBoundingClientRect().bottom + scrollY);
     expect(await page.locator('.living-cape').evaluate((el) => el.getBoundingClientRect().top + scrollY)).toBeGreaterThanOrEqual(heroBottom - 1);
     await expect(page.locator('.hero .living-cape, .hero [data-reveal], .hero .gt-engraved-icon, .hero .lc-seal, .hero .lc-note')).toHaveCount(0);
-    // Chapter marks 01–11 in order, and the chapters' headings
-    expect(await page.locator('.living-cape .lc-mark__num').allTextContents()).toEqual(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
+    // Chapter marks 01–10 in order, and the chapters' headings
+    expect(await page.locator('.living-cape .lc-mark__num').allTextContents()).toEqual(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']);
     expect(await page.locator('.living-cape > section h2').evaluateAll((els) => els.filter((h) => !h.closest('dialog')).map((h) => h.textContent.replace(/\s+/g, ' ').trim()))).toEqual([
-      'A private day, shaped around you.',
-      'The coast road is half the adventure.',
-      'It’s not only where you go. It’s everything along the way.',
-      'Which side of the Cape will you fall in love with?',
-      'The best journeys leave room for the unexpected.',
+      'Follow the coast. Forget the clock.',
+      'The best bits? They’re yours to remember.',
+      'The big sights are great. The bits in between? Even better.',
+      'Which side of the Cape will you fall for first?',
+      'For the stories you’ll tell twice.',
       'Four ways to see the Cape with us.',
-      'The beautiful places are only part of the story.',
-      'The Cape is also something you taste.',
-      'Some memories never leave the frame.',
+      'The views do half the work. We do the rest.',
+      'Good views. Better pours.',
+      'Snapshots from real days out.',
       'Some days you wish could last a little longer.',
       'All the wonder. None of the worry.',
-      'Beautiful places. Beautifully remembered.',
-      'The Cape is waiting. Make the journey yours.',
+      'Good times, by the people who had them.',
+      'Your kind of Cape Town starts here.',
     ]);
     // One h1 (the hero's); every chapter heading is an h2
     await expect(page.locator('h1')).toHaveCount(1);
@@ -1039,47 +755,28 @@ test.describe('home story: The Cape, A Living Story', () => {
     for (const name of WITHDRAWN) await expect(page.locator(`img[src*="${name}-"]`), name).toHaveCount(0);
   });
 
-  test('with motion water trickles from the hero’s edge and uncovers the coast as you scroll, keeps moving while the page is still, and reverses; without motion the photograph simply stands', async ({ page }) => {
-    // Without motion: no water layer over the photograph, no timeline
-    await page.goto('/?nomotion');
-    await expect(page.locator('[data-sun-water]')).toBeHidden();
-    await expect(page.locator('[data-sun-frame] img')).toBeVisible();
-    expect(await page.evaluate(() => window.__livingCape.motion)).toBe(false);
-    expect(await page.evaluate(() => window.__livingCape.sun)).toBeUndefined();
-    // With motion: scrubbed by the scroll position
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    await page.waitForFunction(() => Boolean(window.__livingCape && window.__livingCape.sun));
-    const st = await page.evaluate(() => ({ start: window.__livingCape.sun.scrollTrigger.start, end: window.__livingCape.sun.scrollTrigger.end }));
-    const to = (y) => page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
-    const at = (f) => to(st.start + (st.end - st.start) * f);
-    const water = () => page.evaluate(() => ({ reach: window.__livingCape.water.reach, wet: window.__livingCape.water.wet }));
-    // On the way down: a stream running beside the words, the photograph not reached yet
-    await at(0.45);
-    await expect.poll(async () => (await water()).reach, { timeout: 5_000 }).toBeGreaterThan(60);
-    await expect(page.locator('[data-sun-water]')).toBeVisible();
-    expect((await water()).wet).toBe(0);
-    // The water keeps moving while the page is still
-    await page.waitForTimeout(800);
-    const shape = () => page.locator('.lc-water__body').getAttribute('d');
-    const before = await shape();
-    await page.waitForTimeout(400);
-    expect(await shape(), 'the stream is redrawn while the scroll is held').not.toBe(before);
-    // Over the photograph: wet channels and spreading fronts uncover it
-    await at(0.8);
-    await expect.poll(async () => (await water()).wet, { timeout: 5_000 }).toBeGreaterThan(5);
-    // At the end the layer is gone and the photograph stands whole, at its own scale
-    await to(st.end + 200);
-    await expect.poll(() => page.evaluate(() => window.__livingCape.sun.progress()), { timeout: 5_000 }).toBe(1);
-    await expect(page.locator('[data-sun-water]')).toBeHidden();
-    expect(await page.locator('[data-sun-frame] img').evaluate((el) => el.style.transform)).toBe('');
-    // Scrolling back up draws the water back
-    await at(0.45);
-    await expect.poll(async () => (await water()).wet, { timeout: 5_000 }).toBe(0);
-    await to(0);
-    await expect.poll(() => page.evaluate(() => window.__livingCape.sun.progress()), { timeout: 5_000 }).toBe(0);
-    // Nothing of this touches the hero or the header
-    expect(await page.evaluate(() => [...document.querySelectorAll('.hero, .hero *, .site-header .brand, .site-header .primary-nav, .site-header .primary-nav *, .header-cta, .header-cta *')].some((el) => /water|journey|thread/.test(el.style.cssText)))).toBe(false);
+  test('the water chapter is gone, with and without motion: the sand journey hands straight over to the credentials strip and the coast road, with no blank screen between', async ({ page }) => {
+    for (const motion of [false, true]) {
+      await page.emulateMedia({ reducedMotion: motion ? 'no-preference' : 'reduce' });
+      await page.goto(motion ? '/' : '/?nomotion');
+      await page.waitForFunction(() => Boolean(window.__livingCape));
+      // Nothing of it in the page or in the script's API
+      await expect(page.locator('[data-sun], [data-sun-water], [data-sun-frame], .lc-sun, .lc-water__body')).toHaveCount(0);
+      expect(await page.evaluate(() => [window.__livingCape.sun, window.__livingCape.water])).toEqual([undefined, undefined]);
+      // No scroll trigger is left pointing at a removed element
+      if (motion) expect(await page.evaluate(() => (window.ScrollTrigger ? window.ScrollTrigger.getAll().filter((t) => t.trigger && !document.contains(t.trigger)).length : 0))).toBe(0);
+      // The join: the strip starts where the sand journey ends and the coast road where the strip ends
+      const box = (sel) => page.locator(sel).evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return { top: Math.round(r.top + scrollY), bottom: Math.round(r.bottom + scrollY), h: Math.round(r.height) };
+      });
+      const [sand, strip, road] = await Promise.all([box('.sand-journey'), box('.gt-credentials'), box('.lc-scene--road')]);
+      expect(Math.abs(strip.top - sand.bottom), 'the strip follows the sand journey').toBeLessThanOrEqual(1);
+      expect(Math.abs(road.top - strip.bottom), 'the coast road follows the strip').toBeLessThanOrEqual(1);
+      const vh = page.viewportSize().height;
+      expect(strip.h, 'a strip, not a screen of empty space').toBeLessThan(Math.max(vh, 760));
+      await expect(page.locator('.gt-credentials h2')).toHaveText('Local knowledge. Professional guiding.');
+    }
   });
 
   test('with motion the journey line draws as the steps scroll into view; without motion it is simply drawn', async ({ page }) => {
@@ -1804,14 +1501,16 @@ test.describe('the button system', () => {
     }
   });
 
-  test('every primary is the Good Times green plate with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
+  test('every primary is the leaf-green pill with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
     for (const path of ['/', '/tours/cape-winelands-private-tour/', '/contact/', '/destinations/', '/enquire/']) {
       await page.goto(`${path}?nomotion`);
-      const primaries = await page.locator('.gt-button--primary:visible').evaluateAll((els) => els.map((e) => { const cs = getComputedStyle(e); return { text: e.textContent.trim(), bg: cs.backgroundImage, ink: cs.color, h: e.getBoundingClientRect().height }; }));
+      const primaries = await page.locator('.gt-button--primary:visible').evaluateAll((els) => els.map((e) => { const cs = getComputedStyle(e); return { text: e.textContent.trim(), fill: cs.backgroundColor, ink: cs.color, radius: parseFloat(cs.borderTopLeftRadius), h: e.getBoundingClientRect().height }; }));
       expect(primaries.length, path).toBeGreaterThan(0);
       for (const b of primaries) {
-        expect(b.bg, `${path}: ${b.text}`).toMatch(/linear-gradient/);
+        // --green-primary (#147D43), a pill (design/button-design.md)
+        expect(b.fill, `${path}: ${b.text}`).toBe('rgb(20, 125, 67)');
         expect(b.ink, `${path}: ${b.text}`).toBe('rgb(255, 255, 255)');
+        expect(b.radius, `${path}: ${b.text}`).toBeGreaterThanOrEqual(b.h / 2 - 1);
       }
       const short = await page.locator('.gt-button:visible').evaluateAll((els) => els.filter((e) => e.getBoundingClientRect().height < 43.5).map((e) => e.textContent.trim()));
       expect(short, `${path}: 44 px targets`).toEqual([]);
@@ -1819,13 +1518,12 @@ test.describe('the button system', () => {
     await page.goto('/?nomotion');
     await expect(page.locator('[data-film-prev]')).toContainText('Previous');
     await expect(page.locator('[data-film-next]')).toContainText('Next');
-    await expect(page.locator('[data-stories-prev]')).toContainText('Previous');
-    await expect(page.locator('[data-stories-next]')).toContainText('Next');
+    await expect(page.locator('[data-stories-more]')).toContainText(/Show \d+ more reviews/);
     await expect(page.locator('[data-lc-prev]')).toHaveText(/Previous/);
     await expect(page.locator('[data-lc-next]')).toHaveText(/Next/);
     // Each control's name begins with the words on it (WCAG 2.5.3)
     await expect(page.locator('[data-film-prev]')).toHaveAccessibleName('Previous destination');
-    await expect(page.locator('[data-stories-next]')).toHaveAccessibleName('Next review');
+    await expect(page.locator('[data-stories-more]')).toHaveAccessibleName(/^Show \d+ more reviews$/);
   });
 
   test('from 320 px up no button’s words are clipped or pushed past the screen (the phone bar included)', async ({ page, isMobile }) => {

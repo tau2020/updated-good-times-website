@@ -25,18 +25,18 @@
   overflow-wrap: normal;
 }
 
-/* 1. The editorial voice (design.md §04) ------------------------------------ */
+/* 1. The editorial voice (design.md §04; design/font-design.md) -------------- */
+/* Chapter marks: a number, a fine rule and a few words in sentence case, the way a guide would say them */
 .lc-mark {
   display: flex;
   align-items: center;
   gap: 0.85rem;
   margin-bottom: clamp(1rem, 0.8rem + 0.6vw, 1.5rem);
   font-family: var(--lc-ui);
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
-  line-height: 1.2;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 1.25;
   color: var(--lc-umber);
 }
 .lc-mark__num {
@@ -59,14 +59,14 @@
   background: var(--lc-champagne);
   opacity: 0.8;
 }
-/* Cinematic statements: Plus Jakarta Sans at full voice */
+/* Cinematic statements: Bricolage Grotesque at full voice, the display cut (optical size follows the size) */
 .lc-statement {
   max-width: 15ch;
   font-family: var(--lc-display);
-  font-size: clamp(2.6rem, 5vw, 5.6rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-size: var(--text-h1);
+  font-weight: var(--weight-display-strong);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
   color: var(--lc-ink);
   text-wrap: balance;
 }
@@ -74,7 +74,7 @@
 .lc-title em {
   font-style: normal;
   font-weight: inherit;
-  color: var(--gt-em, #078a36);
+  color: var(--gt-em);
 }
 .lc-statement__turn,
 .lc-title__turn {
@@ -84,26 +84,26 @@
 .lc-title {
   max-width: 19ch;
   font-family: var(--lc-display);
-  font-size: clamp(2.25rem, 3.7vw, 4.4rem);
-  font-weight: 800;
+  font-size: var(--text-h2);
+  font-weight: var(--weight-display);
   line-height: 1.04;
-  letter-spacing: -0.028em;
+  letter-spacing: -0.03em;
   color: var(--lc-ink);
   text-wrap: balance;
 }
 .lc-lead {
   max-width: 42rem;
   margin-top: clamp(1.1rem, 0.9rem + 0.8vw, 1.75rem);
-  font-size: clamp(1.06rem, 1.5vw, 1.35rem);
+  font-size: var(--text-lead);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: var(--leading-body);
   color: var(--lc-body);
   text-wrap: pretty;
 }
 .lc-body {
   max-width: 38rem;
   margin-top: 1.1rem;
-  font-size: clamp(1rem, 0.96rem + 0.15vw, 1.0625rem);
+  font-size: var(--text-body);
   line-height: 1.7;
   color: var(--lc-body);
   text-wrap: pretty;
@@ -146,152 +146,6 @@
   height: 100%;
   object-fit: cover;
   object-position: var(--focus, 50% 50%);
-}
-
-/* 2. 01 · The Sun Paints the Cape: pigment at the hero's edge, a drop, a pool that opens onto the coast */
-.lc-sun {
-  padding-bottom: var(--lc-chapter);
-  background: var(--lc-paper);
-  /* Clipped on every side: the water layer must never paint a pixel into the hero above */
-  overflow: clip;
-}
-.lc-sun__inner {
-  position: relative;
-  padding-top: clamp(6.5rem, 4.5rem + 7vw, 11.5rem);
-}
-/* The water that reveals the coast (living-cape.js draws it with motion only). It is a layer over the words and
-   the photograph that never takes a click; the section clips it, so it starts on the first pixel row under the hero */
-.lc-sun__water {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: none;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-html.cine .lc-sun__water.is-live {
-  display: block;
-}
-html.cine .lc-sun__water.is-live.is-done {
-  display: none;
-}
-/* Paper over the parts of the photograph the water has not reached yet */
-.lc-water__veil {
-  fill: var(--lc-paper);
-}
-/* The damp edge where the water meets the dry paper: only the part outside the wet area shows */
-.lc-water__damp,
-.lc-water__edge {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.lc-water__damp {
-  stroke: rgba(40, 84, 110, 0.05);
-}
-.lc-water__edge {
-  stroke: rgba(46, 92, 118, 0.26);
-}
-.lc-water__front {
-  fill: none;
-  stroke: rgba(46, 92, 118, 0.3);
-  stroke-width: 2.4;
-  stroke-linejoin: round;
-}
-.lc-water__glow {
-  fill: none;
-  stroke: rgba(222, 236, 243, 0.9);
-  stroke-width: 7;
-  stroke-linejoin: round;
-}
-/* The film of water in the wet channels: a faint cool sheen over the photograph */
-.lc-water__film {
-  fill: none;
-  stroke: rgba(236, 246, 250, 0.2);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-/* Clear water: a cool tint, a darker meniscus line, a soft shadow on the paper and silver highlights */
-.lc-water__shade {
-  fill: rgba(24, 56, 76, 0.1);
-}
-.lc-water__body {
-  fill: rgba(170, 204, 221, 0.4);
-  stroke: rgba(48, 94, 122, 0.5);
-  stroke-width: 0.7;
-  stroke-linejoin: round;
-}
-.lc-water__light {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.95);
-  stroke-width: 1.1;
-  stroke-linecap: round;
-}
-.lc-water__light--soft {
-  stroke: rgba(255, 255, 255, 0.6);
-  stroke-width: 0.7;
-}
-.lc-water__sparkle {
-  fill: #fff;
-}
-.lc-sun__words {
-  position: relative;
-  z-index: 2;
-}
-.lc-sun .lc-statement {
-  max-width: none;
-}
-.lc-sun .lc-lead {
-  max-width: 36rem;
-}
-.lc-sun__plate {
-  position: relative;
-  margin-top: clamp(2.5rem, 1.5rem + 3.5vw, 5rem);
-}
-.lc-sun__frame {
-  position: relative;
-  aspect-ratio: 1000 / 560;
-  overflow: hidden;
-  border-radius: var(--media-radius);
-}
-.lc-sun__frame > picture {
-  position: absolute;
-  inset: 0;
-  display: block;
-}
-.lc-sun__frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: var(--focus);
-}
-.lc-sun__caption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 2rem;
-}
-.lc-sun__caption > span {
-  max-width: 40rem;
-}
-@media (min-width: 48em) {
-  .lc-sun__words {
-    width: 64%;
-  }
-}
-@media (max-width: 47.99em) {
-  .lc-sun__frame {
-    aspect-ratio: 4 / 5;
-  }
-  .lc-sun__frame img {
-    object-position: var(--focus-tall);
-  }
-  .lc-sun .lc-lead {
-    max-width: 84%;
-  }
 }
 
 /* 3. Scenes: full-bleed photographs with the words where the picture leaves room (A, C and the invitation) */
@@ -377,6 +231,13 @@ html.cine .lc-sun__water.is-live.is-done {
   text-shadow: 0 1px 6px rgba(1, 18, 39, 0.6);
 }
 /* A · the coast road: the words in the sky over the bay's left shoulder */
+/* Tablets and small desktops show the couple nearer the middle of the frame: the line keeps a narrower measure there,
+   so it stays in the sky and the sea to the left of their faces (checked at 768 and 1024 px) */
+@media (min-width: 48em) and (max-width: 79.99em) {
+  .lc-scene--road .lc-scene__line {
+    max-width: min(24rem, 40vw);
+  }
+}
 .lc-scene--road .lc-scene__inner {
   align-items: flex-start;
 }
@@ -475,6 +336,87 @@ html.cine .lc-sun__water.is-live.is-done {
   }
 }
 
+/* 3b. 01 · The Cape Peninsula, continued: a guest's own photograph from the lookout above Hout Bay, shown whole in its
+   own 9:16 shape (never stretched or cropped: the frame has the photograph's proportions and the image is contained),
+   in a leaf-shaped frame (two wide corners, two tight ones, echoing the buttons' leaf) on a soft leaf ground. The
+   corners' curves were checked against the photograph at every width: they take sky and stone, never a head or a foot. */
+.lc-memory {
+  padding-block: var(--lc-chapter);
+  background:
+    radial-gradient(42% 56% at 14% 52%, rgb(201 233 112 / 0.3) 0%, rgb(201 233 112 / 0) 72%),
+    var(--green-soft-background);
+  overflow: clip;
+}
+.lc-memory__grid {
+  display: grid;
+  gap: clamp(2rem, 1.5rem + 2.5vw, 4.5rem);
+  align-items: center;
+}
+.lc-memory__photo {
+  justify-self: center;
+  width: min(100%, 22rem);
+  margin: 0;
+}
+.lc-memory__frame {
+  position: relative;
+  aspect-ratio: 2268 / 4032;
+  overflow: hidden;
+  border-radius: 34% 16px 34% 16px / 19% 16px 19% 16px;
+  background: var(--lc-ivory);
+  box-shadow: 0 34px 60px -38px rgb(16 36 29 / 0.6);
+}
+.lc-memory__frame > picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.lc-memory__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.living-cape .lc-memory__caption {
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  margin-top: 0.85rem;
+  text-align: center;
+}
+.lc-memory__place {
+  font-family: var(--font-accent);
+  font-size: var(--text-accent);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--lc-ink);
+  transform: rotate(-1.5deg);
+}
+.lc-memory__credit {
+  font-size: var(--text-xs);
+  color: var(--lc-muted);
+}
+.lc-memory__words .lc-lead {
+  max-width: 34rem;
+}
+.lc-memory__actions {
+  margin-top: clamp(1.4rem, 1rem + 1vw, 2rem);
+}
+@media (min-width: 48em) {
+  .lc-memory__grid {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  }
+  .lc-memory__photo {
+    width: min(100%, 24rem);
+  }
+}
+@media (min-width: 64em) {
+  .lc-memory__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  }
+  .lc-memory__photo {
+    width: min(100%, 27rem);
+  }
+}
+
 /* 4. 03 · The moments between destinations: an asymmetric composition of four real photographs */
 .lc-moments {
   padding-block: var(--lc-chapter);
@@ -483,6 +425,18 @@ html.cine .lc-sun__water.is-live.is-done {
 .lc-moments__grid {
   display: grid;
   gap: clamp(2rem, 1.5rem + 2vw, 3.5rem) var(--lc-gap);
+}
+/* The prints' captions are written by hand under each photograph, like notes in an album: the accent face, short
+   place names only (design/font-design.md: Caveat never carries anything a visitor must not miss) */
+.living-cape .lc-moments figcaption {
+  margin-top: 0.45rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-accent);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--lc-ink);
+  transform: rotate(-1.2deg);
+  transform-origin: left center;
 }
 .lc-moments__item--a .lc-print-frame {
   --ratio: 3 / 2;
@@ -1563,25 +1517,22 @@ html.cine .lc-sun__water.is-live.is-done {
   }
 }
 
-/* 11. 10 · Words from the road (D57's carousel, D65's surfaces): deep forest, chalk review panels */
-/* A compact rail (D57): its own tighter padding and the editorial-subheading scale for the title */
+/* 11. 09 · The people behind the good times: real reviews, several at once (design/button-design.md, the brief §7).
+   Soft leaf ground, friendly rounded white cards, the reviewer's initials (their own photo where one is supplied and
+   approved), the tour, our one-line summary, the date and the link to the full review. No autoplay, no giant quote
+   marks: a grid that shows six on wide screens, four on tablets and three on phones, and the rest a press away. */
 .stories {
-  padding-block: clamp(2.5rem, 1.5rem + 2vw, 3.5rem);
-  color: rgba(255, 255, 255, 0.9);
-  background: var(--lc-forest-deep);
-  overflow: hidden;
-}
-.stories__inner {
-  position: relative;
+  padding-block: var(--lc-chapter);
+  color: var(--lc-body);
+  background:
+    radial-gradient(48% 60% at 92% 6%, rgb(201 233 112 / 0.32) 0%, rgb(201 233 112 / 0) 72%),
+    var(--green-soft-background);
 }
 .stories__head {
   display: grid;
-  gap: var(--space-5) var(--space-7);
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
   align-items: end;
-  margin-bottom: clamp(1.25rem, 1rem + 1vw, 1.75rem);
-}
-.stories .lc-mark {
-  margin-bottom: 0.85rem;
+  margin-bottom: clamp(1.75rem, 1.25rem + 2vw, 3rem);
 }
 @media (min-width: 64em) {
   .stories__head {
@@ -1589,187 +1540,137 @@ html.cine .lc-sun__water.is-live.is-done {
   }
 }
 .stories__title {
-  max-width: 14em;
-  font-family: var(--lc-display);
-  font-size: clamp(2rem, 1.4rem + 2vw, 3.1rem);
-  font-weight: 800;
-  line-height: 1.04;
-  letter-spacing: -0.028em;
-  color: #fff;
-  text-wrap: balance;
+  max-width: 17ch;
 }
-.stories__title em {
-  font-style: normal;
-  color: var(--lc-champagne);
+.stories__lead {
+  max-width: 40rem;
 }
-@media (max-width: 39.99em) {
-  .stories__title br {
-    display: none;
+/* The listing's rating, dated, kept apart from every card and linked to the listing */
+.stories__rating {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: start;
+  gap: 0.15rem 0.85rem;
+  padding: 1rem 1.35rem;
+  border: 1px solid var(--green-leaf-line);
+  border-radius: 22px;
+  background: var(--surface-white);
+  color: var(--lc-ink);
+  text-decoration: none;
+  box-shadow: 0 14px 30px -24px rgb(16 36 29 / 0.5);
+  transition: transform var(--btn-dur) var(--btn-ease), box-shadow var(--btn-dur) var(--btn-ease), border-color var(--btn-dur) var(--btn-ease);
+}
+.stories__rating:hover {
+  color: var(--lc-ink);
+  border-color: var(--green-primary);
+  box-shadow: 0 18px 32px -22px rgb(16 36 29 / 0.5);
+}
+@media (hover: hover) {
+  .stories__rating:hover {
+    transform: translateY(var(--btn-lift));
   }
 }
-.stories__stats {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.stories__stat {
-  display: grid;
-  justify-items: center;
-  text-align: center;
-  padding-inline: clamp(1.25rem, 1rem + 1.5vw, 2.75rem);
-}
-.stories__stat:first-child {
-  padding-left: 0;
-}
-.stories__stat:last-child {
-  padding-right: 0;
-}
-.stories__stat + .stories__stat {
-  border-left: 1px solid rgba(63, 168, 98, 0.5);
-}
-.stories__stat-icon {
-  --jei-size: 26px;
-  margin-bottom: 0.5rem;
-  color: var(--lc-champagne);
-}
-.stories__stat-value {
-  display: block;
-  font-family: var(--lc-display);
-  font-size: clamp(2.2rem, 1.8rem + 1.4vw, 3rem);
-  font-weight: 600;
+.stories__rating-score {
+  grid-row: span 3;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 2rem + 2vw, 3.5rem);
+  font-weight: var(--weight-display-strong);
   line-height: 1;
-  color: var(--lc-champagne);
-  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.03em;
+  color: var(--green-deep);
 }
-.stories__stat-label {
-  display: block;
-  margin-top: 0.4rem;
+.stories__rating .stars {
+  gap: 2px;
+}
+.stories__rating-label {
   font-size: var(--text-small);
-  line-height: 1.3;
-  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
 }
-.stories__stat-sub {
-  display: block;
+.stories__rating-date {
   font-size: var(--text-xs);
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--lc-muted);
 }
-/* The carousel: a snapping scroller by default; with motion (reviews.js) the viewport clips and GSAP moves the track */
-.stories__carousel {
-  position: relative;
+.stories__grid {
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr);
-  grid-template-areas:
-    'viewport viewport viewport'
-    'prev next toggle';
-  column-gap: var(--space-3);
-  row-gap: var(--space-4);
-}
-.stories__viewport {
-  grid-area: viewport;
-  margin-inline: calc(-1 * var(--gutter));
-  padding: 4px var(--gutter);
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gutter);
-  scrollbar-width: none;
-}
-.stories__viewport::-webkit-scrollbar {
-  display: none;
-}
-.stories__viewport:focus-visible {
-  outline: 2px solid var(--lc-champagne);
-  outline-offset: -2px;
-}
-.stories__track {
-  display: flex;
-  gap: var(--space-4);
+  gap: clamp(0.9rem, 0.6rem + 1vw, 1.5rem);
   margin: 0;
   padding: 0;
   list-style: none;
-}
-.story-card {
-  --lc-focus: #174f86;
-  flex: 0 0 100%;
-  min-width: 0;
-  scroll-snap-align: start;
 }
 @media (min-width: 40em) {
-  .story-card {
-    flex-basis: calc((100% - var(--space-4)) / 2);
+  .stories__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (min-width: 64em) {
-  .stories__track {
-    gap: var(--space-5);
-  }
-  .story-card {
-    flex-basis: calc((100% - 2 * var(--space-5)) / 3);
+  .stories__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-.stories__carousel.is-motion .stories__viewport {
-  margin-inline: 0;
-  padding-inline: 0;
-  overflow: hidden;
-  scroll-snap-type: none;
-  touch-action: pan-y;
-  cursor: grab;
+/* Collapsed (only once reviews.js is running, so without JavaScript every card shows): three, four or six */
+.stories__grid.is-collapsed > .story-card:nth-child(n + 4) {
+  display: none;
 }
-.stories__carousel.is-motion.is-dragging .stories__viewport {
-  cursor: grabbing;
+@media (min-width: 40em) {
+  .stories__grid.is-collapsed > .story-card:nth-child(4) {
+    display: block;
+  }
 }
-.stories__carousel.is-motion .story-card {
-  scroll-snap-align: none;
+@media (min-width: 64em) {
+  .stories__grid.is-collapsed > .story-card:nth-child(-n + 6) {
+    display: block;
+  }
 }
-.stories__carousel.is-motion .story-card img {
-  -webkit-user-drag: none;
-  user-select: none;
+.story-card {
+  min-width: 0;
 }
-/* The card: a review panel with a fine edge, the summary in the display face */
 .story-card__inner {
   display: flex;
   flex-direction: column;
+  gap: 0.85rem;
   height: 100%;
-  padding: clamp(1.125rem, 0.9rem + 0.9vw, 1.5rem);
-  border: 1px solid rgba(211, 223, 219, 0.9);
-  border-radius: 10px;
-  background: var(--lc-paper-light);
-  color: var(--lc-body);
+  padding: clamp(1.15rem, 1rem + 0.6vw, 1.6rem);
+  border: 1px solid rgb(16 91 53 / 0.1);
+  border-radius: 24px;
+  background: var(--surface-white);
+  box-shadow: 0 1px 0 rgb(16 36 29 / 0.04), 0 14px 32px -28px rgb(16 36 29 / 0.55);
+  transition: transform var(--btn-dur) var(--btn-ease), box-shadow var(--btn-dur) var(--btn-ease);
+}
+@media (hover: hover) {
+  .story-card__inner:hover {
+    transform: translateY(var(--btn-lift));
+    box-shadow: 0 1px 0 rgb(16 36 29 / 0.04), 0 20px 36px -26px rgb(16 36 29 / 0.55);
+  }
 }
 .story-card__head {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: 0.85rem;
 }
-/* Compact, human-scale portraits (D66, design.md §06: 40–56 px); the card moves as a whole, the face never on its own */
+/* The reviewer's initials on a pale leaf, or their own photograph over them once supplied (reviewer-photo.mjs) */
 .story-card__avatar {
   position: relative;
+  flex: none;
   display: grid;
   place-items: center;
-  flex: none;
-  width: 56px;
-  height: 56px;
+  width: 3.25rem;
+  height: 3.25rem;
   overflow: hidden;
-  border: 1px solid rgba(63, 168, 98, 0.7);
   border-radius: 50%;
-  background: var(--lc-forest);
-  color: #fff;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  box-shadow: 0 0 0 3px var(--lc-paper-light), 0 0 0 4px rgba(63, 168, 98, 0.35);
+  background: var(--green-leaf-light);
+  box-shadow: inset 0 0 0 1.5px var(--green-leaf-line);
 }
-@media (max-width: 39.99em) {
-  .story-card__avatar {
-    width: 48px;
-    height: 48px;
-  }
+.story-card__initials {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--green-deep);
 }
 .story-card__avatar img {
   position: absolute;
   inset: 0;
-  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1778,116 +1679,79 @@ html.cine .lc-sun__water.is-live.is-done {
   min-width: 0;
 }
 .story-card__name {
-  font-family: var(--lc-display);
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.15;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   color: var(--lc-ink);
   overflow-wrap: anywhere;
 }
 .story-card__place {
-  margin-top: 0.15rem;
-  font-size: var(--text-small);
+  margin: 0.1rem 0 0;
+  font-size: var(--text-xs);
   color: var(--lc-muted);
 }
-.story-card__stars {
-  margin-top: 0.4rem;
+.story-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.75rem;
+  margin: 0;
 }
-.story-card .stars {
-  color: var(--lc-functional-gold);
+.story-card__meta .stars {
+  gap: 2px;
+}
+.story-card__tour {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--surface-sand);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--lc-ink);
 }
 .story-card__quote {
-  margin: var(--space-3) 0 0;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--lc-stone-line);
+  flex: 1;
+  margin: 0;
 }
 .story-card__quote p {
-  font-family: var(--lc-display);
-  font-size: 1.125rem;
-  font-weight: 500;
-  line-height: 1.45;
-  color: var(--lc-ink);
-  text-wrap: pretty;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--lc-body);
 }
 .story-card__source {
-  margin-top: auto;
-  padding-top: var(--space-3);
+  margin: 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--lc-stone-line);
   font-size: var(--text-xs);
   color: var(--lc-muted);
 }
 .story-card__source a {
-  color: var(--lc-functional-gold);
   font-weight: 600;
-  text-decoration-color: rgba(5, 106, 43, 0.45);
+  color: var(--green-deep);
+  text-decoration: underline;
+  text-decoration-color: var(--green-leaf-line);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
 }
 .story-card__source a:hover {
-  color: var(--lc-forest);
+  color: var(--green-hover);
   text-decoration-color: currentColor;
-}
-/* Controls: Previous and Next are the system's text-labelled utility buttons (buttons.css), under the cards at every
-   width; the pause control stays a round engraved button */
-.stories__toggle {
-  display: inline-grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  padding: 0;
-  border: 1px solid rgba(111, 237, 143, 0.55);
-  border-radius: 50%;
-  background: rgba(11, 34, 51, 0.6);
-  color: var(--lc-champagne);
-  cursor: pointer;
-  transition: background-color var(--lc-micro) var(--lc-ease), border-color var(--lc-micro) var(--lc-ease), color var(--lc-micro) var(--lc-ease), transform var(--lc-micro) var(--lc-ease);
-}
-.stories__toggle:hover {
-  background: rgba(16, 46, 66, 0.95);
-  border-color: var(--lc-champagne);
-  color: #fff;
-}
-.stories__toggle:active {
-  transform: scale(0.96);
-}
-.stories__arrow--prev {
-  grid-area: prev;
-}
-.stories__arrow--next {
-  grid-area: next;
-}
-.stories__toggle {
-  grid-area: toggle;
-  justify-self: end;
-  align-self: center;
-  width: 44px;
-  height: 44px;
-}
-.stories__toggle .gt-engraved-icon {
-  --jei-size: 18px;
-}
-.stories__toggle .stories__toggle-play,
-.stories__toggle.is-paused .stories__toggle-pause {
-  display: none;
-}
-.stories__toggle.is-paused .stories__toggle-play {
-  display: block;
 }
 .stories__foot {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  margin-top: clamp(1.25rem, 1rem + 1vw, 1.75rem);
-}
-/* Wide screens: Previous and Next sit closer under the cards, so the chapter keeps its compact height (D57) */
-@media (min-width: 80em) {
-  .stories__carousel {
-    row-gap: 0.75rem;
-  }
-  .stories__foot {
-    margin-top: 1rem;
-  }
+  gap: 0.75rem 1rem;
+  margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
 }
 @media (max-width: 39.99em) {
-  /* Full width on phones; on the narrowest (about 320 px) the words cannot fit on one line beside the mark, so they
-     may wrap into two balanced lines rather than run into the border */
-  .stories__cta {
+  .stories__foot .gt-button {
     width: 100%;
     white-space: normal;
     text-wrap: balance;

@@ -46,7 +46,7 @@ export const page = {
     <div class="banner__content">
       ${breadcrumb(crumbs)}
       <h1>Our Story</h1>
-      <p class="banner__sub">${esc(site.logoTagline)}.</p>
+      <p class="banner__sub">Showing people the Cape we love, since ${site.founded}.</p>
     </div>
   </div>
 </section>
@@ -55,8 +55,8 @@ export const page = {
   <div class="container intro-grid intro-grid--photo">
     <div class="intro" data-reveal>
       <p class="eyebrow">Who we are</p>
-      <h2 id="story-title">Good journeys begin with good people.</h2>
-      <p>Founded in ${site.founded} by ${esc(site.founder)}, Good Times in Cape Town began with a simple idea: to share the beauty and diversity of the Mother City through authentic, personal experiences, with professional, accredited guides.</p>
+      <h2 id="story-title">We really like showing people around.</h2>
+      <p>${esc(site.founder)} founded Good Times in Cape Town in ${site.founded} with a simple idea: share the beauty and diversity of the Mother City the way a friend would, in person and unhurried, with professional, accredited guides.</p>
       <p>Every tour we run is private and shaped around the people on it: the Cape Peninsula and its penguins, the city and its history, Langa, the Winelands, the coast and the Garden Route, with pickup from your accommodation on most days.</p>
     </div>
     <figure class="about-pair lc-scope" data-taste="reveal">
@@ -86,10 +86,10 @@ export const page = {
 
 <section class="section" aria-labelledby="approach-title">
   <div class="container">
-    ${sectionHead({ eyebrow: 'Our approach', title: 'Personal, local and safe.', id: 'approach-title', lead: 'How we make your journey personal.' })}
+    ${sectionHead({ eyebrow: 'Our approach', title: 'Personal, local and safe.', id: 'approach-title', lead: 'Three things we never skip.' })}
     <ul class="themes" role="list">
       <li data-reveal><strong>A personal start</strong><span>We begin with your interests and preferences, then plan a private day, or several, around them.</span></li>
-      <li data-reveal style="--reveal-i:1"><strong>Local insight</strong><span>Carefully planned routes and accredited guides who bring the places to life, from the famous sights to the hidden gems.</span></li>
+      <li data-reveal style="--reveal-i:1"><strong>Local insight</strong><span>Carefully planned routes and accredited guides who bring the places to life, from the famous sights to the good bits in between.</span></li>
       <li data-reveal style="--reveal-i:2"><strong>Support throughout</strong><span>A team you can reach before, during and after your tour, and nothing booked or charged until we have confirmed the arrangements with you.</span></li>
     </ul>
   </div>
@@ -106,7 +106,7 @@ export const page = {
 
 <section class="section cta" aria-labelledby="about-cta-title">
   <div class="container">
-    <h2 id="about-cta-title">Come and experience the Cape with us.</h2>
+    <h2 id="about-cta-title">Come and see the Cape with us.</h2>
     <p class="lead">Private tours and transfers from Cape Town, confirmed with you before anything is booked.</p>
     <div class="cta__actions">
       ${button({ href: 'tours/', label: 'Explore Tours', variant: 'gold' })}

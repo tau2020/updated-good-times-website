@@ -159,8 +159,8 @@ test.describe('the sand journey', () => {
     expect(h[0]).toBeLessThanOrEqual(h[1] + 1);
     await section.scrollIntoViewIfNeeded();
     await expect(section.locator('.sand-journey__beach img')).toBeVisible();
-    await expect(section.getByRole('heading', { level: 2, name: 'Look Where Your Footsteps Led.' })).toBeVisible();
-    await expect(section.getByText('One private journey. Breathtaking coastlines, penguins, and unforgettable Cape Town moments.')).toBeVisible();
+    await expect(section.getByRole('heading', { level: 2, name: 'Look where your footsteps led.' })).toBeVisible();
+    await expect(section.getByText('One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop.')).toBeVisible();
     expect(await wordsShown(page)).toBe('1 1 1 1');
     // The one transition reduced motion keeps: the words fade in (opacity only) once the scene is in view
     await expect(section).toHaveClass(/\bis-seen\b/);

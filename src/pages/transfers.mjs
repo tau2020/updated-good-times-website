@@ -69,15 +69,15 @@ export const page = {
     <div class="banner__content">
       ${breadcrumb(crumbs)}
       <h1>Airport Transfers</h1>
-      <p class="banner__sub">Met at arrivals. Driven to your door.</p>
-      <p class="banner__text">Private transfers between Cape Town International Airport and your accommodation, for individuals, families and small groups, with a name board at arrivals and a hand with your luggage.</p>
+      <p class="banner__sub">Land in Cape Town. We’ll take it from there.</p>
+      <p class="banner__text">Private transfers between Cape Town International Airport and your accommodation, for individuals, families and small groups: a name board at arrivals, a hand with your luggage and a private drive to your door.</p>
     </div>
   </div>
 </section>
 
 <section class="section section--paper" aria-labelledby="choose-title">
   <div class="container">
-    ${sectionHead({ eyebrow: 'Choose your transfer', title: 'Where are you going?', id: 'choose-title', lead: 'Pick the journey you need. You give the details in the next step, and we’ll reply with availability and a quote.' })}
+    ${sectionHead({ eyebrow: 'Choose your transfer', title: 'Where are you headed?', id: 'choose-title', lead: 'Pick the journey you need. You add the details in the next step, and we’ll reply with availability and a quote.' })}
     <div class="tabs" data-tabs>
       <div class="segmented" role="tablist" aria-label="Transfer type" hidden>
         <button class="segmented__tab" type="button" role="tab" id="tab-airport" aria-controls="panel-airport" aria-selected="true">Airport</button>
