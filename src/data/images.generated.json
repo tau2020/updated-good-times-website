@@ -1133,5 +1133,15 @@
     ],
     "width": 2048,
     "height": 1536
+  },
+  "winelands-wine-poured": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 1728,
+    "height": 1152
   }
 }

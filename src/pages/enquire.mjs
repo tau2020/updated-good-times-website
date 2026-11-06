@@ -27,6 +27,7 @@ import { tours } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
 import { types as transferTypes } from '../data/transfers.mjs';
 import { SERVICES } from '../partials/living-cape.mjs';
+import { licensedCredit } from '../partials/cards.mjs';
 import { FIELDS, CUSTOM_TOUR, FLIGHT_TYPES, PACKAGE_SLUGS } from '../assets/js/enquiry-schema.js';
 import { site as siteData } from '../data/site.mjs';
 
@@ -238,7 +239,7 @@ function serviceStep() {
   // Each choice shows its service's own photograph (the home page's card and the concierge's row: one per service)
   const service = (id) => SERVICES.find((s) => s.id === id);
   const card = (value, s, title, hint) => `<label class="service-choice" for="enq-type-${value}">
-          <span class="service-choice__media" style="--focus: ${s.focus}">${picture({ name: s.image, alt: '', sizes: '(min-width: 64em) 340px, (min-width: 40em) 44vw, 92vw' })}</span>
+          <span class="service-choice__media" style="--focus: ${s.focus}">${picture({ name: s.image, alt: '', sizes: '(min-width: 64em) 340px, (min-width: 40em) 44vw, 92vw' })}${licensedCredit(s.image, 'span')}</span>
           <span class="service-choice__body">
             <input class="service-choice__input" type="radio" id="enq-type-${value}" name="enquiry_type" value="${value}" aria-labelledby="enq-type-${value}-title" aria-describedby="enq-type-${value}-hint">
             <span class="service-choice__title" id="enq-type-${value}-title">${title}</span>

@@ -7,7 +7,7 @@
  * group, and the booking card opens the booking request on the tour path with
  * the tour and the nights.
  */
-import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead, sfield, travellersField, moneyTag, currencyPicker, priceBasis } from '../partials/ui.mjs';
+import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, sfield, travellersField, moneyTag, currencyPicker, priceBasis } from '../partials/ui.mjs';
 import { packageCard, packageHref, enquirePackageHref, tourCard } from '../partials/cards.mjs';
 import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS } from '../partials/media.mjs';
 import { routeArt } from '../partials/route-art.mjs';
@@ -15,11 +15,6 @@ import { packages } from '../data/packages.mjs';
 import { tourBySlug } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
 
-/** Heights of the full-bleed photographs on these pages (styles.css), for the width each photograph is drawn at: a
-    phone's tall frame crops a landscape photograph wider than the screen (coverSizes) */
-const BANNER_H = 'clamp(22rem, 16rem + 16vw, 32rem)';
-const BANNER_SIZES = coverSizes('hout-bay-from-chapmans', [['', '100vw', BANNER_H]]);
-const heroSizes = (name) => coverSizes(name, [['', '100vw', 'clamp(18rem, 14rem + 22vw, 34rem)']]); // .tour-hero
 
 const crumbsList = [
   { label: 'Home', href: './' },
@@ -95,10 +90,10 @@ function listPage() {
     description: 'Private multi-day tours from Cape Town with Good Times: the Garden Route over three days or more, planned with you, with the route and price confirmed in your quote.',
     priority: 0.8,
     breadcrumbs: crumbsList,
-    preload: [preloadFor('hout-bay-from-chapmans', { sizes: BANNER_SIZES })],
+    preload: [preloadFor('hout-bay-from-chapmans')],
     body: ({ site }) => `
-<section class="banner" style="--focus: 50% 45%; --banner-h: ${BANNER_H}">
-  <div class="banner__media">${picture({ name: 'hout-bay-from-chapmans', sizes: BANNER_SIZES, eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 50% 45%; --banner-h: clamp(22rem, 16rem + 16vw, 32rem)">
+  <div class="banner__media">${picture({ name: 'hout-bay-from-chapmans', eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbsList)}
@@ -144,7 +139,7 @@ function detailPage(p) {
 
   const hero = p.images.hero
     ? `<section class="tour-hero" data-mobile-cta-after style="--focus: ${esc(p.heroFocus || '50% 45%')}">
-  <div class="tour-hero__media">${picture({ name: p.images.hero, sizes: heroSizes(p.images.hero), eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="tour-hero__media">${picture({ name: p.images.hero, eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container banner__back"><a class="back-link" href="packages/">Back to all multi-day tours</a></div>
 </section>
 
@@ -179,7 +174,7 @@ function detailPage(p) {
     description: p.seo.description,
     priority: 0.8,
     breadcrumbs: crumbs,
-    preload: p.images.hero ? [preloadFor(p.images.hero, { sizes: heroSizes(p.images.hero) })] : [],
+    preload: p.images.hero ? [preloadFor(p.images.hero)] : [],
     enquireHref: href,
     ...(hasGallery ? GALLERY_ASSETS : {}),
     schema: [

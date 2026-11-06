@@ -1686,7 +1686,7 @@ test.describe('design remediation (stage 1)', () => {
 
 test.describe('taste compositions and About’s photographs', () => {
   const PLACES = [
-    ['/', '[data-taste="reveal"]', ['winelands-host-pouring', 'winelands-tasting-table']],
+    ['/', '[data-taste="reveal"]', ['winelands-host-pouring', 'winelands-wine-poured']],
     ['/tours/cape-winelands-private-tour/', '[data-taste="diptych"]', ['winelands-pergola-lunch', 'winelands-estate-terrace']],
     ['/destinations/', '[data-taste="quiet"]', ['pergola-lunch-table']],
     // About's penguins and Langa mural share the Reveal's choreography

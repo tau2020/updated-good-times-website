@@ -139,6 +139,11 @@
 }
 .phone-gallery__img {
   height: auto;
+  /* A portrait photograph taller than 3:4 would reach the pager, its place's name over the dots: it is shown at most
+     as tall as a 3:4 one (25em of the screen's 39.8em), cropped on its focus; enlarged, it is shown whole */
+  max-height: 25em;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
   box-shadow: 0 0.5em 1.4em rgba(0, 0, 0, 0.38);
 }
 .phone-gallery__place {

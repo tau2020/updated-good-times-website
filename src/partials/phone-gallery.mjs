@@ -46,17 +46,17 @@ function check(item) {
   if (!r.ambient) throw new Error(`Phone gallery: "${item.image}" has no ambient rendition (set ambient: true and run npm run images)`);
   const tour = tours.find((t) => t.slug === item.tour);
   if (!tour) throw new Error(`Phone gallery: "${item.image}" names an unknown tour "${item.tour}"`);
-  return { ...item, alt: meta.alt, r, tourName: tour.shortTitle, tourHref: `tours/${tour.slug}/`, credit: creditFor(item.image) };
+  return { ...item, alt: meta.alt, focus: meta.focus || '50% 50%', r, tourName: tour.shortTitle, tourHref: `tours/${tour.slug}/`, credit: creditFor(item.image) };
 }
 
-function photo({ image, alt, r }, defer) {
+function photo({ image, alt, r, focus }, defer) {
   const set = (ext) => r.widths.map((w) => `assets/img/${image}-${w}.${ext} ${w}w`).join(', ');
   const attr = defer ? 'data-srcset' : 'srcset';
   const file = `assets/img/${image}-${r.widths[0]}.webp`;
   return `<picture class="phone-gallery__picture">
             <source type="image/avif" ${attr}="${set('avif')}" sizes="${SIZES}">
             <source type="image/webp" ${attr}="${set('webp')}" sizes="${SIZES}">
-            <img class="phone-gallery__img" ${defer ? `src="${BLANK}" data-src="${file}"` : `src="${file}"`} alt="${esc(alt)}" width="${r.width}" height="${r.height}" decoding="async">
+            <img class="phone-gallery__img" ${defer ? `src="${BLANK}" data-src="${file}"` : `src="${file}" fetchpriority="low"`} alt="${esc(alt)}" width="${r.width}" height="${r.height}" style="--focus: ${esc(focus)}" decoding="async">
           </picture>`;
 }
 

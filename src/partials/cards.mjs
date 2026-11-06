@@ -5,7 +5,14 @@ import { reviewerPhoto } from './reviewer-photo.mjs';
 import { esc, icon, picture, price, fmtDate, showRating, stars, artPanel } from './ui.mjs';
 import { routeArt } from './route-art.mjs';
 import { tourBySlug, categories, themeLabel } from '../data/tours.mjs';
-import { imageByName } from '../data/images.mjs';
+import { imageByName, creditFor } from '../data/images.mjs';
+
+/**
+ * A third party's photograph (origin L, openly licensed) carries its credit on the photograph wherever it is shown larger
+ * than a thumbnail: author, licence and source, as the licence asks (the privacy page lists them all). Inside the
+ * photograph's own frame, which must be `position: relative`. `tag` is `span` inside phrasing content (a label).
+ */
+export const licensedCredit = (name, tag = 'p') => (name && imageByName(name)?.origin === 'L' ? `<${tag} class="photo-credit">${esc(creditFor(name))}</${tag}>` : '');
 
 /** A card's crop keeps its photograph's recorded subject (images.mjs `focus`: "a placement may refine it, never ignore it") */
 const focusStyle = (name) => {
@@ -56,6 +63,7 @@ export function tourCard(t, site, { headingLevel = 3, i = 0, badge = '', sizes =
   <div class="card__media"${focusStyle(t.images.card)}>
     ${t.images.card ? picture({ name: t.images.card, sizes }) : artPanel()}
     ${badge ? `<span class="card__badge">${esc(badge)}</span>` : t.seasonal ? `<span class="card__badge">Seasonal</span>` : ''}
+    ${licensedCredit(t.images.card)}
   </div>
   <div class="card__body">
     <${h} class="card__title"><a href="${tourHref(t)}" data-carry-plan>${esc(t.shortTitle)}</a></${h}>

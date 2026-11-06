@@ -3,6 +3,7 @@ import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox } from '../partials/media.mjs';
 import { culinaryReveal, tasteRule } from '../partials/culinary.mjs';
+import { licensedCredit } from '../partials/cards.mjs';
 import { heroPhoneGallery } from '../partials/phone-gallery.mjs';
 import { sandJourney } from '../partials/sand-journey.mjs';
 import { imageByName } from '../data/images.mjs';
@@ -77,15 +78,15 @@ const WAYS = {
 const GALLERY = [
   { name: 'boulders-shadows', role: 'wide', tile: { lg: [8, '3 / 2'], md: [2, '16 / 10'], sm: [2, '4 / 3'] }, title: 'Watching the penguins', place: 'Boulders Beach, Simon’s Town', story: 'Shadows from the boardwalk fall across the sand at the edge of the colony, one of the last stops of a Peninsula day.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
   { name: 'muizenberg-huts', role: 'wide', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The bathing huts at Muizenberg', place: 'Muizenberg Beach', story: 'Colourful huts and surfers on the way home along False Bay.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
-  { name: 'cape-minstrels', role: 'wide', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The Cape Minstrels', place: 'Cape Town', story: 'Music and colour in the streets, met on a city day.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
+  { name: 'cape-minstrels', role: 'wide', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The Cape Minstrels', place: 'Cape Town', story: 'Music and colour in the streets, met by chance on a city day. The minstrels parade when they choose: a sight like this is luck, never a promise.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
   { name: 'mandela-statue-drakenstein', tile: { lg: [3, '3 / 4'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The statue of Nelson Mandela', place: 'Drakenstein Correctional Centre', story: 'On the road to the Winelands, outside the prison from which he walked free in 1990.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
   { name: 'city-heritage-plaque', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'Reading the city’s history', place: 'Central Cape Town', story: 'Parliament, the Company’s Garden and Greenmarket Square: the city’s story, read on its own streets.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
   { name: 'cape-point-aloes', role: 'wide', tile: { lg: [7, '2 / 1'], md: [2, '2 / 1'], sm: [2, '2 / 1'] }, title: 'Aloes above the sea', place: 'The Cape Peninsula', story: 'Fynbos and aloes on the cliffs on the way to Cape Point.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
   { name: 'burger-lunch-guide', role: 'food', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'Lunch with our guide', place: '', story: 'Lunch is never part of a tour’s price: we stop wherever you would like to eat, and you pay on the day.', href: 'tours/', link: 'All private tours' },
   { name: 'cape-point-zebra', role: 'wide', tile: { lg: [3, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A zebra on the road', place: 'The Cape Peninsula', story: 'Zebra, eland and ostriches live in the reserve around Cape Point. Sightings like this are luck, never a promise.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
-  { name: 'winelands-couple-tasting', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A tasting for two', place: 'The Cape Winelands', story: 'A tasting in an estate’s tasting room; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
-  { name: 'lunch-spread-guests', tile: { lg: [3, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'Lunch in the sun', place: '', story: 'A long lunch on a terrace between the sights, wherever you choose to stop.', href: 'tours/', link: 'All private tours' },
-  { name: 'langa-home-visit', role: 'table', tile: { lg: [7, '3 / 2'], md: [1, '1'], sm: [1, '1'] }, title: 'Welcomed into a home', place: 'Langa, Cape Town', story: 'Part of a half day in Langa, with the arts centre, the museum and the old beer hall.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
+  { name: 'lunch-spread-guests', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'Lunch in the sun', place: '', story: 'A long lunch on a terrace between the sights, wherever you choose to stop.', href: 'tours/', link: 'All private tours' },
+  { name: 'winelands-couple-tasting', tile: { lg: [3, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'A tasting for two', place: 'The Cape Winelands', story: 'A tasting in an estate’s tasting room; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
+  { name: 'langa-home-visit', role: 'table', tile: { lg: [7, '3 / 2'], md: [1, '1'], sm: [1, '1'] }, title: 'Welcomed into a home', place: 'Langa, Cape Town', story: 'Guests welcomed into a family’s home on a day in Langa. A visit like this depends on who is home: it is never part of the plan we promise.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
   { name: 'winelands-red-tasting', role: 'wine', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'A glass of red', place: 'The Cape Winelands', story: 'Red wine at a tasting on a Winelands day.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
 ];
 
@@ -350,7 +351,7 @@ ${scene({
     <ul class="lc-ways__list" role="list">
       ${SERVICES.map(
         (s, i) => `<li class="lc-way" data-service="${s.id}" data-reveal style="--reveal-i:${i % 2}">
-        <div class="lc-way__photo" style="--focus: ${s.focus}">${picture({ name: s.image, sizes: '(min-width: 64em) min(44vw, 40rem), (min-width: 48em) 46vw, 7rem' })}</div>
+        <div class="lc-way__photo" style="--focus: ${s.focus}">${picture({ name: s.image, sizes: '(min-width: 64em) min(44vw, 40rem), (min-width: 48em) 46vw, 7rem' })}${licensedCredit(s.image)}</div>
         <div class="lc-way__body">
           <h3 class="lc-way__name"><a href="${esc(s.href)}">${esc(s.name)}</a></h3>
           <p class="lc-way__line">${esc(s.line)}</p>
@@ -403,7 +404,7 @@ ${culinaryReveal({
       <p class="lc-lead">On the Winelands day there is wine and cheese at Fairview, then La Motte, Franschhoek and Lanzerac. Tasting fees and lunch are paid on the day, so you choose what to taste and where to eat.</p>
       ${travelNote({ href: tourHref(WINELANDS), label: 'The Winelands day' })}`,
   main: { name: 'winelands-host-pouring', focus: '56% 50%' },
-  layer: { name: 'winelands-tasting-table', focus: '50% 50%' },
+  layer: { name: 'winelands-wine-poured', focus: '77% 50%' },
   caption: 'A tasting outdoors on a Winelands estate · Around the tasting table',
 })}
 

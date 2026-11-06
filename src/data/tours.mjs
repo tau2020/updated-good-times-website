@@ -189,7 +189,7 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
     price: { from: 6000, currency: 'ZAR', unit: 'per group', tiers: tiers(6000, 12000), note: 'Excludes tasting fees and lunch.' },
-    images: { hero: 'winelands-cape-dutch-group', card: 'winelands-tasting-flight', gallery: ['winelands-terrace', 'winelands-tasting-counter', 'winelands-group-tasting', 'winelands-terrace-guide'] },
+    images: { hero: 'winelands-cape-dutch-group', card: 'winelands-tasting-flight', gallery: ['winelands-terrace', 'winelands-tasting-counter', 'winelands-group-tasting', 'winelands-tasting-table', 'winelands-terrace-guide'] },
     heroFocus: '56% 46%',
     seo: {
       title: 'Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl',
@@ -347,6 +347,8 @@ export const tours = [
     cancellation: CANCEL_DAY,
     price: null,
     priceNote: 'Contact us for group-based pricing.',
+    // The full-bleed hero shows under half the photograph's height: low enough for the marker and the two oceans' sign
+    heroFocus: '50% 80%',
     images: { hero: 'agulhas-tip-marker', card: 'agulhas-lighthouse', gallery: [] },
     seo: {
       title: 'Cape Agulhas Private Tour from Cape Town',

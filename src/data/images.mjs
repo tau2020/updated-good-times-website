@@ -179,7 +179,7 @@ export const images = [
   { name: 'bokaap-pink-wall', src: `${D}Cape Town Private City Tour - operator 15.jpg`, origin: 'T', focus: '50% 60%', alt: 'A guest in front of a bright pink house with an arched doorway' },
 
   // Langa: its streets, its museum, its homes and its people
-  { name: 'langa-mural-visit', src: `${D}Langa Township Private Tour - operator 01.jpg`, origin: 'T', focus: '50% 60%', alt: 'Four guests in front of a colourful mural that spells out Langa' },
+  { name: 'langa-mural-visit', src: `${D}Langa Township Private Tour - operator 01.jpg`, origin: 'T', focus: '52% 55%', alt: 'Four guests in front of a colourful mural that spells out Langa' },
   { name: 'langa-walk-guide', src: `${D}Langa Township Private Tour - operator 04.jpg`, origin: 'T', focus: '40% 55%', alt: 'A local guide talking with two guests between homes on a walk through Langa' },
   { name: 'langa-home-visit', src: `${D}Langa Township Private Tour - operator 07.jpg`, origin: 'T', focus: '50% 55%', alt: 'Two guests welcomed into a family home in Langa, sitting in its living room' },
   { name: 'langa-homes', src: `${D}Langa Township Private Tour - operator 08.jpg`, origin: 'T', focus: '50% 55%', alt: 'A street of homes made from shipping containers in Langa under a cloudy sky' },
@@ -190,7 +190,8 @@ export const images = [
 
   // The Cape Winelands: its tables and tastings
   { name: 'beyerskloof-estate', src: `${D}Good Times profile page - 24.jpg`, origin: 'T', focus: '94% 55%', alt: 'Guests beside the entrance sign of Beyerskloof, the home of Pinotage, on a Stellenbosch wine estate' },
-  { name: 'winelands-estate-terrace', src: `${D}Cape Winelands Private Tour - operator 08.jpg`, origin: 'T', focus: '50% 60%', alt: 'Two guests at a table on a wine estate’s restaurant terrace as a waiter serves them' },
+  { name: 'winelands-wine-poured', src: `${D}People 10 - Wine poured for guests [operator].jpg`, origin: 'T', focus: '77% 50%', alt: 'A waiter pouring red wine for two guests at an outdoor table in a Winelands estate garden' },
+  { name: 'winelands-estate-terrace', src: `${D}Cape Winelands Private Tour - operator 08.jpg`, origin: 'T', focus: '97% 30%', alt: 'Two guests at a table on a wine estate’s restaurant terrace as a waiter serves them' },
   { name: 'winelands-tasting-counter', src: `${D}Cape Winelands Private Tour - operator 14.jpg`, origin: 'T', focus: '50% 55%', alt: 'Two guests at a wooden tasting counter with bottles of wine and tasting sheets' },
   { name: 'winelands-couple-tasting', src: `${D}People 04 - Couple at a tasting [operator].jpg`, origin: 'T', focus: '58% 42%', alt: 'A smiling couple raising their glasses at a wine tasting in an estate’s cellar' },
   { name: 'winelands-tasting-deli', src: `${D}People 07 - Trio at the wine tasting deli [operator].jpg`, origin: 'T', focus: '50% 70%', alt: 'Three guests in front of a white Wine Tasting & Deli with wooden doors' },
@@ -202,7 +203,7 @@ export const images = [
   // Food: meals on Good Times days (lunch is never included in a tour price: paid on the day, wherever you choose)
   { name: 'lunch-spread-guests', src: `${D}Food 01 - Lunch spread with smiling guests [operator].jpg`, origin: 'T', focus: '50% 55%', alt: 'Four guests raising their glasses over plates of pasta and burgers at a sunny terrace restaurant' },
   { name: 'burger-lunch-guide', src: `${D}Good Times profile page - 06.jpg`, origin: 'T', focus: '50% 55%', alt: 'Two guests and their guide at a table outside a burger restaurant, burgers and drinks in front of them' },
-  { name: 'pergola-lunch-table', src: `${D}good-times-cape-town-001.jpg`, origin: 'S', focus: '50% 62%', alt: 'A couple at a table under a reed-shaded pergola, vines and mountains beyond' },
+  { name: 'pergola-lunch-table', src: `${D}good-times-cape-town-001.jpg`, origin: 'S', focus: '50% 33%', alt: 'A couple at a table under a reed-shaded pergola, vines and mountains beyond' },
 
   // The airport
   { name: 'transfer-driver-selfie', src: `${D}Good Times profile page - 19.jpg`, origin: 'T', focus: '50% 42%', alt: 'Three smiling people in a selfie outside the departures hall at Cape Town International Airport' },

@@ -359,6 +359,7 @@
   outline-offset: 2px;
 }
 .service-choice__media {
+  position: relative;
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;

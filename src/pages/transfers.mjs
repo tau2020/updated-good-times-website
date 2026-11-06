@@ -1,10 +1,7 @@
-import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
+import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
 import { rowCard } from '../partials/cards.mjs';
 import { services, types } from '../data/transfers.mjs';
 
-/** The banner's height, and the width its photograph is drawn at inside it (a phone's tall banner crops it wider) */
-const BANNER_H = 'clamp(26rem, 18rem + 22vw, 42rem)';
-const BANNER_SIZES = coverSizes('airport-departures-wave', [['', '100vw', BANNER_H]]);
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Transfers', href: 'transfers/' }];
 const requestHref = (id) => `enquire/?type=transfer&transfer=${id}`;
@@ -64,10 +61,10 @@ export const page = {
   description: 'Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R800 per trip for 1–4 guests.',
   priority: 0.9,
   breadcrumbs: crumbs,
-  preload: [preloadFor('airport-departures-wave', { sizes: BANNER_SIZES })],
+  preload: [preloadFor('airport-departures-wave')],
   body: ({ site }) => `
-<section class="banner" style="--focus: 40% 56%; --focus-mobile: 36% 56%; --banner-h: ${BANNER_H}">
-  <div class="banner__media">${picture({ name: 'airport-departures-wave', sizes: BANNER_SIZES, eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 40% 56%; --focus-mobile: 36% 56%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
+  <div class="banner__media">${picture({ name: 'airport-departures-wave', eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbs)}

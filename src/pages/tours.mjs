@@ -7,13 +7,10 @@ import { packages } from '../data/packages.mjs';
 import { reviews } from '../data/reviews.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
 
-/** Heights of the full-bleed photographs on these pages (styles.css), for the width each photograph is drawn at: a
-    phone's tall frame crops a landscape photograph wider than the screen (coverSizes) */
-const BANNER_H = 'clamp(24rem, 18rem + 18vw, 36rem)';
-const TOUR_HERO_H = 'clamp(18rem, 14rem + 22vw, 34rem)'; // .tour-hero
-const BAND_H = 'clamp(16rem, 12rem + 18vw, 30rem)'; // .photo-band
-const BANNER_SIZES = coverSizes('cape-point-headland', [['', '100vw', BANNER_H]]);
-const heroSizes = (name) => coverSizes(name, [['', '100vw', TOUR_HERO_H]]);
+/** The photo band's height (styles.css .photo-band), for the width its photograph is drawn at: a phone's band crops a
+    landscape photograph wider than the screen (coverSizes). The banner and the hero are the pages' LCP and keep 100vw:
+    the larger file cost up to 0.8 s of LCP on a throttled phone (the media audit, Gate E). */
+const BAND_H = 'clamp(16rem, 12rem + 18vw, 30rem)';
 
 const ITINERARY_NOTE = {
   listed: 'The stops as we list them. Every tour is private, so the route can be shaped around you; we confirm it with your quote.',
@@ -83,10 +80,10 @@ function listPage() {
     description: `${tours.length} private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving.`,
     priority: 0.9,
     breadcrumbs: crumbsList,
-    preload: [preloadFor('cape-point-headland', { sizes: BANNER_SIZES })],
+    preload: [preloadFor('cape-point-headland')],
     body: ({ site }) => `
-<section class="banner" style="--focus: 58% 44%; --banner-h: ${BANNER_H}">
-  <div class="banner__media">${picture({ name: 'cape-point-headland', sizes: BANNER_SIZES, eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 58% 44%; --banner-h: clamp(24rem, 18rem + 18vw, 36rem)">
+  <div class="banner__media">${picture({ name: 'cape-point-headland', eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbsList)}
@@ -251,7 +248,7 @@ function detailPage(t) {
   </div>
 </section>`
     : `<section class="tour-hero" data-mobile-cta-after style="--focus: ${esc(t.heroFocus || '50% 50%')}">
-  <div class="tour-hero__media">${picture({ name: t.images.hero, sizes: heroSizes(t.images.hero), eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="tour-hero__media">${picture({ name: t.images.hero, eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container banner__back"><a class="back-link" href="tours/">Back to all tours</a></div>
   ${heroCredit}
 </section>
@@ -272,7 +269,7 @@ function detailPage(t) {
     description: t.seo.description,
     priority: 0.8,
     breadcrumbs: crumbs,
-    preload: t.images.hero ? [preloadFor(t.images.hero, { sizes: framed ? '(min-width: 56em) 50vw, 100vw' : heroSizes(t.images.hero) })] : [],
+    preload: t.images.hero ? [preloadFor(t.images.hero, { sizes: framed ? '(min-width: 56em) 50vw, 100vw' : '100vw' })] : [],
     enquireHref: href,
     // The gallery's exhibition and lightbox (media.css, media.js) and, on the Winelands day, the dining diptych (culinary)
     styles: [...(hasGallery ? GALLERY_ASSETS.styles : []), ...(CULINARY[t.slug] ? ['assets/css/culinary.css'] : [])],
