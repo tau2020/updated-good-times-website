@@ -190,7 +190,6 @@ export const images = [
 
   // The Cape Winelands: its tables and tastings
   { name: 'beyerskloof-estate', src: `${D}Good Times profile page - 24.jpg`, origin: 'T', focus: '94% 55%', alt: 'Guests beside the entrance sign of Beyerskloof, the home of Pinotage, on a Stellenbosch wine estate' },
-  { name: 'winelands-wine-poured', src: `${D}People 10 - Wine poured for guests [operator].jpg`, origin: 'T', focus: '77% 50%', alt: 'A waiter pouring red wine for two guests at an outdoor table in a Winelands estate garden' },
   { name: 'winelands-estate-terrace', src: `${D}Cape Winelands Private Tour - operator 08.jpg`, origin: 'T', focus: '97% 30%', alt: 'Two guests at a table on a wine estate’s restaurant terrace as a waiter serves them' },
   { name: 'winelands-tasting-counter', src: `${D}Cape Winelands Private Tour - operator 14.jpg`, origin: 'T', focus: '50% 55%', alt: 'Two guests at a wooden tasting counter with bottles of wine and tasting sheets' },
   { name: 'winelands-couple-tasting', src: `${D}People 04 - Couple at a tasting [operator].jpg`, origin: 'T', focus: '58% 42%', alt: 'A smiling couple raising their glasses at a wine tasting in an estate’s cellar' },

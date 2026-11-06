@@ -189,7 +189,7 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
     price: { from: 6000, currency: 'ZAR', unit: 'per group', tiers: tiers(6000, 12000), note: 'Excludes tasting fees and lunch.' },
-    images: { hero: 'winelands-cape-dutch-group', card: 'winelands-tasting-flight', gallery: ['winelands-terrace', 'winelands-tasting-counter', 'winelands-group-tasting', 'winelands-tasting-table', 'winelands-terrace-guide'] },
+    images: { hero: 'winelands-cape-dutch-group', card: 'winelands-tasting-flight', gallery: ['winelands-terrace', 'winelands-tasting-counter', 'winelands-group-tasting', 'winelands-terrace-guide'] },
     heroFocus: '56% 46%',
     seo: {
       title: 'Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl',

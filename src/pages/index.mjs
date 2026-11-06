@@ -403,9 +403,11 @@ ${culinaryReveal({
       ${tasteRule}
       <p class="lc-lead">On the Winelands day there is wine and cheese at Fairview, then La Motte, Franschhoek and Lanzerac. Tasting fees and lunch are paid on the day, so you choose what to taste and where to eat.</p>
       ${travelNote({ href: tourHref(WINELANDS), label: 'The Winelands day' })}`,
-  main: { name: 'winelands-host-pouring', focus: '56% 50%' },
-  layer: { name: 'winelands-wine-poured', focus: '77% 50%' },
-  caption: 'A tasting outdoors on a Winelands estate · Around the tasting table',
+  // The wide table of five fills the large frame whole; the compact pour at Waterford fits the square inset, framed on
+  // the guest and the host (the media audit: the inset cut the table's guests at both edges)
+  main: { name: 'winelands-tasting-table', focus: '50% 50%' },
+  layer: { name: 'winelands-host-pouring', focus: '71% 50%' },
+  caption: 'Around the tasting table · A tasting outdoors on a Winelands estate',
 })}
 
 <section class="lc-gallery" id="gallery" aria-labelledby="gallery-title">

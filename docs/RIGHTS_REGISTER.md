@@ -128,7 +128,6 @@ Each was checked one by one for what it shows (several file names did not match:
 | winelands-tasting-deli | Drive › `People 07 - Trio at the wine tasting deli [operator].jpg` (ID `1HAAm7JfFEWJGG0gHFrSJSas7V_SZzMl8`) | T | guests | In use, consent P1 |
 | winelands-group-tasting | Drive › `People 02 - Group tasting with bottles lined up [operator].jpg` (ID `1ro0aZzcmi6u7hMqPGJBvjDrdEQfumyXB`) | T | guests | In use, consent P1 |
 | winelands-red-tasting | Drive › `People 06 - Savouring a red [operator].jpg` (ID `1m3ZgiHKqnL_1YLW-5OjVTvXnDXHmvdxH`) | T | guests | In use, consent P1 |
-| winelands-wine-poured | Drive › `People 10 - Wine poured for guests [operator].jpg` (ID `1ep6P3S3Bbn1XL9B_UMuQ2A1PAapg-Hpr`) | T | guests, estate staff | In use (home page, the taste section's inset; added after the independent visual review), consent P1 |
 | winelands-glasses-up | Drive › `People 01 - Glasses up in the garden [operator].jpg` (ID `1ZCkMsMqlTgj3JicWAIucrTBFlJIEwCTB`) | T | guests | In use, consent P1 |
 | winelands-terrace-guide | Drive › `Good Times profile page - 21.jpg` (ID `1GHh2z-YTWryNRPe5AphJRJBYX4vLkSkr`) | T | guests, staff | In use, consent P1 |
 | lunch-spread-guests | Drive › `Food 01 - Lunch spread with smiling guests [operator].jpg` (ID `1yZjo3eDLxxgFa_1Z_cKfHxgir02kkYPZ`) | T | guests | In use, consent P1 |
