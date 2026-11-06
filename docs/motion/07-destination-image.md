@@ -119,3 +119,25 @@ All in `docs/motion/qa/`:
 - **The words' layout is three fixed layouts, not fluid.** A window resized across 640 px in height switches between the wide and the short-landscape layouts.
 - **Measured on one Mac** (M3 Pro, WebKit and Chromium). No real phone, Firefox or iOS Safari was run.
 - **Merged, not deployed.** Staging and production are unchanged; a staging or `motion-preview` deployment needs the owner's Cloudflare token (06).
+
+## Since the media audit (6 Nov 2026): the film
+
+The same day the owner's media brief replaced the still with its film, `section-2-video.mp4` (Drive ID
+`1hfka3frMV2pH8Hk1UGYdRvfDSuuiUSKC`): the same picture, with the surf washing in and the wind in her dress. The
+woman, the camera and the four prints stay still, so the animated trail lands on the same prints and nothing in
+`scene.js` changed. Its first frame registers on the still at zero offset; `placement()` in `sand-journey.js` converts
+the 1280 px picture's scale to the still's 1672 px pixel space, where the prints were measured.
+
+- **Encoding** (`npm run video:beach`, `src/tools/build-beach-film.sh`): a 7.0 s loop whose last second crossfades into
+  its first frame, H.264 High, fast start, no audio, 2.45 MB (from 7.94 MB). Its first frame is the poster picture
+  (`beach-film-poster`, AVIF and WebP at 640, 960 and 1280 px), under the film in the same element.
+- **Playback** (`sand-journey.js`): muted, inline, looping, no controls, hidden from assistive technology. It is never
+  scrubbed. In the scroll scene it loads at p 0.4 and plays from p 0.5, before the sweep (0.605) uncovers it. It plays
+  only with motion allowed, the data saver off, the tab visible and the picture on screen, and it pauses whenever one
+  of these stops being true. It fades in only once a frame has been presented, so no empty box ever shows. If the file
+  fails or autoplay is refused, the poster stays.
+- **Evidence**: `audit/recordings/beach-film/` (the reveal at 1440 × 900 and 390 × 844, screenshots at each scroll
+  stop, the reduced-motion, blocked, data-saver and slow-network runs, `beach-film-report.json`), from `qa/beach-film.mjs`
+  on the deployed preview.
+- **Limitation**: the film is 1280 × 720, so screens wider than 1280 px enlarge it, as the 1672 px still was enlarged
+  above 1672 (M5).
