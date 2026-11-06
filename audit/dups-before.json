@@ -1,0 +1,779 @@
+{
+ "file": "audit/screenshots/before/inventory-1440.json",
+ "photographs": 50,
+ "repeated": [
+  {
+   "slot": "cape-point-cliffs",
+   "placements": [
+    "/ › wild-title › ",
+    "/tours/ › banner › ",
+    "chrome picture"
+   ],
+   "card": null
+  },
+  {
+   "slot": "boulders-penguins-boardwalk",
+   "placements": [
+    "/about/ › story-title › Boulders Beach penguins · A mural in Langa",
+    "E1 tour card",
+    "E2 service",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": "cape-peninsula-private-tour"
+  },
+  {
+   "slot": "airport-welcome-sign",
+   "placements": [
+    "/transfers/ › panel-airport › Airport arrival",
+    "/transfers/ › section › Airport Private Transfer",
+    "E2 service"
+   ],
+   "card": null
+  },
+  {
+   "slot": "marine-dynamics-boat",
+   "placements": [
+    "/ › gallery › 06Heading out to shark territory",
+    "E1 tour card",
+    "E2 service"
+   ],
+   "card": "shark-cage-diving"
+  },
+  {
+   "slot": "private-guests-arms-raised",
+   "placements": [
+    "/tours/private-cape-town-experience/ › tour-hero › ",
+    "E2 service",
+    "E5 gallery /tours/private-cape-town-experience/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "bokaap-street",
+   "placements": [
+    "/tours/ › catalogue-title › City",
+    "E1 tour card",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": "cape-town-city-private-tour"
+  },
+  {
+   "slot": "winelands-tasting-flight",
+   "placements": [
+    "/tours/ › catalogue-title › Winelands",
+    "E1 tour card",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": "cape-winelands-private-tour"
+  },
+  {
+   "slot": "langa-mural",
+   "placements": [
+    "/ › gallery › 09A mural in Langa",
+    "/about/ › story-title › Boulders Beach penguins · A mural in Langa",
+    "E1 tour card",
+    "E5 gallery /tours/township-private-tour/"
+   ],
+   "card": "township-private-tour"
+  },
+  {
+   "slot": "peninsula-bench-view",
+   "placements": [
+    "/ › sun-title › A pause above a long white beach on a Cape Peninsu",
+    "/about/ › banner › ",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "chapmans-viewpoint-couple",
+   "placements": [
+    "/ › road-title › ",
+    "/tours/cape-peninsula-private-tour/ › tour-hero › ",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "muizenberg-huts-guests",
+   "placements": [
+    "/ › moments-title › Muizenberg’s bathing huts",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "guide-selfie-bay",
+   "placements": [
+    "/ › moments-title › A selfie above the bay",
+    "E1 tour card",
+    "E5 gallery /tours/private-cape-town-experience/"
+   ],
+   "card": "private-cape-town-experience"
+  },
+  {
+   "slot": "fairview-goat-tower",
+   "placements": [
+    "/ › moments-title › The goat tower at Fairview, on a Winelands day",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "cape-of-good-hope-sign",
+   "placements": [
+    "/ › moments-title › At the Cape of Good Hope",
+    "/about/ › faces-title › At the Cape of Good Hope",
+    "E2 service",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "langa-mural-guests",
+   "placements": [
+    "/about/ › faces-title › At the Langa mural",
+    "/tours/township-private-tour/ › tour-hero › ",
+    "E3 destination",
+    "E5 gallery /tours/township-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "hermanus-whale-sculpture",
+   "placements": [
+    "E1 tour card",
+    "E3 destination",
+    "E5 gallery /tours/whale-watching-private-tour/"
+   ],
+   "card": "whale-watching-private-tour"
+  },
+  {
+   "slot": "rooiberg-red-chair",
+   "placements": [
+    "/packages/garden-route-private-tour/ › tour-hero › ",
+    "E2 service",
+    "E3 destination",
+    "E5 gallery /packages/garden-route-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "quad-bikes-dunes",
+   "placements": [
+    "/ › wild-title › ",
+    "/tours/quad-biking/ › tour-hero › ",
+    "E2 service",
+    "E5 gallery /tours/quad-biking/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "airport-departures-wave",
+   "placements": [
+    "/transfers/ › banner › ",
+    "E2 service"
+   ],
+   "card": null
+  },
+  {
+   "slot": "hout-bay-flag-frame",
+   "placements": [
+    "/ › people-title › Friends in a South African flag frame above the co",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "castle-cannons-group",
+   "placements": [
+    "/ › people-title › A city day at the Castle of Good Hope",
+    "/about/ › faces-title › A city day at the Castle of Good Hope"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-garden-lunch",
+   "placements": [
+    "/ › people-title › Lunch in a Winelands garden",
+    "/about/ › people-title › Guests and their guide at lunch on a Winelands day",
+    "/tours/cape-winelands-private-tour/ › pleasures-title › A garden lunch on a Winelands day"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-host-pouring",
+   "placements": [
+    "/ › taste-title › A tasting outdoors on a Winelands estate · Around ",
+    "/tours/cape-winelands-private-tour/ › tour-hero › ",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-tasting-table",
+   "placements": [
+    "/ › taste-title › A tasting outdoors on a Winelands estate · Around ",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "boulders-penguin-colony",
+   "placements": [
+    "/ › gallery › 01African penguins at Boulders Beach",
+    "/tours/ › catalogue-title › Peninsula",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "castle-moat",
+   "placements": [
+    "/ › gallery › 03The Castle of Good Hope",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "mandela-statue-drakenstein",
+   "placements": [
+    "/ › gallery › 04The statue of Nelson Mandela",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "district-six-museum",
+   "placements": [
+    "/ › gallery › 05The District Six Museum",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-terrace",
+   "placements": [
+    "/ › gallery › 07A terrace tasting",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "company-garden-squirrel",
+   "placements": [
+    "/ › gallery › 08A white squirrel",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "bokaap-selfie",
+   "placements": [
+    "/ › gallery › 10A selfie in the Bo-Kaap",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "langa-traditional-drink",
+   "placements": [
+    "/ › gallery › 11A traditional drink, shared",
+    "E5 gallery /tours/township-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "map-of-africa-viewpoint",
+   "placements": [
+    "/ › gallery › 12The Map of Africa viewpoint",
+    "E1 tour card",
+    "E5 gallery /packages/garden-route-private-tour/"
+   ],
+   "card": "garden-route-private-tour"
+  },
+  {
+   "slot": "table-mountain-sparkling",
+   "placements": [
+    "/ › golden-title › ",
+    "/reviews/ › reviews-title › "
+   ],
+   "card": null
+  },
+  {
+   "slot": "camps-bay-twelve-apostles",
+   "placements": [
+    "/ › invite-title › ",
+    "/packages/ › banner › "
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-cape-dutch-group",
+   "placements": [
+    "/about/ › faces-title › A Winelands estate",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "quad-bikes-convoy",
+   "placements": [
+    "E1 tour card",
+    "E5 gallery /tours/quad-biking/"
+   ],
+   "card": "quad-biking"
+  },
+  {
+   "slot": "winelands-pergola-lunch",
+   "placements": [
+    "/destinations/ › flavours-title › ",
+    "/tours/cape-winelands-private-tour/ › pleasures-title › Lunch under the vines on a Winelands estate"
+   ],
+   "card": null
+  },
+  {
+   "slot": "airport-luggage-boot",
+   "placements": [
+    "/transfers/ › panel-other › Something else",
+    "/transfers/ › section › Airport Private Transfer"
+   ],
+   "card": null
+  },
+  {
+   "slot": "castle-table-mountain",
+   "placements": [
+    "/tours/cape-town-city-private-tour/ › tour-hero › ",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "hermanus-frame",
+   "placements": [
+    "/tours/whale-watching-private-tour/ › tour-hero tour-hero--framed › ",
+    "E5 gallery /tours/whale-watching-private-tour/"
+   ],
+   "card": null
+  }
+ ],
+ "rows": [
+  {
+   "slot": "cape-point-cliffs",
+   "placements": [
+    "/ › wild-title › ",
+    "/tours/ › banner › ",
+    "chrome picture"
+   ],
+   "card": null
+  },
+  {
+   "slot": "boulders-penguins-boardwalk",
+   "placements": [
+    "/about/ › story-title › Boulders Beach penguins · A mural in Langa",
+    "E1 tour card",
+    "E2 service",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": "cape-peninsula-private-tour"
+  },
+  {
+   "slot": "airport-welcome-sign",
+   "placements": [
+    "/transfers/ › panel-airport › Airport arrival",
+    "/transfers/ › section › Airport Private Transfer",
+    "E2 service"
+   ],
+   "card": null
+  },
+  {
+   "slot": "marine-dynamics-boat",
+   "placements": [
+    "/ › gallery › 06Heading out to shark territory",
+    "E1 tour card",
+    "E2 service"
+   ],
+   "card": "shark-cage-diving"
+  },
+  {
+   "slot": "private-guests-arms-raised",
+   "placements": [
+    "/tours/private-cape-town-experience/ › tour-hero › ",
+    "E2 service",
+    "E5 gallery /tours/private-cape-town-experience/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "bokaap-street",
+   "placements": [
+    "/tours/ › catalogue-title › City",
+    "E1 tour card",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": "cape-town-city-private-tour"
+  },
+  {
+   "slot": "winelands-tasting-flight",
+   "placements": [
+    "/tours/ › catalogue-title › Winelands",
+    "E1 tour card",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": "cape-winelands-private-tour"
+  },
+  {
+   "slot": "langa-mural",
+   "placements": [
+    "/ › gallery › 09A mural in Langa",
+    "/about/ › story-title › Boulders Beach penguins · A mural in Langa",
+    "E1 tour card",
+    "E5 gallery /tours/township-private-tour/"
+   ],
+   "card": "township-private-tour"
+  },
+  {
+   "slot": "hero-moment-poster",
+   "placements": [
+    "/ › hero-title › "
+   ],
+   "card": null
+  },
+  {
+   "slot": "memories-table-mountain-ambient.webp",
+   "placements": [
+    "/ › phone-gallery › "
+   ],
+   "card": null
+  },
+  {
+   "slot": "memories-table-mountain",
+   "placements": [
+    "/ › phone-gallery › Table Mountain"
+   ],
+   "card": null
+  },
+  {
+   "slot": "ocean-footprints-reveal",
+   "placements": [
+    "/ › sand-journey › "
+   ],
+   "card": null
+  },
+  {
+   "slot": "peninsula-bench-view",
+   "placements": [
+    "/ › sun-title › A pause above a long white beach on a Cape Peninsu",
+    "/about/ › banner › ",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "chapmans-viewpoint-couple",
+   "placements": [
+    "/ › road-title › ",
+    "/tours/cape-peninsula-private-tour/ › tour-hero › ",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "muizenberg-huts-guests",
+   "placements": [
+    "/ › moments-title › Muizenberg’s bathing huts",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "guide-selfie-bay",
+   "placements": [
+    "/ › moments-title › A selfie above the bay",
+    "E1 tour card",
+    "E5 gallery /tours/private-cape-town-experience/"
+   ],
+   "card": "private-cape-town-experience"
+  },
+  {
+   "slot": "fairview-goat-tower",
+   "placements": [
+    "/ › moments-title › The goat tower at Fairview, on a Winelands day",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "cape-of-good-hope-sign",
+   "placements": [
+    "/ › moments-title › At the Cape of Good Hope",
+    "/about/ › faces-title › At the Cape of Good Hope",
+    "E2 service",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "langa-mural-guests",
+   "placements": [
+    "/about/ › faces-title › At the Langa mural",
+    "/tours/township-private-tour/ › tour-hero › ",
+    "E3 destination",
+    "E5 gallery /tours/township-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "hermanus-whale-sculpture",
+   "placements": [
+    "E1 tour card",
+    "E3 destination",
+    "E5 gallery /tours/whale-watching-private-tour/"
+   ],
+   "card": "whale-watching-private-tour"
+  },
+  {
+   "slot": "rooiberg-red-chair",
+   "placements": [
+    "/packages/garden-route-private-tour/ › tour-hero › ",
+    "E2 service",
+    "E3 destination",
+    "E5 gallery /packages/garden-route-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "quad-bikes-dunes",
+   "placements": [
+    "/ › wild-title › ",
+    "/tours/quad-biking/ › tour-hero › ",
+    "E2 service",
+    "E5 gallery /tours/quad-biking/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "airport-departures-wave",
+   "placements": [
+    "/transfers/ › banner › ",
+    "E2 service"
+   ],
+   "card": null
+  },
+  {
+   "slot": "hout-bay-flag-frame",
+   "placements": [
+    "/ › people-title › Friends in a South African flag frame above the co",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "castle-cannons-group",
+   "placements": [
+    "/ › people-title › A city day at the Castle of Good Hope",
+    "/about/ › faces-title › A city day at the Castle of Good Hope"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-garden-lunch",
+   "placements": [
+    "/ › people-title › Lunch in a Winelands garden",
+    "/about/ › people-title › Guests and their guide at lunch on a Winelands day",
+    "/tours/cape-winelands-private-tour/ › pleasures-title › A garden lunch on a Winelands day"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-host-pouring",
+   "placements": [
+    "/ › taste-title › A tasting outdoors on a Winelands estate · Around ",
+    "/tours/cape-winelands-private-tour/ › tour-hero › ",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-tasting-table",
+   "placements": [
+    "/ › taste-title › A tasting outdoors on a Winelands estate · Around ",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "boulders-penguin-colony",
+   "placements": [
+    "/ › gallery › 01African penguins at Boulders Beach",
+    "/tours/ › catalogue-title › Peninsula",
+    "E5 gallery /tours/cape-peninsula-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "muizenberg-huts",
+   "placements": [
+    "/ › gallery › 02The bathing huts at Muizenberg"
+   ],
+   "card": null
+  },
+  {
+   "slot": "castle-moat",
+   "placements": [
+    "/ › gallery › 03The Castle of Good Hope",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "mandela-statue-drakenstein",
+   "placements": [
+    "/ › gallery › 04The statue of Nelson Mandela",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "district-six-museum",
+   "placements": [
+    "/ › gallery › 05The District Six Museum",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-terrace",
+   "placements": [
+    "/ › gallery › 07A terrace tasting",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "company-garden-squirrel",
+   "placements": [
+    "/ › gallery › 08A white squirrel",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "bokaap-selfie",
+   "placements": [
+    "/ › gallery › 10A selfie in the Bo-Kaap",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "langa-traditional-drink",
+   "placements": [
+    "/ › gallery › 11A traditional drink, shared",
+    "E5 gallery /tours/township-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "map-of-africa-viewpoint",
+   "placements": [
+    "/ › gallery › 12The Map of Africa viewpoint",
+    "E1 tour card",
+    "E5 gallery /packages/garden-route-private-tour/"
+   ],
+   "card": "garden-route-private-tour"
+  },
+  {
+   "slot": "table-mountain-sparkling",
+   "placements": [
+    "/ › golden-title › ",
+    "/reviews/ › reviews-title › "
+   ],
+   "card": null
+  },
+  {
+   "slot": "camps-bay-twelve-apostles",
+   "placements": [
+    "/ › invite-title › ",
+    "/packages/ › banner › "
+   ],
+   "card": null
+  },
+  {
+   "slot": "winelands-cape-dutch-group",
+   "placements": [
+    "/about/ › faces-title › A Winelands estate",
+    "E5 gallery /tours/cape-winelands-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "quad-bikes-convoy",
+   "placements": [
+    "E1 tour card",
+    "E5 gallery /tours/quad-biking/"
+   ],
+   "card": "quad-biking"
+  },
+  {
+   "slot": "winelands-pergola-lunch",
+   "placements": [
+    "/destinations/ › flavours-title › ",
+    "/tours/cape-winelands-private-tour/ › pleasures-title › Lunch under the vines on a Winelands estate"
+   ],
+   "card": null
+  },
+  {
+   "slot": "airport-arrivals-group",
+   "placements": [
+    "/transfers/ › panel-airport › Airport departure"
+   ],
+   "card": null
+  },
+  {
+   "slot": "airport-luggage-boot",
+   "placements": [
+    "/transfers/ › panel-other › Something else",
+    "/transfers/ › section › Airport Private Transfer"
+   ],
+   "card": null
+  },
+  {
+   "slot": "airport-guests-luggage",
+   "placements": [
+    "/transfers/ › section › Airport Private Transfer"
+   ],
+   "card": null
+  },
+  {
+   "slot": "cango-caves",
+   "placements": [
+    "E5 gallery /packages/garden-route-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "castle-table-mountain",
+   "placements": [
+    "/tours/cape-town-city-private-tour/ › tour-hero › ",
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "heritage-building-guests",
+   "placements": [
+    "E5 gallery /tours/cape-town-city-private-tour/"
+   ],
+   "card": null
+  },
+  {
+   "slot": "hermanus-frame",
+   "placements": [
+    "/tours/whale-watching-private-tour/ › tour-hero tour-hero--framed › ",
+    "E5 gallery /tours/whale-watching-private-tour/"
+   ],
+   "card": null
+  }
+ ]
+}

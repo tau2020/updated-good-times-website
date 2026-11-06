@@ -46,6 +46,7 @@ node qa/media-duplicates.mjs <inventory.json>               # one photograph, on
 node qa/beach-film.mjs --base=<url> --out=<dir> [--record]  # the reveal, the film's playback and its fallbacks
 node qa/media-crops.mjs --base=<url> --out=<dir>            # each photograph's own crop at six widths
 node qa/media-spot.mjs --base=<url>                         # #adventure, the credited heroes, the owner's photograph
+node qa/media-fixes.mjs --base=<url> --out=<dir>            # the elements the independent review flagged, after their fixes
 node qa/media-perf.mjs --base=<url> --out=<file>            # LCP, layout shift and media bytes
 node qa/layout-compare.mjs --before=<url> --after=<url> --out=<file>   # layout geometry between two deployments
 ```

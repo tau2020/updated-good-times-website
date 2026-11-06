@@ -1,0 +1,34 @@
+{
+  "base": "https://media-baseline.good-times-in-cape-town.pages.dev",
+  "when": "2026-11-06T08:13:05.063Z",
+  "motion": false,
+  "widths": [
+    375,
+    390,
+    768,
+    1024,
+    1440,
+    1920
+  ],
+  "routes": [
+    "/",
+    "/about/",
+    "/tours/",
+    "/destinations/",
+    "/transfers/",
+    "/packages/",
+    "/packages/garden-route-private-tour/",
+    "/reviews/",
+    "/tours/cape-peninsula-private-tour/",
+    "/tours/cape-town-city-private-tour/",
+    "/tours/cape-winelands-private-tour/",
+    "/tours/township-private-tour/",
+    "/tours/private-cape-town-experience/",
+    "/tours/whale-watching-private-tour/",
+    "/tours/cape-agulhas-private-tour/",
+    "/tours/shark-cage-diving/",
+    "/tours/quad-biking/",
+    "/tours/sky-diving/"
+  ],
+  "errors": {}
+}

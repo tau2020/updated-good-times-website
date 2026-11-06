@@ -1,0 +1,644 @@
+{
+ "base": "https://media-preview.good-times-in-cape-town.pages.dev",
+ "when": "2026-11-06T09:39:04.630Z",
+ "scenarios": {
+  "reveal-1440x900": {
+   "viewport": {
+    "width": 1440,
+    "height": 900
+   },
+   "stops": [
+    {
+     "scrollY": 619,
+     "p": 0.149,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": false,
+      "src": "",
+      "paused": true,
+      "readyState": 0,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.15,
+     "atMs": 10266
+    },
+    {
+     "scrollY": 1109,
+     "p": 0.277,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": false,
+      "src": "",
+      "paused": true,
+      "readyState": 0,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.35,
+     "atMs": 24429
+    },
+    {
+     "scrollY": 1280,
+     "p": 0.405,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": true,
+      "readyState": 0,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.42,
+     "atMs": 38148
+    },
+    {
+     "scrollY": 1476,
+     "p": 0.482,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": true,
+      "readyState": 4,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.5,
+     "atMs": 52993
+    },
+    {
+     "scrollY": 1721,
+     "p": 0.578,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 3.8,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.6,
+     "atMs": 68189
+    },
+    {
+     "scrollY": 1868,
+     "p": 0.638,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 2.31,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.66,
+     "atMs": 82340
+    },
+    {
+     "scrollY": 2015,
+     "p": 0.698,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 7,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.72,
+     "atMs": 109673
+    },
+    {
+     "scrollY": 2210,
+     "p": 0.771,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 5.89,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.8,
+     "atMs": 139828
+    },
+    {
+     "scrollY": 2455,
+     "p": 0.863,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 6.61,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.9,
+     "atMs": 166270
+    },
+    {
+     "scrollY": 2700,
+     "p": 0.978,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 1.77,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 1,
+     "atMs": 195125
+    }
+   ],
+   "clock": [
+    3.36,
+    4.96,
+    6.54,
+    0,
+    1.63,
+    3.33,
+    4.33,
+    5.33,
+    6.34
+   ],
+   "posterVsFrame0": {
+    "film": [
+     188.2,
+     166.4,
+     141.3
+    ],
+    "poster": [
+     188.6,
+     166.4,
+     140.8
+    ],
+    "meanAbsDiff": 1.38,
+    "posterFile": "beach-film-poster-1280.avif"
+   },
+   "reburied": {
+    "scrollY": 986,
+    "p": 0.555,
+    "tier": "full",
+    "ready": true,
+    "playingClass": true,
+    "film": {
+     "attached": true,
+     "src": "beach-film-1280.mp4",
+     "paused": false,
+     "readyState": 4,
+     "t": 6.95,
+     "opacity": "1",
+     "display": "block"
+    },
+    "beachOnScreen": true
+   },
+   "reentered": {
+    "scrollY": 2455,
+    "p": 0.699,
+    "tier": "full",
+    "ready": true,
+    "playingClass": true,
+    "film": {
+     "attached": true,
+     "src": "beach-film-1280.mp4",
+     "paused": false,
+     "readyState": 4,
+     "t": 2.57,
+     "opacity": "1",
+     "display": "block"
+    },
+    "beachOnScreen": true
+   },
+   "below": {
+    "scrollY": 4950,
+    "p": 1,
+    "tier": "full",
+    "ready": true,
+    "playingClass": true,
+    "film": {
+     "attached": true,
+     "src": "beach-film-1280.mp4",
+     "paused": true,
+     "readyState": 4,
+     "t": 6.26,
+     "opacity": "1",
+     "display": "block"
+    },
+    "beachOnScreen": false
+   },
+   "filmRequests": 2,
+   "firstFilmRequestMs": 38146,
+   "errors": []
+  },
+  "reveal-390x844": {
+   "viewport": {
+    "width": 390,
+    "height": 844
+   },
+   "stops": [
+    {
+     "scrollY": 542,
+     "p": 0.117,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": false,
+      "src": "",
+      "paused": true,
+      "readyState": 0,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.15,
+     "atMs": 14364
+    },
+    {
+     "scrollY": 951,
+     "p": 0.306,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": false,
+      "src": "",
+      "paused": true,
+      "readyState": 0,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.35,
+     "atMs": 31617
+    },
+    {
+     "scrollY": 1094,
+     "p": 0.405,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": true,
+      "readyState": 0,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.42,
+     "atMs": 44155
+    },
+    {
+     "scrollY": 1257,
+     "p": 0.482,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": true,
+      "readyState": 4,
+      "t": 0,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.5,
+     "atMs": 59916
+    },
+    {
+     "scrollY": 1461,
+     "p": 0.578,
+     "tier": "full",
+     "ready": true,
+     "playingClass": false,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 1.09,
+      "opacity": "0",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.6,
+     "atMs": 75925
+    },
+    {
+     "scrollY": 1584,
+     "p": 0.638,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 1.84,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.66,
+     "atMs": 91936
+    },
+    {
+     "scrollY": 1706,
+     "p": 0.698,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 2.05,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.72,
+     "atMs": 116067
+    },
+    {
+     "scrollY": 1870,
+     "p": 0.771,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 4.74,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.8,
+     "atMs": 143798
+    },
+    {
+     "scrollY": 2074,
+     "p": 0.864,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 7,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 0.9,
+     "atMs": 177053
+    },
+    {
+     "scrollY": 2278,
+     "p": 0.963,
+     "tier": "full",
+     "ready": true,
+     "playingClass": true,
+     "film": {
+      "attached": true,
+      "src": "beach-film-1280.mp4",
+      "paused": false,
+      "readyState": 4,
+      "t": 1.2,
+      "opacity": "1",
+      "display": "block"
+     },
+     "beachOnScreen": true,
+     "target": 1,
+     "atMs": 208579
+    }
+   ],
+   "clock": [
+    4.02,
+    5.5,
+    6.74,
+    0,
+    1.21,
+    2.22,
+    3.22,
+    4.22,
+    5.22
+   ],
+   "posterVsFrame0": {
+    "film": [
+     188.2,
+     166.4,
+     141.3
+    ],
+    "poster": [
+     188.6,
+     166.4,
+     140.8
+    ],
+    "meanAbsDiff": 1.38,
+    "posterFile": "beach-film-poster-1280.avif"
+   },
+   "reburied": {
+    "scrollY": 849,
+    "p": 0.39,
+    "tier": "full",
+    "ready": true,
+    "playingClass": true,
+    "film": {
+     "attached": true,
+     "src": "beach-film-1280.mp4",
+     "paused": true,
+     "readyState": 4,
+     "t": 3.56,
+     "opacity": "1",
+     "display": "block"
+    },
+    "beachOnScreen": true
+   },
+   "reentered": {
+    "scrollY": 2074,
+    "p": 0.686,
+    "tier": "full",
+    "ready": true,
+    "playingClass": true,
+    "film": {
+     "attached": true,
+     "src": "beach-film-1280.mp4",
+     "paused": false,
+     "readyState": 4,
+     "t": 6.95,
+     "opacity": "1",
+     "display": "block"
+    },
+    "beachOnScreen": true
+   },
+   "below": {
+    "scrollY": 4388,
+    "p": 1,
+    "tier": "full",
+    "ready": true,
+    "playingClass": true,
+    "film": {
+     "attached": true,
+     "src": "beach-film-1280.mp4",
+     "paused": true,
+     "readyState": 4,
+     "t": 7,
+     "opacity": "1",
+     "display": "block"
+    },
+    "beachOnScreen": false
+   },
+   "filmRequests": 2,
+   "firstFilmRequestMs": 44153,
+   "errors": []
+  },
+  "reduced": {
+   "filmRequests": 0,
+   "last": {
+    "scrollY": 900,
+    "p": 0,
+    "tier": "static",
+    "ready": false,
+    "playingClass": false,
+    "film": {
+     "attached": false,
+     "src": "",
+     "paused": true,
+     "readyState": 0,
+     "t": 0,
+     "opacity": "0",
+     "display": "none"
+    },
+    "beachOnScreen": true
+   },
+   "playedAfterSamples": -1,
+   "emptyBox": false,
+   "errors": []
+  },
+  "blocked": {
+   "filmRequests": 1,
+   "last": {
+    "scrollY": 2455,
+    "p": 0.899,
+    "tier": "full",
+    "ready": true,
+    "playingClass": false,
+    "film": "removed",
+    "beachOnScreen": true
+   },
+   "playedAfterSamples": -1,
+   "emptyBox": false,
+   "errors": []
+  },
+  "savedata": {
+   "filmRequests": 0,
+   "last": {
+    "scrollY": 2455,
+    "p": 0.898,
+    "tier": "full",
+    "ready": true,
+    "playingClass": false,
+    "film": {
+     "attached": false,
+     "src": "",
+     "paused": true,
+     "readyState": 0,
+     "t": 0,
+     "opacity": "0",
+     "display": "block"
+    },
+    "beachOnScreen": true
+   },
+   "playedAfterSamples": -1,
+   "emptyBox": false,
+   "errors": []
+  },
+  "slow3g": {
+   "filmRequests": 1,
+   "last": {
+    "scrollY": 2455,
+    "p": 0.9,
+    "tier": "full",
+    "ready": true,
+    "playingClass": true,
+    "film": {
+     "attached": true,
+     "src": "beach-film-1280.mp4",
+     "paused": false,
+     "readyState": 2,
+     "t": 2.22,
+     "opacity": "1",
+     "display": "block"
+    },
+    "beachOnScreen": true
+   },
+   "playedAfterSamples": 21,
+   "emptyBox": false,
+   "errors": []
+  }
+ }
+}

@@ -1,0 +1,21 @@
+{
+  "base": "https://media-baseline.good-times-in-cape-town.pages.dev",
+  "when": "2026-11-06T10:29:56.152Z",
+  "motion": false,
+  "widths": [
+    375,
+    390,
+    768,
+    1024,
+    1440,
+    1920
+  ],
+  "routes": [
+    "/contact/",
+    "/faq/",
+    "/enquire/",
+    "/privacy/",
+    "/terms/"
+  ],
+  "errors": {}
+}
