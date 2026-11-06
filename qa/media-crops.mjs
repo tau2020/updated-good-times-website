@@ -120,6 +120,7 @@ for (const f of found.filter((x) => x.file)) {
 for (const [key, list] of groups) {
   const args = [];
   for (const f of list.sort((a, b) => a.width - b.width)) args.push('(', join(OUT, f.file), '-resize', 'x220', '-gravity', 'North', '-background', '#222', '-splice', '0x18', '-fill', 'white', '-pointsize', '13', '-annotate', '+0+2', `${f.width}px  ${f.frame}`, ')');
-  execFileSync('convert', [...args, '-background', 'white', '-splice', '6x0', '+append', '-quality', '68', join(OUT, 'strips', `${key}.jpg`)]);
+  // Six pixels of white between the crops (gravity West, or the splice would cut each crop down its middle)
+  execFileSync('convert', [...args.flatMap((a) => (a === ')' ? ['-gravity', 'West', '-background', 'white', '-splice', '6x0', ')'] : [a])), '-gravity', 'North', '+append', '-quality', '68', join(OUT, 'strips', `${key}.jpg`)]);
 }
 console.log(`${found.length} crops, ${groups.size} strips`);

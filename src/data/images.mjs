@@ -189,7 +189,7 @@ export const images = [
   { name: 'langa-marches-1960', src: `${D}Langa Township Private Tour - traveller 39-approved.jpg`, origin: 'O', focus: '50% 40%', alt: 'A museum panel on the liberation struggle and the Langa marches of March 1960, with archive photographs' },
 
   // The Cape Winelands: its tables and tastings
-  { name: 'beyerskloof-estate', src: `${D}Good Times profile page - 24.jpg`, origin: 'T', focus: '50% 55%', alt: 'Guests beside the entrance sign of Beyerskloof, the home of Pinotage, on a Stellenbosch wine estate' },
+  { name: 'beyerskloof-estate', src: `${D}Good Times profile page - 24.jpg`, origin: 'T', focus: '94% 55%', alt: 'Guests beside the entrance sign of Beyerskloof, the home of Pinotage, on a Stellenbosch wine estate' },
   { name: 'winelands-estate-terrace', src: `${D}Cape Winelands Private Tour - operator 08.jpg`, origin: 'T', focus: '50% 60%', alt: 'Two guests at a table on a wine estate’s restaurant terrace as a waiter serves them' },
   { name: 'winelands-tasting-counter', src: `${D}Cape Winelands Private Tour - operator 14.jpg`, origin: 'T', focus: '50% 55%', alt: 'Two guests at a wooden tasting counter with bottles of wine and tasting sheets' },
   { name: 'winelands-couple-tasting', src: `${D}People 04 - Couple at a tasting [operator].jpg`, origin: 'T', focus: '58% 42%', alt: 'A smiling couple raising their glasses at a wine tasting in an estate’s cellar' },
