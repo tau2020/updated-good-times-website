@@ -59,11 +59,10 @@ export const SERVICES = [
     short: `${DAY_TOURS.length} private tours`,
     href: 'tours/',
     action: 'Explore Tours',
-    image: 'cape-of-good-hope-sign',
-    focus: '56% 56%',
-    // The Travel Concierge's card: a scene, a badge
-    menuImage: 'boulders-penguins-boardwalk',
-    menuFocus: '66% 66%',
+    // One photograph per service, on its home-page card and its Travel Concierge row alike (a scene, a badge), and
+    // nowhere else (audit/image-change-register.md)
+    image: 'chapmans-peak-wall-trio',
+    focus: '58% 62%',
     badge: 'car',
   },
   {
@@ -74,10 +73,8 @@ export const SERVICES = [
     short: 'Meet and greet at CPT',
     href: 'transfers/#airport',
     action: 'Arrange a Transfer',
-    image: 'airport-departures-wave',
-    focus: '40% 56%',
-    menuImage: 'airport-welcome-sign',
-    menuFocus: '48% 40%',
+    image: 'transfer-driver-selfie',
+    focus: '50% 42%',
     badge: 'plane',
   },
   {
@@ -88,10 +85,9 @@ export const SERVICES = [
     short: 'Quads, skydives and sharks',
     href: 'tours/#adventure',
     action: 'Add an Adventure',
-    image: 'quad-bikes-dunes',
-    focus: '50% 58%',
-    menuImage: 'marine-dynamics-boat',
-    menuFocus: '44% 56%',
+    // Not a Good Times photograph (L, credited): Good Times' few adventure photographs are the activities' own pages
+    image: 'shark-cage-gansbaai',
+    focus: '60% 40%',
     badge: 'wave',
   },
   {
@@ -102,10 +98,8 @@ export const SERVICES = [
     short: 'A custom day or several',
     href: 'enquire/?type=tour&tour=custom',
     action: 'Tailor Your Journey',
-    image: 'rooiberg-red-chair',
-    focus: '42% 40%',
-    menuImage: 'private-guests-arms-raised',
-    menuFocus: '62% 42%',
+    image: 'cape-point-boardwalk-walk',
+    focus: '52% 55%',
     badge: 'map',
   },
 ];
@@ -150,7 +144,7 @@ export function conciergePanel({ bookHref = 'enquire/', reach = '' } = {}) {
   return `<div class="gt-concierge-panel lc-scope" id="concierge" data-concierge-panel hidden>
   <div class="gt-concierge-panel__backdrop" data-concierge-backdrop></div>
   <div class="gt-concierge-panel__sheet" data-concierge-clip role="dialog" aria-modal="true" aria-labelledby="concierge-title">
-    <div class="gt-concierge-panel__scene" aria-hidden="true">${picture({ name: 'cape-point-cliffs', alt: '', sizes: '28rem' })}</div>
+    <div class="gt-concierge-panel__scene" aria-hidden="true">${picture({ name: 'cape-point-coast-view', alt: '', sizes: '28rem' })}</div>
     <button class="gt-concierge-panel__close" type="button" data-concierge-close aria-label="Close the Travel Concierge">${icon('close')}</button>
     <div class="gt-concierge-panel__inner">
       <div class="gt-concierge-panel__head">

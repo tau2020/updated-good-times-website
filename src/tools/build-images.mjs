@@ -8,9 +8,12 @@
  *
  * Widths never exceed the original (no upscaling). The widths produced are
  * written to src/data/images.generated.json, which the picture() helper reads
- * so pages only reference files that exist. Needs macOS `sips`, `cwebp` and
- * `avifenc` (brew install webp libavif); slots marked `ambient` also need
- * `ffmpeg`, for their tiny blurred colour wash (`<name>-ambient.webp`, 72 px).
+ * so pages only reference files that exist. Needs `cwebp` and `avifenc`
+ * (brew install webp libavif, apt install webp libavif-bin) and, to read and
+ * resample the original, macOS `sips` or elsewhere ImageMagick (`identify`,
+ * `convert`: orientation applied, Lanczos, JPEG 95, metadata stripped); slots
+ * marked `ambient` also need `ffmpeg`, for their tiny blurred colour wash
+ * (`<name>-ambient.webp`, 72 px).
  */
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -35,11 +38,25 @@ const HEROES = new Set([...tours, ...services].map((t) => t.images.hero).concat(
 const force = process.argv.includes('--force');
 const only = (process.argv.find((a) => a.startsWith('--only=')) || '').slice(7).split(',').filter(Boolean);
 
+// macOS resamples with sips (as the renditions so far were made); elsewhere ImageMagick does the same job
+const SIPS = process.platform === 'darwin';
+
 async function dims(file) {
+  if (!SIPS) {
+    const { stdout } = await run('identify', ['-format', '%[orientation] %w %h', `${file}[0]`]);
+    const [orientation, w, h] = stdout.trim().split(/\s+/);
+    // Turned a quarter by its EXIF orientation (5–8: LeftTop…LeftBottom): the picture is as tall as the file is wide
+    return /^(Left|Right)/.test(orientation) ? { w: Number(h), h: Number(w) } : { w: Number(w), h: Number(h) };
+  }
   const { stdout } = await run('sips', ['-g', 'pixelWidth', '-g', 'pixelHeight', file]);
   const w = Number(/pixelWidth: (\d+)/.exec(stdout)[1]);
   const h = Number(/pixelHeight: (\d+)/.exec(stdout)[1]);
   return { w, h };
+}
+
+async function resample(file, width, out) {
+  if (SIPS) return run('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '95', '--resampleWidth', String(width), file, '--out', out]);
+  return run('convert', [`${file}[0]`, '-auto-orient', '-colorspace', 'sRGB', '-filter', 'Lanczos', '-resize', `${width}x`, '-quality', '95', '-strip', out]);
 }
 
 /**
@@ -76,7 +93,7 @@ async function one(img, generated) {
     const webp = join(OUT, `${img.name}-${width}.webp`);
     if (!force && !only.length && existsSync(avif) && existsSync(webp)) continue;
     const scaled = join(tmp, `${width}.jpg`);
-    await run('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '95', '--resampleWidth', String(width), file, '--out', scaled]);
+    await resample(file, width, scaled);
     await run('cwebp', ['-quiet', '-q', '78', '-m', '6', '-metadata', 'none', scaled, '-o', webp]);
     await run('avifenc', ['-q', '50', '-s', '6', '-j', '4', '--ignore-exif', '--ignore-xmp', scaled, avif]);
   }

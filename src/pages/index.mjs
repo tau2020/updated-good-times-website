@@ -30,24 +30,18 @@ const airport = services.find((s) => s.id === 'airport');
 /** 03 · The moments between destinations: four stops along Good Times days (captions by place, nobody named). */
 const MOMENTS = [
   { key: 'a', name: 'muizenberg-huts-guests', focus: '50% 56%', caption: 'Muizenberg’s bathing huts', sizes: '(min-width: 64em) min(52vw, 46rem), 100vw', depth: 0 },
-  { key: 'b', name: 'guide-selfie-bay', focus: '56% 40%', caption: 'A selfie above the bay', sizes: '(min-width: 64em) min(26vw, 23rem), 60vw', depth: -1 },
-  { key: 'c', name: 'fairview-goat-tower', focus: '50% 46%', caption: 'The goat tower at Fairview, on a Winelands day', sizes: '(min-width: 64em) min(30vw, 27rem), 100vw', depth: 1 },
+  { key: 'b', name: 'above-the-bay-selfie', focus: '36% 62%', caption: 'A selfie above the bay', sizes: '(min-width: 64em) min(26vw, 23rem), 60vw', depth: -1 },
+  // The library's only photograph of the goat tower, now whole in a frame of its own 4:3 (the 3:2 crop cut the arch and the ramp)
+  { key: 'c', name: 'fairview-goat-tower', focus: '50% 46%', ratio: '4 / 3', caption: 'The goat tower at Fairview, on a Winelands day', sizes: '(min-width: 64em) min(30vw, 27rem), 100vw', depth: 1 },
   { key: 'd', name: 'cape-of-good-hope-sign', focus: '56% 58%', caption: 'At the Cape of Good Hope', sizes: '(min-width: 64em) min(22vw, 19rem), 48vw', depth: -1 },
 ];
 
 /**
- * 04 · The destination carousel: the six destinations (names, lines and links from tours.mjs) as
- * DestinationSlide records, each framed by its own photograph (focal points in images.mjs).
- * The label counts private tours to choose from, never a duration.
+ * 04 · The destination carousel: the six destinations (names, lines, links and photographs from tours.mjs) as
+ * DestinationSlide records, each framed by the destination's own photograph (focal points in images.mjs), the one
+ * its destinations-page card shows. The label counts private tours to choose from, never a duration.
  */
-const FILM = [
-  { id: 'peninsula', image: 'boulders-penguins-boardwalk' },
-  { id: 'city', image: 'bokaap-street' },
-  { id: 'langa', image: 'langa-mural-guests' },
-  { id: 'winelands', image: 'winelands-tasting-flight' },
-  { id: 'overberg', image: 'hermanus-whale-sculpture' },
-  { id: 'garden-route', image: 'rooiberg-red-chair' },
-];
+const FILM = [{ id: 'peninsula' }, { id: 'city' }, { id: 'langa' }, { id: 'winelands' }, { id: 'overberg' }, { id: 'garden-route' }];
 const SLIDES = FILM.map((f) => {
   const d = destinations.find((x) => x.id === f.id);
   const count = d.tours.length;
@@ -58,7 +52,7 @@ const SLIDES = FILM.map((f) => {
     title: d.name,
     description: d.text,
     href: d.href,
-    image: f.image,
+    image: d.image,
     metaLabel: count ? `${count} private ${count === 1 ? 'tour' : 'tours'}` : d.countLabel || 'Private tour',
     metaSpoken: count ? `${count} private ${count === 1 ? 'tour' : 'tours'} to choose from` : '',
     linkLabel: count > 1 ? `Explore the private tours to ${inText}` : count === 1 ? `Explore the private tour to ${inText}` : `Explore the ${d.name.replace(/^The /, '')} multi-day tour`,
@@ -81,18 +75,18 @@ const WAYS = {
  * (media.js). Every crop keeps its subject (focal points in images.mjs); the lightbox shows each photograph whole.
  */
 const GALLERY = [
-  { name: 'boulders-penguin-colony', role: 'wide', tile: { lg: [8, '3 / 2'], md: [2, '16 / 10'], sm: [2, '4 / 3'] }, title: 'African penguins at Boulders Beach', place: 'Boulders Beach, Simon’s Town', story: 'The colony lives among granite boulders on False Bay, one of the last stops of a Peninsula day.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
+  { name: 'boulders-shadows', role: 'wide', tile: { lg: [8, '3 / 2'], md: [2, '16 / 10'], sm: [2, '4 / 3'] }, title: 'Watching the penguins', place: 'Boulders Beach, Simon’s Town', story: 'Our own shadows on the sand at the edge of the colony, one of the last stops of a Peninsula day.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
   { name: 'muizenberg-huts', role: 'wide', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The bathing huts at Muizenberg', place: 'Muizenberg Beach', story: 'Colourful huts and surfers on the way home along False Bay.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
-  { name: 'castle-moat', role: 'wide', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The Castle of Good Hope', place: 'Cape Town', story: 'The 17th-century fortress, Devil’s Peak in its moat: where the city tour begins.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
+  { name: 'cape-minstrels', role: 'wide', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The Cape Minstrels', place: 'Cape Town', story: 'Music and colour in the streets, met on a city day.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
   { name: 'mandela-statue-drakenstein', tile: { lg: [3, '3 / 4'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The statue of Nelson Mandela', place: 'Drakenstein Correctional Centre', story: 'On the road to the Winelands, outside the prison from which he walked free in 1990.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
-  { name: 'district-six-museum', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'The District Six Museum', place: 'Cape Town', story: 'The story of a neighbourhood and the people forced from it, told on the city tour.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
-  { name: 'marine-dynamics-boat', role: 'wide', tile: { lg: [7, '2 / 1'], md: [2, '2 / 1'], sm: [2, '2 / 1'] }, title: 'Heading out to shark territory', place: 'Gansbaai', story: 'The boat out of Gansbaai on a shark cage diving day, gulls overhead.', href: 'tours/shark-cage-diving/', link: 'Shark Cage Diving' },
-  { name: 'winelands-terrace', role: 'food', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A terrace tasting', place: 'A Winelands estate', story: 'Wine poured at the table; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
-  { name: 'company-garden-squirrel', role: 'wide', tile: { lg: [3, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A white squirrel', place: 'The Company’s Garden', story: 'Spotted in Cape Town’s oldest garden. Sightings like this are luck, never a promise.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
-  { name: 'langa-mural', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A mural in Langa', place: 'Langa, Cape Town', story: 'Part of a half day in Langa, alongside the arts centre, the museum and the old beer hall.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
-  { name: 'bokaap-selfie', tile: { lg: [3, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'A selfie in the Bo-Kaap', place: 'Bo-Kaap, Cape Town', story: 'The colourful Cape Malay streets, the last walk of the city tour.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
-  { name: 'langa-traditional-drink', role: 'table', tile: { lg: [7, '3 / 2'], md: [1, '1'], sm: [1, '1'] }, title: 'A traditional drink, shared', place: 'Langa, Cape Town', story: 'The optional traditional beer tasting on the township tour.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
-  { name: 'map-of-africa-viewpoint', role: 'wine', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'The Map of Africa viewpoint', place: 'Near Wilderness', story: 'A forested river valley on the Garden Route, three days or more from Cape Town.', href: 'packages/garden-route-private-tour/', link: 'Garden Route Private Tour' },
+  { name: 'city-heritage-plaque', tile: { lg: [4, 'auto'], md: [1, '1'], sm: [1, '4 / 5'] }, title: 'Reading the city’s history', place: 'Central Cape Town', story: 'Parliament, the Company’s Garden and Greenmarket Square: the city’s story, read on its own streets.', href: tourHref(CITY), link: 'Cape Town City Private Tour' },
+  { name: 'cape-point-aloes', role: 'wide', tile: { lg: [7, '2 / 1'], md: [2, '2 / 1'], sm: [2, '2 / 1'] }, title: 'Aloes above the sea', place: 'The Cape Peninsula', story: 'Fynbos and aloes on the cliffs on the way to Cape Point.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
+  { name: 'burger-lunch-guide', role: 'food', tile: { lg: [5, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'Lunch with our guide', place: '', story: 'Lunch is never part of a tour’s price: we stop wherever you would like to eat, and you pay on the day.', href: 'tours/', link: 'All private tours' },
+  { name: 'cape-point-zebra', role: 'wide', tile: { lg: [3, 'auto'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A zebra on the road', place: 'The Cape Peninsula', story: 'Zebra, eland and ostriches live in the reserve around Cape Point. Sightings like this are luck, never a promise.', href: tourHref(PENINSULA), link: 'Cape Peninsula Private Tour' },
+  { name: 'winelands-couple-tasting', role: 'wide', tile: { lg: [6, '3 / 2'], md: [1, '4 / 3'], sm: [1, '1'] }, title: 'A tasting for two', place: 'The Cape Winelands', story: 'Wine in an estate’s cellar; tasting fees are paid on the day, so you choose what to try.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
+  { name: 'lunch-spread-guests', tile: { lg: [3, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'Lunch in the sun', place: '', story: 'A long lunch on a terrace between the sights, wherever you choose to stop.', href: 'tours/', link: 'All private tours' },
+  { name: 'langa-home-visit', role: 'table', tile: { lg: [7, '3 / 2'], md: [1, '1'], sm: [1, '1'] }, title: 'Welcomed into a home', place: 'Langa, Cape Town', story: 'Part of a half day in Langa, with the arts centre, the museum and the old beer hall.', href: tourHref(TOWNSHIP), link: 'Township Private Tour' },
+  { name: 'winelands-red-tasting', role: 'wine', tile: { lg: [5, 'auto'], md: [1, '1'], sm: [1, '1'] }, title: 'A glass of red', place: 'The Cape Winelands', story: 'Red wine at a tasting on a Winelands day.', href: tourHref(WINELANDS), link: 'Cape Winelands Private Tour' },
 ];
 
 /** 10 · Words from the road: every chosen review as a compact card in the carousel. */
@@ -287,7 +281,7 @@ ${scene({
     </div>
     ${MOMENTS.map(
       (m) => `<figure class="lc-moments__item lc-moments__item--${m.key}" data-depth="${m.depth}" data-rise="moments">
-      <div class="lc-print-frame" style="--focus: ${m.focus}">${picture({ name: m.name, sizes: m.sizes })}</div>
+      <div class="lc-print-frame" style="--focus: ${m.focus}${m.ratio ? `; --ratio: ${m.ratio}` : ''}">${picture({ name: m.name, sizes: m.sizes })}</div>
       <figcaption>${esc(m.caption)}</figcaption>
     </figure>`,
     ).join('\n    ')}
@@ -379,11 +373,11 @@ ${scene({
       ${travelNote({ href: 'about/', label: 'Meet Good Times' })}
     </div>
     <figure class="lc-people__pair lc-people__pair--a" data-depth="1" data-rise="people">
-      <div class="lc-print-frame" style="--focus: 42% 60%">${picture({ name: 'castle-cannons-group', sizes: '(min-width: 64em) min(30vw, 26rem), 100vw' })}</div>
+      <div class="lc-print-frame" style="--focus: 40% 50%">${picture({ name: 'castle-table-mountain', sizes: '(min-width: 64em) min(30vw, 26rem), 100vw' })}</div>
       <figcaption>A city day at the Castle of Good Hope</figcaption>
     </figure>
     <figure class="lc-people__pair lc-people__pair--b" data-depth="-1" data-rise="people">
-      <div class="lc-print-frame" style="--focus: 50% 46%">${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(26vw, 23rem), 100vw' })}</div>
+      <div class="lc-print-frame" style="--focus: 50% 46%; --ratio: 5 / 4">${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(26vw, 23rem), 100vw' })}</div>
       <figcaption>Lunch in a Winelands garden</figcaption>
     </figure>
   </div>

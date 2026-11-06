@@ -1946,6 +1946,25 @@ h4 {
   background: var(--forest-deep);
   overflow: hidden;
 }
+/* A licensed photograph's credit (origin L, not a Good Times photograph), on the photograph itself: small, at its foot
+   on the right, readable on any picture */
+.tour-hero__credit {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 0.6rem;
+  z-index: 1;
+  max-width: calc(100% - 2 * var(--gutter));
+  margin: 0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(7, 16, 18, 0.58);
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+.tour-hero__frame:has(.tour-hero__credit) {
+  position: relative;
+}
 .tour-hero__media {
   position: absolute;
   inset: 0;

@@ -17,6 +17,7 @@
     "email:retry": "node scripts/retry-failed-email.mjs",
     "privacy:erase": "node scripts/erase-personal-data.mjs",
     "video": "bash src/tools/build-video.sh",
+    "video:beach": "bash src/tools/build-beach-film.sh",
     "test:e2e": "playwright test",
     "qa:screens": "node qa/screenshots.mjs --full",
     "guard": "node src/tools/brand-guard.mjs",

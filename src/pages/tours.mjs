@@ -5,6 +5,7 @@ import { diningDiptych } from '../partials/culinary.mjs';
 import { tours, categories, themes } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
 import { reviews } from '../data/reviews.mjs';
+import { imageByName, creditFor } from '../data/images.mjs';
 
 const ITINERARY_NOTE = {
   listed: 'The stops as we list them. Every tour is private, so the route can be shaped around you; we confirm it with your quote.',
@@ -24,9 +25,9 @@ const crumbsList = [{ label: 'Home', href: './' }, { label: 'Tours', href: 'tour
  * card is revealed and spread a little on hover (styles.css, .route-collage); without motion they are simply in place.
  */
 const COLLAGE = [
-  { name: 'boulders-penguin-colony', label: 'Peninsula' },
-  { name: 'bokaap-street', label: 'City' },
-  { name: 'winelands-tasting-flight', label: 'Winelands' },
+  { name: 'boulders-two-penguins', label: 'Peninsula' },
+  { name: 'bokaap-pink-wall', label: 'City' },
+  { name: 'winelands-glasses-up', label: 'Winelands' },
 ];
 const routeCollage = () => `<div class="route-collage" aria-hidden="true">
           <div class="route-collage__stage">
@@ -60,7 +61,8 @@ const CULINARY = {
     title: 'The pleasures along the way',
     text: 'Wine and cheese at Fairview, then the tasting rooms of La Motte and Lanzerac. Tasting fees and lunch aren’t included, so what you taste and where you stop to eat are entirely up to you.',
     left: { name: 'winelands-pergola-lunch', caption: 'Lunch under the vines on a Winelands estate' },
-    right: { name: 'winelands-garden-lunch', caption: 'A garden lunch on a Winelands day' },
+    // The garden lunch with the guide is the home page's (one photograph, one place): here, another real Winelands table
+    right: { name: 'winelands-estate-terrace', caption: 'Lunch on an estate terrace on a Winelands day' },
   },
 };
 
@@ -72,10 +74,10 @@ function listPage() {
     description: `${tours.length} private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving.`,
     priority: 0.9,
     breadcrumbs: crumbsList,
-    preload: [preloadFor('cape-point-cliffs')],
+    preload: [preloadFor('cape-point-headland')],
     body: ({ site }) => `
-<section class="banner" style="--focus: 34% 46%; --banner-h: clamp(24rem, 18rem + 18vw, 36rem)">
-  <div class="banner__media">${picture({ name: 'cape-point-cliffs', eager: true, fetchpriority: 'high', alt: '' })}</div>
+<section class="banner" style="--focus: 58% 44%; --banner-h: clamp(24rem, 18rem + 18vw, 36rem)">
+  <div class="banner__media">${picture({ name: 'cape-point-headland', eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbsList)}
@@ -148,8 +150,12 @@ function features(t) {
   return items;
 }
 
-/** This tour's photos, deduplicated: hero first, then the gallery, then the card (none for a tour without one). */
-const photosOf = (t) => [...new Set([t.images.hero, ...t.images.gallery, t.images.card])].filter(Boolean);
+/**
+ * This tour's gallery: its own photographs, never its hero (the top of the same page) or its card (the tour's photograph
+ * in the tour list and similar days): one photograph, one place (audit/image-change-register.md). The photo band shows
+ * one of them as the gallery's cover and opens the lightbox on it.
+ */
+const photosOf = (t) => [...new Set(t.images.gallery)].filter((n) => n && n !== t.images.hero && n !== t.images.card);
 const landscape = (name) => {
   const { width, height } = imageSize(name);
   return width > height;
@@ -210,6 +216,8 @@ function detailPage(t) {
     { id: 'faqs', label: 'FAQs' },
   ].filter(Boolean);
   const heroSize = t.images.hero ? imageSize(t.images.hero) : { width: 2121, height: 456 };
+  // A licensed photograph (origin L: not Good Times') carries its credit on itself, as its licence asks
+  const heroCredit = t.images.hero && imageByName(t.images.hero)?.origin === 'L' ? `<p class="tour-hero__credit">${esc(creditFor(t.images.hero))}</p>` : '';
 
   const hero = framed
     ? `<section class="tour-hero tour-hero--framed on-dark" data-mobile-cta-after>
@@ -225,6 +233,7 @@ function detailPage(t) {
       t.images.hero
         ? `<div class="tour-hero__frame" data-reveal style="--reveal-i:1; --frame-max: ${heroSize.width}px; --ratio: ${heroSize.width} / ${heroSize.height}">
       ${picture({ name: t.images.hero, sizes: `(min-width: 56em) min(50vw, ${heroSize.width}px), 100vw`, eager: true, fetchpriority: 'high' })}
+      ${heroCredit}
     </div>`
         : `<figure class="tour-hero__figure" data-reveal style="--reveal-i:1">
       <div class="tour-hero__frame tour-hero__frame--art">${artPanel({ cls: 'art-panel--hero' })}</div>
@@ -235,6 +244,7 @@ function detailPage(t) {
     : `<section class="tour-hero" data-mobile-cta-after style="--focus: ${esc(t.heroFocus || '50% 50%')}">
   <div class="tour-hero__media">${picture({ name: t.images.hero, eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container banner__back"><a class="back-link" href="tours/">Back to all tours</a></div>
+  ${heroCredit}
 </section>
 
 <section class="tour-title">

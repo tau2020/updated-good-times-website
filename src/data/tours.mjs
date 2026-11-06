@@ -14,7 +14,12 @@
  *  - `tripadvisor` holds the product's own listing figures, read on 5 Nov 2026; only the
  *    five tours the listing sells have one.
  *  - A tour with no Good Times photograph (`images.hero: null`) shows the approved
- *    logo artwork instead, never another place's photo.
+ *    logo artwork instead, never another place's photo. Since the media audit of
+ *    6 Nov 2026 none does: Cape Agulhas and Sky Diving show openly licensed
+ *    photographs of their own subject (origin L in images.mjs, credited).
+ *  - Each photograph appears in one place only (audit/image-change-register.md): the
+ *    gallery never repeats the tour's hero or card, and a tour with one photograph
+ *    (whale watching, shark cage diving, quad biking, skydiving) shows it as both.
  *  - Points that need the owner are in `confirm` (not rendered) and docs/APPROVAL_REGISTER.md.
  */
 
@@ -93,7 +98,7 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
     price: { from: 6000, currency: 'ZAR', unit: 'per group', tiers: tiers(6000, 12000), note: 'Excludes the Cape of Good Hope and Boulders Beach entrance fees, and lunch.' },
-    images: { hero: 'chapmans-viewpoint-couple', card: 'boulders-penguins-boardwalk', gallery: ['boulders-penguin-colony', 'cape-of-good-hope-sign', 'muizenberg-huts-guests', 'hout-bay-flag-frame', 'peninsula-bench-view'] },
+    images: { hero: 'hout-bay-viewpoint-couple', card: 'boulders-penguins-boardwalk', gallery: ['boulders-welcome-sign', 'boulders-penguin-colony', 'cape-point-sign-trio', 'cape-point-ostrich', 'cape-point-boardwalk', 'boulders-couple-selfie'] },
     heroFocus: '66% 52%',
     seo: {
       title: 'Cape Peninsula Private Tour: Chapman’s Peak, Cape Point & Penguins',
@@ -141,7 +146,7 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
     price: { from: 4000, currency: 'ZAR', unit: 'per group', tiers: tiers(4000, 8000), note: 'Excludes museum entrance fees.' },
-    images: { hero: 'castle-table-mountain', card: 'bokaap-street', gallery: ['district-six-museum', 'heritage-building-guests', 'castle-moat', 'bokaap-selfie', 'company-garden-squirrel'] },
+    images: { hero: 'castle-cannon-couple', card: 'bokaap-street', gallery: ['heritage-building-guests', 'district-six-museum', 'castle-moat', 'bokaap-selfie', 'company-garden-squirrel'] },
     heroFocus: '50% 36%',
     seo: {
       title: 'Cape Town City Private Tour: Castle, District Six & Bo-Kaap',
@@ -184,7 +189,7 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
     price: { from: 6000, currency: 'ZAR', unit: 'per group', tiers: tiers(6000, 12000), note: 'Excludes tasting fees and lunch.' },
-    images: { hero: 'winelands-host-pouring', card: 'winelands-tasting-flight', gallery: ['fairview-goat-tower', 'mandela-statue-drakenstein', 'winelands-terrace', 'winelands-cape-dutch-group', 'winelands-tasting-table'] },
+    images: { hero: 'winelands-cape-dutch-group', card: 'winelands-tasting-flight', gallery: ['winelands-terrace', 'winelands-tasting-counter', 'winelands-group-tasting', 'winelands-terrace-guide'] },
     heroFocus: '56% 46%',
     seo: {
       title: 'Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl',
@@ -225,7 +230,7 @@ export const tours = [
     accessibility: 'Much of the tour is on foot through Langa. Tell us about any mobility needs when you book.',
     cancellation: CANCEL_DAY,
     price: { from: 4000, currency: 'ZAR', unit: 'per group', tiers: tiers(4000, 8000), note: '' },
-    images: { hero: 'langa-mural-guests', card: 'langa-mural', gallery: ['langa-mural-guests', 'langa-traditional-drink', 'langa-mural'] },
+    images: { hero: 'langa-mural-guests', card: 'langa-mural', gallery: ['langa-traditional-drink', 'langa-homes', 'langa-womens-anti-pass', 'langa-blue-home', 'langa-museum-room', 'langa-marches-1960'] },
     heroFocus: '40% 50%',
     seo: {
       title: 'Township Private Tour: Langa, Cape Town',
@@ -262,7 +267,7 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: '',
     price: { from: 3500, currency: 'ZAR', unit: 'per group', tiers: [{ label: 'up to 10 guests', max: 10, amount: 3500 }], note: '' },
-    images: { hero: 'private-guests-arms-raised', card: 'guide-selfie-bay', gallery: ['private-guests-arms-raised', 'guide-selfie-bay'] },
+    images: { hero: 'private-guests-arms-raised', card: 'coast-sunset-couple', gallery: ['beach-thrones', 'chapmans-peak-guide-selfie'] },
     heroFocus: '62% 40%',
     seo: {
       title: 'Private Cape Town Experience: a Tailored Day with Your Own Guide',
@@ -303,7 +308,7 @@ export const tours = [
     cancellation: CANCEL_DAY,
     price: null,
     priceNote: 'Contact us for seasonal pricing.',
-    images: { hero: 'hermanus-frame', card: 'hermanus-whale-sculpture', gallery: ['hermanus-frame', 'hermanus-whale-sculpture'] },
+    images: { hero: 'hermanus-frame', card: 'hermanus-frame', gallery: [] },
     seo: {
       title: 'Whale Watching Private Tour from Cape Town: Hermanus',
       description: 'A seasonal private whale watching day from Cape Town to Hermanus or along the Cape coast, from land or by boat. Best from June to November.',
@@ -342,13 +347,13 @@ export const tours = [
     cancellation: CANCEL_DAY,
     price: null,
     priceNote: 'Contact us for group-based pricing.',
-    images: { hero: null, card: null, gallery: [] },
+    images: { hero: 'agulhas-tip-marker', card: 'agulhas-lighthouse', gallery: [] },
     seo: {
       title: 'Cape Agulhas Private Tour from Cape Town',
       description: 'A private day trip from Cape Town to Cape Agulhas, the southernmost tip of Africa: the lighthouse, the official southernmost point and a scenic drive.',
     },
     tripadvisor: null,
-    confirm: ['No Good Times photograph of Cape Agulhas exists yet: the page shows the approved logo artwork until one is supplied.'],
+    confirm: ['No Good Times photograph of Cape Agulhas exists: the page shows two openly licensed photographs of the southernmost tip and the lighthouse (Wikimedia Commons, credited); a Good Times photograph would replace them.'],
     source: source('cape-agulhas-private-tour'),
     approval: APPROVAL,
   },
@@ -424,7 +429,7 @@ export const tours = [
     cancellation: CANCEL_ACTIVITY,
     price: null,
     priceNote: 'The price depends on group size and location.',
-    images: { hero: 'quad-bikes-dunes', card: 'quad-bikes-convoy', gallery: ['quad-bikes-dunes', 'quad-bikes-convoy'] },
+    images: { hero: 'quad-bikes-convoy', card: 'quad-bikes-convoy', gallery: [] },
     heroFocus: '50% 62%',
     seo: {
       title: 'Quad Biking near Cape Town: a Guided Dune Ride',
@@ -465,13 +470,13 @@ export const tours = [
     cancellation: CANCEL_ACTIVITY,
     price: null,
     priceNote: 'The price depends on the package you choose.',
-    images: { hero: null, card: null, gallery: [] },
+    images: { hero: 'skydive-tandem', card: 'skydive-tandem', gallery: [] },
     seo: {
       title: 'Tandem Sky Diving over Cape Town',
       description: 'A tandem skydive near Cape Town with a qualified instructor, safety training and parachute gear included, and aerial views of the Cape on the way down.',
     },
     tripadvisor: null,
-    confirm: ['No Good Times skydiving photograph exists: the page shows the approved logo artwork; licensed media from the skydiving operator would be needed.', 'The drop zone and operator are not named on the official page.'],
+    confirm: ['No Good Times skydiving photograph exists: the page shows an openly licensed (CC0) tandem skydive, not taken in Cape Town and credited as such; a photograph from the skydiving operator, or the owner\'s AI-generated image (blocked: no image generator here), would replace it.', 'The drop zone and operator are not named on the official page.'],
     source: source('sky-diving'),
     approval: APPROVAL,
   },
@@ -486,13 +491,15 @@ for (const t of tours) if (mostReviewed.includes(t.slug) && !t.themes.includes('
 
 /**
  * Destinations: where Good Times' tours go. Each links to the catalogue filtered by region, or to the
- * tour itself. Descriptions use only facts from the official tour pages.
+ * tour itself. Descriptions use only facts from the official tour pages. `image` is the destination's own photograph,
+ * the same on its home-page carousel card and its destinations-page card (one destination, one photograph), and used
+ * nowhere else (audit/image-change-register.md); the crop keeps the subject recorded in images.mjs.
  */
 export const destinations = [
-  { id: 'peninsula', name: 'The Cape Peninsula', image: 'boulders-penguins-boardwalk', focus: '64% 64%', text: 'Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the penguins at Boulders Beach, south of the city.', href: 'tours/cape-peninsula-private-tour/', tours: tours.filter((t) => t.categories.includes('peninsula')).map((t) => t.slug) },
-  { id: 'city', name: 'Cape Town', image: 'bokaap-street', text: 'The Castle of Good Hope, District Six, the Company’s Garden and the colourful streets of the Bo-Kaap.', href: 'tours/cape-town-city-private-tour/', tours: ['cape-town-city-private-tour', 'private-cape-town-experience'] },
-  { id: 'langa', name: 'Langa', image: 'langa-mural', text: 'A half day in Langa: the Guga S’Thebe arts centre, a walk through the neighbourhood and a drumming session.', href: 'tours/township-private-tour/', tours: ['township-private-tour'] },
-  { id: 'winelands', name: 'The Cape Winelands', image: 'winelands-tasting-flight', focus: '50% 34%', text: 'Stellenbosch, Franschhoek and Paarl: Fairview, La Motte, Lanzerac and the Franschhoek valley.', href: 'tours/cape-winelands-private-tour/', tours: tours.filter((t) => t.categories.includes('winelands')).map((t) => t.slug) },
+  { id: 'peninsula', name: 'The Cape Peninsula', image: 'cape-of-good-hope-cove', text: 'Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the penguins at Boulders Beach, south of the city.', href: 'tours/cape-peninsula-private-tour/', tours: tours.filter((t) => t.categories.includes('peninsula')).map((t) => t.slug) },
+  { id: 'city', name: 'Cape Town', image: 'table-mountain-garden-couple', text: 'The Castle of Good Hope, District Six, the Company’s Garden and the colourful streets of the Bo-Kaap.', href: 'tours/cape-town-city-private-tour/', tours: ['cape-town-city-private-tour', 'private-cape-town-experience'] },
+  { id: 'langa', name: 'Langa', image: 'langa-walk-guide', text: 'A half day in Langa: the Guga S’Thebe arts centre, a walk through the neighbourhood and a drumming session.', href: 'tours/township-private-tour/', tours: ['township-private-tour'] },
+  { id: 'winelands', name: 'The Cape Winelands', image: 'beyerskloof-estate', text: 'Stellenbosch, Franschhoek and Paarl: Fairview, La Motte, Lanzerac and the Franschhoek valley.', href: 'tours/cape-winelands-private-tour/', tours: tours.filter((t) => t.categories.includes('winelands')).map((t) => t.slug) },
   { id: 'overberg', name: 'The Overberg coast', image: 'hermanus-whale-sculpture', text: 'Whale watching at Hermanus in season, shark cage diving off Gansbaai and the southernmost tip of Africa at Cape Agulhas.', href: 'tours/#coast', tours: tours.filter((t) => t.destination === 'overberg').map((t) => t.slug) },
-  { id: 'garden-route', name: 'The Garden Route', image: 'rooiberg-red-chair', focus: '42% 40%', text: 'A private journey of three days or more: Knysna, Wilderness, Oudtshoorn and the Tsitsikamma National Park.', href: 'packages/garden-route-private-tour/', tours: [], countLabel: 'Multi-day tour', note: '3+ days, private' },
+  { id: 'garden-route', name: 'The Garden Route', image: 'map-of-africa-viewpoint', text: 'A private journey of three days or more: Knysna, Wilderness, Oudtshoorn and the Tsitsikamma National Park.', href: 'packages/garden-route-private-tour/', tours: [], countLabel: 'Multi-day tour', note: '3+ days, private' },
 ];

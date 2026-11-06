@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, existsSync, statSync } from 'node:fs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
-import { images, generated, ORIGIN_NOTES } from '../src/data/images.mjs';
+import { images, generated, ORIGIN_NOTES, creditFor } from '../src/data/images.mjs';
 import { tours } from '../src/data/tours.mjs';
 import { PHONE_GALLERY } from '../src/partials/phone-gallery.mjs';
 import { FACES, FRAME } from '../src/data/hero-scene.mjs';
@@ -54,7 +54,7 @@ test('the scene: the held frame first (described, preloaded, high priority), the
   }
 });
 
-test('the phone gallery: the supplied six in order, the first ready before any script, the rest deferred, a closing copy', () => {
+test('the phone gallery: six real Good Times days in order, the first ready before any script, the rest deferred, a closing copy', () => {
   const g = /<section class="phone-gallery"[\s\S]*?<\/section>/.exec(hero)?.[0] || '';
   assert.ok(g, 'in the hero');
   assert.match(g, /<section class="phone-gallery" id="phone-gallery" data-phone-gallery aria-roledescription="carousel" aria-labelledby="phone-gallery-title"/);
@@ -63,7 +63,9 @@ test('the phone gallery: the supplied six in order, the first ready before any s
   // The play/pause key appears only once the gallery actually moves (phone-gallery.js)
   assert.match(g, /<button class="phone-gallery__toggle" type="button" data-phone-toggle aria-label="Pause the photo gallery" hidden>/);
   const items = PHONE_GALLERY.items;
-  assert.deepEqual(items.map((i) => i.id), ['01_table_mountain_selfie', '02_boulders_penguins', '03_bo_kaap_street', '04_beach_jump', '05_cape_of_good_hope', '06_sunset_lookout'], 'the supplied gallery.json order');
+  // Cape Town Memories (media audit, 6 Nov 2026): real photographs of Good Times days, none of them AI-generated or used elsewhere
+  assert.deepEqual(items.map((i) => i.id), ['chapmans-peak', 'bo-kaap', 'boulders', 'winelands', 'cape-point', 'peninsula-guide'], 'the gallery.json order');
+  for (const item of items) assert.notEqual(images.find((x) => x.name === item.image)?.origin, 'G', `${item.id}: a real photograph`);
   const slides = [...g.matchAll(/<div class="phone-gallery__slide"([^>]*)>([\s\S]*?)<\/figure>\s*<\/div>/g)];
   assert.equal(slides.length, items.length + 1, 'six photographs and the copy of the first');
   slides.forEach(([, attrs, body], i) => {
@@ -91,36 +93,38 @@ test('the phone gallery: the supplied six in order, the first ready before any s
 
 test('the lift: one Enlarge button over the phone’s photo area, hidden until the script runs it; each slide says what the enlarged photograph shows', () => {
   const g = /<section class="phone-gallery"[\s\S]*?<\/section>/.exec(hero)?.[0] || '';
-  assert.match(g, /<button class="phone-gallery__open" type="button" data-phone-open aria-haspopup="dialog" aria-label="Enlarge photo 1 of 6: Table Mountain" hidden><\/button>/);
+  assert.match(g, /<button class="phone-gallery__open" type="button" data-phone-open aria-haspopup="dialog" aria-label="Enlarge photo 1 of 6: Chapman’s Peak Drive" hidden><\/button>/);
   const slides = [...g.matchAll(/<div class="phone-gallery__slide"([^>]*)>/g)].map((m) => m[1]);
   const items = PHONE_GALLERY.items;
   slides.forEach((attrs, i) => {
     const item = items[i % items.length];
     const t = tours.find((x) => x.slug === item.tour);
-    assert.ok(attrs.includes(`data-place="${item.caption}" data-tour="${t.shortTitle}" data-tour-href="tours/${t.slug}/" data-credit="An AI-generated illustration"`), `slide ${i + 1}: ${attrs}`);
+    assert.ok(attrs.includes(`data-place="${item.caption}" data-tour="${t.shortTitle}" data-tour-href="tours/${t.slug}/" data-credit="${creditFor(item.image)}"`), `slide ${i + 1}: ${attrs}`);
   });
   // The dialog is made by the script, outside the hero: the hero's one link stays the call to action
   assert.doesNotMatch(home, /class="pg-zoom/);
 });
 
 test('the AI-generated pictures appear in the home hero and at the sand journey’s destination only, and the credits say what they are', () => {
-  assert.deepEqual(ai.map((i) => i.name).sort(), ['hero-moment-poster', 'memories-bokaap', 'memories-boulders', 'memories-camps-bay', 'memories-cape-of-good-hope', 'memories-sunset', 'memories-table-mountain', 'ocean-footprints-reveal']);
+  // Since the media audit (6 Nov 2026) only two: the café scene's held frame and the sand journey's film (its poster);
+  // the phone's AI pictures gave way to real photographs
+  assert.deepEqual(ai.map((i) => i.name).sort(), ['beach-film-poster', 'hero-moment-poster']);
   const uses = (html) => ai.filter((i) => html.includes(`assets/img/${i.name}-`)).map((i) => i.name);
   for (const p of pages.filter((p) => p.path !== 'index.html')) {
     const html = layout(p, site);
     assert.deepEqual(uses(html.slice(html.indexOf('<main'), html.indexOf('</main>'))), [], p.path);
   }
-  // Below the hero: the owner's destination image in the sand journey (6 Nov 2026), and nothing AI-made in the chapters
+  // Below the hero: the owner's destination film in the sand journey (6 Nov 2026), and nothing AI-made in the chapters
   const sand = home.indexOf('<section class="sand-journey"');
   const chapters = home.indexOf('<div class="living-cape"');
-  assert.deepEqual(uses(home.slice(sand, chapters)), ['ocean-footprints-reveal'], 'the sand journey: its destination only');
+  assert.deepEqual(uses(home.slice(sand, chapters)), ['beach-film-poster'], 'the sand journey: its destination only');
   assert.deepEqual(uses(home.slice(chapters)), [], 'nowhere in the chapters');
   assert.match(home.slice(sand, chapters), /<p class="sand-journey__credit">An AI-generated illustration<\/p>/, 'credited beside it');
   assert.equal(ORIGIN_NOTES.G, 'An AI-generated illustration supplied by Good Times in Cape Town, not a photograph of guests');
   const privacy = render('privacy/index.html');
-  assert.match(privacy, /the café scene at the top of the home page and the photographs in its phone are AI-generated illustrations/);
-  assert.match(privacy, /the woman standing at the water’s edge after the footprints below it is an AI-generated illustration too/);
-  for (const i of ai.filter((i) => images.includes(i))) assert.ok(privacy.includes(`<li>${i.alt}: ${ORIGIN_NOTES.G}</li>`), `${i.name} credited`);
+  assert.match(privacy, /the café scene at the top of the home page is an AI-generated illustration of five friends/);
+  assert.match(privacy, /the short film of the woman standing at the water’s edge after the footprints below it is AI-generated too/);
+  for (const i of ai) assert.ok(privacy.includes(`<li>${i.alt}: ${ORIGIN_NOTES.G}</li>`), `${i.name} credited`);
 });
 
 test('the freeze mask lets only the cloud and the sea move, at least 12 px clear of every face', () => {

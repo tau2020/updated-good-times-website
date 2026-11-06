@@ -13,7 +13,7 @@ import { hash2u } from '../src/assets/js/motion/sand/noise.js';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
 import { tours } from '../src/data/tours.mjs';
-import { SAND_TOUR, SAND_IMAGE, SAND_WORDS } from '../src/partials/sand-journey.mjs';
+import { SAND_TOUR, SAND_IMAGE, SAND_FILM, SAND_WORDS } from '../src/partials/sand-journey.mjs';
 import { pages as tourPages } from '../src/pages/tours.mjs';
 
 const plain = { length: 1, width: 1, spread: 1, depth: 1, heelBias: 0, fifth: 0.44, angle: 0 };
@@ -293,10 +293,17 @@ test('the scene in the page: between the hero and the first chapter, static and 
   const t = tours.find((x) => x.slug === SAND_TOUR);
   assert.ok(t && tourPages.some((pg) => pg.path === `tours/${t.slug}/index.html`), 'the link goes to an existing tour page');
   assert.ok(existsSync(new URL(`../src/pages/tours.mjs`, import.meta.url)), 'tour pages exist');
-  // The destination image, not the Camps Bay photograph it replaced (which the chapters and the packages page still use)
+  // The destination: the owner's film over its own first frame (the poster), not a still or the Camps Bay photograph
   assert.match(s, new RegExp(`assets/img/${SAND_IMAGE}-`));
-  assert.doesNotMatch(s, /camps-bay/);
-  assert.match(s, /width="1672" height="941" loading="lazy" decoding="async" fetchpriority="low"/, 'its own size reserved, fetched after the hero');
+  assert.doesNotMatch(s, /camps-bay|ocean-footprints-reveal/);
+  assert.match(s, /width="1280" height="720" loading="lazy" decoding="async" fetchpriority="low"/, 'its own size reserved, fetched after the hero');
   assert.match(readFileSync(new URL('../docs/RIGHTS_REGISTER.md', import.meta.url), 'utf8'), new RegExp(`\\| ${SAND_IMAGE} \\|[^\\n]*In use`));
+  // The film: decorative, muted, inline, looped, nothing fetched until the script attaches it, no controls, no focus
+  const film = /<video class="sand-journey__film"([^>]*)><\/video>/.exec(s);
+  assert.ok(film, 'the film is in the destination, after its poster');
+  for (const a of ['aria-hidden="true"', 'muted', 'playsinline', 'loop', 'preload="none"', 'tabindex="-1"', 'width="1280" height="720"', `data-mp4="${SAND_FILM.mp4}"`]) assert.ok(film[1].includes(a), a);
+  assert.doesNotMatch(film[1], /\bcontrols\b|\bautoplay\b|\bsrc=/, 'no controls, no autoplay attribute, no source before the script decides');
+  assert.ok(existsSync(new URL(`../src/${SAND_FILM.mp4}`, import.meta.url)), 'the film is in the build');
+  assert.ok(s.indexOf('data-sand-film') > s.indexOf(`assets/img/${SAND_IMAGE}-`), 'over its poster');
   assert.match(html, /<script src="assets\/js\/sand-journey\.js" defer><\/script>\n<script src="assets\/js\/living-cape\.js" defer>/, 'before the chapters measure their triggers');
 });
