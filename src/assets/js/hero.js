@@ -5,8 +5,9 @@
    Good Times start Here!, rises into the bottom-left corner and a single sheen crosses it. Whole elements only,
    opacity and small transforms (y, a touch of scale on the wordmark and the call to action), overlapping so it reads
    as one piece: about 4.8 s on desktop, 4.0 s on tablets and 2.9 s on phones (the aircraft at the owner's slower pace,
-   6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s). Once the logo is
-   whole (the landing), the company statement under it is drawn in from left to right, softly (Addendum, 6 Nov 2026).
+   6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s). Then, once the
+   aircraft has handed the logo back whole, the company statement under it is drawn in from left to right, softly, in
+   0.5 s: the entrance's last step (Addendum, 6 Nov 2026), about 5.3 s on desktop, 4.4 s on tablets, 3.2 s on phones.
    The phone is not part of it: its first photograph is there from the first paint, and its gallery
    (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
    (html.cine from the inline gate) and GSAP has loaded; otherwise nothing is hidden or moved and the logo is whole.
@@ -83,11 +84,11 @@
     tl.addLabel('titles', landing);
     if (titles.length) tl.to(titles, { opacity: 1, y: 0, duration: plane ? 0.3 : 0.9, stagger: plane ? 0.085 : 0.28 }, 'titles');
 
-    // The company statement, once the logo entrance is complete: a beat after the landing, or once the brand has arrived
-    // (1.2 s) without the aircraft. A soft left-to-right draw (0.6 s) under the wordmark, ending before the aircraft's
-    // handover, so the entrance is no longer than before; nothing else moves.
-    tl.addLabel('statement', plane ? landing + 0.1 : 1.2);
-    if (statement) tl.to(statement, { opacity: 1, y: 0, clipPath: 'inset(-1em 0% -1em -1em)', duration: 0.6, ease: 'power2.out', clearProps: 'transform,clipPath' }, 'statement');
+    // Act IV — the company statement, once the logo entrance is complete: when the aircraft hands the logo back whole
+    // (its handover, about 0.8 s after the touchdown, its settle done), or once the brand has arrived (1.2 s) without it.
+    // A soft left-to-right draw (0.5 s) under the wordmark; nothing else moves.
+    tl.addLabel('statement', plane ? 0.15 + plane.handoverAt : 1.2);
+    if (statement) tl.to(statement, { opacity: 1, y: 0, clipPath: 'inset(-1em 0% -1em -1em)', duration: 0.5, ease: 'power2.out', clearProps: 'transform,clipPath' }, 'statement');
 
     // Act III — the call to action rises into its corner and settles, then one sheen crosses it (2.2–3.7 s)
     tl.addLabel('cta', 2.2);

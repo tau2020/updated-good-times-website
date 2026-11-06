@@ -501,7 +501,7 @@ test.describe('home hero', () => {
     const plan = await page.evaluate(() => {
       const tl = window.__heroEntrance;
       const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero__cta') ? 'cta' : el.className.split(' ')[0]);
-      return { duration: tl.duration(), timeScale: tl.timeScale(), landsAt: window.__brandPlane && window.__brandPlane.landsAt, tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), targets: t.targets().map(name) })) };
+      return { duration: tl.duration(), timeScale: tl.timeScale(), landsAt: window.__brandPlane && window.__brandPlane.landsAt, handoverAt: window.__brandPlane && window.__brandPlane.handoverAt, tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), duration: t.duration(), targets: t.targets().map(name) })) };
     });
     const startOf = (n) => plan.tweens.find((t) => t.targets.includes(n))?.at;
     expect(startOf('brand')).toBe(0);
@@ -517,16 +517,19 @@ test.describe('home hero', () => {
     }
     expect(startOf('cta')).toBeCloseTo(2.2, 2);
     expect(startOf('hero__cta-sheen')).toBeCloseTo(2.82, 2);
-    // The company statement under the logo (Addendum, 6 Nov 2026): drawn in a beat after the aircraft lands, once the
-    // logo entrance is complete, and done before the aircraft's handover, so the entrance is no longer than before
-    expect(plan.landsAt).toBeGreaterThan(1);
-    expect(startOf('brand-lockup__statement')).toBeCloseTo(0.15 + plan.landsAt + 0.08 + 0.1, 2);
+    // The company statement under the logo (Addendum, 6 Nov 2026): drawn in once the logo entrance is complete, when the
+    // aircraft hands the logo back whole, after its touchdown and settle; it is the entrance's last step
+    expect(plan.handoverAt).toBeGreaterThan(plan.landsAt);
+    expect(startOf('brand-lockup__statement')).toBeCloseTo(0.15 + plan.handoverAt, 2);
+    const last = Math.max(...plan.tweens.map((t) => t.at + t.duration));
+    expect(last, 'nothing after the statement').toBeCloseTo(0.15 + plan.handoverAt + 0.5, 2);
     expect(plan.tweens.some((t) => t.targets.some((n) => /phone-gallery|hero__poster|hero__video/.test(n))), 'the scene and the phone are not part of it').toBe(false);
     const seconds = plan.duration / plan.timeScale;
-    // With the brand aircraft at the owner's slower pace (6 Nov 2026) the entrance ends with the landing and the titles
-    if (isMobile) expect(seconds).toBeLessThanOrEqual(3.1);
+    // With the brand aircraft at the owner's slower pace (6 Nov 2026) the landing and the titles come at about 4.1–4.8 s,
+    // and the company statement (Addendum, 6 Nov 2026) adds its 0.5 s once the logo is whole
+    if (isMobile) expect(seconds).toBeLessThanOrEqual(3.3);
     else expect(seconds).toBeGreaterThan(3.4);
-    expect(seconds).toBeLessThanOrEqual(5);
+    expect(seconds).toBeLessThanOrEqual(5.4);
     // Nothing invisible can take focus while its entrance is pending
     expect(await page.locator('.hero__cta').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });

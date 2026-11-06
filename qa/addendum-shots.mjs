@@ -134,9 +134,9 @@ for (const [name, opts] of [['desktop', { viewport: { width: 1440, height: 900 }
   const page = await ctx.newPage();
   await page.goto(`${AFTER}/`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => window.__heroEntrance && window.__heroEntrance.labels.statement !== undefined, null, { timeout: 20_000 });
-  const plan = await page.evaluate(() => ({ at: window.__heroEntrance.labels.statement, landing: window.__heroEntrance.labels.titles, duration: window.__heroEntrance.duration(), scale: window.__heroEntrance.timeScale() }));
+  const plan = await page.evaluate(() => ({ at: window.__heroEntrance.labels.statement, landing: window.__heroEntrance.labels.titles, handover: window.__brandPlane && 0.15 + window.__brandPlane.handoverAt, duration: window.__heroEntrance.duration(), scale: window.__heroEntrance.timeScale() }));
   const frames = [];
-  for (const [i, dt] of [[0, -0.12], [1, 0.12], [2, 0.3], [3, 0.7]]) {
+  for (const [i, dt] of [[0, -0.05], [1, 0.1], [2, 0.25], [3, 0.6]]) {
     await page.evaluate((t) => { window.__heroEntrance.pause(); window.__heroEntrance.seek(t); }, plan.at + dt);
     await page.waitForTimeout(150);
     const box = await page.locator('.site-header .brand-lockup').boundingBox();
@@ -147,7 +147,7 @@ for (const [name, opts] of [['desktop', { viewport: { width: 1440, height: 900 }
   const out = join(OUT, `reveal-${name}.jpg`);
   await run('convert', [...frames.flat(), '-background', '#ffffff', '-append', '-quality', '80', '-strip', out]);
   made.push(out);
-  metrics.push({ side: 'after', reveal: name, statementAt: plan.at, landingLabel: plan.landing, entrance: plan.duration, timeScale: plan.scale, seconds: plan.duration / plan.scale });
+  metrics.push({ side: 'after', reveal: name, statementAt: plan.at, landingLabel: plan.landing, handover: plan.handover, entrance: plan.duration, timeScale: plan.scale, seconds: plan.duration / plan.scale });
   await ctx.close();
 }
 

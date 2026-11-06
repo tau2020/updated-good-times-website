@@ -98,13 +98,15 @@ test('the header grows by the statement’s line only, and phones narrower than 
   assert.doesNotMatch(rule(css, '.brand'), /margin-right|flex-shrink/);
 });
 
-test('the reveal: GSAP draws the statement in after the logo entrance completes (the landing), on the home page with motion only', () => {
+test('the reveal: GSAP draws the statement in after the logo entrance completes (the aircraft’s handover), on the home page with motion only', () => {
   // Without motion (no html.cine), or off the home page, the script stops before anything is hidden
   assert.match(hero, /if \(!html\.classList\.contains\('cine'\) \|\| !gsap \|\| !document\.body\.classList\.contains\('home'\)\) return finish\(\);/);
   assert.match(hero, /var statement = header && one\('\.brand-lockup__statement', header\);/);
   assert.match(hero, /var staged = \[brand, statement, bookNow\]\.concat\(titles\)\.filter\(Boolean\);\s*gsap\.set\(staged, \{ opacity: 0 \}\);/);
-  assert.match(hero, /tl\.addLabel\('statement', plane \? landing \+ 0\.1 : 1\.2\);/);
-  assert.match(hero, /tl\.to\(statement, \{ opacity: 1, y: 0, clipPath: 'inset\(-1em 0% -1em -1em\)', duration: 0\.6, ease: 'power2\.out', clearProps: 'transform,clipPath' \}, 'statement'\);/);
+  assert.match(hero, /tl\.addLabel\('statement', plane \? 0\.15 \+ plane\.handoverAt : 1\.2\);/);
+  assert.match(hero, /tl\.to\(statement, \{ opacity: 1, y: 0, clipPath: 'inset\(-1em 0% -1em -1em\)', duration: 0\.5, ease: 'power2\.out', clearProps: 'transform,clipPath' \}, 'statement'\);/);
+  // The aircraft's nested timeline sits at 0.15 s; its handover is where the logo is whole again (brand-plane.js)
+  assert.match(hero, /tl\.add\(plane\.timeline, 'brand\+=0\.15'\);/);
   // Until the timeline takes over it is held like the rest of the header's entrance, with the same timed fallback
   assert.match(css, /\.cine:not\(\.intro-ready\) \.home \[data-intro\] \{\s*opacity: 0;[\s\S]*?animation: intro-fallback 1ms linear 2\.8s forwards;/);
 });
