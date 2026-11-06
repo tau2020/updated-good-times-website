@@ -1,6 +1,6 @@
 import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead, imageWidth, imageSize, showRating, ratingRow, stars, sfield, travellersField, moneyTag, currencyPicker, priceBasis, artPanel } from '../partials/ui.mjs';
 import { tourCard, reviewCard, enquireTourHref, packageCard } from '../partials/cards.mjs';
-import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS } from '../partials/media.mjs';
+import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS, focusOf } from '../partials/media.mjs';
 import { diningDiptych } from '../partials/culinary.mjs';
 import { tours, categories, themes } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
@@ -416,7 +416,7 @@ ${CULINARY[t.slug] ? diningDiptych(CULINARY[t.slug]) : ''}
 
 ${
   band
-    ? `<section class="photo-band" aria-label="Photos of this tour" style="--focus: 50% 50%">
+    ? `<section class="photo-band" aria-label="Photos of this tour" style="--focus: ${focusOf(band)}">
   ${picture({ name: band, sizes: coverSizes(band, [['', '100vw', BAND_H]]), alt: '' })}
   <div class="photo-band__action">
     <button type="button" class="gt-button gt-button--secondary gt-button--on-dark photo-band__btn" data-lc-show="${gallery.findIndex((g) => g.name === band)}" aria-haspopup="dialog" hidden>View Gallery<span class="photo-band__count">${photos.length} photos</span></button>

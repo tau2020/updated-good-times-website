@@ -102,13 +102,13 @@ export const images = [
   // Langa
   { name: 'langa-mural', src: `${W}langa-mural.jpg`, origin: 'W', focus: '50% 50%', alt: 'A colourful mural painted on a building wall in Langa under a bright blue sky' },
   { name: 'langa-mural-guests', src: `${U}langa-mural-guests.jpg`, origin: 'U', full: true, focus: '40% 56%', alt: 'Guests in front of a bright mural spelling out Langa' },
-  { name: 'langa-traditional-drink', src: `${T}langa-traditional-drink.jpg`, origin: 'T', focus: '46% 40%', alt: 'A Langa resident sharing a traditional drink with a guest' },
+  { name: 'langa-traditional-drink', src: `${T}langa-traditional-drink.jpg`, origin: 'T', focus: '46% 6%', alt: 'A Langa resident sharing a traditional drink with a guest' },
 
   // The Cape Winelands
   { name: 'winelands-tasting-flight', src: `${U}winelands-tasting-flight.jpg`, origin: 'U', focus: '52% 36%', alt: 'A guest raising a glass of white wine beside a tasting flight, vineyard views through the windows' },
   { name: 'winelands-cape-dutch-group', src: `${U}winelands-cape-dutch-group.jpg`, origin: 'U', full: true, focus: '50% 52%', alt: 'A group of guests in front of a white Cape Dutch manor house on a Winelands estate' },
   { name: 'winelands-host-pouring', src: `${T}winelands-host-pouring.jpg`, origin: 'T', focus: '56% 50%', alt: 'A wine host pouring for guests at an outdoor table on a wine estate' },
-  { name: 'winelands-terrace', src: `${T}winelands-terrace.jpg`, origin: 'T', focus: '50% 50%', alt: 'Guests at a terrace table on a wine estate as a host presents a bottle' },
+  { name: 'winelands-terrace', src: `${T}winelands-terrace.jpg`, origin: 'T', focus: '50% 12%', alt: 'Guests at a terrace table on a wine estate as a host presents a bottle' },
   { name: 'winelands-pergola-lunch', src: `${T}winelands-pergola-lunch.jpg`, origin: 'T', focus: '50% 54%', alt: 'Guests at a long table under a vine-shaded pergola on a Winelands estate' },
   { name: 'winelands-tasting-table', src: `${T}winelands-tasting-table.jpg`, origin: 'T', focus: '50% 50%', alt: 'Five guests around a wine tasting table with glasses and tasting notes' },
   { name: 'winelands-garden-lunch', src: `${U}winelands-garden-lunch.jpg`, origin: 'U', focus: '50% 46%', alt: 'Guests and their guide smiling around a garden lunch table on a Winelands estate' },
@@ -153,7 +153,7 @@ export const images = [
   { name: 'chapmans-peak-wall-trio', src: `${D}Cape Peninsula Private Tour - operator 10.jpg`, origin: 'T', focus: '58% 62%', alt: 'Three guests sitting on a stone wall on Chapman’s Peak Drive, the cliffs and the Atlantic behind them' },
   { name: 'boulders-shadows', src: `${D}second-scene-after-hero-section.jpg`, origin: 'S', full: true, focus: '50% 48%', alt: 'African penguins gathered on the white sand at Boulders Beach, the long shadows of people watching them from the boardwalk' },
   { name: 'cape-point-ostrich', src: `${D}Good Times profile page - 12.jpg`, origin: 'T', focus: '62% 45%', alt: 'An ostrich among the green fynbos on a hillside under a blue sky' },
-  { name: 'boulders-welcome-sign', src: `${D}Cape Peninsula Private Tour - operator 11.jpg`, origin: 'T', focus: '46% 55%', alt: 'Two guests beside the Welcome to Boulders sign, home of the African penguin' },
+  { name: 'boulders-welcome-sign', src: `${D}Cape Peninsula Private Tour - operator 11.jpg`, origin: 'T', focus: '46% 30%', alt: 'Two guests beside the Welcome to Boulders sign, home of the African penguin' },
   { name: 'cape-point-sign-trio', src: `${D}Cape Peninsula Private Tour - operator 09.jpg`, origin: 'T', focus: '50% 58%', alt: 'Three guests behind the Cape Point sign with its latitude and longitude, the hills of the reserve behind' },
   { name: 'cape-point-boardwalk', src: `${D}Good Times profile page - 14.jpg`, origin: 'T', focus: '55% 55%', alt: 'A wooden boardwalk through the fynbos above a white beach and the Atlantic near Cape Point' },
   { name: 'cape-point-boardwalk-walk', src: `${D}good-times-cape-town-024.jpg`, origin: 'S', focus: '52% 55%', alt: 'A guest walking down a wooden boardwalk towards a white beach and the Atlantic near Cape Point' },
