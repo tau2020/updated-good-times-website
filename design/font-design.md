@@ -53,7 +53,7 @@ any of these faces.
   | Fallback face | Weights | Over | `size-adjust` | `ascent-override` | `descent-override` | `line-gap-override` |
   |---|---|---|---|---|---|---|
   | Bricolage Grotesque Fallback | 100–549 | Arial, Helvetica, Liberation Sans | 108% | 86.1% | 25% | 0% |
-  | Bricolage Grotesque Fallback | 550–1000 | Arial Bold, Helvetica Bold, Liberation Sans Bold | 98.5% | 94.4% | 27.4% | 0% |
+  | Bricolage Grotesque Fallback | 550–1000 | Arial Bold, Helvetica Bold, Liberation Sans Bold | 99.5% | 93.5% | 27.1% | 0% |
   | DM Sans Fallback | 100–549 | Arial, Helvetica, Liberation Sans | 106% | 93.5% | 29.2% | 0% |
   | DM Sans Fallback | 550–1000 | Arial Bold, Helvetica Bold, Liberation Sans Bold | 101% | 98.2% | 30.7% | 0% |
   | Caveat Fallback | all | Arial, Helvetica, Liberation Sans | 77.4% | 124% | 38.7% | 0% |
@@ -62,7 +62,11 @@ any of these faces.
   they were set in plain Arial, narrower than Bricolage Bold (which is 98–100% of Arial Bold's width at 34–44 px, but
   106–110% of Arial Regular's), and some wrapped onto one line less until the web font arrived. The first preview
   showed it as a 16–45 px jump at 412 px on the tours, contact and reviews pages; the weight-split faces fixed it
-  (`qa/surgical-change-report.md`).
+  (`qa/surgical-change-report.md`). The bold face's 99.5% was then set from the site's own headings measured in both
+  faces at phone sizes (median width ratio 1.00 for 44 px headings), where a late swap is most likely; at the desktop
+  title size (72 px, optical size 72) Bricolage runs a few per cent narrower than the fallback, and desktop
+  connections usually have the preloaded face before the first paint. `qa/surgical-fontswap.mjs` checks that no page's
+  first block changes height when the fonts arrive.
 
 ## 3. Tokens
 
