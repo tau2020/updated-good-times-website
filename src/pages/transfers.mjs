@@ -2,6 +2,7 @@ import { focusOf } from '../partials/media.mjs';
 import { esc, icon, button, leafButton, picture, preloadFor, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
 import { rowCard } from '../partials/cards.mjs';
 import { services, types } from '../data/transfers.mjs';
+import { fromLine } from '../data/pricing.mjs';
 
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Transfers', href: 'transfers/' }];
@@ -59,7 +60,7 @@ export const page = {
   path: 'transfers/index.html',
   nav: 'transfers/',
   title: 'Airport Transfers in Cape Town',
-  description: 'Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R800 per trip for 1–4 guests.',
+  description: `Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. ${fromLine(airport.price)}.`,
   priority: 0.9,
   breadcrumbs: crumbs,
   // The banner is art-directed (images.mjs): a wide cut of traveller 12 from 48em, a taller one for phones; each

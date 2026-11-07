@@ -36,11 +36,11 @@ Everything that is still waiting for the owner of Good Times in Cape Town, as of
 
 ## D. Tours, prices and booking rules
 
-Every product, price and rule shown comes from Good Times' own pages (read 5 Nov 2026). These points could not be settled from them.
+Every product, price and rule shown comes from Good Times' own pages (read 5 Nov 2026), except the four prices the owner approved on 7 Nov 2026 (D11). Every rate is set in one place, `src/data/pricing.mjs`. These points could not be settled from the official pages.
 
 | # | Point | Where it shows |
 |---|---|---|
-| D1 | The Peninsula, City, Winelands and Township tours and the airport transfer say "Max 4" yet also list a 5–8 guest rate. Confirm the group sizes and vehicles | Both tiers are shown as published |
+| D1 | The Peninsula and Winelands tours say "Max 4" yet also list a 5–8 guest rate. Confirm the group sizes and vehicles (the City and Township tours and the airport transfer: settled by D11; the vehicle for 5–8 transfer guests still to confirm) | Both tiers are shown as published |
 | D2 | Private Cape Town Experience: its itinerary, inclusions and usual length ("Itinerary details coming soon" on the current site) | Price and group size only |
 | D3 | Shark Cage Diving: the operator to name (the boat in Good Times' photograph is Marine Dynamics) | Operator not named; price on enquiry |
 | D4 | Quad Biking: where rides take place | "Dunes or off-road trails"; price on enquiry |
@@ -50,6 +50,7 @@ Every product, price and rule shown comes from Good Times' own pages (read 5 Nov
 | D8 | Whale Watching and Cape Agulhas: prices | "Price on enquiry" |
 | D9 | Booking rules used by the availability check: 2 vehicles, 24 hours' notice, transfers 04:00–23:00, holds of 2 h (airport) and 3 h (other) (`BOOKING_RULES`) | Working defaults; they only matter once A4 is live |
 | D10 | Approximate prices in other currencies beside the rand price (European Central Bank rates via Frankfurter, labelled as approximate) | Shown; set `EXCHANGE_RATES_URL=off` to show rand only |
+| D11 | **Approved by the owner, 7 Nov 2026 (the surgical pricing update):** City Tour R4,500 for 1–4 guests and R9,000 for 5–8; Township Tour R4,500 for 1–4 and R9,000 for 5–8; Private Cape Town Experience from R6,000 for 1–20; Airport Transfer R850 for 1–4 and R1,700 for 5–8. Per group or per trip, never per person; no other group size is priced | Shown everywhere these packages are priced (`src/data/pricing.mjs`, `test/pricing.test.mjs`, `reports/pricing-update.md`); the Experience's group size is now "up to 20" |
 
 ## P. Photographs (details: `docs/RIGHTS_REGISTER.md`)
 

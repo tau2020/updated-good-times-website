@@ -67,8 +67,8 @@ test.describe('currency', () => {
     await page.evaluate(() => (window.__sameDocument = true));
     await choose(page, 'USD');
     await expect(firstPrice(page)).toHaveText('≈about US$362');
-    // Every card's price follows, each converted once from its own rand amount (R6,000, R4,000, R3,500, R8,500).
-    await expect(page.locator('main [data-money]')).toHaveText(['≈about US$362', '≈about US$241', '≈about US$362', '≈about US$241', '≈about US$211', '≈about US$512']);
+    // Every card's price follows, each converted once from its own rand amount (R6,000, R4,500, R6,000, R4,500, R6,000, R8,500).
+    await expect(page.locator('main [data-money]')).toHaveText(['≈about US$362', '≈about US$271', '≈about US$362', '≈about US$271', '≈about US$362', '≈about US$512']);
     const shown = await page.locator('main [data-money]').evaluateAll((els) => els.map((e) => e.dataset.moneyShown));
     expect(new Set(shown)).toEqual(new Set(['USD']));
     await expect(page.locator('main')).not.toContainText(NO_NOTE);
@@ -76,14 +76,14 @@ test.describe('currency', () => {
 
     // A tour page: the booking card and both group tiers in USD; then a reload; then back.
     await page.goto('/tours/cape-town-city-private-tour/?nomotion');
-    await expect(page.locator('.enquiry-card__amount [data-money]')).toHaveText('≈about US$241');
-    await expect(page.locator('.enquiry-card .price-tiers [data-money]')).toHaveText(['≈about US$241', '≈about US$482']);
+    await expect(page.locator('.enquiry-card__amount [data-money]')).toHaveText('≈about US$271');
+    await expect(page.locator('.enquiry-card .price-tiers [data-money]')).toHaveText(['≈about US$271', '≈about US$542']);
     await expect(page.locator('.enquiry-card [data-currency-face]')).toHaveText('USD (US$)');
     await page.reload();
-    await expect(page.locator('.enquiry-card__amount [data-money]')).toHaveText('≈about US$241');
+    await expect(page.locator('.enquiry-card__amount [data-money]')).toHaveText('≈about US$271');
     await choose(page, 'GBP');
-    await expect(page.locator('.enquiry-card__amount [data-money]')).toHaveText('≈about £180');
-    await expect(page.locator('.enquiry-card .price-tiers [data-money]')).toHaveText(['≈about £180', '≈about £361']);
+    await expect(page.locator('.enquiry-card__amount [data-money]')).toHaveText('≈about £203');
+    await expect(page.locator('.enquiry-card .price-tiers [data-money]')).toHaveText(['≈about £203', '≈about £406']);
     await page.goBack();
     await expect(firstPrice(page)).toHaveText('≈about £270');
     // Back to the prices' own currency: no marks.
@@ -95,8 +95,8 @@ test.describe('currency', () => {
     await visitorFrom(page, 'GB');
     await page.goto('/transfers/?nomotion');
     await expect(picker(page)).toHaveCount(1);
-    // The airport transfer: R800 per trip for 1–4 guests (shown twice), R1,600 for 5–8.
-    await expect(page.locator('main [data-money]')).toHaveText(['≈about £36', '≈about £36', '≈about £72']);
+    // The airport transfer: R850 per trip for 1–4 guests (shown twice), R1,700 for 5–8.
+    await expect(page.locator('main [data-money]')).toHaveText(['≈about £38', '≈about £38', '≈about £77']);
   });
 
   test('rates unavailable: every price stays in rand and the selector says so, without offering a change', async ({ page }) => {
@@ -134,12 +134,12 @@ test.describe('currency', () => {
     await visitorFrom(page, 'ZA');
     await page.goto('/enquire/?type=tour&tour=cape-town-city-private-tour&nomotion');
     const total = page.locator('[data-total-text]');
-    await expect(total).toHaveText('R4,000 for your private group of 2 · the rate for 1–4 guests');
+    await expect(total).toHaveText('R4,500 for your private group of 2 · the rate for 1–4 guests');
     const t = page.locator('[data-wizard-step="details"][data-path="tour"]');
     await t.locator('[name="pickup_area"]').fill('Hotel in Sea Point');
     await t.locator('[name="special_requests"]').fill('A relaxed pace, please.');
     await t.locator('[data-currency-area] select').selectOption('USD');
-    await expect(total).toHaveText('≈US$241 for your private group of 2 · the rate for 1–4 guests');
+    await expect(total).toHaveText('≈US$271 for your private group of 2 · the rate for 1–4 guests');
     await expect(t.locator('[name="pickup_area"]')).toHaveValue('Hotel in Sea Point');
     await expect(t.locator('[name="special_requests"]')).toHaveValue('A relaxed pace, please.');
     await expect(t.locator('.booking-total__note')).toHaveText(/^Not an amount due/);

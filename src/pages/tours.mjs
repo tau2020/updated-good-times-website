@@ -1,4 +1,4 @@
-import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead, imageWidth, imageSize, showRating, ratingRow, stars, sfield, travellersField, moneyTag, currencyPicker, priceBasis, artPanel } from '../partials/ui.mjs';
+import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead, imageWidth, imageSize, showRating, ratingRow, stars, sfield, travellersField, moneyTag, currencyPicker, priceBasis, priceOffers, artPanel } from '../partials/ui.mjs';
 import { tourCard, reviewCard, enquireTourHref, packageCard } from '../partials/cards.mjs';
 import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS, focusOf } from '../partials/media.mjs';
 import { diningDiptych } from '../partials/culinary.mjs';
@@ -298,7 +298,7 @@ function detailPage(t) {
         ...(t.itinerary.length
           ? { itinerary: { '@type': 'ItemList', itemListElement: t.itinerary.map((s, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'TouristAttraction', name: s.stop } })) } }
           : {}),
-        ...(t.price ? { offers: { '@type': 'Offer', price: String(t.price.from), priceCurrency: t.price.currency, description: priceBasis(t.price), url: `__SITE__/tours/${t.slug}/` } } : {}),
+        ...(t.price ? { offers: priceOffers(t.price, `__SITE__/tours/${t.slug}/`) } : {}),
       },
     ],
     mobileCta: ({ site }) => `<div class="mobile-cta" data-mobile-cta>

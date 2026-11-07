@@ -9,6 +9,7 @@ import { sandJourney } from '../partials/sand-journey.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
+import { fromLine } from '../data/pricing.mjs';
 import { reviews } from '../data/reviews.mjs';
 import { reviewerPhoto } from '../partials/reviewer-photo.mjs';
 import { credentialsStrip } from '../partials/credentials.mjs';
@@ -70,7 +71,7 @@ const SLIDES = FILM.map((f) => {
 /** 05 · Your journey, your way: the practical facts under each service's photograph (all from the official site). */
 const WAYS = {
   tours: ['Pickup from your accommodation', 'Only your group and your guide'],
-  airport: ['Meet and greet with a name board', `From R${airport.price.from.toLocaleString('en-GB')} per trip for 1–4 guests`],
+  airport: ['Meet and greet with a name board', fromLine(airport.price)],
   adventure: ['Quad biking, skydiving, shark cage diving', 'Priced on enquiry, by season and package'],
   journey: ['A day planned around you', 'Or the Garden Route over three days or more'],
 };

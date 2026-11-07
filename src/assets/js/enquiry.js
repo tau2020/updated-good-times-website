@@ -636,7 +636,9 @@ function init(root) {
   /**
    * The indicative total from Good Times' published group rates (cfg.prices: { slug: { unit, tiers } }), in the
    * visitor's currency (currency.js): a private group's rate is chosen by its size (adults and children together);
-   * a per-day rate is multiplied by the days (nights + 1) once nights are chosen. Never an amount due.
+   * a starting price (`startingFrom`, the Private Cape Town Experience) keeps its "From"; a per-day rate is
+   * multiplied by the days (nights + 1) once nights are chosen; a group larger than the last tier gets no amount.
+   * Never an amount due.
    */
   function updateTotal() {
     const text = panels.tour.querySelector('[data-total-text]');
@@ -658,7 +660,7 @@ function init(root) {
           ? `${display(tier.amount, { times: days }).text} for ${days} days · ${day} a day for ${tier.label}`
           : `From ${day} a day · the rate for ${tier.label}`;
       } else {
-        text.textContent = `${display(tier.amount).text} for your private group of ${guests} · the rate for ${tier.label}`;
+        text.textContent = `${tier.startingFrom ? 'From ' : ''}${display(tier.amount).text} for your private group of ${guests} · the rate for ${tier.label}`;
       }
     } else if (cfg.showPrices && tiers.length && guests > tiers[tiers.length - 1].max) {
       text.textContent = `Groups of more than ${tiers[tiers.length - 1].max}: we’ll confirm your quote`;

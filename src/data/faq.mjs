@@ -5,6 +5,8 @@
  * plus two answers drawn from the official tour pages (group prices, the whale season).
  * Each answer notes its `source`.
  */
+import { groupMax } from './pricing.mjs';
+
 const FAQ = 'goodtimesincapetown.co.za/faq/, read on 5 Nov 2026';
 
 export const faqs = [
@@ -19,10 +21,10 @@ export const faqs = [
   {
     q: 'Are prices per person or per group?',
     a: [
-      'Per group. Our published rates are for a private group of one to four guests, with a second rate for five to eight on most day tours, and the airport transfer is priced per trip, not per person. Some activities are priced on enquiry, by season or by package.',
+      `Per group. Our published rates are for a private group of one to four guests, with a second rate for five to eight on most day tours; the Private Cape Town Experience has one rate for a group of up to ${groupMax('private-cape-town-experience')}, and the airport transfer is priced per trip, not per person. Some activities are priced on enquiry, by season or by package.`,
       'We confirm your price for your date, your group and any options with your quote.',
     ],
-    source: 'The official tour pages, read on 5 Nov 2026',
+    source: 'The official tour pages, read on 5 Nov 2026, and the prices approved by Good Times on 7 Nov 2026',
   },
   {
     q: 'What payment methods do you accept?',

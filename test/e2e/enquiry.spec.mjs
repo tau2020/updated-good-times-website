@@ -248,19 +248,19 @@ test.describe('enquiry wizard (preview build)', () => {
     await expect(t.locator('[data-tour-card="cape-town-city-private-tour"]')).toContainText('5.0');
     await expect(t.locator('[data-tour-card]:visible')).toHaveCount(1);
     await expect(t.locator('[name="adults"]')).toHaveValue('3');
-    // The published rate is per private group: R4,000 for 1–4 guests, R8,000 for 5–8, on enquiry above that.
-    await expect(t.locator('[data-total-text]')).toHaveText('R4,000 for your private group of 3 · the rate for 1–4 guests');
+    // The approved rate is per private group: R4,500 for 1–4 guests, R9,000 for 5–8, on enquiry above that.
+    await expect(t.locator('[data-total-text]')).toHaveText('R4,500 for your private group of 3 · the rate for 1–4 guests');
     await expect(t.locator('[data-total-row]')).toContainText('Not an amount due');
     await t.locator('[aria-label="Fewer adults"]').click();
-    await expect(t.locator('[data-total-text]')).toHaveText('R4,000 for your private group of 2 · the rate for 1–4 guests');
+    await expect(t.locator('[data-total-text]')).toHaveText('R4,500 for your private group of 2 · the rate for 1–4 guests');
     // Children count towards the group: 2 adults and 3 children are a group of 5.
     await t.locator('[name="children"]').fill('3');
-    await expect(t.locator('[data-total-text]')).toHaveText('R8,000 for your private group of 5 · the rate for 5–8 guests');
+    await expect(t.locator('[data-total-text]')).toHaveText('R9,000 for your private group of 5 · the rate for 5–8 guests');
     await t.locator('[name="children"]').fill('0');
     await t.locator('[name="adults"]').fill('9');
     await expect(t.locator('[data-total-text]')).toHaveText('Groups of more than 8: we’ll confirm your quote');
     await t.locator('[name="adults"]').fill('2');
-    await expect(t.locator('[data-total-text]')).toHaveText('R4,000 for your private group of 2 · the rate for 1–4 guests');
+    await expect(t.locator('[data-total-text]')).toHaveText('R4,500 for your private group of 2 · the rate for 1–4 guests');
     // Calendar: next month, pick the first allowed day; the native input follows.
     const cal = t.locator('[data-calendar-for="enq-tour-preferred-date"]');
     await expect(cal.locator('[role="grid"]')).toBeVisible();
@@ -279,6 +279,44 @@ test.describe('enquiry wizard (preview build)', () => {
     await expect(t.locator('[data-tour-card="custom"]')).toBeVisible();
     await expect(t.locator('[data-total-text]')).toHaveText('We’ll confirm your quote');
     await axeClean(page);
+  });
+
+  test('the approved prices of 7 Nov 2026 in the estimate: each group size, "From" for the Experience, a quote beyond the last tier', async ({ page }) => {
+    await inRand(page);
+    await open(page, '?type=tour&tour=township-private-tour&adults=1');
+    const t = step(page, 'details', 'tour');
+    const total = t.locator('[data-total-text]');
+    const group = async (adults, children = 0) => {
+      await t.locator('[name="adults"]').fill(String(adults));
+      await t.locator('[name="children"]').fill(String(children));
+    };
+    for (const slug of ['township-private-tour', 'cape-town-city-private-tour']) {
+      await t.locator('[name="tour_slug"]').selectOption(slug);
+      for (const n of [1, 4]) {
+        await group(n);
+        await expect(total, `${slug}, ${n}`).toHaveText(`R4,500 for your private group of ${n} · the rate for 1–4 guests`);
+      }
+      for (const n of [5, 8]) {
+        await group(n - 1, 1);
+        await expect(total, `${slug}, ${n}`).toHaveText(`R9,000 for your private group of ${n} · the rate for 5–8 guests`);
+      }
+      await group(9);
+      await expect(total, `${slug}, 9`).toHaveText('Groups of more than 8: we’ll confirm your quote');
+    }
+    // The Private Cape Town Experience: one rate for 1–20 guests, and it stays a starting price.
+    await t.locator('[name="tour_slug"]').selectOption('private-cape-town-experience');
+    for (const [adults, children] of [[1, 0], [10, 2], [20, 0]]) {
+      await group(adults, children);
+      await expect(total).toHaveText(`From R6,000 for your private group of ${adults + children} · the rate for 1–20 guests`);
+    }
+    await group(18, 3);
+    await expect(total).toHaveText('Groups of more than 20: we’ll confirm your quote');
+    await expect(t.locator('[data-currency-area]')).toBeHidden();
+    // An unpriced group can still send its request: the step moves on to the traveller details.
+    await t.locator('[name="preferred_date"]').fill(inDays(30));
+    await t.locator('[name="pickup_area"]').fill('Hotel in Sea Point');
+    await t.locator('[data-next]').click();
+    await expect(step(page, 'contact')).toBeVisible();
   });
 
   test('transfer path: prefill, airport suggestion and the cross-field rules', async ({ page }) => {

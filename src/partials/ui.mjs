@@ -316,12 +316,38 @@ export function currencyPicker({ id, cls = '' }) {
     </div>`;
 }
 
+/** "per group of 5–8 guests", "per trip, 1–4 guests": one tier of a rate, in words. */
+const tierBasis = (p, t) => (p.unit === 'per group' ? `per group of ${t.label}` : `${p.unit}, ${t.label}`);
+
 /** "per group of 1–4 guests", "per trip", "per day": the basis of a published rate, in words. */
 export function priceBasis(p, { compact = false } = {}) {
   if (!p) return '';
   const first = p.tiers?.[0];
   if (compact || !first) return p.unit;
-  return p.unit === 'per group' ? `per group of ${first.label}` : `${p.unit}, ${first.label}`;
+  return tierBasis(p, first);
+}
+
+/**
+ * A rate in structured data: one Offer per group tier (data/pricing.mjs), in rand, with the group sizes it prices
+ * (eligibleQuantity) and its basis in words. A starting price ("From R6,000") says so: "From" in its description
+ * and a minimum price (priceSpecification.minPrice). One tier is one Offer, as before; several are a list.
+ */
+export function priceOffers(p, url) {
+  let min = 1;
+  const offers = p.tiers.map((t) => {
+    const offer = {
+      '@type': 'Offer',
+      price: String(t.amount),
+      priceCurrency: p.currency,
+      description: `${t.startingFrom ? `From ${money(t.amount, p.currency)} ` : ''}${tierBasis(p, t)}`,
+      ...(t.startingFrom ? { priceSpecification: { '@type': 'PriceSpecification', minPrice: t.amount, priceCurrency: p.currency } } : {}),
+      eligibleQuantity: { '@type': 'QuantitativeValue', minValue: min, maxValue: t.max, unitText: 'guests' },
+      url,
+    };
+    min = t.max + 1;
+    return offer;
+  });
+  return offers.length === 1 ? offers[0] : offers;
 }
 
 /**

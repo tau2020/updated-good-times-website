@@ -108,9 +108,9 @@ test('every "From" price states Good Times’ own basis, never "per adult"; the 
   }
   assert.ok(seen > 10, 'the prices were found');
   const tours = layout(pages.find((p) => p.path === 'tours/index.html'), site);
-  assert.match(tours, /<span class="price__amount">From <span data-money="4000">R4,000<\/span><\/span><span class="price__note">per group<\/span>/);
+  assert.match(tours, /<span class="price__amount">From <span data-money="4500">R4,500<\/span><\/span><span class="price__note">per group<\/span>/);
   const tour = pages.find((p) => p.path === 'tours/cape-town-city-private-tour/index.html');
-  assert.match(tour.mobileCta({ site }), /<strong>From <span data-money="4000">R4,000<\/span><\/strong>per group/);
+  assert.match(tour.mobileCta({ site }), /<strong>From <span data-money="4500">R4,500<\/span><\/strong>per group/);
   // The basis is stated where a visitor reads how prices work.
   const faq = faqs.find((f) => /per person or per group/i.test(f.q));
   assert.ok(faq, 'the FAQ on prices');
