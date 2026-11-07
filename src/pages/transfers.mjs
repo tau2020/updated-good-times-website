@@ -62,10 +62,12 @@ export const page = {
   description: 'Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R800 per trip for 1–4 guests.',
   priority: 0.9,
   breadcrumbs: crumbs,
-  preload: [preloadFor('airport-mother-city-welcome')],
+  // The banner is art-directed (images.mjs): a wide cut of traveller 12 from 48em, a taller one for phones; each
+  // screen preloads only its own
+  preload: [preloadFor('airport-mother-city-welcome', { media: '(min-width: 48em)' }), preloadFor('airport-mother-city-welcome-tall', { media: '(max-width: 47.99em)', sizes: '85vw' })],
   body: ({ site }) => `
 <section class="banner" style="--focus: 40% 56%; --focus-mobile: 36% 56%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
-  <div class="banner__media">${picture({ name: 'airport-mother-city-welcome', eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="banner__media">${picture({ name: 'airport-mother-city-welcome', eager: true, fetchpriority: 'high', alt: '', portrait: { name: 'airport-mother-city-welcome-tall', media: '(max-width: 47.99em)', sizes: '85vw' } })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbs)}

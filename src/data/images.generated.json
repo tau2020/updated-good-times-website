@@ -110,7 +110,17 @@
       1536
     ],
     "width": 1536,
-    "height": 2048
+    "height": 960
+  },
+  "airport-mother-city-welcome-tall": {
+    "widths": [
+      480,
+      800,
+      1000,
+      1200
+    ],
+    "width": 1536,
+    "height": 1807
   },
   "airport-pickup-area": {
     "widths": [

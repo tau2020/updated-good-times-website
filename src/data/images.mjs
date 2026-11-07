@@ -230,7 +230,14 @@ export const images = [
   // with the words over the travellers' backs, never a face; the Airport Private Transfer shows a Good Times driver meeting
   // a guest (traveller 13: the guest's name on the welcome sign blurred, as on the arrival row's sign); the Bo-Kaap street it
   // names leads the City tour; and a library photograph takes the hero phone's last slide (traveller 106 now replaces the goats)
-  { name: 'airport-mother-city-welcome', src: `${D}Cape Town Private Airport Transfer - traveller 12.jpg`, origin: 'O', full: true, focus: '50% 32%', alt: 'Two travellers wheeling their suitcases through the arrivals hall at Cape Town International Airport, towards a stone wall that reads Welcome to the Mother City' },
+  // The transfers banner from wide screens up (48em): traveller 12 is portrait, the banner at least 1.68 times as wide as
+  // tall there, so the original is cut to 1.6 : 1 at the banner's own 56% (what each width shows is unchanged; about
+  // 60% of the bytes). Phones take the -tall cut below (art direction in transfers.mjs)
+  { name: 'airport-mother-city-welcome', src: `${D}Cape Town Private Airport Transfer - traveller 12.jpg`, origin: 'O', full: true, crop: [1.6, 0.5, 0.56], focus: '40% 56%', alt: 'Two travellers wheeling their suitcases through the arrivals hall at Cape Town International Airport, towards a stone wall that reads Welcome to the Mother City' },
+  // The same photograph for phones (the banner 0.85 to 1.68 times as wide as tall): cut to 0.85 : 1 at 56%, with a
+  // 1000 px rendition so a phone's 85% ask (coverSizes' rule) does not take the 1200, and AVIF at 40 (the stone wall's
+  // texture a touch smoother at 1:1, unseen at a phone's density under the banner's shade): the page's largest paint
+  { name: 'airport-mother-city-welcome-tall', src: `${D}Cape Town Private Airport Transfer - traveller 12.jpg`, origin: 'O', crop: [0.85, 0.5, 0.56], widths: [480, 800, 1000, 1200], avif: 40, focus: '36% 56%', alt: 'Two travellers wheeling their suitcases through the arrivals hall at Cape Town International Airport, towards a stone wall that reads Welcome to the Mother City' },
   // The home page's Airport Transfers way (living-cape.mjs › SERVICES): the brief's second candidate for the airport
   // transfer photograph (§2.3, traveller 11), in place of the selfie the owner disliked; the terminal's welcome banner
   // under its glass roof, a clear "you have arrived" without anyone's face
