@@ -39,8 +39,13 @@ export const PROJECT = {
   compatibilityFlags: ['nodejs_compat'],
 };
 
-/** The owner's go-ahead for a production release: null until it is given (date and name, recorded in the approval register). */
-export const RELEASE = { approved: false, date: '', by: '' };
+/**
+ * The go-ahead for a production release (date and name, recorded in the approval register, A1). Given on 7 Nov 2026 by
+ * tau2020, the repository's owner, for the project's own production address (https://good-times-in-cape-town.pages.dev)
+ * only, under a recorded override of the open legal items (site.legal.releaseOverride). It does not approve the domain
+ * cutover: goodtimesincapetown.co.za keeps the current website until DOMAIN.approved.
+ */
+export const RELEASE = { approved: true, date: '2026-11-07', by: 'tau2020 (repository owner)', scope: 'https://good-times-in-cape-town.pages.dev only; not the domain' };
 
 export const DOMAIN = {
   // Good Times' existing domain, serving the current website. It is not in this Cloudflare account, and

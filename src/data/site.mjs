@@ -176,7 +176,15 @@ export const site = {
     // The version of the Terms & Conditions text on the site, recorded with every booking request that accepts them.
     // Change it whenever the text changes (test/terms.test.mjs fails until you do).
     termsVersion: '2026-11-05',
-    releaseOverride: null,
+    // Recorded 7 Nov 2026 by tau2020, the repository's owner, for the production deployment at
+    // good-times-in-cape-town.pages.dev only (not the domain): these open items are accepted for that release and stay
+    // open, so the privacy notice and the terms still say they are drafts (docs/APPROVAL_REGISTER.md, A1 and B1–B5)
+    releaseOverride: {
+      date: '2026-11-07',
+      by: 'tau2020 (repository owner)',
+      scope: 'https://good-times-in-cape-town.pages.dev only; not goodtimesincapetown.co.za',
+      accepted: ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS'],
+    },
   },
 
   /** Enquiry intake (lib/, api/). Read at build time; on a host these come from environment variables. */

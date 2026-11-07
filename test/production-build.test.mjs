@@ -50,9 +50,12 @@ test('production values: Good Times’ own domain, indexable, enquiries still in
     for (const value of Object.values(env.vars)) assert.doesNotMatch(value, /japshuttlesandtours|shuttlejap|\banesu\b/i, name); // brand-guard-allow: proves no former operator's address remains
   }
   // The release and the domain wait for the owner: a production deployment is refused, staging is not.
-  assert.equal(RELEASE.approved, false);
+  // The release (A1) is recorded for the project's own production address; the domain cutover (A2) is not
+  assert.equal(RELEASE.approved, true);
+  assert.match(RELEASE.scope, /not the domain/);
   assert.equal(DOMAIN.approved, false);
-  assert.throws(() => deployTarget(PROJECT.productionBranch), /owner has not approved/);
+  assert.deepEqual(deployTarget(PROJECT.productionBranch), { environment: 'production', alias: PROJECT.productionBranch });
+  assert.throws(() => deployTarget(PROJECT.productionBranch, { release: { approved: false } }), /owner has not approved/);
   assert.deepEqual(deployTarget('feature-x'), { environment: 'preview', alias: PROJECT.stagingBranch, url: `https://${PROJECT.stagingBranch}.${PROJECT.name}.pages.dev` });
 });
 

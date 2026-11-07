@@ -34,7 +34,11 @@ test('nothing is approved yet, and the facts only Good Times can give stay uncon
   assert.equal(site.legal.privacyApproved, false);
   assert.equal(site.legal.termsApproved, false);
   assert.equal(site.legal.effective, '', 'no effective date before the approval');
-  assert.equal(site.legal.releaseOverride, null, 'no override of the release gate');
+  // The one override on record: the release to good-times-in-cape-town.pages.dev of 7 Nov 2026 (A1), accepting exactly
+  // the items still open; the texts themselves stay unapproved and say so
+  assert.deepEqual(site.legal.releaseOverride.accepted, ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS']);
+  assert.match(site.legal.releaseOverride.date, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(site.legal.releaseOverride.scope, /pages\.dev only/);
   for (const key of ['entity', 'informationOfficer', 'retention']) assert.equal(site.legal[key].verified, false, key);
   // The one fact taken as published: the office on the official site (to be confirmed as the address for notices).
   assert.deepEqual(site.legal.address, { text: '277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005', verified: true });
@@ -81,7 +85,11 @@ test('the release gate names everything still open: both approvals, the effectiv
     else assert.match(open, new RegExp(`site\\.legal\\.${key}`), key);
   }
   for (const point of OPEN_POINTS) assert.ok(open.includes(point), point);
-  assert.equal(releaseDecision(site).clear, false, 'no production release while anything is open');
+  // Clear only through the recorded override of 7 Nov 2026 (A1): every open item is one it names; without it, no release
+  const d = releaseDecision(site);
+  assert.equal(d.clear, true);
+  assert.deepEqual(d.overridden, d.open, 'everything open is accepted by name');
+  assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } }).clear, false, 'no production release without the override');
 });
 
 test('every "From" price states Good Times’ own basis, never "per adult"; the FAQ says prices are per group', () => {

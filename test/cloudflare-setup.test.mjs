@@ -279,8 +279,12 @@ test('pages --apply creates the project with both environments exactly as projec
 test('not released: deploying the production branch is refused until the owner approves; every other branch deploys a preview', () => {
   assert.equal(project.PROJECT.productionBranch, 'main');
   assert.equal(project.ENVIRONMENTS.production.branch, 'main');
-  assert.equal(project.RELEASE.approved, false, 'the owner has not approved a production release');
-  assert.throws(() => project.deployTarget('main'), /deploys to production, which the owner has not approved .*Deploy to "staging" instead/);
+  // Released on 7 Nov 2026 for the project's own production address only (A1); the lock still refuses without a release
+  assert.equal(project.RELEASE.approved, true);
+  assert.match(project.RELEASE.date, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(project.RELEASE.by, 'the release names who approved it');
+  assert.deepEqual(project.deployTarget('main'), { environment: 'production', alias: 'main' });
+  assert.throws(() => project.deployTarget('main', { release: { approved: false, date: '', by: '' } }), /deploys to production, which the owner has not approved .*Deploy to "staging" instead/);
   // Once the owner's approval is recorded, main deploys to production as itself.
   assert.deepEqual(project.deployTarget('main', { release: { approved: true, date: '2026-12-01', by: 'the owner' } }), { environment: 'production', alias: 'main' });
   assert.deepEqual(project.deployTarget('preview'), { environment: 'preview', alias: 'preview', url: 'https://preview.good-times-in-cape-town.pages.dev' });
