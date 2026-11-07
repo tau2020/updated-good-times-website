@@ -13,9 +13,11 @@
  *   back-forward    to another page and back (the back-forward cache, or a fresh load): no duplicated triggers;
  *   replay          the preview bar's "Replay the intro": the intro plays again and ends whole;
  *   reduced-motion  everything in place at once.
- * After each, every motion-owned element that has been scrolled well into view (its bottom in the top 60% of the
- * screen, or above it) must be fully opaque (its own opacity times its ancestors'), visible and unclipped. The sand
- * journey's words are checked when its scene has cleared (p ≥ 0.84) or is static. Console errors are collected.
+ * After each, every motion-owned element on screen and well into view (its bottom between the top of the screen and
+ * 60% down it) must be fully opaque (its own opacity times its ancestors'), visible and unclipped. Elements above the
+ * screen that are still waiting (an IntersectionObserver reveal the visitor jumped past) are listed apart: they play
+ * when scrolled back to, which the back-up scenario checks. The sand journey's words are checked when its scene has
+ * cleared (p ≥ 0.84) or is static. Console errors are collected.
  */
 import { chromium, devices } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
@@ -51,11 +53,14 @@ const hidden = (page) =>
       if (!el.getClientRects().length) continue; // not rendered at this width
       const r = el.getBoundingClientRect();
       if (r.bottom > innerHeight * 0.6) continue; // not yet scrolled well into view
+      const above = r.bottom <= 0;
       const cs = getComputedStyle(el);
       const clip = cs.clipPath;
       const clipped = clip && clip !== 'none' && !/^inset\(0(px|%)?( 0(px|%)?){0,3}( round [^)]*)?\)$/.test(clip.replace(/\s+/g, ' '));
       const o = effective(el);
-      if (o < 0.99 || cs.visibility !== 'visible' || clipped) out.push(`${(el.className && el.className.baseVal !== undefined ? el.className.baseVal : el.className) || el.tagName} (opacity ${o.toFixed(2)}, ${cs.visibility}, ${clipped ? clip : 'unclipped'})`);
+      const host = el.closest('a, section, footer, li, figure');
+      const where = host ? (host.getAttribute('aria-label') || (host.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 40)) : '';
+      if (o < 0.99 || cs.visibility !== 'visible' || clipped) out.push({ above, text: `${(el.className && el.className.baseVal !== undefined ? el.className.baseVal : el.className) || el.tagName} in "${where}" at ${Math.round(r.top)}…${Math.round(r.bottom)} px (opacity ${o.toFixed(2)}, ${cs.visibility}, ${clipped ? clip : 'unclipped'})` });
     }
     return out;
   }, SEL);
@@ -84,9 +89,11 @@ const run = async (name, profile, fn) => {
   } catch (e) {
     detail.error = String(e.message || e).split('\n')[0];
   }
-  const left = detail.error ? ['(scenario failed)'] : await hidden(page);
-  results.push({ name, profile, hidden: left, errors, ...detail });
-  console.log(`${name} [${profile}]: ${left.length ? `${left.length} hidden: ${left.slice(0, 6).join('; ')}` : 'nothing hidden'}${errors.length ? `; ${errors.length} console errors` : ''}${detail.error ? `; ERROR ${detail.error}` : ''}${detail.note ? `; ${detail.note}` : ''}`);
+  const found = detail.error ? [{ above: false, text: '(scenario failed)' }] : await hidden(page);
+  const left = found.filter((x) => !x.above).map((x) => x.text);
+  const pending = found.filter((x) => x.above).map((x) => x.text);
+  results.push({ name, profile, hidden: left, pendingAbove: pending, errors, ...detail });
+  console.log(`${name} [${profile}]: ${left.length ? `${left.length} hidden on screen: ${left.slice(0, 6).join('; ')}` : 'nothing hidden on screen'}${pending.length ? `; ${pending.length} waiting above the screen: ${pending.slice(0, 3).join('; ')}` : ''}${errors.length ? `; ${errors.length} console errors: ${errors.slice(0, 2).join(' | ')}` : ''}${detail.error ? `; ERROR ${detail.error}` : ''}${detail.note ? `; ${detail.note}` : ''}`);
   await ctx.close();
 };
 
@@ -148,8 +155,8 @@ for (const profile of ['desktop', 'phone']) {
     for (const f of [0.25, 0.5, 0.75, 1]) {
       await page.evaluate((f) => window.scrollTo({ top: (document.documentElement.scrollHeight - innerHeight) * f, behavior: 'instant' }), f);
       await page.waitForTimeout(300);
-      const left = await hidden(page);
-      if (left.length) throw new Error(`at ${f}: ${left.slice(0, 4).join('; ')}`);
+      const left = (await hidden(page)).filter((x) => !x.above);
+      if (left.length) throw new Error(`at ${f}: ${left.slice(0, 4).map((x) => x.text).join('; ')}`);
     }
   });
 }

@@ -133,14 +133,27 @@
       if (Math.abs(window.innerWidth - width) < 2 && Math.abs(window.innerHeight - height) < 90) return; // the phone's toolbar
       if (plane && plane.timeline.progress() < 1) settle();
     });
-    // A visitor who scrolls while it is in the air is on their way: it lands at once rather than chase a moving header
+    // A visitor who scrolls while it is in the air is on their way: it lands at once rather than chase a moving header.
+    // One who is (or goes) more than half a screen down while it plays (a restored scroll position after a reload or
+    // a return, a link to a section, a quick start) is past the hero: the whole entrance finishes at once, so the
+    // header, Plan My Day included, never makes them wait
     var y0 = window.scrollY;
+    var past = function () {
+      return window.scrollY > window.innerHeight * 0.5;
+    };
     var onScroll = function () {
       if (Math.abs(window.scrollY - y0) < 4) return;
-      window.removeEventListener('scroll', onScroll);
       if (plane && plane.timeline.progress() < 1) settle();
+      if (past() || tl.progress() === 1) {
+        window.removeEventListener('scroll', onScroll);
+        if (tl.progress() < 1) tl.progress(1);
+      }
     };
-    if (plane) window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (past()) {
+      settle();
+      tl.progress(1);
+    }
 
     // Preview builds only: replay the whole entrance (a review aid in the preview bar, never in production)
     var replay = document.querySelector('[data-intro-replay]');

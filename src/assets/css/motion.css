@@ -548,8 +548,8 @@ html.cine .sand-journey.is-ready .sand-journey__stage::after {
   pointer-events: none;
   opacity: calc(1 - var(--words));
 }
-/* Reduced motion (and the other static cases with the script): the final scene at once, its words fading in once as
-   it comes into view; opacity only, nothing moves */
+/* The static cases with motion allowed (?nomotion, no WebGL, ?sand=static): the final scene at once, its words fading in
+   once as it comes into view; opacity only, nothing moves. With reduced motion the script adds no fade at all */
 .sand-journey.is-fading:not(.is-seen) .sand-journey__words:not(:focus-within) {
   opacity: 0; /* at once, never a fade out */
 }

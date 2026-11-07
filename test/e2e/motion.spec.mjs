@@ -70,6 +70,18 @@ test.describe('the brand aircraft', () => {
     expect(await tours.evaluate((el) => [document.activeElement === el, getComputedStyle(el).opacity])).toEqual([true, '1']);
   });
 
+  test('a visitor who arrives past the hero (a link to a section, a restored scroll) gets the whole header at once', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'the header carries Plan My Day from 40em');
+    await motion(page);
+    await page.goto('/#gallery');
+    // Never the 5.8 s entrance for someone already half a screen down: it finishes at once
+    await page.waitForFunction(() => window.__heroEntrance && window.__heroEntrance.progress() === 1, null, { timeout: 5_000 });
+    const cta = page.locator('.site-header .header-cta');
+    expect(await cta.evaluate((a) => getComputedStyle(a).opacity)).toBe('1');
+    expect(await cta.locator('.leaf-btn__shape').evaluate((s) => getComputedStyle(s).opacity)).toBe('1');
+    await expect(page.locator('.brand.is-awaiting-aircraft')).toHaveCount(0);
+  });
+
   test('without motion there is no flight and the logo is whole', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
@@ -165,10 +177,9 @@ test.describe('the sand journey', () => {
     // Nothing split, nothing scaled: the headline is its plain text, the photograph its own size
     await expect(section.locator('.sand-journey__title-line-mask, .sand-journey__title-word')).toHaveCount(0);
     expect(await section.locator('.sand-journey__beach img').evaluate((i) => getComputedStyle(i).transform)).toBe('none');
-    // The one transition reduced motion keeps: the words fade in (opacity only) once the scene is in view
-    await expect(section).toHaveClass(/\bis-seen\b/);
-    await expect.poll(() => section.locator('.sand-journey__words').evaluate((w) => getComputedStyle(w).opacity)).toBe('1');
-    expect(await section.locator('.sand-journey__words').evaluate((w) => getComputedStyle(w).transitionProperty)).toBe('opacity');
+    // Reduced motion: no fade either (the brief of 6 Nov 2026): the words are simply there
+    await expect(section).not.toHaveClass(/\bis-fading\b/);
+    expect(await section.locator('.sand-journey__words').evaluate((w) => getComputedStyle(w).opacity)).toBe('1');
     const cta = section.getByRole('link', { name: 'Explore the Cape Peninsula Tour', exact: true });
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute('href', 'tours/cape-peninsula-private-tour/');

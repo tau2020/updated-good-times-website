@@ -13,8 +13,9 @@
 
    Tiers: full (WebGL2, up to 2× pixels, shadows), lite (fewer pixels and grains, no cast shadows; chosen when frames
    are measured to be slow while the scene is drawing), static (reduced motion, ?nomotion, no WebGL2, a failed
-   renderer, a lost context until it is restored, print): the image with its words and link (when the script runs, the
-   words fade in once as the scene comes into view, opacity only; no split, no scale). ?sand=static|lite
+   renderer, a lost context until it is restored, print): the image with its words and link (when the script runs and
+   motion is allowed, the words fade in once as the scene comes into view, opacity only; with reduced motion they are
+   simply there; no split, no scale). ?sand=static|lite
    forces a tier (QA). The canvas is decorative (aria-hidden, no pointer events); the words are real HTML and stay in
    the accessibility tree, and anything focused in them shows at once (motion.css). */
 (function () {
@@ -158,8 +159,10 @@
   var live =html.classList.contains('cine') && !!gsap && !!ST && !!src && typeof window.WebGL2RenderingContext !== 'undefined' && query !== 'static';
   if (!live) {
     section.classList.add('is-static');
-    // The final scene at once; only its words fade in (opacity, nothing moves), once, as it comes into view
-    if ('IntersectionObserver' in window) {
+    // The final scene at once; only its words fade in (opacity, nothing moves), once, as it comes into view. With
+    // reduced motion not even that: the photograph, the words and the link are simply there (the brief of 6 Nov 2026)
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if ('IntersectionObserver' in window && !calm) {
       section.classList.add('is-fading');
       var seen = new IntersectionObserver(
         function (entries) {
