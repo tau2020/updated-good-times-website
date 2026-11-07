@@ -1604,7 +1604,7 @@ test.describe('the button system', () => {
       for (const path of ['/', '/tours/cape-town-city-private-tour/', '/packages/garden-route-private-tour/', '/contact/', '/enquire/']) {
         await page.goto(`${path}?nomotion`);
         await page.evaluate(() => scrollTo(0, 1200));
-        const clipped = await page.evaluate(() => [...document.querySelectorAll('.gt-button, .btn-coin')].filter((e) => e.offsetParent && (e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > innerWidth + 0.5)).map((e) => e.textContent.trim()));
+        const clipped = await page.evaluate(() => [...document.querySelectorAll('.gt-button, .leaf-btn')].filter((e) => e.offsetParent && (e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > innerWidth + 0.5)).map((e) => e.textContent.trim()));
         expect(clipped, `${path} at ${w}px`).toEqual([]);
       }
     }

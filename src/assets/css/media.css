@@ -4,7 +4,7 @@
    (07 · The Living Travel Exhibition) and on every tour and package page with a Gallery tab, after styles.css,
    living-cape-system.css and buttons.css. Markup: src/partials/media.mjs; behaviour: assets/js/media.js. The
    wall carries .lc-scope outside the home page's .living-cape, and the dialog always does, so the tokens of
-   living-cape-system.css apply wherever they hang. Nothing here matches the hero, the header or .btn-coin.
+   living-cape-system.css apply wherever they hang. Nothing here matches the hero, the header or .leaf-btn.
    ========================================================================== */
 
 /* 1. The wall: an editorial mosaic on an explicit grid. Each print's span and ratio come from its record

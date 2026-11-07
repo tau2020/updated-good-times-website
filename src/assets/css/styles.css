@@ -574,10 +574,6 @@ body {
   .has-overlay-header .primary-nav a {
     font-size: 1rem;
   }
-  .has-overlay-header .btn-coin {
-    padding-right: 1.25rem;
-    font-size: 1rem;
-  }
 }
 .primary-nav {
   display: none;
@@ -623,96 +619,6 @@ body {
 .primary-nav a:hover::after,
 .primary-nav a[aria-current='page']::after {
   transform: scaleX(1);
-}
-/* Plan My Day: the leaf-green pill (buttons.css tokens) with the compass medallion overlapping its left edge. The
-   medallion is the signature motif and stays; its face takes the leaf palette (lime to green) and its rosette turns
-   an eighth under the pointer, once (design/button-design.md) */
-.btn-coin {
-  --coin: 54px;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--btn-height);
-  margin-left: calc(var(--coin) * 0.34);
-  padding: 0 1.4rem 0 calc(var(--coin) * 0.78);
-  border: 1px solid var(--green-deep);
-  border-radius: var(--btn-radius);
-  background-color: var(--green-primary);
-  background-image: var(--btn-sheen);
-  box-shadow: var(--btn-edge), var(--btn-shadow);
-  color: var(--surface-white);
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.005em;
-  text-decoration: none;
-  white-space: nowrap;
-  touch-action: manipulation;
-  transition:
-    transform var(--btn-dur) var(--btn-ease),
-    box-shadow var(--btn-dur) var(--btn-ease),
-    background-color var(--btn-dur) var(--btn-ease);
-}
-.btn-coin:hover {
-  color: var(--surface-white);
-  background-color: var(--green-hover);
-  box-shadow: var(--btn-edge), var(--btn-shadow-hover);
-}
-@media (hover: hover) {
-  .btn-coin:hover {
-    transform: translateY(var(--btn-lift));
-  }
-  .btn-coin:hover .btn-coin__ornament {
-    transform: rotate(45deg);
-  }
-}
-.btn-coin:active {
-  transform: translateY(0);
-  background-color: var(--green-deep);
-  box-shadow: var(--btn-press);
-}
-.btn-coin:focus-visible {
-  outline: 3px solid var(--btn-focus);
-  outline-offset: 3px;
-}
-.site-header--overlay:not(.is-condensed) .btn-coin:focus-visible,
-.on-dark .btn-coin:focus-visible,
-.site-footer .btn-coin:focus-visible {
-  outline-color: var(--btn-focus-on-dark);
-}
-.btn-coin__coin {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--coin) * -0.34);
-  display: grid;
-  place-items: center;
-  width: var(--coin);
-  height: var(--coin);
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 34% 28%, #fbfff1 0%, #eef8d2 30%, var(--green-lime-accent) 62%, #8fcb68 86%, #5fae55 100%);
-  box-shadow:
-    inset 0 0 0 2.5px var(--green-deep),
-    inset 0 0 0 4px rgb(255 255 255 / 0.55),
-    inset 0 -2px 4px rgb(16 91 53 / 0.3),
-    0 2px 6px rgb(0 0 0 / 0.3);
-  color: var(--green-deep);
-}
-.btn-coin__ornament {
-  width: 74%;
-  height: 74%;
-  transition: transform var(--btn-leaf-dur) var(--btn-ease);
-}
-@media (prefers-reduced-motion: reduce) {
-  .btn-coin,
-  .btn-coin__ornament {
-    transition: none;
-  }
-  .btn-coin:hover,
-  .btn-coin:hover .btn-coin__ornament {
-    transform: none;
-  }
 }
 /* Phones keep Plan My Day in the drawer; from 40em it sits in the header beside the menu button */
 .header-cta {
@@ -836,9 +742,6 @@ body {
 }
 .site-header--overlay:not(.is-condensed) .primary-nav a::after {
   background: var(--champagne);
-}
-.site-header--overlay:not(.is-condensed) .btn-coin:focus-visible {
-  outline-color: var(--champagne);
 }
 @media (min-width: 64em) {
   .has-overlay-header {
@@ -1008,56 +911,6 @@ body {
   z-index: 1;
   width: var(--pw);
 }
-/* The call to action: the leaf-green pill (buttons.css tokens), white words in the display face at its boldest, a
-   fine lime edge; a single sheen crosses it as it arrives (hero.js) and again under the pointer */
-.btn-champagne {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 0.75rem 2.1rem;
-  border: 1px solid rgb(201 233 112 / 0.5);
-  border-radius: var(--btn-radius);
-  background-color: var(--green-primary);
-  background-image: var(--btn-sheen);
-  box-shadow:
-    var(--btn-edge),
-    0 1px 2px rgb(0 0 0 / 0.3),
-    0 10px 26px rgb(0 0 0 / 0.26);
-  color: var(--surface-white);
-  font-family: var(--font-display);
-  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  font-weight: 700;
-  line-height: 1.15;
-  text-decoration: none;
-  white-space: nowrap;
-  touch-action: manipulation;
-  transition:
-    transform var(--btn-dur) var(--btn-ease),
-    box-shadow var(--btn-dur) var(--btn-ease),
-    background-color var(--btn-dur) var(--btn-ease);
-}
-.btn-champagne:hover {
-  color: var(--surface-white);
-  background-color: var(--green-hover);
-  box-shadow:
-    var(--btn-edge),
-    0 2px 4px rgb(0 0 0 / 0.22),
-    0 12px 28px rgb(0 0 0 / 0.24);
-}
-@media (hover: hover) {
-  .btn-champagne:hover {
-    transform: translateY(var(--btn-lift));
-  }
-}
-.btn-champagne:active {
-  transform: translateY(0);
-  background-color: var(--green-deep);
-}
-.btn-champagne:focus-visible {
-  outline: 3px solid var(--btn-focus-on-dark);
-  outline-offset: 3px;
-}
 .hero__cta {
   position: relative;
   overflow: hidden;
@@ -1085,20 +938,6 @@ body {
   font-synthesis: none;
   padding-right: 0.06em;
   transform: skewX(-9deg);
-}
-.hero__cta-sheen {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 46%;
-  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.34) 48%, rgba(220, 255, 230, 0.5) 52%, rgba(255, 255, 255, 0) 100%);
-  transform: translateX(-160%);
-  pointer-events: none;
-}
-@media (hover: hover) {
-  .hero__cta:hover .hero__cta-sheen {
-    transform: translateX(330%);
-    transition: transform 0.85s var(--ease-out);
-  }
 }
 /* Short landscape screens (phones turned sideways): the frame fits the width and the faces fill its
    height, so the call to action moves left of the sleeping friend's face (he begins 20% across) */

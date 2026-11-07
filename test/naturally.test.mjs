@@ -101,13 +101,10 @@ test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one p
   assert.match(b, /\.gt-button\[aria-busy='true'\]::after \{[^}]*animation: gt-button-turn 0\.8s linear infinite;/);
   assert.match(b, /\.leaf-btn\[aria-busy='true'\]::after \{[^}]*animation: gt-button-turn 0\.8s linear infinite;/);
   assert.match(b, /@media \(prefers-reduced-motion: reduce\) \{[^@]*\.leaf-btn\[aria-busy='true'\]::after \{\s*animation: none;/);
-  // The legacy and signature buttons read the same tokens
+  // The signature leaf replaced the medallion pill and the hero's pill (design/button-tokens.md): their styles are gone
   const styles = read('src/assets/css/styles.css');
-  for (const sel of ['btn-coin', 'btn-champagne']) {
-    const rule = new RegExp(`^\\.${sel} \\{[^}]*\\}`, 'm').exec(styles)?.[0] || '';
-    assert.match(rule, /var\(--btn-radius\)/, sel);
-    assert.match(rule, /var\(--green-primary\)/, sel);
-  }
+  assert.doesNotMatch(styles, /\.btn-coin|\.btn-champagne|\.hero__cta-sheen/);
+  assert.match(b, /\.leaf-btn \{/);
 });
 
 test('the water chapter is gone: no markup, styles, script, timeline or test hook remains, and the coast road is chapter 01', () => {

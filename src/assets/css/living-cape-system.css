@@ -2,7 +2,7 @@
    The Living Cape design system, every page
    Scoped tokens, the engraved travel symbols, the three actions (Sun Seal,
    Travel Note, Quiet Outline) and the Travel Concierge (the desktop folio and the
-   mobile menu's service rows). Nothing here matches .hero, .hero__*, .btn-coin,
+   mobile menu's service rows). Nothing here matches .hero, .hero__*, .leaf-btn,
    .primary-nav, svg.icon or the header bar's own elements: the approved hero and
    header keep their tokens.css values exactly. The home chapters are in living-cape.css.
    ========================================================================== */

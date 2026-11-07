@@ -90,7 +90,7 @@ const metrics = (page) =>
         }
       }
     }
-    const BTN = 'a.gt-button, button.gt-button, a.btn-coin, a.btn-champagne, .gt-btn, a.btn, button.btn';
+    const BTN = 'a.gt-button, button.gt-button, a.leaf-btn, a.btn-coin, a.btn-champagne, .gt-btn, a.btn, button.btn';
     const buttons = [...document.querySelectorAll(BTN)]
       .filter((b) => b.offsetParent !== null)
       .slice(0, 40)
