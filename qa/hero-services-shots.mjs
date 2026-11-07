@@ -75,8 +75,9 @@ function measure(faces) {
     // only what the hero's frame actually shows
     .filter((f) => f.x + f.w > box.left && f.x < box.right && f.y + f.h > box.top + scrollY && f.y < box.bottom + scrollY);
   const services = document.querySelector('.hero-services');
-  const parts = services ? [...services.querySelectorAll('.hero-headline, .hero-services__lead, .hero-services__item')].map((el) => ({ el: el.className.split(' ')[0], ...r(el) })).filter((p) => p.w) : [];
+  const parts = services ? [...services.querySelectorAll('.hero-headline, .hero-services__lead, .hero-services__item, .hero-services__actions')].map((el) => ({ el: el.className.split(' ')[0], ...r(el) })).filter((p) => p.w) : [];
   const headline = r(document.querySelector('.hero-headline'));
+  const actions = r(document.querySelector('.hero-services__actions'));
   const hero = document.querySelector('.hero');
   const header = document.querySelector('.site-header');
   const out = {
@@ -97,11 +98,12 @@ function measure(faces) {
   if (out.placement === 'beneath the hero') {
     if (out.services.y < out.hero.y + out.hero.h - 1) out.collisions.push('the block overlaps the hero');
     // The headline sits in the hero's foot, where the leaf was: clear of every face, the phone and the header
-    if (headline) {
-      for (const f of faceBoxes) if (hit(headline, f)) out.collisions.push(`the headline over the ${f.name}'s face`);
-      if (hit(headline, out.header)) out.collisions.push('the headline under the header');
-      if (hit(headline, out.phone)) out.collisions.push('the headline over the phone');
-      if (headline.y + headline.h > out.hero.y + out.hero.h + 1) out.collisions.push('the headline runs past the hero');
+    // ... and whatever else is lifted into the hero (the headline and sentence on short laptops, the calls to action)
+    for (const p of parts.filter((p) => p.y < out.hero.y + out.hero.h - 1)) {
+      for (const f of faceBoxes) if (hit(p, f)) out.collisions.push(`${p.el} over the ${f.name}'s face`);
+      if (hit(p, out.header)) out.collisions.push(`${p.el} under the header`);
+      if (hit(p, out.phone)) out.collisions.push(`${p.el} over the phone`);
+      if (p.y + p.h > out.hero.y + out.hero.h + 1) out.collisions.push(`${p.el} runs past the hero`);
     }
   } else for (const p of parts) {
     for (const f of faceBoxes) if (hit(p, f)) out.collisions.push(`${p.el} over the ${f.name}'s face`);

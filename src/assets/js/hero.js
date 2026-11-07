@@ -10,8 +10,8 @@
    6 Nov 2026), and last the navigation's Plan My Day leaf unfolds from its stem (the brief of 6 Nov 2026): about 5.8 s
    on desktop, 4.8 s on tablets, 3.2 s on phones (which show no header leaf). After the headline, the hero's services
    (HeroServices, the hero-services brief of 7 Nov 2026) follow it: the sentence rises, its lime brush draws under
-   "tailored for you." from left to right, and the four services settle in turn, in place by about 4.25 s on desktop,
-   as the aircraft lands. The headline and the services are staged with opacity only, so their words stay in the
+   "tailored for you." from left to right, the four services settle in turn, and the two calls to action, Explore Our
+   Tours and Our Experiences, rise together, all in place by about 4.3 s on desktop, as the aircraft lands. The headline and the services are staged with opacity only, so their words stay in the
    accessibility tree.
    The phone is not part of it: its first photograph is there from the first paint, and its gallery
    (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
@@ -50,6 +50,9 @@
   var services = document.querySelector('[data-hero-services]');
   var headline = services ? one('.hero-headline', services) : null;
   var swash = headline ? headline.querySelector('.hero-headline__swash') : null;
+  // The two calls to action, Explore Our Tours and Our Experiences: in the tab order throughout (opacity only; a focused
+  // one shows at once, hero-services.css)
+  var actions = services ? one('.hero-services__actions', services) : null;
   var lead = services ? one('.hero-services__lead', services) : null;
   var brush = services ? one('.hero-services__brush', services) : null;
   var items = services ? list('.hero-services__item', services) : [];
@@ -76,6 +79,7 @@
     // The headline and the services: opacity and a few pixels of rise (never visibility), the brushes clipped to nothing
     // from the right
     if (headline) gsap.set(headline, { opacity: 0, y: 16 });
+    if (actions) gsap.set(actions, { opacity: 0, y: 12 });
     if (swash) gsap.set(swash, { clipPath: 'inset(-20% 100% -20% -5%)' });
     if (lead) gsap.set(lead, { opacity: 0, y: 14 });
     if (services) gsap.set(services, { '--hs-veil': 0 }); // the shade behind the words (hero-services.css) waits for them
@@ -129,6 +133,8 @@
     if (lead) tl.to(lead, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', clearProps: 'transform' }, 'services');
     if (brush) tl.to(brush, { clipPath: 'inset(-50% 0% -50% -5%)', duration: 0.55, ease: 'power2.inOut', clearProps: 'clipPath' }, 'services+=0.45');
     if (items.length) tl.to(items, { opacity: 1, y: 0, duration: 0.55, stagger: 0.12, ease: 'power2.out', clearProps: 'transform' }, 'services+=0.7');
+    // ... and the two calls to action rise together as the last service settles (3.75 s)
+    if (actions) tl.to(actions, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', clearProps: 'transform' }, 'services+=1.1');
 
     // The same composition, quicker where the screen is smaller
     var desktop = window.matchMedia('(min-width: 64em)').matches;

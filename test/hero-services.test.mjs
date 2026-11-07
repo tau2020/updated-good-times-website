@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
-import { HERO_HEADLINE, HERO_LEAD, HERO_SERVICES, heroServices } from '../src/partials/hero-services.mjs';
+import { HERO_HEADLINE, HERO_LEAD, HERO_SERVICES, HERO_ACTIONS, heroServices } from '../src/partials/hero-services.mjs';
 import { icon } from '../src/partials/ui.mjs';
 
 const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
@@ -43,8 +43,15 @@ test('the exact words of the brief: one sentence, four services', () => {
   assert.match(block, /<span class="hero-services__mark">tailored for you\.<svg class="hero-services__brush" [^>]*aria-hidden="true" focusable="false"/);
   assert.match(block, /<ul class="hero-services__list" role="list" aria-label="What we do">/);
   assert.equal((block.match(/<li class="hero-services__item"/g) || []).length, 4);
-  // Nothing in it is interactive: the hero keeps its one call to action
-  assert.doesNotMatch(block, /<a |<button|tabindex/);
+  // Its only links are the two calls to action (the owner's choice of 7 Nov 2026), the site's pills, after the services
+  assert.deepEqual(HERO_ACTIONS.map((a) => [a.label, a.href]), [['Explore Our Tours', 'tours/'], ['Our Experiences', 'tours/#adventure']]);
+  const links = [...block.matchAll(/<a class="([^"]*)" href="([^"]*)">([\s\S]*?)<\/a>/g)].map((m) => [m[1], m[2], m[3].replace(/<[^>]+>/g, '')]);
+  assert.deepEqual(links, [
+    ['btn gt-button gt-button--primary hero-services__cta', 'tours/', 'Explore Our Tours'],
+    ['btn gt-button gt-button--secondary gt-button--on-dark hero-services__cta', 'tours/#adventure', 'Our Experiences'],
+  ]);
+  assert.ok(block.indexOf('class="hero-services__actions"') > block.indexOf('class="hero-services__list"'), 'after the services');
+  assert.doesNotMatch(block, /<button|tabindex/);
 });
 
 test('the icons are the site’s own line icons, in the one stroke system', () => {
@@ -64,7 +71,7 @@ test('on the home page: the block follows the hero section inside .hero-shell, a
   assert.match(hero, /<\/section>\s*$/, 'right after the hero section closes');
   assert.doesNotMatch(hero, /hero-services|tailored for you/, 'nothing added inside the hero section');
   assert.equal((hero.match(/<a /g) || []).length, 0, 'no link in the hero: the leaf gave its place to the headline (7 Nov 2026)');
-  assert.match(shell.slice(at), /<\/ul>\s*<\/div>\s*<\/div>\s*$/, 'the shell closes after the block');
+  assert.match(shell.slice(at), /<\/ul>\s*<div class="hero-services__actions" data-intro>[\s\S]*?<\/div>\s*<\/div>\s*<\/div>\s*$/, 'the shell closes after the block');
   assert.equal((home.match(/Private tours, airport transfers and authentic Cape Town experiences/g) || []).length, 1, 'once');
 });
 

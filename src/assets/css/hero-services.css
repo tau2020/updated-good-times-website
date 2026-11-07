@@ -195,6 +195,25 @@
   text-wrap: balance;
 }
 
+/* The two calls to action (the owner's choice of 7 Nov 2026): the site's pills, Explore Our Tours in leaf green and
+   Our Experiences as a glass pill with a white line; after the services here, lifted into the hero's foot on wide
+   screens (below). Staged with opacity only by the entrance, so they are in the tab order throughout: a focused one
+   shows at once */
+.hero-services__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.4rem, 1rem + 1.5vw, 2rem);
+  text-shadow: none;
+}
+.hero-services__actions .gt-button--on-dark {
+  --btn-bg: rgb(3 16 32 / 0.42);
+  --btn-border: rgb(255 255 255 / 0.85);
+}
+.home .hero-services__actions:focus-within {
+  opacity: 1 !important;
+}
+
 /* Four in a row once the block is wide enough for them; each title kept to one line (at most 2.7% of the row) */
 @container hero-services (min-width: 33rem) {
   .hero-services__list {
@@ -275,15 +294,15 @@
     --hs-lead: clamp(0.95rem, 0.4rem + 1.3svh, 1.25rem);
     --hs-title: clamp(0.875rem, 0.42rem + 1svh, 1.0625rem);
     --hs-text: clamp(0.78rem, 0.5rem + 0.6svh, 0.875rem);
-    --hs-icon: clamp(2.125rem, 0.8rem + 2.8svh, 2.875rem);
-    --hs-list-gap: clamp(0.75rem, 0.1rem + 1.5svh, 1.35rem);
+    --hs-icon: clamp(2rem, 0.6rem + 2.8svh, 2.875rem);
+    --hs-list-gap: clamp(0.65rem, 1.2svh, 1.25rem);
     /* The faceless stretch: its width, and the gap kept above the sleeping friend's hair */
     --hs-zone: min(38rem, calc(470 * var(--hs-s) - (1280 * var(--hs-s) - 100vw) * var(--hs-fx) - var(--hs-left) - 1rem));
     --hs-clear: clamp(0.6rem, 1.6svh, 1.4rem);
-    /* The shade behind the words: an even veil of the hero's navy over the bright town, feathered on every side it
-       shows (into the frame's left edge it simply runs out), fading to nothing before any face; lighter behind the
-       headline and the sentence (large type), deeper behind the services' small lines */
-    --hs-veil-bg: linear-gradient(180deg, rgb(3 16 32 / 0.5) 0%, rgb(3 16 32 / 0.76) 46%, rgb(3 16 32 / 0.78) 100%);
+    /* The shade behind the words: a light veil of the hero's navy, so the town and the mountain stay clear behind them
+       (the owner's request of 7 Nov 2026), feathered on every side it shows (into the frame's left edge it simply runs
+       out) and fading to nothing before any face; the words carry their own dark rim (below) */
+    --hs-veil-bg: linear-gradient(180deg, rgb(3 16 32 / 0.18) 0%, rgb(3 16 32 / 0.28) 45%, rgb(3 16 32 / 0.42) 100%);
     --hs-veil-mask: linear-gradient(90deg, #000 0, #000 calc(100% - 4rem), transparent), linear-gradient(180deg, transparent, #000 2.75rem, #000 calc(100% - 1.25rem), transparent);
   }
   .hero-headline {
@@ -297,14 +316,37 @@
   .hero-headline::before {
     content: none;
   }
+  .hero-services__lead {
+    line-height: 1.27;
+  }
   .hero-services__lead::after {
-    margin-top: 0.7em;
+    margin-top: 0.55em;
   }
   .hero-services__title {
-    margin-top: 0.45em;
+    margin-top: 0.4em;
   }
   .hero-services__text {
-    margin-top: 0.2em;
+    margin-top: 0.15em;
+    line-height: 1.32;
+  }
+  /* The words over the photograph: white with a tight dark rim and a soft glow, legible over the town without a heavy
+     veil; "Start Here!" keeps its own lime ground */
+  .hero-services,
+  .hero-services__intro {
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.7), 0 1px 3px rgb(3 16 32 / 0.75), 0 0 12px rgb(3 16 32 / 0.55), 0 0 26px rgb(3 16 32 / 0.35);
+  }
+  .hero-headline__mark,
+  .hero-services__icon,
+  .hero-services__actions {
+    text-shadow: none;
+  }
+  /* The calls to action in the hero's foot, where the leaf was: the strip below the sleeping friend's chin (poster
+     y 640: 0.25 H − 100 px of the poster above the hero's foot), at the hero's own gap */
+  .hero-services__actions {
+    position: absolute;
+    left: var(--hs-left);
+    margin: 0;
+    flex-wrap: nowrap;
   }
 }
 /* ... tall enough for the whole stack (53em): headline, sentence and services together over the photograph */
@@ -316,7 +358,11 @@
     width: var(--hs-zone);
     padding: 0;
     background: none;
-    text-shadow: 0 1px 2px rgb(3 16 32 / 0.65), 0 0 12px rgb(3 16 32 / 0.5);
+  }
+  /* (the block is absolute here: the actions are placed from its own foot down to the hero's) */
+  .hero-services__actions {
+    left: 0;
+    bottom: calc(var(--hs-inset) - 0.25 * var(--hs-h) - 100 * var(--hs-s) - var(--hs-clear));
   }
   .hero-services::before {
     content: '';
@@ -339,14 +385,14 @@
   }
   .hero-services__list {
     max-width: none;
-    margin-top: calc(var(--hs-list-gap) * 0.75);
+    margin-top: calc(var(--hs-list-gap) * 0.6);
   }
   .hero-services__icon {
     text-shadow: none;
   }
-  /* The small lines: a tight dark rim around the letters, so each stays crisp over the brightest walls */
+  /* The small lines: a tighter, darker rim around the letters, so each stays crisp over the brightest walls */
   .hero-services__text {
-    text-shadow: 0 0 2px rgb(3 16 32 / 0.85), 0 1px 3px rgb(3 16 32 / 0.7), 0 0 10px rgb(3 16 32 / 0.5);
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.95), 0 0 4px rgb(3 16 32 / 0.75), 0 1px 3px rgb(3 16 32 / 0.8), 0 0 12px rgb(3 16 32 / 0.6);
   }
 }
 /* ... shorter (laptops such as 1366 × 768): the headline and the sentence over the photograph, lifted from the block
@@ -357,7 +403,6 @@
     left: var(--hs-left);
     bottom: calc(100% + 0.25 * var(--hs-h) + 100 * var(--hs-s) + var(--hs-clear));
     width: var(--hs-zone);
-    text-shadow: 0 1px 2px rgb(3 16 32 / 0.65), 0 0 12px rgb(3 16 32 / 0.5);
   }
   .hero-services__intro::before {
     content: '';
@@ -378,6 +423,10 @@
   }
   .hero-services__list {
     margin-top: 0;
+  }
+  /* (the block follows the hero here: the actions are lifted from its top into the hero's foot) */
+  .hero-services__actions {
+    bottom: calc(100% + var(--hs-inset));
   }
 }
 /* Tall wide screens, where the services take one row: the headline on two lines, large, as in the reference */

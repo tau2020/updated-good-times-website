@@ -456,7 +456,8 @@ test.describe('home hero', () => {
     await expect(zoom).toHaveJSProperty('open', true);
     await page.keyboard.press('Escape');
     await expect(zoom).toHaveJSProperty('open', false, { timeout: 3_000 });
-    await expect(page.locator('.hero a')).toHaveCount(1);
+    // Nothing left behind in the hero, which has no link (its headline took the leaf's place on 7 Nov 2026)
+    await expect(page.locator('.hero a')).toHaveCount(0);
   });
 
   test('without motion the photograph is enlarged and put back at once, from the keyboard too, and the open dialog passes axe', async ({ page }) => {
@@ -590,8 +591,11 @@ test.describe('home hero', () => {
     await expect(page.getByRole('list', { name: 'What we do' })).toBeVisible();
     // The headline heads the block: Good Times Start Here!, the owner's choice of 7 Nov 2026
     await expect(block.locator('.hero-headline')).toHaveText(/^\s*Good Times\s+Start Here!\s*$/);
-    // Nothing in it takes focus, and the hero has no link
-    await expect(block.locator('a, button, [tabindex]')).toHaveCount(0);
+    // Its only links are the two calls to action (the owner's choice of 7 Nov 2026); the hero section has none
+    const actions = block.locator('.hero-services__actions a');
+    await expect(actions).toHaveText(['Explore Our Tours', 'Our Experiences']);
+    expect(await actions.evaluateAll((els) => els.map((a) => a.getAttribute('href')))).toEqual(['tours/', 'tours/#adventure']);
+    await expect(block.locator('button, [tabindex]')).toHaveCount(0);
     await expect(page.locator('.hero a')).toHaveCount(0);
     const [hero, b, headline, phone] = [await box(page.locator('.hero')), await box(block), await box(block.locator('.hero-headline')), await box(page.locator('.phone-gallery'))];
     if (isMobile) {
@@ -602,6 +606,9 @@ test.describe('home hero', () => {
       expect(headline.bottom).toBeLessThanOrEqual(hero.bottom);
       expect(hero.bottom - headline.bottom).toBeLessThan(40);
       expect(headline.right).toBeLessThan(phone.x);
+      // The calls to action after the services
+      const [list, act] = [await box(block.locator('.hero-services__list')), await box(block.locator('.hero-services__actions'))];
+      expect(act.y).toBeGreaterThanOrEqual(list.bottom);
     } else {
       // Over the photograph's left, its headline first, left of the phone, clear of the header
       expect(await block.evaluate((el) => getComputedStyle(el).position)).toBe('absolute');
@@ -609,6 +616,12 @@ test.describe('home hero', () => {
       expect(b.right).toBeLessThan(phone.x);
       expect(b.right).toBeLessThan(hero.x + hero.w * 0.4);
       expect(Math.min(b.y, headline.y)).toBeGreaterThan((await box(page.locator('.site-header--overlay'))).bottom);
+      // The calls to action in the hero's foot, where the leaf was: bottom left, inside the hero, clear of the phone
+      const act = await box(block.locator('.hero-services__actions'));
+      expect(hero.bottom - act.bottom).toBeLessThan(40);
+      expect(act.bottom).toBeLessThanOrEqual(hero.bottom);
+      expect(act.right).toBeLessThan(phone.x);
+      expect(act.y).toBeGreaterThan(b.bottom);
       // Four in a row needs 33rem; at 1440 × 900 the stretch with no face is narrower, so two by two
       const tops = await block.locator('.hero-services__item').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
       expect(new Set(tops).size).toBe(b.w >= 528 ? 1 : 2);
@@ -641,6 +654,17 @@ test.describe('home hero', () => {
     await page.goto('/');
     for (const el of await block.locator('.hero-headline, .hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => getComputedStyle(n).opacity)).toBe('1');
     expect(await block.locator('.hero-services__brush').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
+  });
+
+  test('the hero’s calls to action lead to the tours, and to their experiences', async ({ page }) => {
+    await page.goto('/?nomotion');
+    await page.getByRole('link', { name: 'Explore Our Tours' }).click();
+    await expect(page).toHaveURL(/\/tours\/$/);
+    await expect(page.locator('h1')).toHaveText('Tours & Experiences');
+    await page.goto('/?nomotion');
+    await page.getByRole('link', { name: 'Our Experiences' }).click();
+    await expect(page).toHaveURL(/\/tours\/#adventure$/);
+    await expect(page.locator('[data-filter-value="adventure"]')).toHaveAttribute('aria-pressed', 'true');
   });
 
   test('a plan carried in the URL still reaches the tours page, which shows it and passes it on', async ({ page }) => {

@@ -24,7 +24,8 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith('.mjs')).sort()) {
 const render = (path) => layout(pages.find((p) => p.path === path), site);
 const home = render('index.html');
 // The hero ends where the next section begins: the sand journey (partials/sand-journey.mjs), then the chapters
-const hero = home.slice(home.indexOf('<section class="hero"'), home.indexOf('<section class="sand-journey"'));
+// (the hero's words, partials/hero-services.mjs, follow the section in .hero-shell: test/hero-services.test.mjs)
+const hero = home.slice(home.indexOf('<section class="hero"'), home.indexOf('<div class="hero-services"'));
 const ai = [...images, ...generated].filter((i) => i.origin === 'G');
 
 test('the hero: one h1 for search and screen readers, the headline Good Times Start Here! in place of the leaf, no link', () => {

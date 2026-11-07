@@ -15,7 +15,7 @@ system of `design/button-design.md`, which stays for forms, steps and small cont
 
 | Leaf (the brand's primary calls to action) | Pill (`.gt-button`, `design/button-design.md`) |
 |---|---|
-| ~~Find Your Good Time~~ (the hero): removed on 7 Nov 2026 at the owner's request; the hero's headline, **Good Times Start Here!**, took its place (`hero-services.css`) | Form submissions and wizard steps (Send my request, Next, Back) |
+| ~~Find Your Good Time~~ (the hero): removed on 7 Nov 2026 at the owner's request; the hero's headline, **Good Times Start Here!**, took its place (`hero-services.css`) | Form submissions and wizard steps (Send my request, Next, Back); the hero's **Explore Our Tours** (primary pill) and **Our Experiences** (glass pill with a white line), added on 7 Nov 2026 after the owner's reference, in the hero's foot where the leaf was |
 | **Plan My Day** (header, Travel Concierge, phone menu, phone bar, reviews page, the home page's closing seal) | Secondary actions beside a leaf (Arrange My Transfer over the closing photograph is the on-image pill) |
 | **Explore the Cape Peninsula Tour** (the end of the footprints) | Carousel and gallery controls, filters, Show more reviews |
 | **Get a Quote** (the home page's booking steps) | Tertiary links in sentences (travel notes) |

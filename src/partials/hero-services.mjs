@@ -3,8 +3,8 @@
  * Banner" reference). The headline, "Good Times Start Here!" (the owner's choice of 7 Nov 2026, in place of the Find
  * Your Good Time leaf): "Good Times" in white, "Start Here!" in leaf green on a lime brush swash. One sentence, its
  * last words underlined by a hand-painted lime brush mark. Good Times' four services, each an icon in a warm-white
- * circle, a title and a line. One data array, the site's own icon set, tokens and fonts; nothing new to load but its
- * stylesheet.
+ * circle, a title and a line. Two calls to action, Explore Our Tours and Our Experiences (the site's pills). One data
+ * array, the site's own icon set, tokens and fonts; nothing new to load but its stylesheet.
  *
  * Where it sits is hero-services.css: on wide landscape screens the whole stack is over the photograph, in the one
  * stretch of it with no face (left of the group, above the sleeping friend); on every other screen the headline sits
@@ -13,7 +13,7 @@
  * and its swash draws, the sentence rises, the brush draws, the four services follow in turn. Everything is in the
  * page from the first paint (no layout shift); without motion it is simply there.
  */
-import { esc, icon } from './ui.mjs';
+import { esc, icon, button } from './ui.mjs';
 
 export const HERO_HEADLINE = { first: 'Good Times', mark: 'Start Here!' };
 
@@ -21,6 +21,12 @@ export const HERO_LEAD = {
   text: 'Private tours, airport transfers and authentic Cape Town experiences',
   mark: 'tailored for you.',
 };
+
+/** The hero's two calls to action (the owner's choice of 7 Nov 2026, after the reference): the site's pills */
+export const HERO_ACTIONS = [
+  { href: 'tours/', label: 'Explore Our Tours', variant: 'primary' },
+  { href: 'tours/#adventure', label: 'Our Experiences', variant: 'ghost' },
+];
 
 export const HERO_SERVICES = [
   { icon: 'camera', title: 'Private Tours', text: 'City, township & cultural experiences' },
@@ -69,5 +75,8 @@ export function heroServices() {
     </li>`,
     ).join('\n    ')}
   </ul>
+  <div class="hero-services__actions" data-intro>
+    ${HERO_ACTIONS.map((a) => button({ href: a.href, label: a.label, variant: a.variant, cls: 'hero-services__cta' })).join('\n    ')}
+  </div>
 </div>`;
 }
