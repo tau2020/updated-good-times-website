@@ -187,13 +187,13 @@
   .hero-services::before {
     content: '';
     position: absolute;
-    inset: -2.75rem -2rem -1rem calc(-1 * var(--hs-left));
+    inset: -2.75rem -2.25rem -1rem calc(-1 * var(--hs-left));
     z-index: -1;
     /* lighter behind the sentence (large type), deeper behind the services' small lines */
-    background: linear-gradient(180deg, rgb(3 16 32 / 0.48) 0%, rgb(3 16 32 / 0.74) 50%, rgb(3 16 32 / 0.76) 100%);
-    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 7rem), transparent), linear-gradient(180deg, transparent, #000 2.75rem, #000 calc(100% - 1.25rem), transparent);
+    background: linear-gradient(180deg, rgb(3 16 32 / 0.5) 0%, rgb(3 16 32 / 0.76) 46%, rgb(3 16 32 / 0.78) 100%);
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 4rem), transparent), linear-gradient(180deg, transparent, #000 2.75rem, #000 calc(100% - 1.25rem), transparent);
     -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 7rem), transparent), linear-gradient(180deg, transparent, #000 2.75rem, #000 calc(100% - 1.25rem), transparent);
+    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 4rem), transparent), linear-gradient(180deg, transparent, #000 2.75rem, #000 calc(100% - 1.25rem), transparent);
     mask-composite: intersect;
     pointer-events: none;
     /* held at 0 by the hero's entrance until the sentence rises (hero.js); 1 everywhere else */
@@ -210,6 +210,10 @@
   }
   .hero-services__icon {
     text-shadow: none;
+  }
+  /* The small lines: a tight dark rim around the letters, so each stays crisp over the brightest walls */
+  .hero-services__text {
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.85), 0 1px 3px rgb(3 16 32 / 0.7), 0 0 10px rgb(3 16 32 / 0.5);
   }
 }
 @media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 16/9) and (min-width: 75em) and (min-height: 46em) {
