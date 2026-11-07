@@ -43,12 +43,12 @@ test('the exact words of the brief: one sentence, four services', () => {
   assert.match(block, /<span class="hero-services__mark">tailored for you\.<svg class="hero-services__brush" [^>]*aria-hidden="true" focusable="false"/);
   assert.match(block, /<ul class="hero-services__list" role="list" aria-label="What we do">/);
   assert.equal((block.match(/<li class="hero-services__item"/g) || []).length, 4);
-  // Its only links are the two calls to action (the owner's choice of 7 Nov 2026), the site's pills, after the services
+  // Its only links are the two calls to action (the owner's choice of 7 Nov 2026), the site's large pills, after the services
   assert.deepEqual(HERO_ACTIONS.map((a) => [a.label, a.href]), [['Explore Our Tours', 'tours/'], ['Our Experiences', 'tours/#adventure']]);
   const links = [...block.matchAll(/<a class="([^"]*)" href="([^"]*)">([\s\S]*?)<\/a>/g)].map((m) => [m[1], m[2], m[3].replace(/<[^>]+>/g, '')]);
   assert.deepEqual(links, [
-    ['btn gt-button gt-button--primary hero-services__cta', 'tours/', 'Explore Our Tours'],
-    ['btn gt-button gt-button--secondary gt-button--on-dark hero-services__cta', 'tours/#adventure', 'Our Experiences'],
+    ['btn gt-button gt-button--primary gt-button--large hero-services__cta', 'tours/', 'Explore Our Tours'],
+    ['btn gt-button gt-button--secondary gt-button--on-dark gt-button--large hero-services__cta', 'tours/#adventure', 'Our Experiences'],
   ]);
   assert.ok(block.indexOf('class="hero-services__actions"') > block.indexOf('class="hero-services__list"'), 'after the services');
   assert.doesNotMatch(block, /<button|tabindex/);
@@ -86,7 +86,7 @@ test('its sheet on the home page only; no new font, script or library', () => {
   assert.deepEqual(scripts.filter((s) => /hero-services/.test(s)), [], 'its entrance lives in hero.js');
 });
 
-test('placed by the hero’s own crop: the focus by shape kept in step with styles.css', () => {
+test('placed by the hero’s own crop: at its bottom left, left of the four friends’ faces, the focus by shape kept in step with styles.css', () => {
   const styles = read('src/assets/css/styles.css');
   const hs = read('src/assets/css/hero-services.css');
   // styles.css §7: the hero's focus x by shape (50% by default, 66% up to 16:9, 84% up to 8:5), always 75% down
@@ -98,7 +98,18 @@ test('placed by the hero’s own crop: the focus by shape kept in step with styl
   assert.match(hs, /\(max-aspect-ratio: 8\/5\)[^{]*\{\s*\.hero-shell \{\s*--hs-fx: 0\.84;/);
   // object-fit: cover, 75% from the top, the poster 1280 × 720 (hero-moment-poster)
   assert.match(hs, /--hs-s: max\(calc\(100vw \/ 1280\), calc\(var\(--hs-h\) \/ 720\)\);/);
-  assert.match(hs, /bottom: calc\(25% \+ 100 \* var\(--hs-s\)/, 'its foot above the sleeping friend’s hair (poster y 440)');
+  // On wide screens the whole stack sits at the hero's foot, on its own gap, the calls to action closing it (the owner's
+  // request of 7 Nov 2026: the words just above the buttons) ...
+  const wide = hs.slice(hs.indexOf('@media (min-aspect-ratio: 3/2) and (min-width: 90em)'));
+  assert.match(wide, /^@media \(min-aspect-ratio: 3\/2\) and \(min-width: 90em\) and \(min-height: 36em\), \(min-aspect-ratio: 8\/5\) and \(min-width: 80em\) and \(min-height: 36em\), \(min-aspect-ratio: 5\/3\) and \(min-width: 75em\) and \(min-height: 36em\) \{/);
+  assert.match(wide, /\.hero-services \{[^}]*position: absolute;\s*left: var\(--hs-left\);\s*bottom: var\(--hs-inset\);\s*width: var\(--hs-row\);/);
+  // ... the headline and the sentence left of the curly-haired friend (poster x 470), the services and the buttons left of
+  // the brunette (poster x 660): in the poster's pixels, through the crop
+  assert.match(wide, /--hs-zone: min\(38rem, calc\(470 \* var\(--hs-s\) - \(1280 \* var\(--hs-s\) - 100vw\) \* var\(--hs-fx\) - var\(--hs-left\) - 1rem\)\);/);
+  assert.match(wide, /--hs-row: min\(54rem, calc\(660 \* var\(--hs-s\) - \(1280 \* var\(--hs-s\) - 100vw\) \* var\(--hs-fx\) - var\(--hs-left\) - 1rem\)\);/);
+  assert.match(wide, /\.hero-services__intro \{\s*max-width: var\(--hs-zone\);/);
+  // The shade rises from the hero's bottom-left corner and fades to nothing at its top and right
+  assert.match(wide, /radial-gradient\(farthest-side at 0% 100%, rgb\(3 16 32 \/ 0\.62\)[^;]*rgb\(3 16 32 \/ 0\)\);/);
 });
 
 test('its entrance is the hero’s one timeline: the headline at the leaf’s old moment, then the services, in opacity and a small rise', () => {

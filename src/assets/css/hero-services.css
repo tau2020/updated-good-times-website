@@ -10,15 +10,19 @@
    ui.mjs): Caveat, the site's handwriting, at its boldest for the headline.
 
    One block, two placements:
-   - Wide landscape screens (3:2 or wider, 75em wide and 46em tall or more): the whole stack (headline, sentence,
-     services) over the photograph, in the one stretch of it with no face, the left of the frame above the sleeping
-     friend's head and left of the curly-haired friend. The block is placed in the photograph's own pixels through
-     its crop (object-fit: cover, styles.css §7), so it follows the frame at every size and never reaches a face, the
-     phone or the header. A soft local shade behind the words keeps them legible over the bright town.
+   - Wide landscape screens (3:2 or wider, 75em wide and 36em tall or more): the whole stack (headline, sentence,
+     services) at the photograph's bottom left, just above the two calls to action (the owner's request of 7 Nov 2026),
+     as one group on the hero's own gap. It lies over the sleeping friend at the table, as asked, and never over the
+     four friends above him: the block is placed in the photograph's own pixels through its crop (object-fit: cover,
+     styles.css §7), so it follows the frame at every size, the headline and the sentence keeping left of the
+     curly-haired friend and the services left of the brunette, below every chin. A soft shade rising from the hero's
+     bottom-left corner carries the words and fades to nothing before any of their faces; the sky, the mountain and
+     the town stay clear.
    - Every other screen (phones, tablets, square, narrow or short windows): the headline sits bottom left in the hero,
      where the leaf was (below every face: in the band beside the phone, or in the strip under the sleeping friend's
-     chin), and the sentence and the services follow immediately beneath the hero on the navy of its band.
-   Four services in a row wherever the block is 33rem wide or more, two by two below that.
+     chin), and the sentence, the services and the calls to action follow immediately beneath the hero on the navy of
+     its band; on phones the calls to action take the full width.
+   Four services in a row wherever the block is 32rem wide or more, two by two below that.
    ========================================================================== */
 .hero-shell {
   /* The photograph's crop, in its own pixels (hero-moment-poster, 1280 × 720): object-fit: cover over the hero, so one
@@ -30,11 +34,12 @@
 }
 
 .hero-services {
-  --hs-lead: clamp(1.0625rem, 0.95rem + 0.6vw, 1.3125rem);
-  --hs-title: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
-  --hs-text: clamp(0.8125rem, 0.8rem + 0.1vw, 0.875rem);
-  --hs-icon: clamp(2.5rem, 2.3rem + 0.6vw, 2.875rem);
-  --hs-list-gap: clamp(1.1rem, 0.8rem + 1.2vw, 1.6rem);
+  /* Phones and tablets: the sentence at 18–22 px, titles at 16–18 px, lines at 14–15 px */
+  --hs-lead: clamp(1.125rem, 1rem + 0.55vw, 1.375rem);
+  --hs-title: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  --hs-text: clamp(0.875rem, 0.84rem + 0.15vw, 0.9375rem);
+  --hs-icon: clamp(2.75rem, 2.5rem + 0.8vw, 3.125rem);
+  --hs-list-gap: clamp(1.4rem, 1rem + 1.4vw, 1.9rem);
   /* The hero's own gap under its foot (styles.css §7, --hero-inset), for the headline that sits there */
   --hs-inset: max(clamp(0.75rem, 0.1rem + 1.9vh, 1.75rem), env(safe-area-inset-bottom));
   position: relative;
@@ -195,16 +200,25 @@
   text-wrap: balance;
 }
 
-/* The two calls to action (the owner's choice of 7 Nov 2026): the site's pills, Explore Our Tours in leaf green and
-   Our Experiences as a glass pill with a white line; after the services here, lifted into the hero's foot on wide
-   screens (below). Staged with opacity only by the entrance, so they are in the tab order throughout: a focused one
-   shows at once */
+/* The two calls to action (the owner's choice of 7 Nov 2026): the site's large pills, Explore Our Tours in leaf green
+   and Our Experiences as a glass pill with a white line, right after the services. Staged with opacity only by the
+   entrance, so they are in the tab order throughout: a focused one shows at once */
 .hero-services__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: clamp(1.4rem, 1rem + 1.5vw, 2rem);
+  margin-top: clamp(1.6rem, 1.1rem + 1.5vw, 2.25rem);
   text-shadow: none;
+}
+/* On phones, one above the other at the full width: one thumb-sized target each, the same width */
+@container hero-services (max-width: 30rem) {
+  .hero-services__actions {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .hero-services__cta {
+    width: 100%;
+  }
 }
 .hero-services__actions .gt-button--on-dark {
   --btn-bg: rgb(3 16 32 / 0.42);
@@ -215,7 +229,7 @@
 }
 
 /* Four in a row once the block is wide enough for them; each title kept to one line (at most 2.7% of the row) */
-@container hero-services (min-width: 33rem) {
+@container hero-services (min-width: 32rem) {
   .hero-services__list {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -280,102 +294,52 @@
   }
 }
 
-/* Wide landscape screens (3:2 or wider, 75em wide and 46em tall or more): over the photograph's one faceless stretch,
-   the left of the frame above the sleeping friend's hair (poster y 440: 0.75 H − 100 px of the poster from the hero's
-   top) and short of the curly-haired friend's (poster x 470). The headline heads the stack, on one line, as wide as
-   that stretch allows and as tall as the screen allows */
-@media (min-aspect-ratio: 3/2) and (min-width: 75em) and (min-height: 46em) {
+/* Wide landscape screens (36em tall or more, and wide enough for the faces to leave the stack its room: 3:2 or wider
+   from 90em, 8:5 from 80em, 5:3 from 75em; narrower shapes such as 1200 × 800 keep the layout below): the whole
+   stack at the photograph's bottom left, just above the two calls to action (the owner's request of 7 Nov 2026: "push this block down ... so it sits
+   just above" them), as one group: the headline, the sentence, the four services in a row and the calls to action,
+   on the hero's own gap under its foot (the phone's too) and aligned with the logo. The type is larger than before
+   (the same request), sized from the screen's height so the stack always fits under the header, and capped on very
+   large screens.
+   Where it may reach, in the photograph's own pixels through its crop (poster 1280 × 720, cut --hs-fx from its left and
+   75% from its top): it lies over the sleeping friend at the table, as asked, and never over the four friends above
+   him. The headline and the sentence keep left of the curly-haired friend (poster x 470: --hs-zone), the services and
+   the buttons left of the brunette (poster x 660: --hs-row), and the services' row stays below every chin (the
+   curly-haired friend's, poster y 470, is the lowest of the four; qa/hero-services-shots.mjs measures it) */
+@media (min-aspect-ratio: 3/2) and (min-width: 90em) and (min-height: 36em), (min-aspect-ratio: 8/5) and (min-width: 80em) and (min-height: 36em), (min-aspect-ratio: 5/3) and (min-width: 75em) and (min-height: 36em) {
   .hero-shell {
     /* ... and, by shape, the frame is cut --hs-fx from its left (styles.css §7: 50%, 66% from 16:9, 84% from 8:5;
        test/hero-services.test.mjs keeps the two in step) */
     --hs-fx: 0.5;
   }
   .hero-services {
-    --hs-lead: clamp(0.95rem, 0.4rem + 1.3svh, 1.25rem);
-    --hs-title: clamp(0.875rem, 0.42rem + 1svh, 1.0625rem);
-    --hs-text: clamp(0.78rem, 0.5rem + 0.6svh, 0.875rem);
-    --hs-icon: clamp(2rem, 0.6rem + 2.8svh, 2.875rem);
-    --hs-list-gap: clamp(0.65rem, 1.2svh, 1.25rem);
-    /* The faceless stretch: its width, and the gap kept above the sleeping friend's hair */
+    --hs-lead: clamp(1.0625rem, 0.4rem + 1.75svh, 1.625rem);
+    --hs-title: clamp(0.9375rem, 0.4rem + 1.2svh, 1.3125rem);
+    --hs-text: clamp(0.84rem, 0.45rem + 0.85svh, 1.125rem);
+    --hs-icon: clamp(2.125rem, 0.75rem + 3.4svh, 3.25rem);
+    --hs-gap: clamp(0.75rem, 2.2svh, 1.5rem);
     --hs-zone: min(38rem, calc(470 * var(--hs-s) - (1280 * var(--hs-s) - 100vw) * var(--hs-fx) - var(--hs-left) - 1rem));
-    --hs-clear: clamp(0.6rem, 1.6svh, 1.4rem);
-    /* The shade behind the words: a light veil of the hero's navy, so the town and the mountain stay clear behind them
-       (the owner's request of 7 Nov 2026), feathered on every side it shows (into the frame's left edge it simply runs
-       out) and fading to nothing before any face; the words carry their own dark rim (below) */
-    --hs-veil-bg: linear-gradient(180deg, rgb(3 16 32 / 0.18) 0%, rgb(3 16 32 / 0.28) 45%, rgb(3 16 32 / 0.42) 100%);
-    --hs-veil-mask: linear-gradient(90deg, #000 0, #000 calc(100% - 4rem), transparent), linear-gradient(180deg, transparent, #000 2.75rem, #000 calc(100% - 1.25rem), transparent);
-  }
-  .hero-headline {
-    --hl-size: min(calc(var(--hs-zone) / 9), clamp(2rem, 4.6svh, 3rem));
-    position: relative;
-    left: auto;
-    bottom: auto;
-    max-width: none;
-    margin: 0 0 0.18em;
-  }
-  .hero-headline::before {
-    content: none;
-  }
-  .hero-services__lead {
-    line-height: 1.27;
-  }
-  .hero-services__lead::after {
-    margin-top: 0.55em;
-  }
-  .hero-services__title {
-    margin-top: 0.4em;
-  }
-  .hero-services__text {
-    margin-top: 0.15em;
-    line-height: 1.32;
-  }
-  /* The words over the photograph: white with a tight dark rim and a soft glow, legible over the town without a heavy
-     veil; "Start Here!" keeps its own lime ground */
-  .hero-services,
-  .hero-services__intro {
-    text-shadow: 0 0 2px rgb(3 16 32 / 0.7), 0 1px 3px rgb(3 16 32 / 0.75), 0 0 12px rgb(3 16 32 / 0.55), 0 0 26px rgb(3 16 32 / 0.35);
-  }
-  .hero-headline__mark,
-  .hero-services__icon,
-  .hero-services__actions {
-    text-shadow: none;
-  }
-  /* The calls to action in the hero's foot, where the leaf was: the strip below the sleeping friend's chin (poster
-     y 640: 0.25 H − 100 px of the poster above the hero's foot), at the hero's own gap */
-  .hero-services__actions {
+    --hs-row: min(54rem, calc(660 * var(--hs-s) - (1280 * var(--hs-s) - 100vw) * var(--hs-fx) - var(--hs-left) - 1rem));
     position: absolute;
     left: var(--hs-left);
-    margin: 0;
-    flex-wrap: nowrap;
-  }
-}
-/* ... tall enough for the whole stack (53em): headline, sentence and services together over the photograph */
-@media (min-aspect-ratio: 3/2) and (min-width: 75em) and (min-height: 53em) {
-  .hero-services {
-    position: absolute;
-    left: var(--hs-left);
-    bottom: calc(25% + 100 * var(--hs-s) + var(--hs-clear));
-    width: var(--hs-zone);
+    bottom: var(--hs-inset);
+    width: var(--hs-row);
     padding: 0;
     background: none;
+    /* The words over the photograph: white with a tight dark rim and a soft glow; "Start Here!" keeps its own lime
+       ground, the icons and the buttons their own */
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.7), 0 1px 3px rgb(3 16 32 / 0.75), 0 0 12px rgb(3 16 32 / 0.55), 0 0 26px rgb(3 16 32 / 0.35);
   }
-  /* (the block is absolute here: the actions are placed from its own foot down to the hero's) */
-  .hero-services__actions {
-    left: 0;
-    bottom: calc(var(--hs-inset) - 0.25 * var(--hs-h) - 100 * var(--hs-s) - var(--hs-clear));
-  }
+  /* The shade: navy rising from the hero's bottom-left corner, under the whole stack and a third of its height above
+     it, fading to nothing at its top and right edges, so it never reaches a face of the four; held at 0 by the hero's
+     entrance until the headline rises (hero.js), 1 everywhere else */
   .hero-services::before {
     content: '';
     position: absolute;
-    inset: -2.75rem -2.25rem -1rem calc(-1 * var(--hs-left));
+    inset: -34% -2rem calc(-1 * var(--hs-inset)) calc(-1 * var(--hs-left));
     z-index: -1;
-    background: var(--hs-veil-bg);
-    -webkit-mask-image: var(--hs-veil-mask);
-    -webkit-mask-composite: source-in;
-    mask-image: var(--hs-veil-mask);
-    mask-composite: intersect;
+    background: radial-gradient(farthest-side at 0% 100%, rgb(3 16 32 / 0.62), rgb(3 16 32 / 0.48) 36%, rgb(3 16 32 / 0.22) 66%, rgb(3 16 32 / 0));
     pointer-events: none;
-    /* held at 0 by the hero's entrance until the headline rises (hero.js); 1 everywhere else */
     opacity: var(--hs-veil, 1);
   }
   /* Before the entrance takes over, the shade waits with the words (styles.css: the same timed fallback) */
@@ -383,74 +347,76 @@
     opacity: 0;
     animation: intro-fallback 1ms linear 2.8s forwards;
   }
+  .hero-services__intro {
+    max-width: var(--hs-zone);
+  }
+  /* The headline on two lines, large, as in the reference: never wider than the column */
+  .hero-headline {
+    --hl-size: min(calc(var(--hs-zone) / 4.7), clamp(2.5rem, 1rem + 5.2svh, 5rem));
+    position: relative;
+    left: auto;
+    bottom: auto;
+    max-width: none;
+    margin: 0 0 0.26em;
+  }
+  .hero-headline::before {
+    content: none;
+  }
+  .hero-headline__line {
+    display: block;
+  }
+  .hero-headline__mark {
+    display: block;
+    margin: 0.06em 0 0;
+  }
+  .hero-services__lead {
+    line-height: 1.3;
+  }
+  .hero-services__lead::after {
+    margin-top: 0.6em;
+  }
   .hero-services__list {
     max-width: none;
-    margin-top: calc(var(--hs-list-gap) * 0.6);
+    margin-top: var(--hs-gap);
   }
-  .hero-services__icon {
+  .hero-services__title {
+    margin-top: 0.5em;
+  }
+  .hero-services__icon,
+  .hero-headline__mark,
+  .hero-services__actions {
     text-shadow: none;
   }
-  /* The small lines: a tighter, darker rim around the letters, so each stays crisp over the brightest walls */
+  /* The small lines: whiter, with a tighter, darker rim around the letters, so each stays crisp over the table */
   .hero-services__text {
+    margin-top: 0.2em;
+    line-height: 1.34;
+    color: rgb(255 255 255 / 0.95);
     text-shadow: 0 0 2px rgb(3 16 32 / 0.95), 0 0 4px rgb(3 16 32 / 0.75), 0 1px 3px rgb(3 16 32 / 0.8), 0 0 12px rgb(3 16 32 / 0.6);
   }
-}
-/* ... shorter (laptops such as 1366 × 768): the headline and the sentence over the photograph, lifted from the block
-   (which follows the hero) into the same stretch; the services follow the hero, four in a row */
-@media (min-aspect-ratio: 3/2) and (min-width: 75em) and (min-height: 46em) and (max-height: 52.99em) {
-  .hero-services__intro {
-    position: absolute;
-    left: var(--hs-left);
-    bottom: calc(100% + 0.25 * var(--hs-h) + 100 * var(--hs-s) + var(--hs-clear));
-    width: var(--hs-zone);
-  }
-  .hero-services__intro::before {
-    content: '';
-    position: absolute;
-    inset: -2.75rem -2.25rem -1rem calc(-1 * var(--hs-left));
-    z-index: -1;
-    background: var(--hs-veil-bg);
-    -webkit-mask-image: var(--hs-veil-mask);
-    -webkit-mask-composite: source-in;
-    mask-image: var(--hs-veil-mask);
-    mask-composite: intersect;
-    pointer-events: none;
-    opacity: var(--hs-veil, 1);
-  }
-  .cine:not(.intro-ready) .home .hero-services__intro::before {
-    opacity: 0;
-    animation: intro-fallback 1ms linear 2.8s forwards;
-  }
-  .hero-services__list {
-    margin-top: 0;
-  }
-  /* (the block follows the hero here: the actions are lifted from its top into the hero's foot) */
   .hero-services__actions {
-    bottom: calc(100% + var(--hs-inset));
+    margin-top: calc(var(--hs-gap) * 1.2);
+    flex-wrap: nowrap;
   }
-}
-/* Tall wide screens, where the services take one row: the headline on two lines, large, as in the reference */
-@media (min-aspect-ratio: 3/2) and (min-width: 75em) and (min-height: 62em) {
-  @container hero-services (min-width: 33rem) {
-    .hero-headline {
-      --hl-size: min(calc(var(--hs-zone) / 4.9), clamp(3rem, 6.1svh, 4.75rem));
-      margin-bottom: 0.22em;
-    }
-    .hero-headline__line {
-      display: block;
-    }
-    .hero-headline__mark {
-      display: block;
-      margin: 0.08em 0 0;
+  /* The buttons grow with the words on large screens (17 px up to 21 px), keeping the pill's proportions */
+  .hero-services__cta {
+    font-size: clamp(1.0625rem, 0.45rem + 1.05svh, 1.3125rem);
+    min-height: max(var(--btn-height-large), 3.05em);
+    padding-inline: 1.65em;
+  }
+  /* Should the row be too narrow for four (under 32rem, two by two and so taller), the services keep to the column */
+  @container hero-services (max-width: 31.99rem) {
+    .hero-services__list {
+      max-width: var(--hs-zone);
     }
   }
 }
-@media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 16/9) and (min-width: 75em) and (min-height: 46em) {
+@media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 16/9) and (min-width: 75em) and (min-height: 36em) {
   .hero-shell {
     --hs-fx: 0.66;
   }
 }
-@media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 8/5) and (min-width: 75em) and (min-height: 46em) {
+@media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 8/5) and (min-width: 75em) and (min-height: 36em) {
   .hero-shell {
     --hs-fx: 0.84;
   }

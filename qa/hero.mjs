@@ -4,7 +4,9 @@
  *
  *   node qa/hero.mjs [--base=http://127.0.0.1:8090] [--out=docs/qa/hero] [--motion] [--video] [--jpeg] [--debug] [--only=390x844,1440x900]
  *
- * For every viewport: the call to action's and the phone's boxes against the five faces of the café scene
+ * For every viewport: the headline's and the phone's boxes against the five faces of the café scene (on wide screens,
+ * where the owner placed the hero's words at the photograph's bottom left on 7 Nov 2026, the sleeping friend may be under
+ * the headline; the four friends above him never)
  * (src/data/hero-scene.mjs: boxes in the film's own 1280×720 frame, mapped through the poster's object-fit and
  * object-position, so they move with the crop), each face's share inside the visible picture, the phone inside the viewport,
  * and horizontal overflow. Writes report.json and one PNG (or JPEG, --jpeg) per viewport; --debug outlines the faces.
@@ -75,6 +77,8 @@ const measure = (faces) => {
   out.overflowX = document.documentElement.scrollWidth > document.documentElement.clientWidth;
   out.phoneWidth = Math.round(phone.x1 - phone.x0);
   out.headlineText = document.querySelector('.hero-headline').textContent.trim();
+  // Wide screens: the hero's words at the photograph's bottom left (hero-services.css), over the sleeping friend
+  out.wordsBottomLeft = getComputedStyle(document.querySelector('.hero-services')).position === 'absolute';
   out.ctaLines = Math.round((cta.y1 - cta.y0) / parseFloat(getComputedStyle(document.querySelector('.hero-headline')).lineHeight || 20)) > 1 ? 2 : 1;
   return out;
 };
@@ -103,7 +107,11 @@ for (const [w, h] of list) {
   }
   const file = join(OUT, `hero-${w}x${h}${MOTION ? '-motion' : ''}.${JPEG ? 'jpg' : 'png'}`);
   await page.screenshot(JPEG ? { path: file, type: 'jpeg', quality: 82 } : { path: file });
-  const bad = Object.entries(m.faces).filter(([, f]) => f.cta.overlap > 0 || f.phone.overlap > 0).map(([n]) => n);
+  // The owner's request of 7 Nov 2026 puts the hero's words just above the calls to action at the photograph's bottom
+  // left on wide screens, where the sleeping friend lies at the table: he may be under them there; the four friends above
+  // him never, and nothing may ever be under the phone
+  const allowed = (n) => n === 'sleeping' && m.wordsBottomLeft;
+  const bad = Object.entries(m.faces).filter(([n, f]) => (f.cta.overlap > 0 && !allowed(n)) || f.phone.overlap > 0).map(([n]) => n);
   const problems = [
     ...bad.map((n) => `covers the ${n} face`),
     m.ctaPhone.overlap > 0 && 'call to action under the phone',

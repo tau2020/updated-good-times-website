@@ -578,7 +578,7 @@ test.describe('home hero', () => {
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/);
   });
 
-  test('the hero’s words (7 Nov 2026): the headline, the sentence, its brush and the four services; over the photograph’s faceless left on a desktop, the headline in the hero and the rest beneath it on a phone; part of the entrance', async ({ page, isMobile }) => {
+  test('the hero’s words (7 Nov 2026): the headline, the sentence, its brush and the four services; at the photograph’s bottom left just above the calls to action on a desktop, the headline in the hero and the rest beneath it on a phone; part of the entrance', async ({ page, isMobile }) => {
     await page.goto('/?nomotion');
     const block = page.locator('.hero-services');
     await expect(block).toHaveCount(1);
@@ -610,21 +610,24 @@ test.describe('home hero', () => {
       const [list, act] = [await box(block.locator('.hero-services__list')), await box(block.locator('.hero-services__actions'))];
       expect(act.y).toBeGreaterThanOrEqual(list.bottom);
     } else {
-      // Over the photograph's left, its headline first, left of the phone, clear of the header
+      // At the photograph's bottom left, just above the calls to action (the owner's request of 7 Nov 2026): the headline
+      // first, then the sentence, the services and the buttons, left of the phone and clear of the header
       expect(await block.evaluate((el) => getComputedStyle(el).position)).toBe('absolute');
       expect(headline.y).toBeLessThan((await box(block.locator('.hero-services__lead'))).y);
       expect(b.right).toBeLessThan(phone.x);
-      expect(b.right).toBeLessThan(hero.x + hero.w * 0.4);
+      expect(b.right).toBeLessThan(hero.x + hero.w * 0.55);
       expect(Math.min(b.y, headline.y)).toBeGreaterThan((await box(page.locator('.site-header--overlay'))).bottom);
-      // The calls to action in the hero's foot, where the leaf was: bottom left, inside the hero, clear of the phone
-      const act = await box(block.locator('.hero-services__actions'));
+      expect(hero.bottom - b.bottom, 'at the hero’s foot').toBeLessThan(40);
+      // The calls to action close the block, right after the services: bottom left, inside the hero, clear of the phone
+      const [list, act] = [await box(block.locator('.hero-services__list')), await box(block.locator('.hero-services__actions'))];
+      expect(act.y).toBeGreaterThanOrEqual(list.bottom);
+      expect(act.y - list.bottom, 'just below the services').toBeLessThan(48);
       expect(hero.bottom - act.bottom).toBeLessThan(40);
       expect(act.bottom).toBeLessThanOrEqual(hero.bottom);
       expect(act.right).toBeLessThan(phone.x);
-      expect(act.y).toBeGreaterThan(b.bottom);
-      // Four in a row needs 33rem; at 1440 × 900 the stretch with no face is narrower, so two by two
+      // Four in a row from 32rem (at 1440 × 900 the row is wider than that)
       const tops = await block.locator('.hero-services__item').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
-      expect(new Set(tops).size).toBe(b.w >= 528 ? 1 : 2);
+      expect(new Set(tops).size).toBe(b.w >= 512 ? 1 : 2);
     }
     // With motion: steps of the hero's own timeline: the headline (2.2 s) and its swash (2.4 s), the sentence (2.65 s),
     // the brush drawing from the left (3.1 s), the services in turn (3.35 s, 0.12 s apart); then everything settles

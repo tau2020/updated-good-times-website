@@ -9,7 +9,8 @@
  * the reduced-motion composition; with --frames, the entrance at fixed moments of its timeline (window.__heroEntrance,
  * paused and sought, so the frames are exact). Also measured: console errors, failed requests, layout shift during the
  * entrance, horizontal overflow, and (when the hero services exist) whether any of them overlaps the header, the call to
- * action, the phone or a face (the faces' boxes in the poster's own pixels, mapped through the hero's object-fit crop),
+ * action, the phone or a face (the faces' boxes in the poster's own pixels, mapped through the hero's object-fit crop;
+ * the sleeping friend may lie under the stack where the owner placed it at the bottom left, which is recorded),
  * and the contrast of the services' words against what lies behind them: the block's text is made transparent (its
  * shade stays), the page is captured, and behind each line the brighter end of the background (its 90th-percentile
  * luminance) is set against white. Conservative: the words' own shadow halo, which helps, is left out.
@@ -93,6 +94,7 @@ function measure(faces) {
   };
   const hit = (a, b) => a && b && a.x < b.x + b.w - 1 && b.x < a.x + a.w - 1 && a.y < b.y + b.h - 1 && b.y < a.y + a.h - 1;
   out.collisions = [];
+  out.overSleepingFriend = [];
   // Where the block sits: over the photograph (absolute in the hero's frame) or beneath the hero (in the flow)
   out.placement = services ? (getComputedStyle(services).position === 'absolute' ? 'over the photograph' : 'beneath the hero') : 'none';
   if (out.placement === 'beneath the hero') {
@@ -106,7 +108,13 @@ function measure(faces) {
       if (p.y + p.h > out.hero.y + out.hero.h + 1) out.collisions.push(`${p.el} runs past the hero`);
     }
   } else for (const p of parts) {
-    for (const f of faceBoxes) if (hit(p, f)) out.collisions.push(`${p.el} over the ${f.name}'s face`);
+    // The owner's request of 7 Nov 2026: the stack at the photograph's bottom left, just above the calls to action, where
+    // the sleeping friend lies at the table. He may be under it (recorded, not a collision); the four friends never
+    for (const f of faceBoxes) {
+      if (!hit(p, f)) continue;
+      if (f.name === 'sleeping friend') out.overSleepingFriend.includes(p.el) || out.overSleepingFriend.push(p.el);
+      else out.collisions.push(`${p.el} over the ${f.name}'s face`);
+    }
     if (hit(p, out.header)) out.collisions.push(`${p.el} under the header`);
     if (hit(p, out.phone)) out.collisions.push(`${p.el} over the phone`);
   }
@@ -254,7 +262,7 @@ for (const vp of EXTRA.length ? EXTRA : VIEWPORTS) {
   const low = (list) => (list || []).reduce((a, c) => (!a || c.contrastP90 < a.contrastP90 ? c : a), null);
   const worst = low(m.contrast);
   const seen = low(m.contrastWithHalo);
-  console.log(`${key} ${vp[2].padEnd(12)} ${m.placement.padEnd(19)} cls ${m.cls} overflow ${m.overflow} errors ${m.errors.length} failed ${m.failed.length} collisions ${m.collisions.length ? m.collisions.join('; ') : 'none'}; lowest contrast ${worst ? `${worst.contrastP90}:1 (${worst.kind}: ${worst.text}), with its shadow ${seen.contrastP90}:1` : 'n/a'}`);
+  console.log(`${key} ${vp[2].padEnd(12)} ${m.placement.padEnd(19)} cls ${m.cls} overflow ${m.overflow} errors ${m.errors.length} failed ${m.failed.length} collisions ${m.collisions.length ? m.collisions.join('; ') : 'none'}${m.overSleepingFriend?.length ? ` (over the sleeping friend, as placed: ${m.overSleepingFriend.join(', ')})` : ''}; lowest contrast ${worst ? `${worst.contrastP90}:1 (${worst.kind}: ${worst.text}), with its shadow ${seen.contrastP90}:1` : 'n/a'}`);
 }
 await browser.close();
 await writeFile(join(OUT, 'metrics.json'), JSON.stringify(metrics, null, 2));
