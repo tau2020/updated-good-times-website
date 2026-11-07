@@ -17,7 +17,7 @@ import { createHash } from 'node:crypto';
 import { one, query, closeDb, post, validTour, validTransfer, key } from './helpers/env.mjs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
-import { termsPage, TERMS, OPEN_POINTS } from '../src/pages/terms.mjs';
+import { termsPage, TERMS, OPEN_POINTS, termsPublished } from '../src/pages/terms.mjs';
 import { page as enquirePage } from '../src/pages/enquire.mjs';
 import { validateEnquiry, FIELDS } from '../lib/enquiries/schema.mjs';
 import { handle } from '../lib/http/app.mjs';
@@ -162,8 +162,10 @@ test('wherever the terms page is built, every footer has one Terms & Conditions 
     const mod = await import(new URL(f, dir));
     pages.push(...(Array.isArray(mod.pages) ? mod.pages : [mod.page]).filter(Boolean));
   }
-  // A preview build has the page; so does production once the terms are approved. An unapproved production build has none.
-  for (const [x, links] of [[{ ...site, preview: true }, 1], [approvedTerms(production), 1], [production, site.legal.termsApproved ? 1 : 0]]) {
+  // A preview build has the page; so does production once the terms are approved, or under the owner's release override
+  // that accepts them as a draft (7 Nov 2026). An unapproved production build without that override has none.
+  const locked = { ...production, legal: { ...production.legal, releaseOverride: null } };
+  for (const [x, links] of [[{ ...site, preview: true }, 1], [approvedTerms(production), 1], [production, termsPublished(production) ? 1 : 0], [locked, 0]]) {
     for (const p of pages) {
       const html = layout(p, x);
       const footer = html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));

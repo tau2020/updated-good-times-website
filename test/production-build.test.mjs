@@ -59,7 +59,8 @@ test('production values: Good Times’ own domain, indexable, enquiries still in
   assert.deepEqual(deployTarget('feature-x'), { environment: 'preview', alias: PROJECT.stagingBranch, url: `https://${PROJECT.stagingBranch}.${PROJECT.name}.pages.dev` });
 });
 
-test('every page’s canonical and og:url is its own https://goodtimesincapetown.co.za address; pages are indexable', () => {
+test('every page’s canonical and og:url is its own https://goodtimesincapetown.co.za address; pages are indexable, the draft terms excepted', async () => {
+  const { site } = await import('../src/data/site.mjs');
   for (const file of html()) {
     const page = readFileSync(file, 'utf8');
     const rel = relative(out, file);
@@ -67,7 +68,9 @@ test('every page’s canonical and og:url is its own https://goodtimesincapetown
     const path = rel === 'index.html' ? '' : rel.replace(/index\.html$/, '');
     assert.match(page, new RegExp(`<link rel="canonical" href="${ORIGIN}/${path.replace(/[.]/g, '\\.')}">`), rel);
     assert.match(page, new RegExp(`<meta property="og:url" content="${ORIGIN}/${path.replace(/[.]/g, '\\.')}">`), rel);
-    assert.match(page, /<meta name="robots" content="index,follow">/, rel);
+    // The terms, published as a draft under the owner's release override, stay out of search until approved
+    const draft = rel === join('terms', 'index.html') && !site.legal.termsApproved;
+    assert.match(page, draft ? /<meta name="robots" content="noindex,nofollow">/ : /<meta name="robots" content="index,follow">/, rel);
     assert.doesNotMatch(page, /preview-bar|goodtimesincapetown\.invalid/, `${rel}: no preview banner or placeholder origin`);
   }
 });
@@ -115,11 +118,23 @@ test('booking links stay on the site; only the verified email addresses are publ
   assert.match(read('index.html'), /href="enquire\/\?type=transfer/);
 });
 
-test('until Good Times approves them, the booking terms are not published and the privacy notice says it is a draft', async () => {
+test('the booking terms are published once approved, or as a marked draft under the owner’s release override; the privacy notice says it is a draft until approved', async () => {
   const { site } = await import('../src/data/site.mjs');
+  const { termsPublished } = await import('../src/pages/terms.mjs');
   const files = html().map((f) => relative(out, f));
-  assert.equal(files.includes(join('terms', 'index.html')), site.legal.termsApproved);
-  assert.equal(/href="terms\/"/.test(read('index.html')), site.legal.termsApproved, 'the footer links to the terms only once they are published');
+  const published = termsPublished({ ...site, preview: false });
+  // 7 Nov 2026: the owner's release accepts the unapproved terms as a draft, so production publishes them
+  assert.equal(published, site.legal.termsApproved || site.legal.releaseOverride.accepted.includes('site.legal.termsApproved'));
+  assert.equal(files.includes(join('terms', 'index.html')), published);
+  assert.equal(/href="terms\/"/.test(read('index.html')), published, 'the footer links to the terms only when they are published');
+  // The booking form's Terms & Conditions link always leads to a published page
+  assert.equal(/<a href="\.\.\/terms\/" target="_blank"/.test(read('enquire/index.html')), true, 'the form links to the terms');
+  assert.ok(published, 'and so the terms are published wherever the form asks for them');
+  if (published && !site.legal.termsApproved) {
+    const terms = read('terms/index.html');
+    assert.match(terms, /Draft for Good Times’ approval/, 'a draft says so');
+    assert.match(terms, /<meta name="robots" content="noindex,nofollow">/, 'and is never indexed');
+  }
   assert.equal(/Draft for Good Times’ approval/.test(read('privacy/index.html')), !site.legal.privacyApproved);
   for (const f of files) assert.doesNotMatch(read(f), /class="pending"/, `${f}: production never shows a pending slot`);
 });

@@ -3,6 +3,7 @@ import { conciergeTrigger, conciergePanel, drawerServices } from './living-cape.
 import { aircraftDock, aircraftFlight, dockBox } from './aircraft.mjs';
 import { tours } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
+import { termsPublished } from '../pages/terms.mjs';
 
 /**
  * LINK_STYLE=files writes explicit `index.html` hrefs (for hosts or file://
@@ -323,7 +324,7 @@ ${main}
       <h2 class="footer-heading" id="footer-legal">Legal</h2>
       <ul class="footer-links">
         <li><a href="privacy/">Privacy</a></li>
-        ${site.preview || site.legal.termsApproved ? '<li><a href="terms/">Terms &amp; Conditions</a></li>' : ''}
+        ${termsPublished(site) ? '<li><a href="terms/">Terms &amp; Conditions</a></li>' : ''}
         <li><a href="privacy/#credits">Photo credits</a></li>
         <li data-consent-settings hidden><button type="button" class="footer-links__button" data-consent-open>Analytics settings</button></li>
       </ul>

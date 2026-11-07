@@ -15,7 +15,7 @@ import { readdirSync } from 'node:fs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
 import { page as privacy } from '../src/pages/privacy.mjs';
-import { termsPage, pages as termsPages, OPEN_POINTS } from '../src/pages/terms.mjs';
+import { termsPage, pages as termsPages, OPEN_POINTS, termsPublished } from '../src/pages/terms.mjs';
 import { faqs } from '../src/data/faq.mjs';
 import { releaseBlockers, releaseDecision } from '../scripts/release-gate.mjs';
 
@@ -57,16 +57,22 @@ test('the Privacy Notice: says it is a draft for Good Times’ approval, and kee
   assert.doesNotMatch(approved, /Draft for Good Times|notice--warning/, 'once approved, no draft notice');
 });
 
-test('the Terms & Conditions: a draft, noindex and preview-only; the footer links them only where the page exists', () => {
+test('the Terms & Conditions: a draft and noindex until approved; built for a preview, or for production under the owner’s release override; the footer links them only where the page exists', () => {
   const html = termsPage.body({ site: production });
   assert.match(html, /<p class="notice notice--warning">[\s\S]*?Draft for Good Times’ approval\./);
   assert.equal(termsPage.noindex, true);
-  assert.equal(termsPages.length, site.preview ? 1 : 0, 'built only for a preview while unapproved');
+  assert.equal(termsPages.length, termsPublished(site) ? 1 : 0);
   const home = pages.find((p) => p.path === 'index.html');
-  // A preview build has the page, so its footer links it; a production build has neither yet.
+  // A preview build has the page, so its footer links it
   const previewFooter = footerOf(layout(home, { ...site, preview: true }));
   assert.match(previewFooter, /<a href="terms\/">Terms &amp; Conditions<\/a>/);
-  const productionFooter = footerOf(layout(home, production));
+  // So does production under the owner's release override (7 Nov 2026), which accepts the unapproved terms as a draft
+  assert.equal(termsPublished(production), true);
+  assert.match(footerOf(layout(home, production)), /<a href="terms\/">Terms &amp; Conditions<\/a>/);
+  // Without that override a production build has neither the page nor a link to it
+  const locked = { ...production, legal: { ...production.legal, releaseOverride: null } };
+  assert.equal(termsPublished(locked), false);
+  const productionFooter = footerOf(layout(home, locked));
   assert.doesNotMatch(productionFooter, /href="terms\//, 'no link to a page that is not built');
   assert.match(productionFooter, /<a href="privacy\/">Privacy<\/a>/);
   // Once approved: no draft notice, and every footer links the terms.
