@@ -2,7 +2,7 @@
    The Living Cape design system, every page
    Scoped tokens, the engraved travel symbols, the three actions (Sun Seal,
    Travel Note, Quiet Outline) and the Travel Concierge (the desktop folio and the
-   mobile menu's service rows). Nothing here matches .hero, .hero__*, .btn-coin,
+   mobile menu's service rows). Nothing here matches .hero, .hero__*, .leaf-btn,
    .primary-nav, svg.icon or the header bar's own elements: the approved hero and
    header keep their tokens.css values exactly. The home chapters are in living-cape.css.
    ========================================================================== */
@@ -18,18 +18,18 @@
   --lc-ivory: var(--ivory, #e2eae8);
   --lc-forest: var(--forest, #102e42);
   --lc-forest-deep: var(--forest-deep, #0b2233);
-  --lc-ink: #0b1620;
+  --lc-ink: var(--ink-primary, #10241d);
   --lc-body: var(--text, #283037);
   --lc-muted: var(--muted, #5b6670);
-  --lc-brass: #3fa862;
-  --lc-functional-gold: var(--gold, #056a2b);
+  --lc-brass: #3fa862; /* rules and fine accents beside the leaf greens */
+  --lc-functional-gold: var(--green-primary, #147d43);
   --lc-sun: #f2c94c;
   --lc-champagne: var(--champagne, #6fed8f);
   --lc-atlantic: #3c6b86;
-  --lc-umber: #056a2b;
+  --lc-umber: var(--green-primary, #147d43);
   --lc-stone-line: #d3dfdb;
-  --lc-focus: #174f86;
-  --lc-display: var(--font-serif);
+  --lc-focus: var(--btn-focus, #10241d); /* the button system's ink ring (buttons.css) */
+  --lc-display: var(--font-display);
   --lc-ui: var(--font-body);
   --lc-reading: 46rem;
   /* Motion grammar */
@@ -49,16 +49,16 @@
   --motion-fast: 280ms;
   --motion-ui: 420ms;
 }
-/* Dark grounds (ocean navy, photographs): the light focus ring and light-green accents */
+/* Dark grounds (ocean navy, photographs): the lime focus ring of the button system, and light-green accents */
 .lc-dark {
-  --lc-focus: #6fed8f;
+  --lc-focus: var(--btn-focus-on-dark, #c9e970);
 }
 .living-cape :is(a, button, input, select, textarea, [tabindex]):focus-visible,
 .lc-scope :is(a, button):focus-visible,
 .gt-concierge :is(a, button):focus-visible,
 .gt-concierge-panel :is(a, button):focus-visible,
 .gt-concierge-rows a:focus-visible {
-  outline: 2px solid var(--lc-focus);
+  outline: 3px solid var(--lc-focus);
   outline-offset: 3px;
 }
 
@@ -99,7 +99,7 @@
   border: 0;
   background: none;
   color: inherit;
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
   font-weight: 600;
   line-height: 1;
@@ -213,7 +213,7 @@
    A sheet at the right of the page, which dims and softens behind it; it unfolds downward and folds back up. The sheet is a modal dialog
    (concierge.js): its close button top right, Escape or a click on the dimmed page closes it. Inside, a grid: the
    heading across the top; the four services as photograph cards beside the popular private days; the invitation to
-   plan with Make It Yours; the direct line; and the coast from Chapman's Peak fading into the lower right corner. */
+   plan with Plan My Day; the direct line; and the coast from Chapman's Peak fading into the lower right corner. */
 .gt-concierge-panel {
   position: fixed;
   inset: 0;

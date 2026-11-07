@@ -1,22 +1,42 @@
 /* ==========================================================================
-   Good Times in Cape Town — design tokens
+   Good Times in Cape Town — design tokens ("Good Times, Naturally")
    Colours come from the approved logo pack (Approved Logo Pack v2): the logo's
    black lettering and green (#059A35), its reversed greens (#45E375, #6FED8F)
-   and the ocean navy of its reversed footer (#102E42). Every colour and font used
-   by the site is a token here; styles.css and enquiry.css only reference them.
-   (Token names are the template's own; their values are Good Times'.)
+   and the ocean navy of its reversed footer (#102E42), and from the leaf-green
+   action palette of design/button-design.md. Every colour and font used by the
+   site is a token here; styles.css, buttons.css and the page sheets only
+   reference them. (Some token names are the template's own, kept as aliases so
+   nothing that reads them breaks; their values are Good Times'.)
    ========================================================================== */
 :root {
-  /* Colour: ocean navy grounds, Good Times green actions, white and soft sea-glass surfaces, near-black ink */
+  /* Leaf green: the action palette (design/button-design.md). Contrast, measured: white on --green-primary 5.2:1,
+     on --green-hover 7.0:1, on --green-deep 8.2:1; --green-deep on --green-leaf-light 7.0:1; --green-primary on
+     white 5.2:1 and on --green-soft-background 4.8:1. --green-lime-accent is decoration only (a leaf, a highlight
+     behind ink), never a ground for white words. */
+  --green-primary: #147d43;
+  --green-deep: #105b35;
+  --green-hover: #106638;
+  --green-leaf-light: #dff3de;
+  --green-soft-background: #eff8f0;
+  --green-lime-accent: #c9e970;
+  --ink-primary: #10241d;
+  --surface-white: #ffffff;
+  --green-leaf-line: #b5dbb3; /* the Soft Leaf button's border, and fine rules on pale-leaf surfaces */
+  --green-leaf-hover: #d3ecd1; /* the Soft Leaf button under the pointer */
+  /* Warm sand: the neutral beside the greens and the ocean, so the page is never green on green */
+  --surface-sand: #f7f2ea;
+  --surface-sand-deep: #ece3d4;
+
+  /* Colour: ocean navy grounds, leaf-green actions, white, sand and soft sea-glass surfaces, near-black ink */
   --forest: #102e42; /* the logo's ocean navy; white on it: 14:1 */
   --forest-deep: #0b2233; /* bands, footer, preview bar */
-  --forest-soft: #e6f4ea; /* selected-state tint on white */
-  --gold: #056a2b; /* primary actions; white on it: 6.3:1 */
-  --gold-hover: #03541f;
+  --forest-soft: var(--green-leaf-light); /* selected-state tint on white */
+  --gold: var(--green-primary); /* links, accents and focus on light grounds (the template's name) */
+  --gold-hover: var(--green-hover);
   --gold-soft: #45e375; /* the reversed logo's green: icons and rules on navy, 8.4:1 */
-  --gold-tint: #eef7f1; /* soft green wash behind accents */
+  --gold-tint: var(--green-soft-background); /* soft green wash behind accents */
   --star: #e2a92b; /* decorative rating stars */
-  --ink: #0b1620; /* headings: the logo's near-black */
+  --ink: var(--ink-primary); /* headings: a green-black beside the logo's near-black */
   --text: #283037; /* body: 13:1 on white */
   --muted: #5b6670; /* secondary text: 5.9:1 on white */
   --line: #e1e7ea;
@@ -35,24 +55,40 @@
   --on-dark-muted: rgba(255, 255, 255, 0.7);
   /* Over the hero photograph and on navy: white words, the logo's light green for rules and accents */
   --champagne: #6fed8f; /* rule, borders and hover tone over the hero */
+  --logo-green-on-dark: #45e375; /* the reversed logo's own green (Approved Logo Pack v2): the statement on dark grounds */
   --hero-ivory: #ffffff; /* navigation titles, headline and lead over the photograph */
   --champagne-deep: #2fbe60; /* medallion and button edges */
   --champagne-ink: #062314; /* text on light-green surfaces */
   --gold-warm: #45e375; /* guest experiences accents: eyebrow, rule, icon rims */
 
-  /* Type: Plus Jakarta Sans (Good Times' own typeface on goodtimesincapetown.co.za) for display, Inter for reading */
-  --font-display: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-serif: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; /* header navigation and the home hero */
-  --text-hero: clamp(2.5rem, 1.55rem + 4vw, 5rem);
-  --text-h1: clamp(2.1rem, 1.45rem + 2.4vw, 3.6rem);
-  --text-h2: clamp(1.75rem, 1.35rem + 1.5vw, 2.75rem);
-  --text-h3: clamp(1.15rem, 1.07rem + 0.32vw, 1.3rem);
-  --text-lead: clamp(1.1rem, 1.04rem + 0.28vw, 1.22rem);
-  --text-body: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  /* Type (design/font-design.md). Bricolage Grotesque speaks: headlines, tour names, big numbers, selected buttons.
+     DM Sans explains: paragraphs, navigation, tour facts, booking details, forms, reviews. Caveat scribbles the odd
+     short note in the margin: never a paragraph, a price, a form control or anything a visitor must not miss.
+     The logo is artwork (src/assets/brand/) and is never set in any of them. */
+  --font-display: 'Bricolage Grotesque', 'Bricolage Grotesque Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'DM Sans', 'DM Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-accent: 'Caveat', 'Caveat Fallback', 'Segoe Print', 'Bradley Hand', cursive;
+  /* The scale. The brief's starting values, checked on the preview at 360, 390, 768, 1024 and 1440 px; components
+     take the step that suits them (a card title is an h4, not a chapter title) */
+  --text-hero: clamp(3.25rem, 7vw, 7rem); /* the largest statements over photographs */
+  --text-h1: clamp(2.75rem, 5vw, 5.25rem); /* page titles and the home page's scene statements */
+  --text-h2: clamp(2.1rem, 3.8vw, 4rem); /* section and chapter titles */
+  --text-h3: clamp(1.4rem, 2.2vw, 2.15rem); /* sub-sections, feature titles */
+  --text-h4: clamp(1.15rem, 1.05rem + 0.45vw, 1.4rem); /* card, step and list titles */
+  --text-lead: clamp(1.1rem, 1.02rem + 0.4vw, 1.3rem);
+  --text-body: clamp(1rem, 1.05vw, 1.125rem);
   --text-small: 0.9375rem;
   --text-xs: 0.8125rem;
-  --text-eyebrow: 0.75rem;
+  --text-eyebrow: 0.8125rem;
+  --text-accent: clamp(1.35rem, 1.2rem + 0.6vw, 1.75rem); /* Caveat runs small: about 1.4× the words beside it */
+  --leading-display: 1.02;
+  --leading-heading: 1.1;
+  --leading-body: 1.6;
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.02em;
+  --tracking-eyebrow: 0.08em;
+  --weight-display: 700;
+  --weight-display-strong: 800;
 
   /* Space (4 pt scale) */
   --space-1: 0.25rem;
@@ -96,7 +132,7 @@
 }
 @media (min-width: 64em) {
   :root {
-    --header-h: 84px;
+    --header-h: 96px; /* the logo and the company statement under it (84 px before the statement, 6 Nov 2026) */
   }
 }
 @media (min-width: 112.5em) {

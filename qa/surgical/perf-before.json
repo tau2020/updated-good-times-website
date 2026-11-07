@@ -1,0 +1,699 @@
+{
+ "base": "https://media-preview.good-times-in-cape-town.pages.dev",
+ "when": "2026-11-06T20:06:35.912Z",
+ "runs": 3,
+ "profiles": {
+  "desktop": {
+   "/": {
+    "median": {
+     "lcpMs": 720,
+     "clsAtLoad": 0.0006,
+     "clsVisit": 0.0007,
+     "loadImageKB": 634,
+     "loadVideoKB": 204,
+     "visitImageKB": 2152,
+     "visitVideoKB": 2597,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 1012,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0007,
+      "clsVisit": 0.0008,
+      "loadEventMs": 1853,
+      "loadBytes": {
+       "image": 649267,
+       "video": 209121,
+       "all": 1221800
+      },
+      "loadMediaRequests": 25,
+      "visitBytes": {
+       "image": 2203767,
+       "video": 2659479,
+       "all": 5261714
+      },
+      "visitMediaRequests": 61,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209121",
+       "scroll:video/beach-film-1280.mp4:206:2450358"
+      ],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 668,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0007,
+      "loadEventMs": 1553,
+      "loadBytes": {
+       "image": 649267,
+       "video": 209121,
+       "all": 1221646
+      },
+      "loadMediaRequests": 25,
+      "visitBytes": {
+       "image": 2203813,
+       "video": 2659475,
+       "all": 5261611
+      },
+      "visitMediaRequests": 61,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209121",
+       "scroll:video/beach-film-1280.mp4:206:2450354"
+      ],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 720,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0007,
+      "loadEventMs": 1616,
+      "loadBytes": {
+       "image": 649289,
+       "video": 209125,
+       "all": 1221897
+      },
+      "loadMediaRequests": 25,
+      "visitBytes": {
+       "image": 2203847,
+       "video": 2659481,
+       "all": 5261905
+      },
+      "visitMediaRequests": 61,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209125",
+       "scroll:video/beach-film-1280.mp4:206:2450356"
+      ],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   },
+   "/tours/": {
+    "median": {
+     "lcpMs": 564,
+     "clsAtLoad": 0.0008,
+     "clsVisit": 0.0008,
+     "loadImageKB": 398,
+     "loadVideoKB": 0,
+     "visitImageKB": 410,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 656,
+      "lcpElement": "img cape-point-headland-1600.avif",
+      "clsAtLoad": 0.0008,
+      "clsVisit": 0.0008,
+      "loadEventMs": 671,
+      "loadBytes": {
+       "image": 407971,
+       "video": 0,
+       "all": 625569
+      },
+      "loadMediaRequests": 16,
+      "visitBytes": {
+       "image": 420017,
+       "video": 0,
+       "all": 637615
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 564,
+      "lcpElement": "img cape-point-headland-1600.avif",
+      "clsAtLoad": 0.0009,
+      "clsVisit": 0.0009,
+      "loadEventMs": 699,
+      "loadBytes": {
+       "image": 407985,
+       "video": 0,
+       "all": 625559
+      },
+      "loadMediaRequests": 16,
+      "visitBytes": {
+       "image": 420066,
+       "video": 0,
+       "all": 637640
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 540,
+      "lcpElement": "img cape-point-headland-1600.avif",
+      "clsAtLoad": 0.0008,
+      "clsVisit": 0.0008,
+      "loadEventMs": 672,
+      "loadBytes": {
+       "image": 407951,
+       "video": 0,
+       "all": 625580
+      },
+      "loadMediaRequests": 16,
+      "visitBytes": {
+       "image": 420032,
+       "video": 0,
+       "all": 637661
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   },
+   "/tours/cape-peninsula-private-tour/": {
+    "median": {
+     "lcpMs": 724,
+     "clsAtLoad": 0.0006,
+     "clsVisit": 0.0006,
+     "loadImageKB": 620,
+     "loadVideoKB": 0,
+     "visitImageKB": 620,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 724,
+      "lcpElement": "img hout-bay-viewpoint-couple-1600.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 849,
+      "loadBytes": {
+       "image": 634904,
+       "video": 0,
+       "all": 903108
+      },
+      "loadMediaRequests": 13,
+      "visitBytes": {
+       "image": 634904,
+       "video": 0,
+       "all": 903108
+      },
+      "visitMediaRequests": 13,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 636,
+      "lcpElement": "img hout-bay-viewpoint-couple-1600.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 855,
+      "loadBytes": {
+       "image": 634869,
+       "video": 0,
+       "all": 902916
+      },
+      "loadMediaRequests": 13,
+      "visitBytes": {
+       "image": 634869,
+       "video": 0,
+       "all": 902916
+      },
+      "visitMediaRequests": 13,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 724,
+      "lcpElement": "img hout-bay-viewpoint-couple-1600.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 884,
+      "loadBytes": {
+       "image": 634916,
+       "video": 0,
+       "all": 902937
+      },
+      "loadMediaRequests": 13,
+      "visitBytes": {
+       "image": 634916,
+       "video": 0,
+       "all": 902937
+      },
+      "visitMediaRequests": 13,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   },
+   "/about/": {
+    "median": {
+     "lcpMs": 628,
+     "clsAtLoad": 0.0006,
+     "clsVisit": 0.0006,
+     "loadImageKB": 337,
+     "loadVideoKB": 0,
+     "visitImageKB": 349,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 720,
+      "lcpElement": "img cape-coastline-1600.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 664,
+      "loadBytes": {
+       "image": 344855,
+       "video": 0,
+       "all": 548166
+      },
+      "loadMediaRequests": 9,
+      "visitBytes": {
+       "image": 356932,
+       "video": 0,
+       "all": 560243
+      },
+      "visitMediaRequests": 10,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 628,
+      "lcpElement": "img cape-coastline-1600.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 689,
+      "loadBytes": {
+       "image": 344853,
+       "video": 0,
+       "all": 548151
+      },
+      "loadMediaRequests": 9,
+      "visitBytes": {
+       "image": 356934,
+       "video": 0,
+       "all": 560232
+      },
+      "visitMediaRequests": 10,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 604,
+      "lcpElement": "img cape-coastline-1600.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 679,
+      "loadBytes": {
+       "image": 344849,
+       "video": 0,
+       "all": 548085
+      },
+      "loadMediaRequests": 9,
+      "visitBytes": {
+       "image": 356930,
+       "video": 0,
+       "all": 560166
+      },
+      "visitMediaRequests": 10,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   }
+  },
+  "mobile": {
+   "/": {
+    "median": {
+     "lcpMs": 2920,
+     "clsAtLoad": 0.0075,
+     "clsVisit": 0.0076,
+     "loadImageKB": 413,
+     "loadVideoKB": 204,
+     "visitImageKB": 3048,
+     "visitVideoKB": 2597,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 2920,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0075,
+      "clsVisit": 0.0076,
+      "loadEventMs": 5147,
+      "loadBytes": {
+       "image": 422714,
+       "video": 209123,
+       "all": 1030443
+      },
+      "loadMediaRequests": 20,
+      "visitBytes": {
+       "image": 3121281,
+       "video": 2659481,
+       "all": 6179368
+      },
+      "visitMediaRequests": 55,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209123",
+       "scroll:video/beach-film-1280.mp4:206:2450358"
+      ],
+      "failed": [],
+      "shiftsAtLoad": [
+       {
+        "at": 2077,
+        "value": 0.0075,
+        "nodes": [
+         "div.phone-gallery__device",
+         "div.hero__content",
+         "span.phone-gallery__home"
+        ]
+       }
+      ]
+     },
+     {
+      "lcpMs": 2844,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0075,
+      "clsVisit": 0.0076,
+      "loadEventMs": 5197,
+      "loadBytes": {
+       "image": 422744,
+       "video": 209123,
+       "all": 1030337
+      },
+      "loadMediaRequests": 20,
+      "visitBytes": {
+       "image": 3121279,
+       "video": 2659469,
+       "all": 6179218
+      },
+      "visitMediaRequests": 55,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209123",
+       "scroll:video/beach-film-1280.mp4:206:2450346"
+      ],
+      "failed": [],
+      "shiftsAtLoad": [
+       {
+        "at": 2048,
+        "value": 0.0075,
+        "nodes": [
+         "div.phone-gallery__device",
+         "div.hero__content",
+         "span.phone-gallery__home"
+        ]
+       }
+      ]
+     },
+     {
+      "lcpMs": 2928,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0075,
+      "clsVisit": 0.0076,
+      "loadEventMs": 5226,
+      "loadBytes": {
+       "image": 422736,
+       "video": 209117,
+       "all": 1030369
+      },
+      "loadMediaRequests": 20,
+      "visitBytes": {
+       "image": 3121296,
+       "video": 2659463,
+       "all": 6179275
+      },
+      "visitMediaRequests": 55,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209117",
+       "scroll:video/beach-film-1280.mp4:206:2450346"
+      ],
+      "failed": [],
+      "shiftsAtLoad": [
+       {
+        "at": 2083,
+        "value": 0.0075,
+        "nodes": [
+         "div.phone-gallery__device",
+         "div.hero__content",
+         "span.phone-gallery__home"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "/tours/": {
+    "median": {
+     "lcpMs": 2552,
+     "clsAtLoad": 0,
+     "clsVisit": 0,
+     "loadImageKB": 388,
+     "loadVideoKB": 0,
+     "visitImageKB": 1156,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 2568,
+      "lcpElement": "img cape-point-headland-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3432,
+      "loadBytes": {
+       "image": 397737,
+       "video": 0,
+       "all": 615305
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 1183770,
+       "video": 0,
+       "all": 1401338
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2552,
+      "lcpElement": "img cape-point-headland-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3465,
+      "loadBytes": {
+       "image": 397753,
+       "video": 0,
+       "all": 615300
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 1183777,
+       "video": 0,
+       "all": 1401324
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2532,
+      "lcpElement": "img cape-point-headland-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3424,
+      "loadBytes": {
+       "image": 397759,
+       "video": 0,
+       "all": 615326
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 1183737,
+       "video": 0,
+       "all": 1401304
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   },
+   "/tours/cape-peninsula-private-tour/": {
+    "median": {
+     "lcpMs": 2376,
+     "clsAtLoad": 0,
+     "clsVisit": 0,
+     "loadImageKB": 125,
+     "loadVideoKB": 0,
+     "visitImageKB": 431,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 2428,
+      "lcpElement": "img hout-bay-viewpoint-couple-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 2396,
+      "loadBytes": {
+       "image": 127940,
+       "video": 0,
+       "all": 395924
+      },
+      "loadMediaRequests": 2,
+      "visitBytes": {
+       "image": 440978,
+       "video": 0,
+       "all": 708962
+      },
+      "visitMediaRequests": 6,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2372,
+      "lcpElement": "img hout-bay-viewpoint-couple-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 2331,
+      "loadBytes": {
+       "image": 127936,
+       "video": 0,
+       "all": 395968
+      },
+      "loadMediaRequests": 2,
+      "visitBytes": {
+       "image": 440982,
+       "video": 0,
+       "all": 709014
+      },
+      "visitMediaRequests": 6,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2376,
+      "lcpElement": "img hout-bay-viewpoint-couple-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 2344,
+      "loadBytes": {
+       "image": 127947,
+       "video": 0,
+       "all": 396036
+      },
+      "loadMediaRequests": 2,
+      "visitBytes": {
+       "image": 440991,
+       "video": 0,
+       "all": 709080
+      },
+      "visitMediaRequests": 6,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   },
+   "/about/": {
+    "median": {
+     "lcpMs": 2272,
+     "clsAtLoad": 0,
+     "clsVisit": 0,
+     "loadImageKB": 326,
+     "loadVideoKB": 0,
+     "visitImageKB": 525,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 2288,
+      "lcpElement": "img cape-coastline-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3043,
+      "loadBytes": {
+       "image": 333687,
+       "video": 0,
+       "all": 536880
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 537480,
+       "video": 0,
+       "all": 740673
+      },
+      "visitMediaRequests": 10,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2272,
+      "lcpElement": "img cape-coastline-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3045,
+      "loadBytes": {
+       "image": 333677,
+       "video": 0,
+       "all": 536915
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 537474,
+       "video": 0,
+       "all": 740712
+      },
+      "visitMediaRequests": 10,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2220,
+      "lcpElement": "img cape-coastline-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3053,
+      "loadBytes": {
+       "image": 333675,
+       "video": 0,
+       "all": 536983
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 537458,
+       "video": 0,
+       "all": 740766
+      },
+      "visitMediaRequests": 10,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   }
+  }
+ }
+}

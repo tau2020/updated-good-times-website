@@ -1,8 +1,9 @@
 /* ==========================================================================
    Good Times in Cape Town — design system
-   Ocean navy bands, Good Times green actions, white and sea-glass surfaces,
-   near-black headings. Plus Jakarta Sans for display type, Inter for
-   everything else. Tokens live in tokens.css.
+   Ocean navy bands, leaf-green actions, white and sea-glass surfaces,
+   near-black headings. Bricolage Grotesque for display type, DM Sans for
+   everything else, Caveat for the odd handwritten note (design/font-design.md).
+   Tokens live in tokens.css.
 
     1. Fonts            8. Bands             15. Reviews
     2. Base             9. Section heads     16. Stats, steps, lists
@@ -13,52 +14,91 @@
     7. Home hero       14. (Gallery: media.css) 21. Motion, utilities, print
    ========================================================================== */
 
-/* 1. Fonts (self-hosted variable latin subsets, OFL — see licenses/) ------- */
+/* 1. Fonts (self-hosted variable latin subsets, OFL — see licenses/ and design/font-design.md) ----------
+   Bricolage Grotesque (display, weight 200–800 and optical size 12–96), DM Sans (body and interface, weight
+   100–1000, roman and italic) and Caveat (the occasional handwritten accent, weight 400–700). The families and the
+   type scale are tokens in tokens.css; nothing below names a family again. A face downloads only when text on the
+   page uses it, so the italic and Caveat cost nothing on pages that do not use them. */
 @font-face {
-  font-family: 'Plus Jakarta Sans';
+  font-family: 'Bricolage Grotesque';
   font-style: normal;
   font-weight: 200 800;
   font-display: swap;
-  src: url('../fonts/PlusJakartaSans.woff2') format('woff2');
+  src: url('../fonts/BricolageGrotesque.woff2') format('woff2-variations'), url('../fonts/BricolageGrotesque.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Plus Jakarta Sans';
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('../fonts/DMSans.woff2') format('woff2-variations'), url('../fonts/DMSans.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Sans';
   font-style: italic;
-  font-weight: 200 800;
+  font-weight: 100 1000;
   font-display: swap;
-  src: url('../fonts/PlusJakartaSans-Italic.woff2') format('woff2');
+  src: url('../fonts/DMSans-Italic.woff2') format('woff2-variations'), url('../fonts/DMSans-Italic.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Caveat';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('../fonts/Inter.woff2') format('woff2');
+  src: url('../fonts/Caveat.woff2') format('woff2-variations'), url('../fonts/Caveat.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-/* Metric-adjusted fallbacks so text keeps its lines while the web fonts load */
+/* Metric-matched fallbacks, so a line keeps its length and height while the web fonts load: no reflow on swap.
+   Measured from the WOFF2 files against Arial's metrics with fontTools (design/font-design.md). Each family has a
+   regular and a bold fallback face: headings never synthesise bold (font-synthesis: none), so a bold heading must
+   fall back to a real bold face, sized to Bricolage's width at the heading sizes (98–100% of Arial Bold), or it wraps
+   differently from the web font and the page jumps when it arrives (found on the preview at 412 px) */
 @font-face {
-  font-family: 'Plus Jakarta Sans Fallback';
-  src: local('Arial'), local('Helvetica');
-  size-adjust: 104%;
-  ascent-override: 98%;
-  descent-override: 21%;
+  font-family: 'Bricolage Grotesque Fallback';
+  font-weight: 100 549;
+  src: local('Arial'), local('ArialMT'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('LiberationSans');
+  size-adjust: 108%;
+  ascent-override: 86.1%;
+  descent-override: 25%;
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: 'Inter Fallback';
-  src: local('Arial'), local('Helvetica');
-  size-adjust: 107%;
-  ascent-override: 90%;
-  descent-override: 22.5%;
+  font-family: 'Bricolage Grotesque Fallback';
+  font-weight: 550 1000;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Neue Bold'), local('HelveticaNeue-Bold'), local('Helvetica Bold'), local('Helvetica-Bold'), local('Liberation Sans Bold'), local('LiberationSans-Bold');
+  size-adjust: 99.5%;
+  ascent-override: 93.5%;
+  descent-override: 27.1%;
   line-gap-override: 0%;
 }
-:root {
-  --font-display: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-serif: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+@font-face {
+  font-family: 'DM Sans Fallback';
+  font-weight: 100 549;
+  src: local('Arial'), local('ArialMT'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('LiberationSans');
+  size-adjust: 106%;
+  ascent-override: 93.5%;
+  descent-override: 29.2%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'DM Sans Fallback';
+  font-weight: 550 1000;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Neue Bold'), local('HelveticaNeue-Bold'), local('Helvetica Bold'), local('Helvetica-Bold'), local('Liberation Sans Bold'), local('LiberationSans-Bold');
+  size-adjust: 101%;
+  ascent-override: 98.2%;
+  descent-override: 30.7%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Caveat Fallback';
+  src: local('Arial'), local('ArialMT'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('LiberationSans');
+  size-adjust: 77.4%;
+  ascent-override: 124%;
+  descent-override: 38.7%;
+  line-gap-override: 0%;
 }
 
 /* 2. Base ------------------------------------------------------------------ */
@@ -86,7 +126,7 @@ body {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--text-body);
-  line-height: 1.6;
+  line-height: var(--leading-body);
   color: var(--text);
   background: var(--white);
   overflow-x: clip;
@@ -297,20 +337,28 @@ main:focus {
 }
 
 /* 4. Type ------------------------------------------------------------------ */
+/* Headings in Bricolage Grotesque (design/font-design.md): bold, sentence case, tightly set at display sizes. The
+   optical size follows the font size (opsz 12–96), so a big title takes the quirky display cut and a small one the
+   sturdier text cut. Bricolage has no italic: an <em> in a heading is a colour turn, never a slant (no faux italic). */
 h1,
 h2,
 h3,
 h4 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: var(--weight-display);
   font-style: normal;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+  font-optical-sizing: auto;
+  font-synthesis: none;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
   color: var(--ink);
   text-wrap: balance;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   min-width: 0;
+}
+:is(h1, h2, h3, h4) em {
+  font-style: normal;
 }
 .on-dark h1,
 .on-dark h2,
@@ -321,19 +369,23 @@ h4 {
 }
 h1 {
   font-size: var(--text-h1);
-  line-height: 1.08;
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
 }
 h2 {
   font-size: var(--text-h2);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
 }
 h3 {
   font-size: var(--text-h3);
-  line-height: 1.25;
+  line-height: 1.15;
 }
 h4 {
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 600;
+  letter-spacing: 0;
 }
 .lead {
   font-size: var(--text-lead);
@@ -346,12 +398,13 @@ h4 {
 .section--forest .lead {
   color: var(--on-dark);
 }
+/* Eyebrows: short, small, in DM Sans; capitals with gentle tracking, never a long line of them */
 .eyebrow {
   margin-bottom: var(--space-3);
   font-family: var(--font-body);
   font-size: var(--text-eyebrow);
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--gold);
 }
@@ -440,16 +493,24 @@ h4 {
   gap: var(--space-5);
   min-height: var(--header-h);
 }
+/* The brand lockup (Addendum, 6 Nov 2026): the logo link and, beneath it, the company statement. The link keeps
+   exactly the logo's box (the aircraft's dock is placed in fractions of it, motion.css), so the statement is its
+   sibling, not part of it */
+.brand-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0; /* the wordmark keeps its size and proportions; the navigation gives way first */
+  margin-right: auto;
+}
 .brand {
   display: inline-flex;
-  flex-shrink: 0; /* the wordmark keeps its size and proportions; the navigation gives way first */
   align-items: center;
   text-decoration: none;
-  margin-right: auto;
 }
 /* The approved compact lockup (Approved Logo Pack v2: Table Mountain and the trail over the wordmark,
    2121:564), never clipped: width-led on phones, where the row is the limit (the header
-   grows to hold it, see below), height-led from 40em */
+   grows to hold it, see below), height-led from 40em (--logo-h) */
 .brand__logo {
   width: var(--brand-w, 260px);
   height: auto;
@@ -458,35 +519,59 @@ h4 {
   display: none;
 }
 @media (min-width: 40em) {
+  body {
+    --logo-h: 60px;
+  }
+  body.has-overlay-header {
+    --logo-h: 68px;
+  }
   .brand__logo {
     width: auto;
-    height: 60px;
-  }
-  .has-overlay-header .brand__logo {
-    height: 68px;
+    height: var(--logo-h);
   }
 }
 @media (min-width: 64em) {
-  .brand__logo {
-    height: 68px;
+  body {
+    --logo-h: 68px;
   }
-  .has-overlay-header .brand__logo {
-    height: clamp(64px, 5.6vw, 86px);
+  body.has-overlay-header {
+    --logo-h: clamp(64px, 5.6vw, 86px);
   }
+}
+/* The company statement, exactly as supplied, under the artwork: DM Sans on one line, sized from the logo's width
+   (2121:564) so that it spans the artwork, from its left edge, and scales with it; never under 10 px or over 13 px.
+   The logo itself is untouched. Green as in the logo: the leaf green on light grounds (5.2:1 on white), the reversed
+   logo's own #45E375 on dark ones. Phones narrower than 360 px leave it out of the header, where the row has no room;
+   the footer's lockup always has it. */
+body {
+  --lockup-w: calc(var(--logo-h, 69.1px) * 3.7606);
+  --statement-size: clamp(10px, calc(var(--lockup-w) / 25), 13px);
+  --statement-h: calc(var(--statement-size) * 1.2 + 2px);
+}
+.brand-lockup__statement {
+  margin: 2px 0 0;
+  padding-left: calc(var(--lockup-w) * 0.012);
+  font-family: var(--font-body);
+  font-size: var(--statement-size);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--green-primary);
+  transition: color var(--dur) var(--ease-out);
+}
+.on-dark .brand-lockup__statement {
+  color: var(--logo-green-on-dark);
 }
 /* Small desktops (1024–1199 px): the lockup, the titles and Book Now share the bar at compact sizes */
 @media (min-width: 64em) and (max-width: 74.99em) {
-  .has-overlay-header .brand__logo {
-    height: 64px;
+  body.has-overlay-header {
+    --logo-h: 64px;
   }
   .has-overlay-header .primary-nav ul {
     gap: 1.25rem;
   }
   .has-overlay-header .primary-nav a {
-    font-size: 1rem;
-  }
-  .has-overlay-header .btn-coin {
-    padding-right: 1.25rem;
     font-size: 1rem;
   }
 }
@@ -500,14 +585,14 @@ h4 {
   margin: 0;
   padding: 0;
 }
-/* Navigation titles in Plus Jakarta Sans: semibold, minimal tracking, a hairline underline on hover and for the current page */
+/* Navigation titles in DM Sans (the interface face): semibold, minimal tracking, a hairline underline on hover and for the current page */
 .primary-nav a {
   position: relative;
   display: inline-flex;
   align-items: center;
   min-height: 44px;
   color: inherit;
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
   font-weight: 600;
   line-height: 1;
@@ -535,100 +620,11 @@ h4 {
 .primary-nav a[aria-current='page']::after {
   transform: scaleX(1);
 }
-/* Make It Yours: a Good Times green button with the ornamental medallion overlapping its left edge */
-.btn-coin {
-  --coin: 58px;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: 54px;
-  margin-left: calc(var(--coin) * 0.34);
-  padding: 0 1.5rem 0 calc(var(--coin) * 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 10px;
-  background: linear-gradient(180deg, #0b8436 0%, #077530 55%, #056a2b 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    inset 0 -1px 0 rgba(3, 60, 24, 0.3),
-    0 1px 2px rgba(0, 0, 0, 0.25),
-    0 6px 18px rgba(0, 0, 0, 0.18);
-  color: #fff;
-  font-family: var(--font-serif);
-  font-size: 1.0625rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.005em;
-  text-decoration: none;
-  white-space: nowrap;
-  touch-action: manipulation;
-  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), filter var(--dur) var(--ease-out);
-}
-.btn-coin:hover {
-  color: #fff;
-  transform: translateY(-1px);
-  filter: brightness(1.07);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    inset 0 -1px 0 rgba(3, 60, 24, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.2),
-    0 10px 24px rgba(0, 0, 0, 0.2);
-}
-.btn-coin:active {
-  transform: translateY(0) scale(0.98);
-  filter: none;
-}
-.btn-coin:focus-visible {
-  outline: 3px solid var(--gt-focus, #175b9a);
-  outline-offset: 3px;
-}
-.site-header--overlay:not(.is-condensed) .btn-coin:focus-visible {
-  outline-color: var(--champagne);
-}
-.btn-coin__coin {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--coin) * -0.34);
-  display: grid;
-  place-items: center;
-  width: var(--coin);
-  height: var(--coin);
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 34% 28%, #e3fbe9 0%, #a9efbe 38%, #5fd885 70%, #22a552 100%);
-  box-shadow:
-    inset 0 0 0 2.5px #0a7a33,
-    inset 0 0 0 4px rgba(255, 255, 255, 0.55),
-    inset 0 -2px 4px rgba(3, 60, 24, 0.3),
-    0 2px 6px rgba(0, 0, 0, 0.35);
-  color: #04461c;
-}
-.btn-coin__ornament {
-  width: 74%;
-  height: 74%;
-}
-/* Phones keep Make It Yours in the drawer; from 40em it sits in the header beside the menu button */
+/* Phones keep Plan My Day in the drawer; from 40em it sits in the header beside the menu button */
 .header-cta {
   display: none;
 }
-/* From 1024 to 1279 px the bar is full: "Make It Yours" (like the "Start Planning" before it, longer than "Book Now")
-   takes the compact size of design/buttons/design.md §5 (a smaller coin and label), so it never leaves the bar */
-@media (min-width: 64em) and (max-width: 79.99em) {
-  .header-cta,
-  .has-overlay-header .header-cta {
-    --coin: 54px;
-    min-height: 50px;
-    padding-right: 1.05rem;
-    font-size: 1.125rem;
-  }
-}
-@media (min-width: 64em) and (max-width: 69.99em) {
-  .header-cta,
-  .has-overlay-header .header-cta {
-    --coin: 50px;
-    padding-right: 0.95rem;
-    font-size: 1rem;
-  }
-}
+/* (Its sizes in the bar, compact from 1024 to 1119 px, are the leaf's: buttons.css › .header-cta.leaf-btn) */
 @media (min-width: 40em) {
   .header-cta {
     display: inline-flex;
@@ -665,7 +661,7 @@ h4 {
   .primary-nav {
     margin-inline: auto;
   }
-  .brand {
+  .brand-lockup {
     margin-right: 0;
   }
   .nav-toggle {
@@ -677,15 +673,26 @@ h4 {
 @media (max-width: 39.99em) {
   body {
     --brand-w: min(300px, calc(100vw - 2 * var(--gutter) - 62px));
-    --header-h: calc(var(--brand-w) * 0.2659 + 14px); /* the compact lockup is 2121:564 */
+    --lockup-w: var(--brand-w);
+    /* the compact lockup is 2121:564; the statement's line below it */
+    --header-h: calc(var(--brand-w) * 0.2659 + var(--statement-h) + 14px);
   }
   body.has-overlay-header {
     --brand-w: min(300px, calc(100vw - 2 * var(--hero-edge) - 62px));
   }
 }
+@media (max-width: 22.49em) {
+  body {
+    --statement-h: 0px;
+  }
+  .site-header .brand-lockup__statement {
+    display: none;
+  }
+}
+/* Tablets: a taller bar for the 60–68 px logo and the statement under it (84 px before the statement) */
 @media (min-width: 40em) and (max-width: 63.99em) {
   body {
-    --header-h: 84px;
+    --header-h: 96px;
   }
 }
 /* Overlay header (home only, every width): transparent over the hero film until the
@@ -706,15 +713,16 @@ h4 {
 .site-header--overlay:not(.is-condensed) .brand__logo--gold {
   display: block;
 }
+.site-header--overlay:not(.is-condensed) .brand-lockup__statement {
+  color: var(--logo-green-on-dark);
+  text-shadow: 0 1px 2px rgba(3, 16, 32, 0.6), 0 0 6px rgba(3, 16, 32, 0.28);
+}
 .site-header--overlay:not(.is-condensed) .primary-nav a:hover,
 .site-header--overlay:not(.is-condensed) .primary-nav a[aria-current='page'] {
   color: var(--champagne);
 }
 .site-header--overlay:not(.is-condensed) .primary-nav a::after {
   background: var(--champagne);
-}
-.site-header--overlay:not(.is-condensed) .btn-coin:focus-visible {
-  outline-color: var(--champagne);
 }
 @media (min-width: 64em) {
   .has-overlay-header {
@@ -781,11 +789,12 @@ h4 {
 /* 7. Home hero ----------------------------------------------------------------- */
 /* "The world has stopped, the memories haven't" (index.mjs). Layers, bottom to top: the café scene
    (.hero__media, the only clipped layer: the held frame, then the film, which moves only the cloud
-   and the sea), a light sky wash for the transparent header (.hero__scrim), the one call to action
-   bottom left (.hero__content) and the phone bottom right (.hero__phone; the component itself is
-   phone-gallery.css). The header (section 6) shares --hero-edge, so the wordmark and the call to
-   action align.
-   No face is ever covered. The call to action sits in the strip below the sleeping friend's chin
+   and the sea), a light sky wash for the transparent header (.hero__scrim), the h1 for search and
+   screen readers (.hero__content) and the phone bottom right (.hero__phone; the component itself is
+   phone-gallery.css). The headline "Good Times Start Here!" and the services are hero-services.css
+   (in place of the call to action, the owner's choice of 7 Nov 2026). The header (section 6) shares
+   --hero-edge, so the wordmark and the headline align.
+   No face is ever covered. The headline sits in the strip below the sleeping friend's chin
    (the lowest face, 89% down the frame), the phone right of the laughing blonde friend (her face
    ends 82% across). Landscape screens show the scene full bleed and steer the crop by aspect ratio
    so her face stays clear of the phone; screens narrower than 13:10 (phones, portrait tablets) frame
@@ -884,87 +893,6 @@ h4 {
   z-index: 1;
   width: var(--pw);
 }
-/* The call to action: Good Times green, white words in the brand's display face at its boldest, a fine
-   light edge, a pill; a single sheen crosses it as it arrives (hero.js) and again under the pointer */
-.btn-champagne {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 0.75rem 2.1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  background: linear-gradient(180deg, #0b8436 0%, #077530 55%, #056a2b 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    inset 0 -1px 0 rgba(3, 60, 24, 0.3),
-    0 1px 2px rgba(0, 0, 0, 0.3),
-    0 10px 26px rgba(0, 0, 0, 0.26);
-  color: #fff;
-  font-family: var(--font-serif);
-  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  font-weight: 700;
-  line-height: 1.15;
-  text-decoration: none;
-  white-space: nowrap;
-  touch-action: manipulation;
-  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), filter var(--dur) var(--ease-out);
-}
-.btn-champagne:hover {
-  color: #fff;
-  transform: translateY(-1px);
-  filter: brightness(1.07);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 2px 4px rgba(0, 0, 0, 0.22),
-    0 12px 28px rgba(0, 0, 0, 0.24);
-}
-.btn-champagne:active {
-  transform: translateY(0) scale(0.98);
-  filter: none;
-}
-.btn-champagne:focus-visible {
-  outline: 2px solid var(--ivory-soft);
-  outline-offset: 3px;
-}
-.hero__cta {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  min-height: clamp(42px, 1.7rem + 2vh, 62px);
-  padding: 0.5rem clamp(1.25rem, 0.75rem + 1.25vw, 2.15rem);
-  border-color: rgba(111, 237, 143, 0.55);
-  border-radius: 999px;
-  font-family: var(--font-display);
-  font-size: clamp(1.0625rem, 0.82rem + 0.55vw, 1.375rem);
-  font-weight: 800;
-  letter-spacing: -0.012em;
-  text-shadow: 0 1px 1px rgba(3, 40, 16, 0.35);
-}
-.hero__cta-label {
-  position: relative;
-  z-index: 1;
-}
-/* The playful turn: "Here!" leans forward (Plus Jakarta Sans italic, preloaded on the home page) */
-.hero__cta-label em {
-  font-style: italic;
-  font-weight: 800;
-  padding-right: 0.04em;
-}
-.hero__cta-sheen {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 46%;
-  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.34) 48%, rgba(220, 255, 230, 0.5) 52%, rgba(255, 255, 255, 0) 100%);
-  transform: translateX(-160%);
-  pointer-events: none;
-}
-@media (hover: hover) {
-  .hero__cta:hover .hero__cta-sheen {
-    transform: translateX(330%);
-    transition: transform 0.85s var(--ease-out);
-  }
-}
 /* Short landscape screens (phones turned sideways): the frame fits the width and the faces fill its
    height, so the call to action moves left of the sleeping friend's face (he begins 20% across) */
 @media (min-aspect-ratio: 13/10) and (max-height: 34em) {
@@ -974,14 +902,6 @@ h4 {
   }
   .hero__content {
     max-width: calc(18.5vw - 1rem - 0.5rem);
-  }
-  .hero__cta {
-    min-height: 44px;
-    padding: 0.45rem 0.85rem;
-    font-size: 0.875rem;
-    white-space: normal;
-    text-wrap: balance;
-    text-align: center;
   }
 }
 /* Phones, portrait tablets and near-square windows: the whole group, framed at 8:7 (wider where the
@@ -1021,14 +941,6 @@ h4 {
   }
   .hero__scrim {
     display: none;
-  }
-  .hero__cta {
-    min-height: 48px;
-    padding: 0.55rem 0.95rem;
-    font-size: clamp(0.9375rem, 0.7rem + 1vw, 1.25rem);
-    white-space: normal;
-    text-wrap: balance;
-    text-align: center;
   }
 }
 /* Entrance (home page with motion, assets/js/hero.js): the wordmark, the titles, Book Now and the
@@ -1356,9 +1268,9 @@ h4 {
   padding: 1.25rem 1.5rem 1.5rem;
 }
 .card__title {
-  font-size: var(--text-h3);
-  font-weight: 600;
-  line-height: 1.25;
+  font-size: var(--text-h4);
+  font-weight: 650;
+  line-height: 1.2;
 }
 .card__title a {
   color: inherit;
@@ -1516,14 +1428,16 @@ h4 {
   height: 100%;
   object-fit: cover;
 }
+/* The prints' labels on the white border, in the display face already on the page: hand-writing them in Caveat cost
+   the tours page a 75 KB font for four decorative, hidden labels (measured on the preview, qa/surgical-change-report.md) */
 .route-collage__print figcaption {
   padding: 0.3rem 0 0.4rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(0.75rem, 4.2cqi, 0.9375rem);
-  font-style: italic;
+  font-weight: 600;
   line-height: 1.1;
   text-align: center;
-  color: #0b1620;
+  color: var(--ink);
 }
 .route-collage__print--1 {
   --rot: -7deg;
@@ -2145,6 +2059,12 @@ h4 {
   font-size: clamp(1.625rem, 1.3rem + 1.1vw, 2.25rem);
   max-width: 16em;
 }
+/* The overview's one-line lead (tours.mjs OVERVIEW_LEAD), between the heading and the tour's own facts */
+.detail__intro .detail__lead {
+  max-width: 40rem;
+  margin-top: var(--space-3);
+  color: var(--text);
+}
 .detail__intro .prose {
   margin-top: var(--space-4);
 }
@@ -2352,7 +2272,7 @@ h4 {
   min-width: 0;
 }
 /* The narrowest phones (under 384 px): the two buttons share about 290 px, so their padding and words tighten a
-   little and "Make It Yours" stays whole beside WhatsApp */
+   little and "Plan My Day" stays whole beside WhatsApp */
 @media (max-width: 23.99em) {
   .mobile-cta .gt-button {
     gap: 0.4rem;
@@ -2963,10 +2883,20 @@ h4 {
     grid-template-columns: 1.6fr repeat(4, minmax(0, 1fr));
   }
 }
+/* The footer's lockup: the reversed compact logo (the full artwork carries the logo pack's own, older tagline) with the
+   company statement under it, sized from the logo's width as in the header */
+.brand-lockup--footer {
+  --lockup-w: clamp(240px, 26vw, 320px);
+  --statement-size: clamp(10px, calc(var(--lockup-w) / 25), 13px);
+}
 .footer-brand img {
-  width: clamp(240px, 26vw, 320px);
+  width: var(--lockup-w, clamp(240px, 26vw, 320px));
   max-width: 100%;
   height: auto;
+}
+.footer-brand .brand-lockup__statement {
+  max-width: none;
+  margin-top: 0.3em;
 }
 .footer-brand p {
   margin-top: var(--space-4);
@@ -2996,12 +2926,16 @@ h4 {
   gap: 0.55rem;
   min-height: 36px;
   color: var(--on-dark);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.22em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
+/* The underline fades in with the colour (a gentle landing, design/motion-bible.md §15); never motion-only */
 .footer-links a:hover,
 .footer-contact a:hover {
   color: var(--white);
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 .footer-contact {
   display: grid;
@@ -4146,8 +4080,149 @@ select.sfield__control {
 }
 
 /* 25. Good Times additions ------------------------------------------------- */
+/* The credentials strip (partials/credentials.mjs; home, straight after the sand journey): the beach's warm sand runs
+   on into it, three short points sit beside the association's mark, and the coast-road chapter follows. Tokens only. */
+.gt-credentials {
+  position: relative;
+  padding-block: clamp(2.25rem, 1.5rem + 3vw, 4.25rem);
+  background: linear-gradient(180deg, var(--surface-sand-deep) 0%, var(--surface-sand) 38%, var(--surface-sand) 100%);
+  color: var(--text);
+}
+.gt-credentials__inner {
+  display: grid;
+  gap: clamp(1.4rem, 1rem + 1.6vw, 2.5rem);
+  align-items: center;
+}
+.gt-credentials__eyebrow {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-accent);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--green-primary);
+  transform: rotate(-2deg);
+  transform-origin: left center;
+}
+.gt-credentials__title {
+  max-width: 13ch;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-display);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.gt-credentials__title em {
+  color: var(--green-primary);
+}
+.gt-credentials__points {
+  display: grid;
+  gap: 0.85rem 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.gt-credentials__point {
+  position: relative;
+  padding-left: 1.75rem;
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--text);
+}
+/* Each point opens with the button system's leaf */
+.gt-credentials__point::before {
+  content: '';
+  position: absolute;
+  top: 0.2rem;
+  left: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  background-color: var(--green-primary);
+  -webkit-mask: var(--btn-leaf) center / contain no-repeat;
+  mask: var(--btn-leaf) center / contain no-repeat;
+}
+.gt-credentials__point strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.gt-credentials__badge {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.7rem 1.25rem 0.7rem 0.8rem;
+  border: 1px solid var(--surface-sand-deep);
+  border-radius: 24px;
+  background: var(--surface-white);
+  box-shadow: 0 12px 28px -20px rgb(16 36 29 / 0.45);
+}
+.gt-credentials__logo {
+  flex: none;
+  display: block;
+  width: clamp(116px, 96px + 3vw, 148px);
+  border-radius: 8px;
+}
+.gt-credentials__logo img {
+  width: 100%;
+  height: auto;
+}
+.gt-credentials__line {
+  max-width: 15rem;
+  font-size: var(--text-small);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.gt-credentials__pending {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-s);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.gt-credentials__pending .icon {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 0.1rem;
+}
+@media (min-width: 40em) {
+  .gt-credentials__points {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .gt-credentials__inner.has-badge {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .gt-credentials__inner.has-badge .gt-credentials__points {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+@media (min-width: 80em) {
+  .gt-credentials__inner,
+  .gt-credentials__inner.has-badge {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.6fr);
+  }
+  .gt-credentials__inner.has-badge {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr) auto;
+  }
+  .gt-credentials__inner.has-badge .gt-credentials__points {
+    grid-column: auto;
+    grid-row: auto;
+    grid-template-columns: 1fr;
+  }
+}
+
 :root {
-  --gt-em: #078a36; /* the logo's green for emphasised words in headings: 4.5:1 on white, for large type */
+  --gt-em: var(--green-primary); /* emphasised words in headings: the leaf green, 5.2:1 on white */
 }
 /* The approved logo artwork (Table Mountain and the trail) in place of a photograph, where Good Times has none yet */
 .art-panel {
@@ -4212,13 +4287,12 @@ select.sfield__control {
   flex: none;
   margin-top: 0.15em;
 }
-/* A review shown as our summary (no verbatim text without the reviewer's permission) */
+/* A review shown as our summary (no verbatim text without the reviewer's permission): labelled as such, in DM Sans */
 .story-card__quote .story-card__label {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.3rem;
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
+  letter-spacing: 0.02em;
+  color: var(--green-primary);
 }

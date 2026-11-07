@@ -9,8 +9,8 @@
  *    are the official page's own lists. Its stock line "Instant confirmation, with mobile
  *    tickets available" is not used: the official FAQ says every booking is confirmed by
  *    the team, and this site sends a request, not a booking.
- *  - `price` is the company's published rate in ZAR, per group, with its group tiers;
- *    `price: null` is "on enquiry", with the official note in `priceNote`.
+ *  - `price` is the rate in ZAR, per group, with its group tiers, read from pricing.mjs (the one place a rate is
+ *    set; the owner's approved prices of 7 Nov 2026); `price: null` is "on enquiry", with the official note in `priceNote`.
  *  - `tripadvisor` holds the product's own listing figures, read on 5 Nov 2026; only the
  *    five tours the listing sells have one.
  *  - A tour with no Good Times photograph (`images.hero: null`) shows the approved
@@ -23,6 +23,8 @@
  *  - Points that need the owner are in `confirm` (not rendered) and docs/APPROVAL_REGISTER.md.
  */
 
+import { priceFor, groupMax } from './pricing.mjs';
+
 const OFFICIAL = 'https://www.goodtimesincapetown.co.za/tour/';
 const TA = 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-';
 const CHECKED = '2026-11-05';
@@ -32,11 +34,6 @@ const source = (slug) => ({ listing: `${OFFICIAL}${slug}/`, checked: CHECKED });
 const CANCEL_DAY = 'Free cancellation up to 24 hours before the scheduled departure time. Cancellations within 24 hours of departure, and no-shows, are non-refundable.';
 const CANCEL_ACTIVITY =
   'Free cancellation up to 24 hours before your scheduled activity. Adventure activities depend on the weather and the season: if the operator cancels for safety reasons, you are offered a full refund or a new date.';
-/** Good Times' published group rates: up to four guests, and five to eight. */
-const tiers = (small, large) => [
-  { label: '1–4 guests', max: 4, amount: small },
-  ...(large ? [{ label: '5–8 guests', max: 8, amount: large }] : []),
-];
 const MOBILITY = 'Tell us about any mobility needs when you book, so we can plan the day around them.';
 
 export const categories = [
@@ -97,7 +94,7 @@ export const tours = [
     pickup: 'Pickup from your accommodation, and back there at the end of the day.',
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
-    price: { from: 6000, currency: 'ZAR', unit: 'per group', tiers: tiers(6000, 12000), note: 'Excludes the Cape of Good Hope and Boulders Beach entrance fees, and lunch.' },
+    price: priceFor('cape-peninsula-private-tour', 'Excludes the Cape of Good Hope and Boulders Beach entrance fees, and lunch.'),
     images: { hero: 'hout-bay-viewpoint-couple', card: 'boulders-penguins-boardwalk', gallery: ['boulders-welcome-sign', 'boulders-penguin-colony', 'cape-point-sign-trio', 'cape-point-ostrich', 'cape-point-boardwalk', 'boulders-couple-selfie'] },
     heroFocus: '66% 52%',
     seo: {
@@ -145,15 +142,16 @@ export const tours = [
     pickup: 'Pickup from your accommodation, and back there at the end of the day.',
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
-    price: { from: 4000, currency: 'ZAR', unit: 'per group', tiers: tiers(4000, 8000), note: 'Excludes museum entrance fees.' },
-    images: { hero: 'castle-cannon-couple', card: 'bokaap-street', gallery: ['heritage-building-guests', 'district-six-museum', 'castle-moat', 'bokaap-selfie', 'company-garden-squirrel'] },
-    heroFocus: '50% 36%',
+    price: priceFor('cape-town-city-private-tour', 'Excludes museum entrance fees.'),
+    images: { hero: 'bokaap-pink-blue-houses', card: 'bokaap-street', gallery: ['heritage-building-guests', 'district-six-museum', 'castle-moat', 'bokaap-selfie', 'company-garden-squirrel'] },
+    // The guest from head to hip on the wide band, whole on phones (the brief of 6 Nov 2026: no face or limb cut awkwardly)
+    heroFocus: '50% 66%',
     seo: {
       title: 'Cape Town City Private Tour: Castle, District Six & Bo-Kaap',
       description: 'A private guided Cape Town city tour: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup.',
     },
     tripadvisor: { url: `${TA}d19907537-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 16, checked: CHECKED },
-    confirm: ['The official page says “Max 4 people” and also lists a rate for 5–8 guests: confirm the group sizes offered.'],
+    confirm: [],
     source: source('cape-town-city-private-tour'),
     approval: APPROVAL,
   },
@@ -188,7 +186,7 @@ export const tours = [
     pickup: 'Pickup from your accommodation, or start at the V&A Waterfront.',
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
-    price: { from: 6000, currency: 'ZAR', unit: 'per group', tiers: tiers(6000, 12000), note: 'Excludes tasting fees and lunch.' },
+    price: priceFor('cape-winelands-private-tour', 'Excludes tasting fees and lunch.'),
     images: { hero: 'winelands-cape-dutch-group', card: 'winelands-tasting-flight', gallery: ['winelands-terrace', 'winelands-tasting-counter', 'winelands-group-tasting', 'winelands-terrace-guide'] },
     heroFocus: '56% 46%',
     seo: {
@@ -229,7 +227,7 @@ export const tours = [
     pickup: 'Pickup from your accommodation, and back there at the end of the tour.',
     accessibility: 'Much of the tour is on foot through Langa. Tell us about any mobility needs when you book.',
     cancellation: CANCEL_DAY,
-    price: { from: 4000, currency: 'ZAR', unit: 'per group', tiers: tiers(4000, 8000), note: '' },
+    price: priceFor('township-private-tour'),
     images: { hero: 'langa-mural-guests', card: 'langa-mural', gallery: ['langa-traditional-drink', 'langa-homes', 'langa-womens-anti-pass', 'langa-blue-home', 'langa-museum-room', 'langa-marches-1960'] },
     heroFocus: '40% 50%',
     seo: {
@@ -237,7 +235,7 @@ export const tours = [
       description: 'A private half-day tour of Langa in Cape Town: the Guga S’Thebe Arts & Culture Centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting.',
     },
     tripadvisor: { url: `${TA}d20311065-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 22, checked: CHECKED },
-    confirm: ['The official page says “Max 4 people” and also lists a rate for 5–8 guests: confirm the group sizes offered.', 'Langa photographs showing children, or teenagers who may be under 18, are not used (the rights log’s four, and two withdrawn on 5 Nov 2026): parental consent would be needed.'],
+    confirm: ['Langa photographs showing children, or teenagers who may be under 18, are not used (the rights log’s four, and two withdrawn on 5 Nov 2026): parental consent would be needed.'],
     source: source('township-private-tour'),
     approval: APPROVAL,
   },
@@ -252,10 +250,10 @@ export const tours = [
     featured: false,
     card: 'Your own guide and vehicle for a tailored day: tell us what you would love to see, and we plan the day around it.',
     intro: [
-      'A tailored full day with your own private guide and vehicle, for groups of up to ten. There is no fixed route: tell us what you would love to see and do, and we plan the day around your interests and your pace.',
+      `A tailored full day with your own private guide and vehicle, for groups of up to ${groupMax('private-cape-town-experience')}. There is no fixed route: tell us what you would love to see and do, and we plan the day around your interests and your pace.`,
       'We confirm the route, the timings and what is included with your quote.',
     ],
-    highlights: ['Your own private guide', 'A private vehicle for the day', 'A route planned around you', 'Groups of up to ten'],
+    highlights: ['Your own private guide', 'A private vehicle for the day', 'A route planned around you', `Groups of up to ${groupMax('private-cape-town-experience')}`],
     itinerary: [],
     drivePast: [],
     itineraryStatus: 'not-listed',
@@ -266,12 +264,12 @@ export const tours = [
     pickup: 'Pickup and drop-off are arranged with you.',
     accessibility: MOBILITY,
     cancellation: '',
-    price: { from: 3500, currency: 'ZAR', unit: 'per group', tiers: [{ label: 'up to 10 guests', max: 10, amount: 3500 }], note: '' },
-    images: { hero: 'private-guests-arms-raised', card: 'coast-sunset-couple', gallery: ['beach-thrones', 'chapmans-peak-guide-selfie'] },
-    heroFocus: '62% 40%',
+    price: priceFor('private-cape-town-experience'),
+    images: { hero: 'coast-sunset-couple', card: 'coast-sunset-couple', gallery: ['beach-thrones', 'chapmans-peak-guide-selfie'] },
+    heroFocus: '45% 58%',
     seo: {
       title: 'Private Cape Town Experience: a Tailored Day with Your Own Guide',
-      description: 'A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to ten.',
+      description: `A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to ${groupMax('private-cape-town-experience')}.`,
     },
     tripadvisor: null,
     confirm: ['The official page lists no itinerary, inclusions or times (“Itinerary details coming soon”): confirm what the day includes and its usual length.'],

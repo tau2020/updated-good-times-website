@@ -29,8 +29,12 @@ export const site = {
   name: 'Good Times in Cape Town',
   shortName: 'Good Times',
   tagline: 'Private tours in Cape Town since 2014',
-  // The approved logo's own two-line tagline (Approved Logo Pack v2)
+  // The approved logo's own two-line tagline (Approved Logo Pack v2), part of the full artwork (gt-logo-primary.svg,
+  // gt-logo-reversed.svg). The site shows the compact artwork, which has none, with the statement below set under it.
   logoTagline: 'Make unforgettable memories in the Mother City',
+  // The company statement, exactly as Good Times supplied it (Addendum, 6 Nov 2026): set beneath the logo wherever the
+  // logo lockup appears (the header and the footer; partials/layout.mjs), never inside the artwork.
+  statement: 'Make Unforgettable Experience In The Mother City',
   descriptor: 'Private tours and transfers, Cape Town',
   founded: 2014,
   founder: 'Stuart Matanhire',
@@ -44,7 +48,7 @@ export const site = {
   /**
    * Public contact channels. Rendered only when `verified` is true; an unverified
    * channel is simply not shown. A verified phone gives every page below 1024 px a bar
-   * with Call (WhatsApp, once confirmed) and Make It Yours; the number appears as
+   * with Call (WhatsApp, once confirmed) and Plan My Day; the number appears as
    * selectable text with its actions in the footer, the mobile menu, the Travel
    * Concierge, the contact page and the enquiry page; telephone and email in the JSON-LD.
    */
@@ -55,20 +59,30 @@ export const site = {
       source: `${OFFICIAL}: header, contact page and footer (tel:+27723768432); also the business's own flyer on Tripadvisor`,
       verified: true,
     },
-    // The official site publishes no WhatsApp link. Set verified: true once Good Times confirms the number takes WhatsApp.
+    // The same number takes WhatsApp: Good Times confirmed it on 7 Nov 2026 with a screenshot of the number's WhatsApp
+    // profile ("Stuart Tour Guide C…", +27 72 376 8432), asking for it in the contacts (docs/APPROVAL_REGISTER.md › C1).
     whatsapp: {
       e164: '+27723768432',
       display: '+27 72 376 8432',
-      source: 'Not yet confirmed: the official site lists this number for calls only',
-      verified: false,
-    },
-    email: {
-      address: 'info@goodtimesincapetown.co.za',
-      label: 'Email',
-      source: `${OFFICIAL}: contact page, safety page and footer`,
+      source: 'Good Times’ confirmation of 7 Nov 2026: the number’s WhatsApp profile, shown by the owner',
       verified: true,
     },
-    emailGeneral: { address: '', label: 'Bookings', source: '', verified: false },
+    // The primary address. hello@ replaces info@ (published on the official site on 5 Nov 2026) wherever the site
+    // names an address: Good Times' instruction of 6 Nov 2026 (Addendum, docs/APPROVAL_REGISTER.md › C3).
+    email: {
+      address: 'hello@goodtimesincapetown.co.za',
+      label: 'Email us',
+      source: 'Good Times’ instruction of 6 Nov 2026 (Addendum): hello@ is the primary contact and replaces info@',
+      verified: true,
+    },
+    // The additional address from the same instruction: on the contact page only, after the primary one
+    // (contactList(site, { additional: true })); the footer, the menu and the enquiry page keep to hello@.
+    emailGeneral: {
+      address: 'stuart@goodtimesincapetown.co.za',
+      label: 'Email Stuart',
+      source: 'Good Times’ instruction of 6 Nov 2026 (Addendum): an additional contact option on the contact page',
+      verified: true,
+    },
     // The office, exactly as the official site writes it (it matches the Google Business Profile and Tripadvisor).
     office: {
       lines: ['277 Main Road, Adelphi Centre', 'Sea Point, Cape Town, 8005'],
@@ -113,6 +127,35 @@ export const site = {
     association: 'A registered associate of the Cape Tourist Guides Association',
     operator: 'A Western Cape Tourism registered operator',
     source: `${OFFICIAL}: About (Accreditations) and Safety & Trust`,
+    /**
+     * The credentials strip on the home page (partials/credentials.mjs): the points each rest on the statements above.
+     */
+    points: [
+      { title: 'Accredited local guides', text: 'Recognised by the Western Cape tourism authorities.' },
+      { title: 'A registered operator', text: 'Registered with Western Cape Tourism.' },
+      { title: 'Private by design', text: 'Only your group, your guide and a day planned around you.' },
+    ],
+    /**
+     * The Cape Tourist Guides Association (CTGA), a professional association, not an award. Its logo is the
+     * association's own vector file, unaltered (tourguides.capetown/images/logo.svg, read 6 Nov 2026, SHA-256
+     * 632f01f5…d705; assets/img/credentials/ctga-logo.svg). CTGA lets its associate members place the logo on their
+     * websites "advertising that you only employ/promote legal/registered guides" (Becoming an Associate Member,
+     * read 6 Nov 2026). Good Times states it is "a registered associate" (above). CTGA's own list of current associate
+     * members (tourguides.capetown/our-associates.html, read 6 Nov 2026) did not name it, so the logo and its line
+     * first showed in preview builds only, marked "preview only"; the owner confirmed the membership on 7 Nov 2026, so
+     * they now show in every build, without the note: docs/APPROVAL_REGISTER.md › T1.
+     */
+    ctga: {
+      name: 'Cape Tourist Guides Association',
+      short: 'CTGA',
+      url: 'https://tourguides.capetown/',
+      logo: 'assets/img/credentials/ctga-logo.svg',
+      line: 'Connected to the Cape’s professional guiding community.',
+      source: 'tourguides.capetown: logo, Our Associates and Becoming an Associate Member, read 6 Nov 2026; the membership confirmed by the owner on 7 Nov 2026',
+      checked: '2026-11-06',
+      confirmed: '2026-11-07',
+      verified: true,
+    },
   },
 
   /**
@@ -134,7 +177,15 @@ export const site = {
     // The version of the Terms & Conditions text on the site, recorded with every booking request that accepts them.
     // Change it whenever the text changes (test/terms.test.mjs fails until you do).
     termsVersion: '2026-11-05',
-    releaseOverride: null,
+    // Recorded 7 Nov 2026 by tau2020, the repository's owner, for the production deployment at
+    // good-times-in-cape-town.pages.dev only (not the domain): these open items are accepted for that release and stay
+    // open, so the privacy notice and the terms still say they are drafts (docs/APPROVAL_REGISTER.md, A1 and B1–B5)
+    releaseOverride: {
+      date: '2026-11-07',
+      by: 'tau2020 (repository owner)',
+      scope: 'https://good-times-in-cape-town.pages.dev only; not goodtimesincapetown.co.za',
+      accepted: ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS'],
+    },
   },
 
   /** Enquiry intake (lib/, api/). Read at build time; on a host these come from environment variables. */

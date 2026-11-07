@@ -7,19 +7,22 @@
  * assets/css/living-cape-system.css, so nothing restyles the approved hero, the
  * header's default bar or its Book Now coin. Every href is a real route of this site.
  */
-import { esc, icon, picture, coinButton, artPanel } from './ui.mjs';
+import { esc, icon, picture, coinButton, artPanel, leafButton } from './ui.mjs';
 import { engraved } from './engraved.mjs';
 import { tours } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
 
 /**
- * The Living Cape's three actions, members of the site's button system (assets/css/buttons.css):
- * Sun Seal is the primary (prominent size), Travel Note the tertiary (words over a fine rule),
- * Quiet Outline the secondary. `tone: 'light'` marks a dark ground or a photograph behind it. No arrows; the old
- * class names stay as hooks. The compass medallion is kept for the flagship (coinButton in ui.mjs).
+ * The Living Cape's three actions, members of the site's leaf-green button system (assets/css/buttons.css,
+ * design/button-design.md): Sun Seal is the primary (Leaf Green, prominent size), Travel Note the tertiary (words
+ * over a fine rule), Quiet Outline the secondary (Soft Leaf on a light ground; over a photograph, `tone: 'light'`,
+ * the solid white on-image pill, so it reads on any picture). No arrows; the old class names stay as hooks. The
+ * compass medallion is kept for the flagship (coinButton in ui.mjs).
  */
-export function sunSeal({ href, label, tone = '', cls = '', attrs = '' }) {
-  return `<a class="gt-button gt-button--primary gt-button--large lc-seal${tone ? ` lc-seal--${tone}` : ''}${cls ? ` ${cls}` : ''}" href="${esc(href)}"${attrs ? ` ${attrs}` : ''}><span class="lc-seal__label">${esc(label)}</span></a>`;
+export function sunSeal({ href, label, tone = '', cls = '', attrs = '', owner = '' }) {
+  // The home page's closing actions are the signature leaf (the brief of 6 Nov 2026), large; "Plan My Day" carries the
+  // signature's one description (ui.mjs). owner: the scene whose timeline plays its entrance (living-cape.js)
+  return leafButton({ href, label, size: 'large', cls: ['lc-seal', tone && `lc-seal--${tone}`, cls].filter(Boolean).join(' '), attrs, owner });
 }
 
 /** Travel Note: an editorial link, the tertiary action. */
@@ -29,7 +32,7 @@ export function travelNote({ href, label, hidden = '', tone = '', cls = '', attr
 
 /** Quiet Outline: the secondary action beside a primary one; a meaningful icon only (an aircraft, a quote). */
 export function quietOutline({ href, label, icon = '', tone = '', cls = '', attrs = '' }) {
-  return `<a class="gt-button gt-button--secondary gt-button--large${tone === 'light' ? ' gt-button--on-dark' : ''} lc-quiet${tone ? ` lc-quiet--${tone}` : ''}${cls ? ` ${cls}` : ''}" href="${esc(href)}"${attrs ? ` ${attrs}` : ''}>${icon ? engraved(icon, { cls: 'lc-quiet__icon' }) : ''}<span>${esc(label)}</span></a>`;
+  return `<a class="gt-button ${tone === 'light' ? 'gt-button--on-image' : 'gt-button--secondary'} gt-button--large lc-quiet${tone ? ` lc-quiet--${tone}` : ''}${cls ? ` ${cls}` : ''}" href="${esc(href)}"${attrs ? ` ${attrs}` : ''}>${icon ? engraved(icon, { cls: 'lc-quiet__icon' }) : ''}<span>${esc(label)}</span></a>`;
 }
 
 /** Chapter marker: "Chapter 03" in small caps beside a fine rule. */
@@ -72,8 +75,8 @@ export const SERVICES = [
     line: 'Met at Cape Town International with a name board and driven privately to your door.',
     short: 'Meet and greet at CPT',
     href: 'transfers/#airport',
-    action: 'Arrange a Transfer',
-    image: 'transfer-driver-selfie',
+    action: 'Arrange My Transfer',
+    image: 'airport-welcome-banner',
     focus: '50% 42%',
     badge: 'plane',
   },
@@ -137,7 +140,7 @@ export function conciergeTrigger() {
 /**
  * The Travel Concierge panel: a sheet that slides in from the right over a dimmed page,
  * a modal dialog with its own close button. The four services as photograph cards; the popular private days with
- * their photographs; the invitation to plan with the signature Make It Yours (the compass medallion); the direct line;
+ * their photographs; the invitation to plan with the signature Plan My Day (the compass medallion); the direct line;
  * and Cape Point's cliffs fading into the corner. `reach` is the direct line (layout.mjs, verified only).
  */
 export function conciergePanel({ bookHref = 'enquire/', reach = '' } = {}) {

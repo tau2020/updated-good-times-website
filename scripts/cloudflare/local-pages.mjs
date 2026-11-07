@@ -44,9 +44,9 @@ const vars = {
   EMAIL_PROVIDER: 'resend',
   RESEND_API_KEY: resend.apiKey,
   RESEND_API_URL: resend.url,
-  FROM_EMAIL: 'Good Times in Cape Town (local) <info@goodtimesincapetown.co.za>',
+  FROM_EMAIL: 'Good Times in Cape Town (local) <hello@goodtimesincapetown.co.za>',
   ENQUIRY_TEAM_EMAIL: 'team@example.com',
-  REPLY_TO_EMAIL: 'info@goodtimesincapetown.co.za',
+  REPLY_TO_EMAIL: 'hello@goodtimesincapetown.co.za',
   ENQUIRY_SIGNING_SECRET: 'local-pages-signing-secret-0123456789abcdef',
   RATE_LIMIT_PER_MINUTE: '120',
 };

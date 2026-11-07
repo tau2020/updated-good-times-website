@@ -1,4 +1,4 @@
-import { esc, icon, breadcrumb, button, picture, preloadFor, stars } from '../partials/ui.mjs';
+import { esc, icon, breadcrumb, button, picture, preloadFor, stars, SIGNATURE_CTA, SIGNATURE_ATTRS } from '../partials/ui.mjs';
 import { reviewCard } from '../partials/cards.mjs';
 import { reviews, themes, pullQuote, reviewSource } from '../data/reviews.mjs';
 
@@ -10,7 +10,7 @@ export const page = {
   path: 'reviews/index.html',
   nav: 'reviews/',
   title: 'What Our Guests Say: Tripadvisor reviews',
-  description: 'Good Times in Cape Town is rated 5.0 from 264 Tripadvisor reviews. Read summaries of guests’ reviews, each linking to the original.',
+  description: 'Good Times in Cape Town is rated 5.0 on Tripadvisor. Read short summaries of guests’ reviews, each linking to the full review.',
   priority: 0.7,
   breadcrumbs: crumbs,
   preload: [preloadFor('diaz-beach-cove')],
@@ -29,7 +29,7 @@ export const page = {
       <div>
         ${breadcrumb(crumbs)}
         <p class="eyebrow">Reviews on Tripadvisor</p>
-        <h1 id="reviews-title">What Our Guests Say</h1>
+        <h1 id="reviews-title">What our guests say</h1>
         <p class="lead">Real stories from real travellers on Tripadvisor: ${ta.rating.toFixed(1)} from ${ta.reviewCount} reviews, checked ${esc(checked)}.</p>
       </div>
     </div>
@@ -81,7 +81,7 @@ export const page = {
 <section class="section cta" aria-labelledby="reviews-cta">
   <div class="container">
     <h2 id="reviews-cta">Plan a day guests write home about.</h2>
-    <div class="cta__actions">${button({ href: 'tours/', label: 'Explore Tours', variant: 'gold' })}${button({ href: 'enquire/', label: 'Get a Quote', variant: 'ghost' })}</div>
+    <div class="cta__actions">${button({ href: 'tours/', label: 'Explore Tours', variant: 'gold' })}${button({ href: 'enquire/', label: SIGNATURE_CTA, variant: 'ghost', attrs: SIGNATURE_ATTRS })}</div>
   </div>
 </section>`;
   },

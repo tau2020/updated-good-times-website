@@ -279,8 +279,12 @@ test('pages --apply creates the project with both environments exactly as projec
 test('not released: deploying the production branch is refused until the owner approves; every other branch deploys a preview', () => {
   assert.equal(project.PROJECT.productionBranch, 'main');
   assert.equal(project.ENVIRONMENTS.production.branch, 'main');
-  assert.equal(project.RELEASE.approved, false, 'the owner has not approved a production release');
-  assert.throws(() => project.deployTarget('main'), /deploys to production, which the owner has not approved .*Deploy to "staging" instead/);
+  // Released on 7 Nov 2026 for the project's own production address only (A1); the lock still refuses without a release
+  assert.equal(project.RELEASE.approved, true);
+  assert.match(project.RELEASE.date, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(project.RELEASE.by, 'the release names who approved it');
+  assert.deepEqual(project.deployTarget('main'), { environment: 'production', alias: 'main' });
+  assert.throws(() => project.deployTarget('main', { release: { approved: false, date: '', by: '' } }), /deploys to production, which the owner has not approved .*Deploy to "staging" instead/);
   // Once the owner's approval is recorded, main deploys to production as itself.
   assert.deepEqual(project.deployTarget('main', { release: { approved: true, date: '2026-12-01', by: 'the owner' } }), { environment: 'production', alias: 'main' });
   assert.deepEqual(project.deployTarget('preview'), { environment: 'preview', alias: 'preview', url: 'https://preview.good-times-in-cape-town.pages.dev' });
@@ -297,11 +301,13 @@ test('no environment takes live enquiries yet, and the preview sends nothing any
   const preview = project.ENVIRONMENTS.preview.vars;
   for (const k of ['EMAIL_PROVIDER', 'FROM_EMAIL', 'ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'ADMIN_EMAILS', 'DATABASE_URL', 'WEB_ANALYTICS_TOKEN']) assert.equal(preview[k], undefined, `preview has no ${k}`);
   assert.equal(preview.SITE_ENV, 'preview', 'staging is kept out of search indexes');
-  // Production's addresses are Good Times' own published one, used only once production goes live.
+  // Production sends from Good Times' public address (hello@, 6 Nov 2026) and delivers to the mailbox that receives mail
+  // today (info@) until Good Times confirms hello@ receives it; used only once production goes live.
   assert.deepEqual(project.MAILBOXES, { info: 'info@goodtimesincapetown.co.za' });
+  assert.equal(project.PUBLIC_ADDRESS, 'hello@goodtimesincapetown.co.za');
   const prod = project.ENVIRONMENTS.production.vars;
   for (const k of ['ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'ADMIN_EMAILS']) assert.equal(prod[k], 'info@goodtimesincapetown.co.za', k);
-  assert.equal(prod.FROM_EMAIL, 'Good Times in Cape Town <info@goodtimesincapetown.co.za>');
+  assert.equal(prod.FROM_EMAIL, 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>');
   assert.equal(prod.WEB_ANALYTICS_TOKEN, undefined, 'no analytics token until Good Times has its own');
 });
 

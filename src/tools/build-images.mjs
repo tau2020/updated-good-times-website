@@ -14,6 +14,12 @@
  * `convert`: orientation applied, Lanczos, JPEG 95, metadata stripped); slots
  * marked `ambient` also need `ffmpeg`, for their tiny blurred colour wash
  * (`<name>-ambient.webp`, 72 px).
+ *
+ * Two optional settings per slot (src/data/images.mjs): `crop: [aspect, x, y]` cuts the original to that shape first
+ * (width / height), at the same relative position as its frame's object-position (0–1 across and down), so a frame of
+ * that shape or wider shows exactly what it showed from the whole original, without downloading the rows no layout
+ * shows (a portrait original in a wide banner); `widths` replaces the standard widths (a phone's art-directed source);
+ * `avif` sets that slot's AVIF quality (50 by default), where a phone's smaller pixels hide what a lower one smooths.
  */
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -54,9 +60,25 @@ async function dims(file) {
   return { w, h };
 }
 
-async function resample(file, width, out) {
+async function resample(file, width, out, crop) {
+  if (crop) {
+    // ImageMagick only (no sips equivalent used here): orient, cut, then resample
+    return run('convert', [`${file}[0]`, '-auto-orient', '-crop', `${crop.w}x${crop.h}+${crop.x}+${crop.y}`, '+repage', '-colorspace', 'sRGB', '-filter', 'Lanczos', '-resize', `${width}x`, '-quality', '95', '-strip', out]);
+  }
   if (SIPS) return run('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '95', '--resampleWidth', String(width), file, '--out', out]);
   return run('convert', [`${file}[0]`, '-auto-orient', '-colorspace', 'sRGB', '-filter', 'Lanczos', '-resize', `${width}x`, '-quality', '95', '-strip', out]);
+}
+
+/** The pixel box of a slot's `crop: [aspect, x, y]` on an original of w × h (oriented), or null. */
+function cropBox(img, w, h) {
+  if (!img.crop) return null;
+  const [aspect, px, py] = img.crop;
+  if (w / h > aspect) {
+    const cw = Math.round(h * aspect);
+    return { w: cw, h, x: Math.round((w - cw) * px), y: 0 };
+  }
+  const ch = Math.round(w / aspect);
+  return { w, h: ch, x: 0, y: Math.round((h - ch) * py) };
 }
 
 /**
@@ -81,10 +103,12 @@ async function one(img, generated) {
     if (generated[img.name]) return `kept ${img.name} (original not in media-src/)`;
     throw new Error(`missing original for ${img.name}: media-src/${img.src}`);
   }
-  const { w, h } = await dims(file);
+  const full = await dims(file);
+  const crop = cropBox(img, full.w, full.h);
+  const { w, h } = crop || full;
   const cap = HEROES.has(img.name) ? 2000 : 1600;
-  const widths = WIDTHS.filter((x) => x <= w && x <= cap);
-  if (!widths.length || (widths[widths.length - 1] < w * 0.9 && w < cap)) widths.push(w);
+  const widths = (img.widths || WIDTHS).filter((x) => x <= w && x <= cap);
+  if (!widths.length || (!img.widths && widths[widths.length - 1] < w * 0.9 && w < cap)) widths.push(w);
   const uniq = [...new Set(widths)];
   const tmp = join(tmpdir(), `gt-img-${img.name}-${process.pid}`);
   await mkdir(tmp, { recursive: true });
@@ -93,9 +117,9 @@ async function one(img, generated) {
     const webp = join(OUT, `${img.name}-${width}.webp`);
     if (!force && !only.length && existsSync(avif) && existsSync(webp)) continue;
     const scaled = join(tmp, `${width}.jpg`);
-    await resample(file, width, scaled);
+    await resample(file, width, scaled, crop);
     await run('cwebp', ['-quiet', '-q', '78', '-m', '6', '-metadata', 'none', scaled, '-o', webp]);
-    await run('avifenc', ['-q', '50', '-s', '6', '-j', '4', '--ignore-exif', '--ignore-xmp', scaled, avif]);
+    await run('avifenc', ['-q', String(img.avif || 50), '-s', '6', '-j', '4', '--ignore-exif', '--ignore-xmp', scaled, avif]);
   }
   await rm(tmp, { recursive: true, force: true });
   if (img.ambient) await ambient(img, file);

@@ -9,8 +9,11 @@ import { site } from '../data/site.mjs';
  * test/terms.test.mjs compares the page with that source (test/fixtures/terms-source.md), so a word
  * changed here without the source fails; a change to the text also needs a new site.legal.termsVersion,
  * the version recorded with every booking request that accepts it. Until Good Times approves the text
- * (site.legal.termsApproved) the page exists only in preview builds (noindex), and the production
- * deployment refuses to run while it is unapproved or a point is open (scripts/release-gate.mjs).
+ * (site.legal.termsApproved) the page is a marked draft and noindex. It exists in preview builds, and in a
+ * production build only under the owner's recorded release override that accepts the unapproved terms
+ * (site.legal.releaseOverride, 7 Nov 2026: "the privacy notice and the terms still say they are drafts"), so the
+ * booking form's Terms & Conditions link always leads somewhere; otherwise the production deployment refuses to
+ * run while it is unapproved or a point is open (scripts/release-gate.mjs).
  */
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Terms & Conditions', href: 'terms/' }];
 
@@ -123,4 +126,10 @@ export const termsPage = {
   },
 };
 
-export const pages = site.preview || site.legal.termsApproved ? [termsPage] : [];
+/**
+ * Whether a build publishes the terms: a preview, approved terms, or a release the owner made with the unapproved
+ * terms accepted as a draft (site.legal.releaseOverride). The footer's link and the page follow the same rule.
+ */
+export const termsPublished = (s) => Boolean(s.preview || s.legal.termsApproved || s.legal.releaseOverride?.accepted?.includes('site.legal.termsApproved'));
+
+export const pages = termsPublished(site) ? [termsPage] : [];

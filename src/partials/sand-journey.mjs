@@ -13,13 +13,14 @@
  * The markup is the complete static scene: the poster, the words and the link to the existing Cape Peninsula tour page,
  * all in HTML. That is what a visitor sees with reduced motion, without JavaScript or WebGL, or if the renderer fails;
  * with motion the sand is a decorative canvas laid over the image by the script (aria-hidden, never takes a click), and
- * the words rise in, one after another, as the sand clears. On wide screens the headline sits in the sand above the
+ * once the sand has cleared the words enter one after another (the eyebrow, the headline's words rising through line
+ * masks, the line, then the leaf unfurling: "The Coast Reveals Itself", design/motion-bible.md §4). On wide screens the headline sits in the sand above the
  * trail (upper left) and the line and the link in the sand below it (lower left), so neither covers a footprint, the
  * woman or the sea; portrait screens put them under the image, phones on their side beside it (motion.css). The words are the owner's (6 Nov 2026); the image is an
  * AI-generated illustration the owner supplied (basis G in docs/RIGHTS_REGISTER.md), credited as such beside it. It
  * sits just below the fold, so it is fetched at low priority: it must never compete with the hero's poster.
  */
-import { esc, picture } from './ui.mjs';
+import { esc, picture, leafButton } from './ui.mjs';
 import { tours } from '../data/tours.mjs';
 import { creditFor } from '../data/images.mjs';
 
@@ -28,10 +29,13 @@ export const SAND_TOUR = 'cape-peninsula-private-tour';
 export const SAND_IMAGE = 'beach-film-poster';
 /** The film (H.264, fast start; served with byte ranges by functions/assets/video for Safari) */
 export const SAND_FILM = { mp4: 'assets/video/beach-film-1280.mp4', width: 1280, height: 720 };
+/* The owner's words of 6 Nov 2026, in the site's sentence case since the "Good Times, Naturally" refresh (the same
+   day): the headline and the call to action unchanged in substance; the line keeps the private day, the coast and the
+   penguins, without "breathtaking" and "unforgettable" (content/copy-audit.md) */
 export const SAND_WORDS = {
-  eyebrow: 'Cape Peninsula · Coastal Journey',
-  title: 'Look Where Your Footsteps Led.',
-  line: 'One private journey. Breathtaking coastlines, penguins, and unforgettable Cape Town moments.',
+  eyebrow: 'Cape Peninsula · Coastal journey',
+  title: 'Look where your footsteps led.',
+  line: 'One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop.',
   cta: 'Explore the Cape Peninsula Tour',
 };
 
@@ -57,7 +61,7 @@ export function sandJourney() {
       </div>
       <div class="sand-journey__foot">
         <p class="sand-journey__line">${esc(w.line)}</p>
-        <a class="btn gt-button gt-button--primary sand-journey__cta" href="tours/${t.slug}/"><span>${esc(w.cta)}</span></a>
+        ${leafButton({ href: `tours/${t.slug}/`, label: w.cta, cls: 'sand-journey__cta', owner: 'sand' })}
       </div>
     </div>
     <p class="sand-journey__credit">${esc(creditFor(SAND_IMAGE))}</p>

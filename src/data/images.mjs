@@ -21,7 +21,8 @@
  *       direction of 6 Nov 2026, the sand journey's destination after it (test/hero.test.mjs)
  *   O = a traveller's photograph from a Good Times tour that the owner approved for this site by name in the Drive
  *       library (its file name ends "-approved", or says where to use it: "use-for-…", "replace-…"; media audit,
- *       6 Nov 2026); the photographer's permission is the owner's to confirm (docs/APPROVAL_REGISTER.md)
+ *       6 Nov 2026), or that the owner's brief of 6 Nov 2026 names for a placement (reports/client-corrections.md);
+ *       the photographer's permission is the owner's to confirm (docs/APPROVAL_REGISTER.md)
  *   L = not a Good Times photograph: an openly licensed photograph (Wikimedia Commons), used only where Good Times has
  *       none (Cape Agulhas, skydiving, the adventure card), credited as its licence asks (`credit`, `license`, `source`)
  *       beside it where the layout has a caption and on the photo credits, and never presented as Good Times' guests
@@ -111,9 +112,11 @@ export const images = [
   { name: 'winelands-terrace', src: `${T}winelands-terrace.jpg`, origin: 'T', focus: '50% 12%', alt: 'Guests at a terrace table on a wine estate as a host presents a bottle' },
   { name: 'winelands-pergola-lunch', src: `${T}winelands-pergola-lunch.jpg`, origin: 'T', focus: '50% 54%', alt: 'Guests at a long table under a vine-shaded pergola on a Winelands estate' },
   { name: 'winelands-tasting-table', src: `${T}winelands-tasting-table.jpg`, origin: 'T', focus: '50% 50%', alt: 'Five guests around a wine tasting table with glasses and tasting notes' },
-  { name: 'winelands-garden-lunch', src: `${U}winelands-garden-lunch.jpg`, origin: 'U', focus: '50% 46%', alt: 'Guests and their guide smiling around a garden lunch table on a Winelands estate' },
+  // The About page's "Meet our team" photograph until 6 Nov 2026, restored there at the owner's request (brief of 6 Nov
+  // 2026, §2.5), which places it at Aquila Game Reserve. Nothing in the file or its history names the place, so the alt
+  // text and caption no longer say "Winelands" and do not name Aquila until the owner confirms it (reports/client-corrections.md)
+  { name: 'winelands-garden-lunch', src: `${U}winelands-garden-lunch.jpg`, origin: 'U', focus: '50% 46%', alt: 'Guests and their guide smiling around a garden lunch table under the trees' },
   { name: 'table-mountain-sparkling', src: `${T}table-mountain-sparkling.jpg`, origin: 'T', full: true, focus: '36% 40%', alt: 'A glass of sparkling wine in focus, Table Mountain across the bay behind' },
-  { name: 'fairview-goat-tower', src: `${S}fairview-goat-tower.jpg`, origin: 'S', focus: '50% 46%', alt: 'Goats resting in the arches of the goat tower at Fairview' },
   { name: 'mandela-statue-drakenstein', src: `${S}mandela-statue-drakenstein.jpg`, origin: 'S', focus: '50% 40%', alt: 'Two guests beside the bronze statue of Nelson Mandela with a raised fist outside Drakenstein Correctional Centre' },
 
   // The Overberg coast and adventures
@@ -146,6 +149,11 @@ export const images = [
   { name: 'bokaap-street-pair', src: `${D}good-times-cape-town-146.jpg`, origin: 'S', ambient: true, focus: '50% 62%', alt: 'Two guests on a Bo-Kaap street of pink, blue and yellow houses' },
   { name: 'vineyard-couple', src: `${D}good-times-cape-town-050.jpg`, origin: 'S', ambient: true, focus: '48% 58%', alt: 'A couple standing in a vineyard on a sunny day, a white farm building and mountains behind them' },
   { name: 'guide-selfie-peninsula', src: `${D}replace-goats-on-home-page-Cape Peninsula Private Tour - traveller 106.jpg`, origin: 'O', ambient: true, focus: '62% 58%', alt: 'Two guests and their guide in a smiling selfie above the coast of the Cape Peninsula, a mountain and the sea behind them' },
+
+  // ── Added in the "Good Times, Naturally" enhancement (qa/surgical-change-report.md, 6 Nov 2026) ──
+  // Supplied by the owner for the home page's Cape Peninsula story (Drive file 1emxrC_RVorRLgK_0OsCvCfv2ctSBSWXu,
+  // SHA-256 ee94541f…f6cd1, 2268 × 4032): a guest's photograph, basis O. Shown whole, in its own 9:16 shape, once.
+  { name: 'chapmans-lookout-travellers', src: `${D}Cape Peninsula Private Tour - traveller 077.jpg`, origin: 'O', focus: '50% 55%', alt: 'Two travellers standing together at a stone-walled viewpoint on Chapman’s Peak Drive, with Hout Bay, its harbour and the mountains across the water behind them' },
 
   // ── Added in the media audit of 6 Nov 2026 (audit/image-change-register.md): one photograph per editorial place ──
   // The Cape Peninsula
@@ -205,7 +213,6 @@ export const images = [
   { name: 'pergola-lunch-table', src: `${D}good-times-cape-town-001.jpg`, origin: 'S', focus: '50% 33%', alt: 'A couple at a table under a reed-shaded pergola, vines and mountains beyond' },
 
   // The airport
-  { name: 'transfer-driver-selfie', src: `${D}Good Times profile page - 19.jpg`, origin: 'T', focus: '50% 42%', alt: 'Three smiling people in a selfie outside the departures hall at Cape Town International Airport' },
   { name: 'airport-departures-group', src: `${D}Cape Town Private Airport Transfer - operator 05.jpg`, origin: 'T', focus: '42% 72%', alt: 'Three guests waving goodbye outside the departures hall at Cape Town International Airport' },
   { name: 'airport-departures-trolley', src: `${D}Cape Town Private Airport Transfer - operator 04.jpg`, origin: 'T', focus: '40% 62%', alt: 'Guests with a luggage trolley outside the departures hall at Cape Town International Airport' },
 
@@ -218,6 +225,26 @@ export const images = [
 
   // About: the owner (about-image.jpg, supplied and approved by the owner for the About page, 5 Nov 2026)
   { name: 'owner-portrait', src: 'about/about-image.jpg', origin: 'S', focus: '72% 45%', alt: 'The owner of Good Times in Cape Town raising a glass of white wine on a terrace, Table Mountain across the bay in the background' },
+  // The owner's brief of 6 Nov 2026 (reports/client-corrections.md, design/asset-manifest.md): the airport arrival it names
+  // (traveller 12) leads the transfers page, where its wide hall and its "Welcome to the Mother City" read at banner width
+  // with the words over the travellers' backs, never a face; the Airport Private Transfer shows a Good Times driver meeting
+  // a guest (traveller 13: the guest's name on the welcome sign blurred, as on the arrival row's sign); the Bo-Kaap street it
+  // names leads the City tour; and a library photograph takes the hero phone's last slide (traveller 106 now replaces the goats)
+  // The transfers banner from wide screens up (48em): traveller 12 is portrait, the banner at least 1.68 times as wide as
+  // tall there, so the original is cut to 1.6 : 1 at the banner's own 56% (what each width shows is unchanged; about
+  // 60% of the bytes). Phones take the -tall cut below (art direction in transfers.mjs)
+  { name: 'airport-mother-city-welcome', src: `${D}Cape Town Private Airport Transfer - traveller 12.jpg`, origin: 'O', full: true, crop: [1.6, 0.5, 0.56], focus: '40% 56%', alt: 'Two travellers wheeling their suitcases through the arrivals hall at Cape Town International Airport, towards a stone wall that reads Welcome to the Mother City' },
+  // The same photograph for phones (the banner 0.85 to 1.68 times as wide as tall): cut to 0.85 : 1 at 56%, with a
+  // 1000 px rendition so a phone's 85% ask (coverSizes' rule) does not take the 1200, and AVIF at 40 (the stone wall's
+  // texture a touch smoother at 1:1, unseen at a phone's density under the banner's shade): the page's largest paint
+  { name: 'airport-mother-city-welcome-tall', src: `${D}Cape Town Private Airport Transfer - traveller 12.jpg`, origin: 'O', crop: [0.85, 0.5, 0.56], widths: [480, 800, 1000, 1200], avif: 40, focus: '36% 56%', alt: 'Two travellers wheeling their suitcases through the arrivals hall at Cape Town International Airport, towards a stone wall that reads Welcome to the Mother City' },
+  // The home page's Airport Transfers way (living-cape.mjs › SERVICES): the brief's second candidate for the airport
+  // transfer photograph (§2.3, traveller 11), in place of the selfie the owner disliked; the terminal's welcome banner
+  // under its glass roof, a clear "you have arrived" without anyone's face
+  { name: 'airport-welcome-banner', src: `${D}Cape Town Private Airport Transfer - traveller 11.jpg`, origin: 'O', focus: '50% 42%', alt: 'A welcome banner for Cape Town International Airport hanging under the glass roof of its terminal' },
+  { name: 'airport-meet-and-greet', src: `${D}Cape Town Private Airport Transfer - traveller 13-name-blurred.jpg`, origin: 'S', focus: '45% 40%', alt: 'A Good Times driver with a welcome sign giving a thumbs-up beside an arriving guest and his suitcases in the terminal at Cape Town International Airport' },
+  { name: 'bokaap-pink-blue-houses', src: `${D}Cape Town Private City Tour - traveller 10.jpg`, origin: 'O', full: true, focus: '50% 66%', alt: 'A guest at the white-railed steps of a bright pink house beside a blue one on a Bo-Kaap street' },
+  { name: 'peninsula-rocks-pair', src: `${D}Cape Peninsula Private Tour - traveller 050.jpg`, origin: 'S', ambient: true, focus: '50% 56%', alt: 'Two guests on the rocks above a turquoise sea on the Cape Peninsula, mountains across the water behind them' },
 
   // Not Good Times photographs (L): openly licensed, credited, used only where Good Times has none
   { name: 'agulhas-tip-marker', src: `${C}Southernmost_tip_of_Africa.JPG`, origin: 'L', full: true, focus: '50% 62%', credit: 'Photo: Shaomi72, CC BY-SA 3.0, via Wikimedia Commons', license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', source: 'https://commons.wikimedia.org/wiki/File:Southernmost_tip_of_Africa.JPG', alt: 'The stone marker at Cape Agulhas, the southernmost tip of Africa, a sign below it pointing to the Indian Ocean and the Atlantic Ocean' },

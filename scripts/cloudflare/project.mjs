@@ -39,8 +39,13 @@ export const PROJECT = {
   compatibilityFlags: ['nodejs_compat'],
 };
 
-/** The owner's go-ahead for a production release: null until it is given (date and name, recorded in the approval register). */
-export const RELEASE = { approved: false, date: '', by: '' };
+/**
+ * The go-ahead for a production release (date and name, recorded in the approval register, A1). Given on 7 Nov 2026 by
+ * tau2020, the repository's owner, for the project's own production address (https://good-times-in-cape-town.pages.dev)
+ * only, under a recorded override of the open legal items (site.legal.releaseOverride). It does not approve the domain
+ * cutover: goodtimesincapetown.co.za keeps the current website until DOMAIN.approved.
+ */
+export const RELEASE = { approved: true, date: '2026-11-07', by: 'tau2020 (repository owner)', scope: 'https://good-times-in-cape-town.pages.dev only; not the domain' };
 
 export const DOMAIN = {
   // Good Times' existing domain, serving the current website. It is not in this Cloudflare account, and
@@ -50,14 +55,21 @@ export const DOMAIN = {
   approved: false,
 };
 
-/** Good Times' published address on the domain (goodtimesincapetown.co.za, read on 5 Nov 2026). */
+/**
+ * Good Times' public address is hello@ (the owner's instruction of 6 Nov 2026): the site shows it, and the emails are
+ * sent from it. Where mail is delivered (new enquiries, customers' replies, the dashboard's sign-in links) stays the
+ * mailbox that receives mail today, info@, until Good Times confirms hello@ is set up to receive it: the brief of
+ * 6 Nov 2026 asks that form delivery never move to an unconfirmed mailbox (docs/APPROVAL_REGISTER.md › A4). stuart@, the
+ * additional public address, is a personal mailbox and is not routed here.
+ */
+export const PUBLIC_ADDRESS = `hello@${DOMAIN.apex}`;
 export const MAILBOXES = {
   info: `info@${DOMAIN.apex}`,
 };
 
 /**
  * Where new enquiry notifications would go, and where customers' replies come
- * back: Good Times' published address. Pending the owner's confirmation; it is
+ * back: the mailbox that receives mail today. Pending the owner's confirmation; it is
  * used only once an environment is live, and none is.
  */
 export const TEAM_INBOX = MAILBOXES.info;
@@ -84,7 +96,7 @@ export const ENVIRONMENTS = {
       ENQUIRY_MODE: 'preview',
       ENQUIRY_SYSTEM_ENABLED: 'true',
       EMAIL_PROVIDER: 'resend',
-      FROM_EMAIL: `Good Times in Cape Town <${MAILBOXES.info}>`,
+      FROM_EMAIL: `Good Times in Cape Town <${PUBLIC_ADDRESS}>`,
       ENQUIRY_TEAM_EMAIL: TEAM_INBOX,
       REPLY_TO_EMAIL: TEAM_INBOX,
       // Staff who may sign in to the bookings dashboard (/admin/), comma-separated.

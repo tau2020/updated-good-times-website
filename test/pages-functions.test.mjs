@@ -21,9 +21,9 @@ import { startPagesDev, freePort } from './helpers/pages-dev.mjs';
 
 const DB = 'postgres://gt:pw@ep-gt-test-123456.eu-central-1.aws.neon.tech/gt?sslmode=require';
 const SECRET = 'functions-test-signing-secret-0123456789abcdef';
-const FROM = 'Good Times in Cape Town <info@goodtimesincapetown.co.za>';
+const FROM = 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>';
 const TEAM = 'team@example.com';
-const REPLY = 'info@goodtimesincapetown.co.za';
+const REPLY = 'hello@goodtimesincapetown.co.za';
 const LIMIT = 4;
 
 let neon;

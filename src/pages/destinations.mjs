@@ -21,7 +21,7 @@ export const page = {
     ${breadcrumb(crumbs)}
     <p class="eyebrow">Where we go</p>
     <h1>Destinations</h1>
-    <p class="lead">Every place below is on one of our private tours from Cape Town. Pick a destination to see the days that go there.</p>
+    <p class="lead">Every place below is on one of our private tours from Cape Town. Pick a direction and see the days that go there.</p>
   </div>
 </section>
 
@@ -49,7 +49,7 @@ ${quietMoment({
     <p class="lead">Ask for a custom private day or a transfer on another route, and we’ll let you know how we can help, with availability and a quote.</p>
     <div class="cta__actions">
       ${button({ href: 'enquire/?type=tour&tour=custom', label: 'Tailor Your Journey', variant: 'gold' })}
-      ${button({ href: 'enquire/?type=transfer&transfer=other', label: 'Arrange a Transfer', variant: 'ghost', icon: 'car' })}
+      ${button({ href: 'enquire/?type=transfer&transfer=other', label: 'Arrange My Transfer', variant: 'ghost', icon: 'car' })}
     </div>
   </div>
 </section>`,

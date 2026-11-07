@@ -1,6 +1,8 @@
-import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
+import { focusOf } from '../partials/media.mjs';
+import { esc, icon, button, leafButton, picture, preloadFor, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
 import { rowCard } from '../partials/cards.mjs';
 import { services, types } from '../data/transfers.mjs';
+import { fromLine } from '../data/pricing.mjs';
 
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Transfers', href: 'transfers/' }];
@@ -43,13 +45,13 @@ function serviceBlock(s, site, i) {
     <p class="small muted">Not included: ${esc(s.notIncluded.join(', ').toLowerCase())}. ${esc(s.cancellation)}</p>
     <div class="service-block__foot">
       ${price(s, site)}
-      ${button({ href: request, label: 'Arrange a Transfer', variant: 'gold' })}
+      ${leafButton({ href: request, label: 'Arrange My Transfer' })}
     </div>
     ${tiers}
     ${i === 0 && site.prices.show && s.price ? `<div class="currency-area currency-area--inline">${currencyPicker({ id: 'currency-transfers' })}</div>` : ''}
   </div>
   <div class="service-block__media" data-reveal style="--reveal-i:1">
-    ${media.map((m, j) => `<div class="media-frame"${j === 0 ? ' style="--focus: 48% 40%"' : ''}>${picture({ name: m, sizes: j === 0 ? '(min-width: 56em) 44vw, 92vw' : '(min-width: 56em) 22vw, 46vw' })}</div>`).join('\n    ')}
+    ${media.map((m, j) => `<div class="media-frame"${j === 0 ? ` style="--focus: ${focusOf(m)}"` : ''}>${picture({ name: m, sizes: j === 0 ? '(min-width: 56em) 44vw, 92vw' : '(min-width: 56em) 22vw, 46vw' })}</div>`).join('\n    ')}
   </div>
 </article>`;
 }
@@ -58,26 +60,28 @@ export const page = {
   path: 'transfers/index.html',
   nav: 'transfers/',
   title: 'Airport Transfers in Cape Town',
-  description: 'Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R800 per trip for 1–4 guests.',
+  description: `Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. ${fromLine(airport.price)}.`,
   priority: 0.9,
   breadcrumbs: crumbs,
-  preload: [preloadFor('airport-departures-wave')],
+  // The banner is art-directed (images.mjs): a wide cut of traveller 12 from 48em, a taller one for phones; each
+  // screen preloads only its own
+  preload: [preloadFor('airport-mother-city-welcome', { media: '(min-width: 48em)' }), preloadFor('airport-mother-city-welcome-tall', { media: '(max-width: 47.99em)', sizes: '85vw' })],
   body: ({ site }) => `
 <section class="banner" style="--focus: 40% 56%; --focus-mobile: 36% 56%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
-  <div class="banner__media">${picture({ name: 'airport-departures-wave', eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="banner__media">${picture({ name: 'airport-mother-city-welcome', eager: true, fetchpriority: 'high', alt: '', portrait: { name: 'airport-mother-city-welcome-tall', media: '(max-width: 47.99em)', sizes: '85vw' } })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbs)}
       <h1>Airport Transfers</h1>
-      <p class="banner__sub">Met at arrivals. Driven to your door.</p>
-      <p class="banner__text">Private transfers between Cape Town International Airport and your accommodation, for individuals, families and small groups, with a name board at arrivals and a hand with your luggage.</p>
+      <p class="banner__sub">Land in Cape Town. We’ll take it from there.</p>
+      <p class="banner__text">Private transfers between Cape Town International Airport and your accommodation, for individuals, families and small groups: a name board at arrivals, a hand with your luggage and a private drive to your door.</p>
     </div>
   </div>
 </section>
 
 <section class="section section--paper" aria-labelledby="choose-title">
   <div class="container">
-    ${sectionHead({ eyebrow: 'Choose your transfer', title: 'Where are you going?', id: 'choose-title', lead: 'Pick the journey you need. You give the details in the next step, and we’ll reply with availability and a quote.' })}
+    ${sectionHead({ eyebrow: 'Choose your transfer', title: 'Where are you headed?', id: 'choose-title', lead: 'Pick the journey you need. You add the details in the next step, and we’ll reply with availability and a quote.' })}
     <div class="tabs" data-tabs>
       <div class="segmented" role="tablist" aria-label="Transfer type" hidden>
         <button class="segmented__tab" type="button" role="tab" id="tab-airport" aria-controls="panel-airport" aria-selected="true">Airport</button>
@@ -127,7 +131,7 @@ export const page = {
       <li>${icon('luggage')} <span><strong>Luggage</strong>, including anything oversized such as golf bags or surfboards.</span></li>
     </ul>
     <p class="callout">${icon('info')}<span>A transfer request is not a confirmed booking: one of our team confirms it with you.</span></p>
-    <div class="center-x mt-6">${button({ href: 'enquire/?type=transfer', label: 'Get a Quote', variant: 'gold' })}</div>
+    <div class="center-x mt-6">${leafButton({ href: 'enquire/?type=transfer', label: 'Arrange My Transfer' })}</div>
   </div>
 </section>`,
 };

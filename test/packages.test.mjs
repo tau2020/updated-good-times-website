@@ -133,7 +133,7 @@ test('the booking card opens the request on the multi-day tour, the nights left 
   assert.doesNotMatch(html, /<input type="hidden" name="nights"/, 'no fixed length');
   const select = /<select class="sfield__control" name="nights"[\s\S]*?<\/select>/.exec(html)?.[0] || '';
   assert.deepEqual([...select.matchAll(/<option value="(\d*)">/g)].map((m) => m[1]), ['', ...Array.from({ length: 12 }, (_, i) => String(i + 2))], 'two to thirteen nights, or not sure');
-  assert.match(html, /href="\.\.\/\.\.\/enquire\/\?type=tour&amp;tour=garden-route-private-tour"/, 'the Make It Yours link');
+  assert.match(html, /href="\.\.\/\.\.\/enquire\/\?type=tour&amp;tour=garden-route-private-tour"/, 'the Plan My Day link');
   assert.doesNotMatch(html, /tour=garden-route-private-tour&amp;nights=/, 'no length is suggested for the traveller');
 });
 

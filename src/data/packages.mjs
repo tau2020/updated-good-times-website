@@ -13,6 +13,8 @@
  * (not rendered) and docs/APPROVAL_REGISTER.md.
  */
 
+import { priceFor } from './pricing.mjs';
+
 const APPROVAL = 'published by Good Times on goodtimesincapetown.co.za; wording adapted for this site';
 const SOURCE = { listing: 'https://www.goodtimesincapetown.co.za/tour/garden-route-private-tour/', checked: '2026-11-05' };
 
@@ -42,7 +44,7 @@ export const packages = [
     ],
     included: ['Private vehicle', 'Driver-guide', 'Fuel', 'Bottled water'],
     notIncluded: ['Accommodation', 'Meals', 'Entrance fees', 'Tips'],
-    price: { from: 8500, currency: 'ZAR', unit: 'per day', tiers: [{ label: '1–4 guests', max: 4, amount: 8500 }], note: 'Per day, for 1–4 guests. Groups of 5–8: please enquire.' },
+    price: priceFor('garden-route-private-tour', 'Per day, for 1–4 guests. Groups of 5–8: please enquire.'),
     cancellation: 'Free cancellation up to 24 hours before the scheduled departure time. Cancellations within 24 hours of departure, and no-shows, are non-refundable.',
     // The gallery never repeats the hero or the card (audit/image-change-register.md). The destination card for the
     // Garden Route links to this page, so it shows this package's card, as the tour list does

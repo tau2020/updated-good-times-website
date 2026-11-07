@@ -14,9 +14,10 @@ const crumbs = [{ label: 'Home', href: './' }, { label: 'About', href: 'about/' 
  * photograph and the Langa mural laid over its corner. They reveal in turn as they scroll into view
  * (culinary.js, the layered reveal); without motion they are simply in place.
  *
- * "Meet our team" shows the owner's own photograph (about-image.jpg, the owner's approved file, 6 Nov 2026), whole: its
- * frame has the photograph's own 3:2 proportions at every width, so nothing of the owner is cropped. Every photograph on this
- * page appears nowhere else on the site (audit/image-change-register.md).
+ * "Meet our team" shows again the photograph it showed until 6 Nov 2026, at the owner's request (brief of 6 Nov 2026, §2.5:
+ * the team photograph taken at Aquila Game Reserve): guests and their guide at lunch, whole in a frame of its own 5:4. The
+ * owner's portrait it replaced is now on the home page's people chapter. Every photograph on this page appears nowhere else
+ * on the site (design/asset-manifest.md).
  */
 const frame = (name, sizes, focus, ratio) =>
   `<div class="taste__frame" style="--focus: ${focusOf(name, focus)}${ratio ? `; --ratio: ${ratio}` : ''}" data-taste-frame>${picture({ name, sizes })}</div>`;
@@ -46,7 +47,7 @@ export const page = {
     <div class="banner__content">
       ${breadcrumb(crumbs)}
       <h1>Our Story</h1>
-      <p class="banner__sub">${esc(site.logoTagline)}.</p>
+      <p class="banner__sub">Showing people the Cape we love, since ${site.founded}.</p>
     </div>
   </div>
 </section>
@@ -55,8 +56,8 @@ export const page = {
   <div class="container intro-grid intro-grid--photo">
     <div class="intro" data-reveal>
       <p class="eyebrow">Who we are</p>
-      <h2 id="story-title">Good journeys begin with good people.</h2>
-      <p>Founded in ${site.founded} by ${esc(site.founder)}, Good Times in Cape Town began with a simple idea: to share the beauty and diversity of the Mother City through authentic, personal experiences, with professional, accredited guides.</p>
+      <h2 id="story-title">We really like showing people around.</h2>
+      <p>${esc(site.founder)} founded Good Times in Cape Town in ${site.founded} with a simple idea: share the beauty and diversity of the Mother City the way a friend would, in person and unhurried, with professional, accredited guides.</p>
       <p>Every tour we run is private and shaped around the people on it: the Cape Peninsula and its penguins, the city and its history, Langa, the Winelands, the coast and the Garden Route, with pickup from your accommodation on most days.</p>
     </div>
     <figure class="about-pair lc-scope" data-taste="reveal">
@@ -70,12 +71,12 @@ export const page = {
 </section>
 
 <section class="section section--paper" aria-labelledby="people-title">
-  <div class="container people">
-    <figure class="people__photo" data-reveal>
-      <div class="media-frame" style="--ratio: 3 / 2; --focus: ${focusOf('owner-portrait')}">${picture({ name: 'owner-portrait', sizes: '(min-width: 64em) min(40vw, 34rem), 100vw' })}</div>
-      <figcaption>The owner of Good Times in Cape Town, across the bay from Table Mountain</figcaption>
+  <div class="container people" data-taste="portrait">
+    <figure class="people__photo">
+      <div class="media-frame" style="--ratio: 5 / 4; --focus: ${focusOf('winelands-garden-lunch')}" data-taste-frame>${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(40vw, 34rem), 100vw' })}</div>
+      <figcaption data-taste-caption>Guests and their guide at lunch, on a day out with Good Times</figcaption>
     </figure>
-    <div class="people__body" data-reveal style="--reveal-i:1">
+    <div class="people__body" data-taste-words>
       <p class="eyebrow">Meet our team</p>
       <h2 id="people-title">Founded by ${esc(site.founder)}.</h2>
       <p>Our team is a registered associate of the Cape Tourist Guides Association, and our guides are accredited tourist guides recognised by the National Department of Tourism under the Western Cape Department of Economic Affairs and Tourism. We are a Western Cape Tourism registered operator.</p>
@@ -86,10 +87,10 @@ export const page = {
 
 <section class="section" aria-labelledby="approach-title">
   <div class="container">
-    ${sectionHead({ eyebrow: 'Our approach', title: 'Personal, local and safe.', id: 'approach-title', lead: 'How we make your journey personal.' })}
+    ${sectionHead({ eyebrow: 'Our approach', title: 'Personal, local and safe.', id: 'approach-title', lead: 'Three things we never skip.' })}
     <ul class="themes" role="list">
       <li data-reveal><strong>A personal start</strong><span>We begin with your interests and preferences, then plan a private day, or several, around them.</span></li>
-      <li data-reveal style="--reveal-i:1"><strong>Local insight</strong><span>Carefully planned routes and accredited guides who bring the places to life, from the famous sights to the hidden gems.</span></li>
+      <li data-reveal style="--reveal-i:1"><strong>Local insight</strong><span>Carefully planned routes and accredited guides who bring the places to life, from the famous sights to the good bits in between.</span></li>
       <li data-reveal style="--reveal-i:2"><strong>Support throughout</strong><span>A team you can reach before, during and after your tour, and nothing booked or charged until we have confirmed the arrangements with you.</span></li>
     </ul>
   </div>
@@ -106,11 +107,11 @@ export const page = {
 
 <section class="section cta" aria-labelledby="about-cta-title">
   <div class="container">
-    <h2 id="about-cta-title">Come and experience the Cape with us.</h2>
+    <h2 id="about-cta-title">Come and see the Cape with us.</h2>
     <p class="lead">Private tours and transfers from Cape Town, confirmed with you before anything is booked.</p>
     <div class="cta__actions">
       ${button({ href: 'tours/', label: 'Explore Tours', variant: 'gold' })}
-      ${button({ href: 'contact/', label: 'Contact Us', variant: 'ghost', icon: '' })}
+      ${button({ href: 'contact/', label: 'Ask Us Anything', variant: 'ghost', icon: '' })}
     </div>
   </div>
 </section>`,

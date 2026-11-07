@@ -92,6 +92,36 @@
     "width": 1728,
     "height": 1152
   },
+  "airport-meet-and-greet": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048
+  },
+  "airport-mother-city-welcome": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 960
+  },
+  "airport-mother-city-welcome-tall": {
+    "widths": [
+      480,
+      800,
+      1000,
+      1200
+    ],
+    "width": 1536,
+    "height": 1807
+  },
   "airport-pickup-area": {
     "widths": [
       480,
@@ -100,6 +130,16 @@
     ],
     "width": 1000,
     "height": 800
+  },
+  "airport-welcome-banner": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048
   },
   "airport-welcome-sign": {
     "widths": [
@@ -137,6 +177,17 @@
     ],
     "width": 2048,
     "height": 1152
+  },
+  "bokaap-pink-blue-houses": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 4284,
+    "height": 5712
   },
   "bokaap-pink-wall": {
     "widths": [
@@ -476,6 +527,16 @@
     "width": 3240,
     "height": 2160
   },
+  "chapmans-lookout-travellers": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ],
+    "width": 2268,
+    "height": 4032
+  },
   "chapmans-peak-couple": {
     "widths": [
       480,
@@ -564,16 +625,6 @@
     ],
     "width": 2048,
     "height": 1364
-  },
-  "fairview-goat-tower": {
-    "widths": [
-      480,
-      800,
-      1200,
-      1600
-    ],
-    "width": 2048,
-    "height": 1536
   },
   "garden-route-garden-path": {
     "widths": [
@@ -877,6 +928,17 @@
     "width": 2048,
     "height": 1365
   },
+  "peninsula-rocks-pair": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048,
+    "ambient": true
+  },
   "pergola-lunch-table": {
     "widths": [
       480,
@@ -970,16 +1032,6 @@
     ],
     "width": 3120,
     "height": 2081
-  },
-  "transfer-driver-selfie": {
-    "widths": [
-      480,
-      800,
-      1200,
-      1600
-    ],
-    "width": 4032,
-    "height": 3024
   },
   "vineyard-couple": {
     "widths": [

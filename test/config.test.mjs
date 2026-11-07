@@ -113,9 +113,9 @@ const liveProduction = () =>
     ENQUIRY_SIGNING_SECRET: 'x'.repeat(40),
     EMAIL_PROVIDER: 'resend',
     RESEND_API_KEY: 're_test',
-    FROM_EMAIL: 'Good Times in Cape Town <info@goodtimesincapetown.co.za>',
-    ENQUIRY_TEAM_EMAIL: 'info@goodtimesincapetown.co.za',
-    REPLY_TO_EMAIL: 'info@goodtimesincapetown.co.za',
+    FROM_EMAIL: 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>',
+    ENQUIRY_TEAM_EMAIL: 'hello@goodtimesincapetown.co.za',
+    REPLY_TO_EMAIL: 'hello@goodtimesincapetown.co.za',
     PUBLIC_SITE_URL: 'https://goodtimesincapetown.co.za',
   });
 

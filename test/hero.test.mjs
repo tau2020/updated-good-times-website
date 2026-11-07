@@ -24,20 +24,22 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith('.mjs')).sort()) {
 const render = (path) => layout(pages.find((p) => p.path === path), site);
 const home = render('index.html');
 // The hero ends where the next section begins: the sand journey (partials/sand-journey.mjs), then the chapters
-const hero = home.slice(home.indexOf('<section class="hero"'), home.indexOf('<section class="sand-journey"'));
+// (the hero's words, partials/hero-services.mjs, follow the section in .hero-shell: test/hero-services.test.mjs)
+const hero = home.slice(home.indexOf('<section class="hero"'), home.indexOf('<div class="hero-services"'));
 const ai = [...images, ...generated].filter((i) => i.origin === 'G');
 
-test('the hero: one h1 for search and screen readers, one call to action to the tours, no paragraph or second action', () => {
+test('the hero: one h1 for search and screen readers, the headline Good Times Start Here! in place of the leaf, no link', () => {
   assert.equal((home.match(/<h1\b/g) || []).length, 1);
   assert.match(hero, /<h1 class="visually-hidden" id="hero-title">Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014<\/h1>/);
-  const links = [...hero.matchAll(/<a class="([^"]*)" href="([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g)];
-  assert.equal(links.length, 1, 'one link in the hero');
-  const [, cls, href, attrs, words] = links[0];
-  assert.deepEqual([cls, href], ['btn-champagne hero__cta', 'tours/']);
-  assert.match(attrs, /data-intro/, 'it takes part in the entrance');
-  assert.equal(words.replace(/<[^>]+>/g, ''), 'Good Times start Here!');
-  assert.match(words, /<span class="hero__cta-sheen" aria-hidden="true"><\/span>/);
-  assert.doesNotMatch(hero, /hero__lead|hero__link|hero__actions|Arrange a Transfer|Explore Tours/);
+  // The owner's choice of 7 Nov 2026: the headline instead of the Find Your Good Time leaf, so the hero has no link
+  assert.equal([...hero.matchAll(/<a\b/g)].length, 0, 'no link in the hero');
+  assert.doesNotMatch(home, /hero__cta|Find Your Good Time|data-leaf-owner="hero"/);
+  // The headline, once, with the hero's words (partials/hero-services.mjs), in the entrance
+  const headline = home.match(/<p class="hero-headline" data-intro>([\s\S]*?)<\/p>/);
+  assert.ok(headline, 'the headline');
+  assert.equal(headline[1].replace(/<svg[\s\S]*?<\/svg>/g, '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(), 'Good Times Start Here!');
+  assert.equal((home.match(/class="hero-headline"/g) || []).length, 1);
+  assert.doesNotMatch(hero, /hero__lead|hero__link|hero__actions|Arrange My Transfer|Explore Tours/);
 });
 
 test('the scene: the held frame first (described, preloaded, high priority), then the film, decorative and started only by main.js', () => {
@@ -63,8 +65,10 @@ test('the phone gallery: six real Good Times days in order, the first ready befo
   // The play/pause key appears only once the gallery actually moves (phone-gallery.js)
   assert.match(g, /<button class="phone-gallery__toggle" type="button" data-phone-toggle aria-label="Pause the photo gallery" hidden>/);
   const items = PHONE_GALLERY.items;
-  // Cape Town Memories (media audit, 6 Nov 2026): real photographs of Good Times days, none of them AI-generated or used elsewhere
-  assert.deepEqual(items.map((i) => i.id), ['chapmans-peak', 'bo-kaap', 'boulders', 'winelands', 'cape-point', 'peninsula-guide'], 'the gallery.json order');
+  // Cape Town Memories (media audit, 6 Nov 2026): real photographs of Good Times days, none of them AI-generated or used elsewhere.
+  // The last one changed on 6 Nov 2026: traveller 106 went to the home page's moments in place of the goats (the owner's
+  // brief, §2.1), so a Peninsula photograph used nowhere else took its place
+  assert.deepEqual(items.map((i) => i.id), ['chapmans-peak', 'bo-kaap', 'boulders', 'winelands', 'cape-point', 'peninsula-rocks'], 'the gallery.json order');
   for (const item of items) assert.notEqual(images.find((x) => x.name === item.image)?.origin, 'G', `${item.id}: a real photograph`);
   const slides = [...g.matchAll(/<div class="phone-gallery__slide"([^>]*)>([\s\S]*?)<\/figure>\s*<\/div>/g)];
   assert.equal(slides.length, items.length + 1, 'six photographs and the copy of the first');

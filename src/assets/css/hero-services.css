@@ -1,0 +1,456 @@
+/* ==========================================================================
+   Good Times in Cape Town — the home hero's words (HeroServices, src/partials/hero-services.mjs)
+   The owner's hero-services brief of 7 Nov 2026, after the "Cape Town Good Times Banner" reference, and the owner's
+   choice of the same day: the headline "Good Times Start Here!" in place of the Find Your Good Time leaf. The headline
+   ("Good Times" in white, "Start Here!" in leaf green on a lime brush swash), one sentence with a hand-painted lime
+   brush under its last words, and the four services, each a forest-green line icon in a warm-white circle, a title
+   and a centred line, with fine separators between them.
+   Additive and isolated: this sheet styles only .hero-shell, .hero-headline and .hero-services; the hero's scene,
+   phone and crop (styles.css §7) are unchanged. Fonts, colours and the icon set are the site's own (tokens.css,
+   ui.mjs): Caveat, the site's handwriting, at its boldest for the headline.
+
+   One block, two placements:
+   - Wide landscape screens (3:2 or wider, 75em wide and 36em tall or more): the whole stack (headline, sentence,
+     services) at the photograph's bottom left, just above the two calls to action (the owner's request of 7 Nov 2026),
+     as one group on the hero's own gap. It lies over the sleeping friend at the table, as asked, and never over the
+     four friends above him: the block is placed in the photograph's own pixels through its crop (object-fit: cover,
+     styles.css §7), so it follows the frame at every size, the headline and the sentence keeping left of the
+     curly-haired friend and the services left of the brunette, below every chin. A soft shade rising from the hero's
+     bottom-left corner carries the words and fades to nothing before any of their faces; the sky, the mountain and
+     the town stay clear.
+   - Every other screen (phones, tablets, square, narrow or short windows): the headline sits bottom left in the hero,
+     where the leaf was (below every face: in the band beside the phone, or in the strip under the sleeping friend's
+     chin), and the sentence, the services and the calls to action follow immediately beneath the hero on the navy of
+     its band; on phones the calls to action take the full width.
+   Four services in a row wherever the block is 32rem wide or more, two by two below that.
+   ========================================================================== */
+.hero-shell {
+  /* The photograph's crop, in its own pixels (hero-moment-poster, 1280 × 720): object-fit: cover over the hero, so one
+     poster pixel is --hs-s on screen, and the frame is cut 75% from its top (styles.css §7) */
+  --hs-h: calc(100svh - var(--preview-h, 0px));
+  --hs-s: max(calc(100vw / 1280), calc(var(--hs-h) / 720));
+  --hs-left: max(var(--hero-edge), env(safe-area-inset-left));
+  position: relative;
+}
+
+.hero-services {
+  /* Phones and tablets: the sentence at 18–22 px, titles at 16–18 px, lines at 14–15 px */
+  --hs-lead: clamp(1.125rem, 1rem + 0.55vw, 1.375rem);
+  --hs-title: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  --hs-text: clamp(0.875rem, 0.84rem + 0.15vw, 0.9375rem);
+  --hs-icon: clamp(2.75rem, 2.5rem + 0.8vw, 3.125rem);
+  --hs-list-gap: clamp(1.4rem, 1rem + 1.4vw, 1.9rem);
+  /* The hero's own gap under its foot (styles.css §7, --hero-inset), for the headline that sits there */
+  --hs-inset: max(clamp(0.75rem, 0.1rem + 1.9vh, 1.75rem), env(safe-area-inset-bottom));
+  position: relative;
+  /* Above the hero (its headline sits over the hero's foot), and its own stacking context, so the brushes and the
+     shade (z-index -1) sit above its ground and below its words */
+  z-index: 2;
+  isolation: isolate;
+  container: hero-services / inline-size;
+  padding: clamp(1.25rem, 0.6rem + 2.6vw, 2.75rem) max(var(--hero-edge), env(safe-area-inset-right)) clamp(2.25rem, 1.5rem + 3vw, 3.5rem) var(--hs-left);
+  color: var(--hero-ivory);
+  background: var(--forest-deep);
+}
+
+/* The headline: Caveat at its boldest, a little tilted, as if written on the day. "Good Times" in white, "Start Here!"
+   in leaf green on its lime swash (6:1). Two lines unless the screen asks for one */
+.hero-headline {
+  --hl-size: min(9.2vw, 3.5rem);
+  position: absolute;
+  left: var(--hs-left);
+  bottom: calc(100% + var(--hs-inset));
+  max-width: calc(54vw - var(--hs-left) - 1.5rem);
+  margin: 0;
+  font-family: var(--font-accent);
+  font-size: var(--hl-size);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: 0.005em;
+  color: var(--hero-ivory);
+  text-shadow: 0 2px 3px rgb(3 16 32 / 0.45), 0 0 18px rgb(3 16 32 / 0.35);
+  rotate: -1.5deg;
+  transform-origin: 0 100%;
+}
+.hero-headline__line {
+  display: block;
+  white-space: nowrap;
+}
+.hero-headline__mark {
+  position: relative;
+  isolation: isolate;
+  width: fit-content;
+  margin-top: 0.08em;
+  padding: 0.05em 0.26em 0.11em 0.2em;
+  color: var(--green-deep);
+  text-shadow: none;
+}
+.hero-headline__swash {
+  position: absolute;
+  left: -0.08em;
+  top: -0.05em;
+  z-index: -1;
+  width: calc(100% + 0.22em);
+  height: calc(100% + 0.12em);
+  overflow: visible;
+  color: var(--green-lime-accent);
+  fill: currentColor;
+  pointer-events: none;
+}
+
+/* The sentence: the site's body face, bold, white, left-aligned; at most three lines on wide screens */
+.hero-services__lead {
+  max-width: 34rem;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--hs-lead);
+  font-weight: 650;
+  line-height: 1.32;
+  letter-spacing: -0.006em;
+  text-wrap: pretty;
+}
+/* "tailored for you." stays on one line, so its brush mark runs under exactly those words */
+.hero-services__mark {
+  position: relative;
+  white-space: nowrap;
+}
+.hero-services__brush {
+  position: absolute;
+  left: -0.14em;
+  bottom: -0.5em;
+  z-index: -1;
+  width: calc(100% + 0.55em);
+  height: 0.66em;
+  overflow: visible;
+  color: var(--green-lime-accent);
+  fill: currentColor;
+  pointer-events: none;
+}
+/* A fine line between the sentence and the services, lime fading out (as in the reference) */
+.hero-services__lead::after {
+  content: '';
+  display: block;
+  width: min(62%, 15rem);
+  height: 1px;
+  margin-top: 0.95em;
+  background: linear-gradient(90deg, rgb(201 233 112 / 0.7), rgb(201 233 112 / 0));
+}
+
+.hero-services__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  row-gap: var(--hs-list-gap);
+  max-width: 46rem;
+  margin: clamp(1rem, 0.7rem + 1vw, 1.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+/* Icon, title and line read as one unit, centred in its column */
+.hero-services__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 0 clamp(0.4rem, 0.2rem + 0.6vw, 0.75rem);
+  text-align: center;
+}
+/* The separators: a fine vertical rule between neighbours in a row, fading at its ends */
+.hero-services__item:nth-child(even) {
+  border-left: 1px solid;
+  border-image: linear-gradient(180deg, rgb(255 255 255 / 0), rgb(255 255 255 / 0.3) 18% 82%, rgb(255 255 255 / 0)) 1;
+}
+.hero-services__icon {
+  display: grid;
+  place-items: center;
+  width: var(--hs-icon);
+  height: var(--hs-icon);
+  flex: none;
+  border-radius: 50%;
+  color: var(--green-deep);
+  background: var(--surface-sand);
+  box-shadow: 0 1px 3px rgb(3 16 32 / 0.22);
+}
+.hero-services__icon .icon {
+  width: 54%;
+  height: 54%;
+  stroke-width: 1.7;
+}
+/* Titles: Bricolage Grotesque's display cut (its optical size at 96 is the narrower, livelier drawing), stronger than
+   the line beneath and well below the headline */
+.hero-services__title {
+  display: block;
+  margin-top: 0.55em;
+  font-family: var(--font-display);
+  font-size: var(--hs-title);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 96;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+.hero-services__text {
+  display: block;
+  max-width: 14rem;
+  margin-top: 0.3em;
+  font-family: var(--font-body);
+  font-size: var(--hs-text);
+  font-weight: 500;
+  line-height: 1.38;
+  color: rgb(255 255 255 / 0.86);
+  text-wrap: balance;
+}
+
+/* The two calls to action (the owner's choice of 7 Nov 2026): the site's large pills, Explore Our Tours in leaf green
+   and Our Experiences as a glass pill with a white line, right after the services. Staged with opacity only by the
+   entrance, so they are in the tab order throughout: a focused one shows at once */
+.hero-services__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.6rem, 1.1rem + 1.5vw, 2.25rem);
+  text-shadow: none;
+}
+/* On phones, one above the other at the full width: one thumb-sized target each, the same width */
+@container hero-services (max-width: 30rem) {
+  .hero-services__actions {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .hero-services__cta {
+    width: 100%;
+  }
+}
+.hero-services__actions .gt-button--on-dark {
+  --btn-bg: rgb(3 16 32 / 0.42);
+  --btn-border: rgb(255 255 255 / 0.85);
+}
+.home .hero-services__actions:focus-within {
+  opacity: 1 !important;
+}
+
+/* Four in a row once the block is wide enough for them; each title kept to one line (at most 2.7% of the row) */
+@container hero-services (min-width: 32rem) {
+  .hero-services__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .hero-services__item {
+    padding-inline: clamp(0.25rem, 0.6cqi, 0.6rem);
+  }
+  .hero-services__title {
+    font-size: min(var(--hs-title), 2.7cqi);
+  }
+  .hero-services__item + .hero-services__item {
+    border-left: 1px solid;
+    border-image: linear-gradient(180deg, rgb(255 255 255 / 0), rgb(255 255 255 / 0.3) 18% 82%, rgb(255 255 255 / 0)) 1;
+  }
+}
+
+/* Landscape screens with the photograph full bleed (not the wide ones below): the headline on one line in the strip
+   under the sleeping friend's chin (poster y 640: 0.25 H − 100 px of the poster above the hero's foot), where the leaf
+   was; sized to that strip, with a soft shade of its own over the table */
+@media (min-aspect-ratio: 13/10) {
+  .hero-headline {
+    --hl-size: max(1.5rem, min(3.25rem, 5.6svh, calc((0.25 * var(--hs-h) - 100 * var(--hs-s) - 1.6rem) / 1.12)));
+    max-width: 70vw;
+  }
+  .hero-headline__line {
+    display: inline;
+  }
+  .hero-headline__mark {
+    display: inline-block;
+    margin: 0 0 0 0.12em;
+  }
+  .hero-headline::before {
+    content: '';
+    position: absolute;
+    inset: -0.45em -0.7em -0.3em -0.7em;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgb(3 16 32 / 0.5), rgb(3 16 32 / 0.25) 60%, rgb(3 16 32 / 0));
+    pointer-events: none;
+  }
+}
+/* Short landscape screens (phones turned sideways): the hero keeps its left column clear of the sleeping friend (he
+   begins 20% across, styles.css §7); the headline takes it, on two lines */
+@media (min-aspect-ratio: 13/10) and (max-height: 34em) {
+  .hero-headline {
+    --hl-size: min(3.4vw, 2.25rem);
+    left: max(1rem, env(safe-area-inset-left));
+    max-width: calc(18.5vw - 1.5rem);
+  }
+  .hero-headline__line {
+    display: block;
+  }
+  .hero-headline__mark {
+    display: block;
+    margin: 0.08em 0 0;
+  }
+  /* Over the sleeping friend's pale shirt here: a deeper shade and a darker glow around the white words */
+  .hero-headline {
+    text-shadow: 0 1px 2px rgb(3 16 32 / 0.9), 0 0 6px rgb(3 16 32 / 0.85), 0 0 14px rgb(3 16 32 / 0.7), 0 0 28px rgb(3 16 32 / 0.5);
+  }
+  .hero-headline::before {
+    inset: -0.4em -0.5em -0.25em -0.7em;
+    background: radial-gradient(farthest-side, rgb(3 16 32 / 0.8), rgb(3 16 32 / 0.6) 55%, rgb(3 16 32 / 0));
+  }
+}
+
+/* Wide landscape screens (36em tall or more, and wide enough for the faces to leave the stack its room: 3:2 or wider
+   from 90em, 8:5 from 80em, 5:3 from 75em; narrower shapes such as 1200 × 800 keep the layout below): the whole
+   stack at the photograph's bottom left, just above the two calls to action (the owner's request of 7 Nov 2026: "push this block down ... so it sits
+   just above" them), as one group: the headline, the sentence, the four services in a row and the calls to action,
+   on the hero's own gap under its foot (the phone's too) and aligned with the logo. The type is larger than before
+   (the same request), sized from the screen's height so the stack always fits under the header, and capped on very
+   large screens.
+   Where it may reach, in the photograph's own pixels through its crop (poster 1280 × 720, cut --hs-fx from its left and
+   75% from its top): it lies over the sleeping friend at the table, as asked, and never over the four friends above
+   him. The headline and the sentence keep left of the curly-haired friend (poster x 470: --hs-zone), the services and
+   the buttons left of the brunette (poster x 660: --hs-row), and the services' row stays below every chin (the
+   curly-haired friend's, poster y 470, is the lowest of the four; qa/hero-services-shots.mjs measures it) */
+@media (min-aspect-ratio: 3/2) and (min-width: 90em) and (min-height: 36em), (min-aspect-ratio: 8/5) and (min-width: 80em) and (min-height: 36em), (min-aspect-ratio: 5/3) and (min-width: 75em) and (min-height: 36em) {
+  .hero-shell {
+    /* ... and, by shape, the frame is cut --hs-fx from its left (styles.css §7: 50%, 66% from 16:9, 84% from 8:5;
+       test/hero-services.test.mjs keeps the two in step) */
+    --hs-fx: 0.5;
+  }
+  .hero-services {
+    --hs-lead: clamp(1.0625rem, 0.4rem + 1.75svh, 1.625rem);
+    --hs-title: clamp(0.9375rem, 0.4rem + 1.2svh, 1.3125rem);
+    --hs-text: clamp(0.84rem, 0.45rem + 0.85svh, 1.125rem);
+    --hs-icon: clamp(2.125rem, 0.75rem + 3.4svh, 3.25rem);
+    --hs-gap: clamp(0.75rem, 2.2svh, 1.5rem);
+    --hs-zone: min(38rem, calc(470 * var(--hs-s) - (1280 * var(--hs-s) - 100vw) * var(--hs-fx) - var(--hs-left) - 1rem));
+    --hs-row: min(54rem, calc(660 * var(--hs-s) - (1280 * var(--hs-s) - 100vw) * var(--hs-fx) - var(--hs-left) - 1rem));
+    position: absolute;
+    left: var(--hs-left);
+    bottom: var(--hs-inset);
+    width: var(--hs-row);
+    padding: 0;
+    background: none;
+    /* The words over the photograph: white with a tight dark rim and a soft glow; "Start Here!" keeps its own lime
+       ground, the icons and the buttons their own */
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.7), 0 1px 3px rgb(3 16 32 / 0.75), 0 0 12px rgb(3 16 32 / 0.55), 0 0 26px rgb(3 16 32 / 0.35);
+  }
+  /* The shade: navy rising from the hero's bottom-left corner, under the whole stack and a third of its height above
+     it, fading to nothing at its top and right edges, so it never reaches a face of the four; held at 0 by the hero's
+     entrance until the headline rises (hero.js), 1 everywhere else */
+  .hero-services::before {
+    content: '';
+    position: absolute;
+    inset: -34% -2rem calc(-1 * var(--hs-inset)) calc(-1 * var(--hs-left));
+    z-index: -1;
+    background: radial-gradient(farthest-side at 0% 100%, rgb(3 16 32 / 0.62), rgb(3 16 32 / 0.48) 36%, rgb(3 16 32 / 0.22) 66%, rgb(3 16 32 / 0));
+    pointer-events: none;
+    opacity: var(--hs-veil, 1);
+  }
+  /* Before the entrance takes over, the shade waits with the words (styles.css: the same timed fallback) */
+  .cine:not(.intro-ready) .home .hero-services::before {
+    opacity: 0;
+    animation: intro-fallback 1ms linear 2.8s forwards;
+  }
+  .hero-services__intro {
+    max-width: var(--hs-zone);
+  }
+  /* The headline on two lines, large, as in the reference: never wider than the column */
+  .hero-headline {
+    --hl-size: min(calc(var(--hs-zone) / 4.7), clamp(2.5rem, 1rem + 5.2svh, 5rem));
+    position: relative;
+    left: auto;
+    bottom: auto;
+    max-width: none;
+    margin: 0 0 0.26em;
+  }
+  /* Over the bright town, the headline brings its own soft glow: navy under the letters, fading to nothing well before
+     its edges (the corner shade is faint up here); "Good Times" carries a deeper rim than the small lines */
+  .hero-headline {
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.65), 0 2px 4px rgb(3 16 32 / 0.6), 0 0 16px rgb(3 16 32 / 0.55), 0 0 34px rgb(3 16 32 / 0.4);
+  }
+  .hero-headline::before {
+    content: '';
+    position: absolute;
+    inset: -0.5em -1.3em -0.4em -1.5em;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgb(3 16 32 / 0.7), rgb(3 16 32 / 0.56) 46%, rgb(3 16 32 / 0.26) 77%, rgb(3 16 32 / 0));
+    pointer-events: none;
+  }
+  .hero-headline__line {
+    display: block;
+  }
+  .hero-headline__mark {
+    display: block;
+    margin: 0.06em 0 0;
+  }
+  .hero-services__lead {
+    line-height: 1.3;
+  }
+  .hero-services__lead::after {
+    margin-top: 0.6em;
+  }
+  .hero-services__list {
+    max-width: none;
+    margin-top: var(--hs-gap);
+  }
+  .hero-services__title {
+    margin-top: 0.5em;
+  }
+  .hero-services__icon,
+  .hero-headline__mark,
+  .hero-services__actions {
+    text-shadow: none;
+  }
+  /* The small lines: whiter, with a tighter, darker rim around the letters, so each stays crisp over the table */
+  .hero-services__text {
+    margin-top: 0.2em;
+    line-height: 1.34;
+    color: rgb(255 255 255 / 0.95);
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.95), 0 0 4px rgb(3 16 32 / 0.75), 0 1px 3px rgb(3 16 32 / 0.8), 0 0 12px rgb(3 16 32 / 0.6);
+  }
+  .hero-services__actions {
+    margin-top: calc(var(--hs-gap) * 1.2);
+    flex-wrap: nowrap;
+  }
+  /* The buttons grow with the words on large screens (17 px up to 21 px), keeping the pill's proportions */
+  .hero-services__cta {
+    font-size: clamp(1.0625rem, 0.45rem + 1.05svh, 1.3125rem);
+    min-height: max(var(--btn-height-large), 3.05em);
+    padding-inline: 1.65em;
+  }
+  /* Should the row be too narrow for four (under 32rem, two by two and so taller), the services keep to the column */
+  @container hero-services (max-width: 31.99rem) {
+    .hero-services__list {
+      max-width: var(--hs-zone);
+    }
+  }
+}
+@media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 16/9) and (min-width: 75em) and (min-height: 36em) {
+  .hero-shell {
+    --hs-fx: 0.66;
+  }
+}
+@media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 8/5) and (min-width: 75em) and (min-height: 36em) {
+  .hero-shell {
+    --hs-fx: 0.84;
+  }
+}
+
+@media (forced-colors: active) {
+  .hero-services__icon {
+    border: 1px solid CanvasText;
+  }
+}
+@media print {
+  .hero-services {
+    position: static;
+    color: var(--ink);
+    background: none;
+  }
+  .hero-headline {
+    position: static;
+    color: var(--ink);
+  }
+  .hero-services::before,
+  .hero-headline::before,
+  .hero-headline__swash,
+  .hero-services__brush {
+    display: none;
+  }
+}

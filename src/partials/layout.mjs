@@ -1,8 +1,9 @@
-import { esc, icon, brandMark, button, coinButton, contactList, waHref, telHref, SIGNATURE_CTA, SIGNATURE_ATTRS, signatureDesc } from './ui.mjs';
+import { esc, icon, brandMark, button, coinButton, contactList, waHref, telHref, SIGNATURE_CTA, SIGNATURE_ATTRS, signatureDesc, leafDefs } from './ui.mjs';
 import { conciergeTrigger, conciergePanel, drawerServices } from './living-cape.mjs';
 import { aircraftDock, aircraftFlight, dockBox } from './aircraft.mjs';
 import { tours } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
+import { termsPublished } from '../pages/terms.mjs';
 
 /**
  * LINK_STYLE=files writes explicit `index.html` hrefs (for hosts or file://
@@ -84,7 +85,7 @@ export function layout(page, site) {
 /**
  * Phones and tablets (below 64em): once a direct line is verified, every page gets a
  * bar with two equal buttons, WhatsApp (or Call, while WhatsApp is unconfirmed) and the
- * signature Make It Yours (tour and package pages keep their prefilled booking link). On the
+ * signature Plan My Day (tour and package pages keep their prefilled booking link). On the
  * booking page itself the second button calls instead of linking to the page you are on.
  */
 function contactBar(page, site) {
@@ -209,15 +210,14 @@ ${site.analytics.cloudflareToken ? `<meta name="gt-analytics" content="${esc(sit
 <meta property="og:image" content="${site.url}/${og}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(page.ogAlt || 'The Good Times in Cape Town logo: Table Mountain, a dotted flight path and the words Make unforgettable memories in the Mother City')}">
+<meta property="og:image:alt" content="${esc(page.ogAlt || `The Good Times in Cape Town logo, Table Mountain and a dotted flight path over the name, and beneath it: ${site.statement}`)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon-180.png">
 <link rel="manifest" href="assets/brand/site.webmanifest">
-<link rel="preload" href="assets/fonts/PlusJakartaSans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin>
-${page.path === 'index.html' ? '<link rel="preload" href="assets/fonts/PlusJakartaSans-Italic.woff2" as="font" type="font/woff2" crossorigin>' : ''}
+<link rel="preload" href="assets/fonts/BricolageGrotesque.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/DMSans.woff2" as="font" type="font/woff2" crossorigin>
 ${(page.preload || []).filter(Boolean).map((p) => `<link rel="preload" as="image" href="${p.href}" type="${p.type}" imagesrcset="${p.srcset}" imagesizes="${p.sizes}"${p.media ? ` media="${p.media}"` : ''} fetchpriority="high">`).join('\n')}
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/styles.css">
@@ -229,23 +229,27 @@ ${(page.styles || []).map((s) => `<link rel="stylesheet" href="${s}">`).join('\n
 </head>
 <body class="${bodyClass}">
 <a class="skip-link" href="#main">Skip to content</a>
+${leafDefs()}
 ${consentBanner()}
 ${signatureDesc()}
 ${site.preview ? `<div class="preview-bar" data-preview-bar role="note"><div class="container preview-bar__inner">${icon('info')}<span>Staging preview, not yet live.${site.enquiry.mode === 'live' ? ' Test booking requests are delivered to the configured inbox.' : ' Booking requests made here are not sent.'}</span>${flight ? '<button type="button" class="preview-bar__replay" data-intro-replay hidden>Replay the intro</button>' : ''}</div></div>` : ''}
 <header class="site-header${overlay ? ' site-header--overlay' : ''}" data-header${overlay ? ' data-condense-at="40"' : ''}>
   <div class="container header-bar">
-    <a class="brand" href="./" aria-label="${esc(site.name)}, home" data-intro${flight ? ` style="${dockBox().style}"` : ''}>
-      <img class="brand__logo brand__logo--ink" src="assets/brand/gt-logo-compact.svg" alt="" width="2121" height="564">
-      ${overlay ? `<img class="brand__logo brand__logo--gold" src="assets/brand/gt-logo-reversed-compact.svg" alt="" width="2121" height="564">` : ''}
-      ${flight ? aircraftDock() : ''}
-    </a>
+    <div class="brand-lockup">
+      <a class="brand" href="./" aria-label="${esc(site.name)}, home" data-intro${flight ? ` style="${dockBox().style}"` : ''}>
+        <img class="brand__logo brand__logo--ink" src="assets/brand/gt-logo-compact.svg" alt="" width="2121" height="564">
+        ${overlay ? `<img class="brand__logo brand__logo--gold" src="assets/brand/gt-logo-reversed-compact.svg" alt="" width="2121" height="564">` : ''}
+        ${flight ? aircraftDock() : ''}
+      </a>
+      <p class="brand-lockup__statement" data-intro data-statement>${esc(site.statement)}</p>
+    </div>
     <nav class="primary-nav" aria-label="Primary">
       <ul>
         ${site.nav.map((n) => `<li><a href="${n.href}"${current(n.href)} data-intro>${esc(n.label)}</a></li>`).join('\n        ')}
       </ul>
     </nav>
     ${conciergeTrigger()}
-    ${coinButton({ href: bookHref, cls: 'header-cta', attrs: 'data-intro' })}
+    ${coinButton({ href: bookHref, cls: 'header-cta', attrs: 'data-intro', owner: overlay ? 'intro' : '' })}
     <button class="nav-toggle" type="button" data-nav-toggle aria-controls="drawer" aria-expanded="false">
       <span class="visually-hidden">Menu</span>
       ${icon('menu')}${icon('close')}
@@ -277,7 +281,10 @@ ${main}
 <footer class="site-footer on-dark">
   <div class="container footer-main">
     <div class="footer-brand">
-      <img src="assets/brand/gt-logo-reversed.svg" alt="${esc(site.name)}: ${esc(site.logoTagline)}" width="2121" height="741" loading="lazy" decoding="async">
+      <div class="brand-lockup brand-lockup--footer">
+        <img src="assets/brand/gt-logo-reversed-compact.svg" alt="${esc(site.name)}" width="2121" height="564" loading="lazy" decoding="async">
+        <p class="brand-lockup__statement">${esc(site.statement)}</p>
+      </div>
       <p>Private, guide-led tours of Cape Town and the Western Cape since ${site.founded}, founded by ${esc(site.founder)}.</p>
       <div class="footer-contact mt-5">
         ${contacts}
@@ -317,7 +324,7 @@ ${main}
       <h2 class="footer-heading" id="footer-legal">Legal</h2>
       <ul class="footer-links">
         <li><a href="privacy/">Privacy</a></li>
-        ${site.preview || site.legal.termsApproved ? '<li><a href="terms/">Terms &amp; Conditions</a></li>' : ''}
+        ${termsPublished(site) ? '<li><a href="terms/">Terms &amp; Conditions</a></li>' : ''}
         <li><a href="privacy/#credits">Photo credits</a></li>
         <li data-consent-settings hidden><button type="button" class="footer-links__button" data-consent-open>Analytics settings</button></li>
       </ul>
@@ -333,6 +340,7 @@ ${bar}
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/consent.js" defer></script>
 <script src="assets/js/vendor/gsap.min.js" defer></script>
+<script src="assets/js/leaf.js" defer></script>
 <script src="assets/js/concierge.js" defer></script>
 ${scripts.map((s) => (typeof s === 'string' ? `<script src="${s}" defer></script>` : `<script type="module" src="${s.module}"></script>`)).join('\n')}
 </body>

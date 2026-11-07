@@ -9,6 +9,10 @@
      line and the text follow. A small difference in drift gives the pair depth.
    - The Quiet Moment (destinations): the plate opens from a soft inset and settles; a slight drift.
    - About's coast and penguins use the Reveal's choreography: the coast first, then the penguins, then the caption.
+   - The Portrait (About › Meet our team, design/motion-bible.md §11): the team photograph opens from a clean, rounded
+     inset (its corners easing from soft to the frame's own) and settles from 1.06; then the eyebrow, the name and
+     the words in a restrained stagger, and the caption. Opacity, not visibility: the words stay in the
+     accessibility tree before they are revealed.
    Phones keep the entrances with less travel and no landscape drift. Nothing is pinned or snapped.
 
    Initial states are set here, never in CSS: without GSAP, with reduced motion or ?nomotion (no html.cine)
@@ -34,7 +38,10 @@
     tl.eventCallback('onComplete', function () {
       gsap.set(masks, { clearProps: 'clipPath' });
     });
-    ST.create({ trigger: trigger, start: start || 'top 72%', once: true, onEnter: function () { tl.play(); } });
+    start = start || 'top 72%';
+    ST.create({ trigger: trigger, start: start, once: true, onEnter: function () { tl.play(); } });
+    // Rebuilt after the visitor has passed it (gsap.matchMedia after a resize, a restored scroll): play at once
+    if (trigger.getBoundingClientRect().top < (window.innerHeight * parseFloat(start.split(' ')[1])) / 100) tl.play();
   };
   // A scroll-linked drift: transforms only, scrubbed with a little smoothing
   var drift = function (target, trigger, from, to) {
@@ -89,6 +96,22 @@
         drift(a.querySelector('picture'), s, { yPercent: -3 }, { yPercent: 3 });
         drift(panes[1], s, { y: 30 }, { y: -30 });
       }
+    },
+
+    portrait: function (s, wide) {
+      var frame = s.querySelector('[data-taste-frame]');
+      var words = s.querySelector('[data-taste-words]');
+      var caption = s.querySelector('[data-taste-caption]');
+      if (!frame) return;
+      var pic = frame.querySelector('picture');
+      var r = parseFloat(getComputedStyle(frame).borderTopLeftRadius) || 14;
+      var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+      tl.fromTo(frame, { clipPath: 'inset(9% 11% 9% 11% round ' + r * 3 + 'px)' }, { clipPath: 'inset(0% 0% 0% 0% round ' + r + 'px)', duration: 1.15, ease: 'power3.out' }, 0)
+        .fromTo(pic, { scale: 1.06 }, { scale: 1, duration: 1.3 }, 0);
+      if (words) tl.fromTo(words.children, { y: wide ? 18 : 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, clearProps: 'opacity,transform' }, 0.5);
+      if (caption) tl.fromTo(caption, { opacity: 0 }, { opacity: 1, duration: 0.5, clearProps: 'opacity' }, 1.0);
+      once(s, tl, null, [frame]);
+      if (wide) drift(pic, s, { yPercent: -2.5 }, { yPercent: 2.5 });
     },
 
     quiet: function (s, wide) {

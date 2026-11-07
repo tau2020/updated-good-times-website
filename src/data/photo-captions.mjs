@@ -22,7 +22,6 @@ export const CAPTIONS = {
   'marine-dynamics-boat': { title: 'Out to shark territory', place: 'Gansbaai' },
   'company-garden-squirrel': { title: 'A white squirrel', place: 'The Company’s Garden' },
   'winelands-host-pouring': { title: 'A tasting outdoors', place: 'A Winelands estate' },
-  'fairview-goat-tower': { title: 'The goat tower', place: 'Fairview' },
   'mandela-statue-drakenstein': { title: 'The statue of Nelson Mandela', place: 'Drakenstein Correctional Centre' },
   'winelands-terrace': { title: 'A terrace tasting', place: 'A Winelands estate' },
   'winelands-cape-dutch-group': { title: 'A Cape Dutch manor house', place: 'A Winelands estate' },

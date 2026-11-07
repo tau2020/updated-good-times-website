@@ -2,8 +2,9 @@
  * Direct contact as rendered by the layout on every page: nothing appears
  * until a channel is verified in src/data/site.mjs; once it is, the mobile
  * contact bar, the footer, the concierge panel and the enquiry page show it.
- * Good Times publishes one number (for calls; WhatsApp is not yet confirmed)
- * and one address, info@goodtimesincapetown.co.za.
+ * Good Times publishes one number, for calls and (confirmed on 7 Nov 2026) WhatsApp;
+ * its primary address is hello@goodtimesincapetown.co.za, with
+ * stuart@goodtimesincapetown.co.za as an additional one on the contact page.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -65,7 +66,7 @@ test('verified: no page’s header carries contact links; the number’s WhatsAp
   assert.match(footer, new RegExp(`<a class="contact-action" href="tel:\\${c.phone.e164}"><span class="brand-mark brand-mark--phone"`));
 });
 
-test('verified WhatsApp: every page gets a WhatsApp + Make It Yours bar; tour pages keep the prefilled link; the booking page calls instead', () => {
+test('verified WhatsApp: every page gets a WhatsApp + Plan My Day bar; tour pages keep the prefilled link; the booking page calls instead', () => {
   const s = variant({ preview: false, contact: set(all) });
   for (const p of pages) {
     const html = layout(p, s);
@@ -73,17 +74,17 @@ test('verified WhatsApp: every page gets a WhatsApp + Make It Yours bar; tour pa
     assert.ok(bar, `${p.path}: contact bar`);
     assert.match(html, /<body class="[^"]*\bhas-mobile-cta\b/, `${p.path}: footer clears the bar`);
     assert.match(bar, new RegExp(`href="https://wa\\.me/${digits}"[^>]*>.*WhatsApp`), `${p.path}: WhatsApp button`);
-    assert.equal((bar.match(/class="btn /g) || []).length, 2, `${p.path}: two buttons`);
+    assert.equal((bar.match(/class="(?:btn |leaf-btn[" ])/g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the leaf)`);
     assert.doesNotMatch(html, /data-mobile-cta[ >]/, `${p.path}: one bar only`);
     if (p.path === 'enquire/index.html') {
       assert.match(bar, /href="tel:/, 'enquiry page: Call');
       assert.doesNotMatch(bar, /href="[^"]*enquire\//, 'enquiry page: no link to itself');
     } else if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled tour booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
     } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled package booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
     } else {
-      assert.match(bar, /href="[^"]*enquire\/"[^>]*><span>Make It Yours<\/span>/, `${p.path}: Make It Yours`);
+      assert.match(bar, /href="[^"]*enquire\/"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: Plan My Day`);
     }
   }
 });
@@ -146,7 +147,7 @@ test('verified: the mobile menu lists each number once, with WhatsApp opening in
   assert.match(drawer, new RegExp(`href="https://wa\\.me/${digits}" rel="noopener" target="_blank"`));
 });
 
-test('only the phone verified (Good Times today): every page gets a Call + Make It Yours bar, tour pages prefilled; the booking page a single Call; no WhatsApp anywhere', () => {
+test('only the phone verified (Good Times until 7 Nov 2026): every page gets a Call + Plan My Day bar, tour pages prefilled; the booking page a single Call; no WhatsApp anywhere', () => {
   const s = variant({ preview: false, contact: set({ phone: { ...c.phone, verified: true } }) });
   for (const p of pages) {
     const html = layout(p, s);
@@ -160,13 +161,13 @@ test('only the phone verified (Good Times today): every page gets a Call + Make 
       assert.equal((bar.match(/class="btn /g) || []).length, 1, 'enquiry page: Call alone');
       assert.doesNotMatch(bar, /href="[^"]*enquire\//, 'enquiry page: no link to itself');
     } else {
-      assert.equal((bar.match(/class="btn /g) || []).length, 2, `${p.path}: two buttons`);
+      assert.equal((bar.match(/class="(?:btn |leaf-btn[" ])/g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the leaf)`);
       if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled tour booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
       } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled package booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
       } else {
-        assert.match(bar, /><span>Make It Yours<\/span>/, `${p.path}: Make It Yours`);
+        assert.match(bar, /<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: Plan My Day`);
       }
     }
   }
@@ -175,31 +176,41 @@ test('only the phone verified (Good Times today): every page gets a Call + Make 
   assert.match(footer, new RegExp(`href="tel:\\${c.phone.e164}"`));
 });
 
-test('the published contacts (goodtimesincapetown.co.za, 5 Nov 2026): one number for calls, WhatsApp unconfirmed, info@ for email; a second address shows only once verified', () => {
+test('the contacts: the published number for calls (5 Nov 2026) and WhatsApp (confirmed 7 Nov 2026); hello@ the primary address and stuart@ the additional one (Good Times, 6 Nov 2026)', () => {
   assert.equal(c.phone.e164, '+27723768432');
   assert.equal(c.phone.display, '+27 72 376 8432');
   assert.equal(c.phone.verified, true);
-  assert.equal(c.whatsapp.e164, c.phone.e164, 'the same number, if it takes WhatsApp');
-  assert.equal(c.whatsapp.verified, false, 'WhatsApp waits for Good Times to confirm it');
-  assert.equal(c.email.address, 'info@goodtimesincapetown.co.za');
+  assert.equal(c.whatsapp.e164, c.phone.e164, 'the same number takes WhatsApp');
+  assert.equal(c.whatsapp.verified, true, 'Good Times confirmed it on 7 Nov 2026');
+  assert.equal(c.email.address, 'hello@goodtimesincapetown.co.za');
   assert.equal(c.email.verified, true);
-  assert.equal(c.emailGeneral.verified, false, 'no second address is published');
-  // The site as configured, in production: the call and the address, and nothing unconfirmed.
+  assert.equal(c.emailGeneral.address, 'stuart@goodtimesincapetown.co.za');
+  assert.equal(c.emailGeneral.verified, true);
+  // The site as configured, in production: the number once, as "Phone and WhatsApp", with its two actions, and the
+  // primary address
   const live = variant({ preview: false, contact: c });
   const footer = section(render('index.html', live), '<footer', '</footer>');
-  assert.match(footer, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:info@goodtimesincapetown\.co\.za">/);
+  assert.match(footer, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:hello@goodtimesincapetown\.co\.za">/);
   assert.match(footer, new RegExp(`href="tel:\\${c.phone.e164}"`));
-  assert.doesNotMatch(footer, /wa\.me/);
-  // Two verified addresses: each with its own label, the primary first; one alone is plain "Email".
+  assert.match(footer, /<span class="contact-list__label">Phone and WhatsApp<\/span>/);
+  assert.match(footer, new RegExp(`<a class="contact-action" href="https://wa\\.me/${digits}"`));
+  // The former address is gone everywhere; the additional one is on the contact page only.
+  for (const p of pages) {
+    const html = layout(p, live);
+    assert.doesNotMatch(html, /info@/, `${p.path}: no info@ left`);
+    if (p.path !== 'contact/index.html') assert.doesNotMatch(html, /stuart@/, `${p.path}: the additional address belongs to the contact section`);
+  }
+  // The contact section: both addresses, each with its own label, the primary first.
+  const direct = section(render('contact/index.html', live), '<h2>Phone, email and our office</h2>', '<h3>');
+  assert.match(direct, /<span class="contact-list__label">Email us<\/span>\s*<a class="contact-list__value" href="mailto:hello@goodtimesincapetown\.co\.za">/);
+  assert.match(direct, /<span class="contact-list__label">Email Stuart<\/span>\s*<a class="contact-list__value" href="mailto:stuart@goodtimesincapetown\.co\.za">/);
+  assert.ok(direct.indexOf('mailto:hello@') < direct.indexOf('mailto:stuart@'), 'the primary address first');
+  // Should the primary address ever be withdrawn, the additional one stands in everywhere, as plain "Email".
   const second = { address: 'second@example.com', label: 'Bookings', verified: true };
-  const both = section(render('index.html', variant({ preview: false, contact: { ...c, emailGeneral: second } })), '<footer', '</footer>');
-  assert.match(both, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:info@goodtimesincapetown\.co\.za">/);
-  assert.match(both, /<span class="contact-list__label">Bookings<\/span>\s*<a class="contact-list__value" href="mailto:second@example\.com">/);
-  assert.ok(both.indexOf('mailto:info@') < both.indexOf('mailto:second@'), 'the primary address first');
   const one = variant({ preview: false, contact: set({ emailGeneral: second }) });
   const single = section(render('index.html', one), '<footer', '</footer>');
   assert.match(single, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:second@example\.com">/);
-  assert.doesNotMatch(single, /info@/, 'only the verified address');
+  assert.doesNotMatch(single, /hello@/, 'only the verified address');
   // Nowhere is an unconfirmed channel announced as pending
   for (const p of pages) assert.doesNotMatch(layout(p, variant()), /awaiting confirmation|appear here once/, p.path);
 });

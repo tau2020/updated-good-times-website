@@ -1,0 +1,2244 @@
+{
+  "2560x1440": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0001,
+      "viewport": {
+        "w": 2560,
+        "h": 1440
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 2560,
+        "h": 1408
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 2560,
+        "h": 113
+      },
+      "headline": {
+        "x": 149.02914428710938,
+        "y": 803.5816650390625,
+        "w": 612.356201171875,
+        "h": 190.2308349609375
+      },
+      "phone": {
+        "x": 2304,
+        "y": 950.5625,
+        "w": 224,
+        "h": 461.4375
+      },
+      "services": {
+        "x": 153.59375,
+        "y": 819.4375,
+        "w": 864,
+        "h": 592.5625
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 149.02914428710938,
+          "y": 803.5816650390625,
+          "w": 612.356201171875,
+          "h": 190.2308349609375
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 153.59375,
+          "y": 1014.609375,
+          "w": 544,
+          "h": 117.984375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 153.59375,
+          "y": 1156.59375,
+          "w": 216,
+          "h": 162.5625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 369.59375,
+          "y": 1156.59375,
+          "w": 216,
+          "h": 162.5625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 585.59375,
+          "y": 1156.59375,
+          "w": 216,
+          "h": 162.5625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 801.59375,
+          "y": 1156.59375,
+          "w": 216,
+          "h": 162.5625
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 153.59375,
+          "y": 1347.953125,
+          "w": 864,
+          "h": 64.046875
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 524,
+          "y": 888,
+          "w": 576,
+          "h": 400
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 940,
+          "y": 458,
+          "w": 400,
+          "h": 490
+        },
+        {
+          "name": "brunette",
+          "x": 1320,
+          "y": 608,
+          "w": 360,
+          "h": 440
+        },
+        {
+          "name": "tall friend",
+          "x": 1560,
+          "y": 258,
+          "w": 330,
+          "h": 430
+        },
+        {
+          "name": "blonde friend",
+          "x": 1740,
+          "y": 538,
+          "w": 360,
+          "h": 500
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [
+        "hero-headline",
+        "hero-services__lead",
+        "hero-services__item"
+      ],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 4.4,
+          "contrastMedian": 11
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 3.3,
+          "contrastMedian": 4.5
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 4.7,
+          "contrastMedian": 5.8
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 5.4,
+          "contrastMedian": 8.5
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 10.4,
+          "contrastMedian": 11.5
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 7,
+          "contrastMedian": 8.5
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 7,
+          "contrastMedian": 14
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 11.5,
+          "contrastMedian": 17.7
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 9.9,
+          "contrastMedian": 18.1
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 6.2,
+          "contrastMedian": 12
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 5.4,
+          "contrastMedian": 13.6
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 3.9,
+          "contrastMedian": 6.7
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 6.7,
+          "contrastMedian": 13.2
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 6.5,
+          "contrastMedian": 11.7
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 12.8,
+          "contrastMedian": 16
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 8.1,
+          "contrastMedian": 11.5
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 9.4,
+          "contrastMedian": 17.7
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 12.9,
+          "contrastMedian": 19.2
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 14,
+          "contrastMedian": 19.3
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 7.1,
+          "contrastMedian": 16.2
+        }
+      ]
+    }
+  },
+  "1680x1050": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0004,
+      "viewport": {
+        "w": 1680,
+        "h": 1050
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1680,
+        "h": 1018
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1680,
+        "h": 113
+      },
+      "headline": {
+        "x": 96.76930236816406,
+        "y": 478.9281921386719,
+        "w": 442.58038330078125,
+        "h": 165.29055786132812
+      },
+      "phone": {
+        "x": 1427.609375,
+        "y": 567.015625,
+        "w": 224,
+        "h": 461.4375
+      },
+      "services": {
+        "x": 100.796875,
+        "y": 490.359375,
+        "w": 707.34375,
+        "h": 538.09375
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 96.76930236816406,
+          "y": 478.9281921386719,
+          "w": 442.58038330078125,
+          "h": 165.29055786132812
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 100.796875,
+          "y": 662.5625,
+          "w": 438.703125,
+          "h": 112.46875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 100.796875,
+          "y": 798.125,
+          "w": 176.828125,
+          "h": 147.03125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 277.625,
+          "y": 798.125,
+          "w": 176.84375,
+          "h": 147.03125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 454.46875,
+          "y": 798.125,
+          "w": 176.828125,
+          "h": 147.03125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 631.296875,
+          "y": 798.125,
+          "w": 176.84375,
+          "h": 147.03125
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 100.796875,
+          "y": 972.875,
+          "w": 707.34375,
+          "h": 55.578125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 261.42555555555555,
+          "y": 654.1111111111111,
+          "w": 407.20000000000005,
+          "h": 282.77777777777777
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 555.5144444444445,
+          "y": 350.1249999999999,
+          "w": 282.77777777777777,
+          "h": 346.40277777777777
+        },
+        {
+          "name": "brunette",
+          "x": 824.1533333333334,
+          "y": 456.16666666666663,
+          "w": 254.50000000000003,
+          "h": 311.0555555555556
+        },
+        {
+          "name": "tall friend",
+          "x": 993.8200000000002,
+          "y": 208.73611111111103,
+          "w": 233.29166666666669,
+          "h": 303.98611111111114
+        },
+        {
+          "name": "blonde friend",
+          "x": 1121.0700000000002,
+          "y": 406.68055555555554,
+          "w": 254.50000000000003,
+          "h": 353.47222222222223
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [
+        "hero-services__lead",
+        "hero-services__item"
+      ],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 2.9,
+          "contrastMedian": 7.3
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 3.8,
+          "contrastMedian": 7.7
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 5.5,
+          "contrastMedian": 5.8
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 9.5,
+          "contrastMedian": 12.6
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 10.4,
+          "contrastMedian": 16.1
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 9.3,
+          "contrastMedian": 17.8
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 9,
+          "contrastMedian": 14.9
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 9.5,
+          "contrastMedian": 18.4
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 4.1,
+          "contrastMedian": 5.9
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 3.4,
+          "contrastMedian": 5.6
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3.1,
+          "contrastMedian": 9.8
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 4.8,
+          "contrastMedian": 11.9
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 7.2,
+          "contrastMedian": 12.9
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 11.7,
+          "contrastMedian": 15.2
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 14.8,
+          "contrastMedian": 18.6
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 11.4,
+          "contrastMedian": 19.1
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 13.7,
+          "contrastMedian": 18.4
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 12.4,
+          "contrastMedian": 19.4
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 5.4,
+          "contrastMedian": 14.5
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 4.2,
+          "contrastMedian": 11.8
+        }
+      ]
+    }
+  },
+  "1536x864": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0006,
+      "viewport": {
+        "w": 1536,
+        "h": 864
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1536,
+        "h": 832
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1536,
+        "h": 113
+      },
+      "headline": {
+        "x": 88.68084716796875,
+        "y": 363.5195617675781,
+        "w": 459.1473388671875,
+        "h": 144.65231323242188
+      },
+      "phone": {
+        "x": 1294.734375,
+        "y": 403.03125,
+        "w": 215.03125,
+        "h": 442.953125
+      },
+      "services": {
+        "x": 92.15625,
+        "y": 375.40625,
+        "w": 683.828125,
+        "h": 470.578125
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 88.68084716796875,
+          "y": 363.5195617675781,
+          "w": 459.1473388671875,
+          "h": 144.65231323242188
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 92.15625,
+          "y": 524,
+          "w": 455.828125,
+          "h": 97.8125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 92.15625,
+          "y": 640.8125,
+          "w": 170.953125,
+          "h": 130.375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 263.109375,
+          "y": 640.8125,
+          "w": 170.953125,
+          "h": 130.375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 434.0625,
+          "y": 640.8125,
+          "w": 170.953125,
+          "h": 130.375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 605.015625,
+          "y": 640.8125,
+          "w": 170.96875,
+          "h": 130.375
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 92.15625,
+          "y": 793.984375,
+          "w": 683.828125,
+          "h": 52
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 314.4,
+          "y": 536,
+          "w": 345.59999999999997,
+          "h": 240
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 564,
+          "y": 278,
+          "w": 240,
+          "h": 294
+        },
+        {
+          "name": "brunette",
+          "x": 792,
+          "y": 368,
+          "w": 216,
+          "h": 264
+        },
+        {
+          "name": "tall friend",
+          "x": 936,
+          "y": 158,
+          "w": 198,
+          "h": 258
+        },
+        {
+          "name": "blonde friend",
+          "x": 1044,
+          "y": 326,
+          "w": 216,
+          "h": 300
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [
+        "hero-services__lead",
+        "hero-services__item"
+      ],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3.1,
+          "contrastMedian": 6.8
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 3.5,
+          "contrastMedian": 6.1
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 4.5,
+          "contrastMedian": 6
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 4.9,
+          "contrastMedian": 6.5
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 5.6,
+          "contrastMedian": 15.7
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 5.9,
+          "contrastMedian": 15.2
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 7.7,
+          "contrastMedian": 13.6
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 8.2,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 3.8,
+          "contrastMedian": 10.4
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 3.6,
+          "contrastMedian": 6.8
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3.4,
+          "contrastMedian": 8
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 4.3,
+          "contrastMedian": 10.8
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 7.1,
+          "contrastMedian": 12
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 5.8,
+          "contrastMedian": 12.7
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 11.5,
+          "contrastMedian": 18.8
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 8.9,
+          "contrastMedian": 17.8
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 11.4,
+          "contrastMedian": 17.9
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 10.7,
+          "contrastMedian": 18.6
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 6.4,
+          "contrastMedian": 15.9
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 4.3,
+          "contrastMedian": 13.4
+        }
+      ]
+    }
+  },
+  "1470x956": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.005,
+      "viewport": {
+        "w": 1470,
+        "h": 956
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1470,
+        "h": 924
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1470,
+        "h": 113
+      },
+      "headline": {
+        "x": 84.43846893310547,
+        "y": 427.08135986328125,
+        "w": 357.54962158203125,
+        "h": 152.43426513671875
+      },
+      "phone": {
+        "x": 1238.953125,
+        "y": 512.3125,
+        "w": 205.796875,
+        "h": 423.9375
+      },
+      "services": {
+        "x": 88.1875,
+        "y": 436.296875,
+        "w": 597.75,
+        "h": 499.953125
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 84.43846893310547,
+          "y": 427.08135986328125,
+          "w": 357.54962158203125,
+          "h": 152.43426513671875
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 88.1875,
+          "y": 596.59375,
+          "w": 353.921875,
+          "h": 105.0625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 88.1875,
+          "y": 722.6875,
+          "w": 149.4375,
+          "h": 135.765625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 237.625,
+          "y": 722.6875,
+          "w": 149.4375,
+          "h": 135.765625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 387.0625,
+          "y": 722.6875,
+          "w": 149.4375,
+          "h": 135.765625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 536.5,
+          "y": 722.6875,
+          "w": 149.4375,
+          "h": 135.765625
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 88.1875,
+          "y": 883.6875,
+          "w": 597.75,
+          "h": 52.5625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 191.1933333333333,
+          "y": 596.6666666666666,
+          "w": 369.6,
+          "h": 256.6666666666667
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 458.12666666666667,
+          "y": 320.7499999999999,
+          "w": 256.6666666666667,
+          "h": 314.4166666666667
+        },
+        {
+          "name": "brunette",
+          "x": 701.96,
+          "y": 417,
+          "w": 231.00000000000003,
+          "h": 282.33333333333337
+        },
+        {
+          "name": "tall friend",
+          "x": 855.96,
+          "y": 192.4166666666666,
+          "w": 211.75000000000003,
+          "h": 275.9166666666667
+        },
+        {
+          "name": "blonde friend",
+          "x": 971.4599999999999,
+          "y": 372.08333333333326,
+          "w": 231.00000000000003,
+          "h": 320.83333333333337
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [
+        "hero-services__lead",
+        "hero-services__item"
+      ],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3,
+          "contrastMedian": 7.1
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 4.1,
+          "contrastMedian": 10.3
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 5.7,
+          "contrastMedian": 6.2
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 9.5,
+          "contrastMedian": 12.8
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 12.2,
+          "contrastMedian": 17.3
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 9.2,
+          "contrastMedian": 16.8
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 8.3,
+          "contrastMedian": 14.5
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 9.7,
+          "contrastMedian": 18.1
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 4.1,
+          "contrastMedian": 6.2
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 3.4,
+          "contrastMedian": 5.2
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3.3,
+          "contrastMedian": 9.6
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 5.4,
+          "contrastMedian": 14.3
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 7.5,
+          "contrastMedian": 13.3
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 10.9,
+          "contrastMedian": 14.9
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 15.1,
+          "contrastMedian": 19.1
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 12.1,
+          "contrastMedian": 18.8
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 13.6,
+          "contrastMedian": 18.2
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 11.9,
+          "contrastMedian": 19.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 5.7,
+          "contrastMedian": 14
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 4.4,
+          "contrastMedian": 11.6
+        }
+      ]
+    }
+  },
+  "1280x800": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0036,
+      "viewport": {
+        "w": 1280,
+        "h": 800
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1280,
+        "h": 768
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1280,
+        "h": 113
+      },
+      "headline": {
+        "x": 73.51084899902344,
+        "y": 328.1942138671875,
+        "w": 340.01434326171875,
+        "h": 134.3057861328125
+      },
+      "phone": {
+        "x": 1078.421875,
+        "y": 414.078125,
+        "w": 179.1875,
+        "h": 369.125
+      },
+      "services": {
+        "x": 76.796875,
+        "y": 336.96875,
+        "w": 539.515625,
+        "h": 446.234375
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 73.51084899902344,
+          "y": 328.1942138671875,
+          "w": 340.01434326171875,
+          "h": 134.3057861328125
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 76.796875,
+          "y": 477.46875,
+          "w": 336.84375,
+          "h": 92.78125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 76.796875,
+          "y": 587.84375,
+          "w": 134.875,
+          "h": 122.25
+        },
+        {
+          "el": "hero-services__item",
+          "x": 211.671875,
+          "y": 587.84375,
+          "w": 134.875,
+          "h": 122.25
+        },
+        {
+          "el": "hero-services__item",
+          "x": 346.546875,
+          "y": 587.84375,
+          "w": 134.875,
+          "h": 122.25
+        },
+        {
+          "el": "hero-services__item",
+          "x": 481.421875,
+          "y": 587.84375,
+          "w": 134.890625,
+          "h": 122.25
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 76.796875,
+          "y": 731.203125,
+          "w": 539.515625,
+          "h": 52
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 207.7866666666667,
+          "y": 501.3333333333333,
+          "w": 307.2,
+          "h": 213.33333333333334
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 429.65333333333336,
+          "y": 272,
+          "w": 213.33333333333334,
+          "h": 261.3333333333333
+        },
+        {
+          "name": "brunette",
+          "x": 632.32,
+          "y": 352,
+          "w": 192,
+          "h": 234.66666666666666
+        },
+        {
+          "name": "tall friend",
+          "x": 760.32,
+          "y": 165.33333333333334,
+          "w": 176,
+          "h": 229.33333333333334
+        },
+        {
+          "name": "blonde friend",
+          "x": 856.32,
+          "y": 314.6666666666667,
+          "w": 192,
+          "h": 266.6666666666667
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [
+        "hero-services__lead",
+        "hero-services__item"
+      ],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3.3,
+          "contrastMedian": 7.2
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 3.9,
+          "contrastMedian": 10.8
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 5.4,
+          "contrastMedian": 5.8
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 5.7,
+          "contrastMedian": 12.2
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 9.7,
+          "contrastMedian": 15.1
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 9.2,
+          "contrastMedian": 17.1
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 8,
+          "contrastMedian": 12.7
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 10.9,
+          "contrastMedian": 18.7
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 3.3,
+          "contrastMedian": 7.5
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 3.6,
+          "contrastMedian": 5.7
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3.5,
+          "contrastMedian": 9.2
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 5.1,
+          "contrastMedian": 14.2
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 7.3,
+          "contrastMedian": 12.4
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 6.9,
+          "contrastMedian": 14
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 13.9,
+          "contrastMedian": 18.4
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 12.9,
+          "contrastMedian": 19.1
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 11.7,
+          "contrastMedian": 17.5
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 13.8,
+          "contrastMedian": 19.5
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 6.1,
+          "contrastMedian": 14.6
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 4.7,
+          "contrastMedian": 12.9
+        }
+      ]
+    }
+  },
+  "1024x768": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0002,
+      "viewport": {
+        "w": 1024,
+        "h": 768
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1024,
+        "h": 736
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1024,
+        "h": 113
+      },
+      "headline": {
+        "x": 60.15483093261719,
+        "y": 692.9937133789062,
+        "w": 376.8883056640625,
+        "h": 58.81878662109375
+      },
+      "phone": {
+        "x": 855.453125,
+        "y": 442.8125,
+        "w": 150,
+        "h": 309
+      },
+      "services": {
+        "x": 0,
+        "y": 768,
+        "w": 1024,
+        "h": 421.15625
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 60.15483093261719,
+          "y": 692.9937133789062,
+          "w": 376.8883056640625,
+          "h": 58.81878662109375
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 61.4375,
+          "y": 804.21875,
+          "w": 544,
+          "h": 78.609375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 61.4375,
+          "y": 904.265625,
+          "w": 184,
+          "h": 145.21875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 245.4375,
+          "y": 904.265625,
+          "w": 184,
+          "h": 145.21875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 429.4375,
+          "y": 904.265625,
+          "w": 184,
+          "h": 145.21875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 613.4375,
+          "y": 904.265625,
+          "w": 184,
+          "h": 145.21875
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 61.4375,
+          "y": 1082.4375,
+          "w": 901.125,
+          "h": 52
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 28.888888888888943,
+          "y": 481.7777777777777,
+          "w": 294.4,
+          "h": 204.44444444444443
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 241.51111111111115,
+          "y": 262,
+          "w": 204.44444444444443,
+          "h": 250.44444444444443
+        },
+        {
+          "name": "brunette",
+          "x": 435.73333333333335,
+          "y": 338.66666666666663,
+          "w": 184,
+          "h": 224.88888888888886
+        },
+        {
+          "name": "tall friend",
+          "x": 558.4,
+          "y": 159.77777777777777,
+          "w": 168.66666666666666,
+          "h": 219.77777777777777
+        },
+        {
+          "name": "blonde friend",
+          "x": 650.4,
+          "y": 302.88888888888886,
+          "w": 184,
+          "h": 255.55555555555554
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [],
+      "placement": "beneath the hero",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 6.1,
+          "contrastMedian": 9.7
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 6.6,
+          "contrastMedian": 11.4
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ]
+    }
+  },
+  "1180x820": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0002,
+      "viewport": {
+        "w": 1180,
+        "h": 820
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1180,
+        "h": 788
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1180,
+        "h": 113
+      },
+      "headline": {
+        "x": 69.42708587646484,
+        "y": 740.0172729492188,
+        "w": 402.3729553222656,
+        "h": 62.81085205078125
+      },
+      "phone": {
+        "x": 993.921875,
+        "y": 462.546875,
+        "w": 165.1875,
+        "h": 340.28125
+      },
+      "services": {
+        "x": 0,
+        "y": 820,
+        "w": 1180,
+        "h": 433.09375
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 69.42708587646484,
+          "y": 740.0172729492188,
+          "w": 402.3729553222656,
+          "h": 62.81085205078125
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 70.796875,
+          "y": 860.265625,
+          "w": 544,
+          "h": 79.953125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 70.796875,
+          "y": 963.21875,
+          "w": 184,
+          "h": 146.578125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 254.796875,
+          "y": 963.21875,
+          "w": 184,
+          "h": 146.578125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 438.796875,
+          "y": 963.21875,
+          "w": 184,
+          "h": 146.578125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 622.796875,
+          "y": 963.21875,
+          "w": 184,
+          "h": 146.578125
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 70.796875,
+          "y": 1145.09375,
+          "w": 1038.40625,
+          "h": 52
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 101.19777777777759,
+          "y": 513.5555555555555,
+          "w": 315.20000000000005,
+          "h": 218.8888888888889
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 328.84222222222206,
+          "y": 278.24999999999994,
+          "w": 218.8888888888889,
+          "h": 268.1388888888889
+        },
+        {
+          "name": "brunette",
+          "x": 536.7866666666665,
+          "y": 360.33333333333326,
+          "w": 197.00000000000003,
+          "h": 240.7777777777778
+        },
+        {
+          "name": "tall friend",
+          "x": 668.1199999999999,
+          "y": 168.8055555555555,
+          "w": 180.58333333333334,
+          "h": 235.30555555555557
+        },
+        {
+          "name": "blonde friend",
+          "x": 766.6199999999999,
+          "y": 322.0277777777777,
+          "w": 197.00000000000003,
+          "h": 273.61111111111114
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [],
+      "placement": "beneath the hero",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 5.7,
+          "contrastMedian": 8.7
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 6.1,
+          "contrastMedian": 10.1
+        },
+        {
+          "i": 1,
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ]
+    }
+  },
+  "932x430": {
+    "label": "extra",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0029,
+      "viewport": {
+        "w": 932,
+        "h": 430
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 932,
+        "h": 398
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 932,
+        "h": 97
+      },
+      "headline": {
+        "x": 14.175793647766113,
+        "y": 344.5624084472656,
+        "w": 145.94667053222656,
+        "h": 73.43759155273438
+      },
+      "phone": {
+        "x": 806.578125,
+        "y": 195.015625,
+        "w": 108.25,
+        "h": 222.984375
+      },
+      "services": {
+        "x": 0,
+        "y": 430,
+        "w": 932,
+        "h": 410.34375
+      },
+      "parts": [
+        {
+          "el": "hero-headline",
+          "x": 14.175793647766113,
+          "y": 344.5624084472656,
+          "w": 145.94667053222656,
+          "h": 73.43759155273438
+        },
+        {
+          "el": "hero-services__lead",
+          "x": 55.90625,
+          "y": 463.828125,
+          "w": 544,
+          "h": 76.8125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 55.90625,
+          "y": 561.15625,
+          "w": 184,
+          "h": 143.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 239.90625,
+          "y": 561.15625,
+          "w": 184,
+          "h": 143.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 423.90625,
+          "y": 561.15625,
+          "w": 184,
+          "h": 143.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 607.90625,
+          "y": 561.15625,
+          "w": 184,
+          "h": 143.65625
+        },
+        {
+          "el": "hero-services__actions",
+          "x": 55.90625,
+          "y": 736.390625,
+          "w": 820.1875,
+          "h": 52
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 190.76875,
+          "y": 282.9375,
+          "w": 209.70000000000002,
+          "h": 145.625
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 342.21875,
+          "y": 126.390625,
+          "w": 145.625,
+          "h": 178.390625
+        },
+        {
+          "name": "brunette",
+          "x": 480.5625,
+          "y": 181,
+          "w": 131.0625,
+          "h": 160.1875
+        },
+        {
+          "name": "tall friend",
+          "x": 567.9375,
+          "y": 53.578125,
+          "w": 120.140625,
+          "h": 156.546875
+        },
+        {
+          "name": "blonde friend",
+          "x": 633.46875,
+          "y": 155.515625,
+          "w": 131.0625,
+          "h": 182.03125
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "overSleepingFriend": [],
+      "placement": "beneath the hero",
+      "clipped": [],
+      "contrast": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 2.8,
+          "contrastMedian": 6.9
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "i": 0,
+          "kind": "hero-headline__line",
+          "text": "Good Times",
+          "contrastP90": 3.5,
+          "contrastMedian": 11.3
+        },
+        {
+          "i": 2,
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 3,
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 4,
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 5,
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 6,
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 7,
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 8,
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "i": 9,
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ]
+    }
+  }
+}

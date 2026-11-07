@@ -98,7 +98,7 @@ function listPage() {
     <div class="banner__content">
       ${breadcrumb(crumbsList)}
       <h1>Multi-day tours</h1>
-      <p class="banner__sub">Private journeys from Cape Town, planned with you.</p>
+      <p class="banner__sub">One day not enough? Take a few.</p>
       <p class="banner__text">Several days with your own guide, east along the Garden Route. Tell us your dates and group, and you’ll receive a plan and a quote.</p>
     </div>
   </div>

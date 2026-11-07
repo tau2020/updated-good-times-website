@@ -1,4 +1,4 @@
-import { esc, icon, brandMark, button, breadcrumb, sectionHead, contactList } from '../partials/ui.mjs';
+import { esc, icon, brandMark, button, leafButton, breadcrumb, sectionHead, contactList } from '../partials/ui.mjs';
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Contact', href: 'contact/' }];
 
@@ -10,13 +10,14 @@ export const page = {
   priority: 0.7,
   breadcrumbs: crumbs,
   body: ({ site }) => {
-    const direct = contactList(site);
+    // The contact section also lists the additional address (Stuart's, 6 Nov 2026) after the primary one
+    const direct = contactList(site, { additional: true });
     return `
 <section class="page-head">
   <div class="container">
     ${breadcrumb(crumbs)}
     <p class="eyebrow">Contact</p>
-    <h1>Get in touch</h1>
+    <h1>Let’s talk Cape Town.</h1>
     <p class="lead">Call us, send an email, drop by our office in Sea Point, or start a booking request: tell us the tour or transfer, your dates and your group, and we’ll reply with availability and a quote.</p>
   </div>
 </section>
@@ -28,8 +29,8 @@ export const page = {
       <h2>Send a booking request</h2>
       <p>We’ll confirm availability and your price by email, WhatsApp or phone before anything is booked.</p>
       <div class="cluster">
-        ${button({ href: 'enquire/?type=tour', label: 'Request Your Tour', variant: 'gold' })}
-        ${button({ href: 'enquire/?type=transfer', label: 'Arrange a Transfer', variant: 'outline', icon: 'car' })}
+        ${leafButton({ href: 'enquire/?type=tour', label: 'Request Your Tour' })}
+        ${button({ href: 'enquire/?type=transfer', label: 'Arrange My Transfer', variant: 'outline', icon: 'car' })}
       </div>
       <ul class="ticks" role="list">
         <li>${icon('check')} <span>Pick a tour, describe your own day, or choose a transfer</span></li>

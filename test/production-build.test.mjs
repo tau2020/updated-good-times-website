@@ -40,8 +40,8 @@ test('production values: Good Times’ own domain, indexable, enquiries still in
   assert.equal(v.PUBLIC_SITE_URL, ORIGIN);
   assert.equal(v.SITE_ENV, 'production');
   assert.equal(v.ENQUIRY_MODE, 'preview', 'no live bookings until Good Times’ own database, sending domain and secrets are in place and approved');
-  assert.equal(v.FROM_EMAIL, 'Good Times in Cape Town <info@goodtimesincapetown.co.za>');
-  // Notifications and replies would go to Good Times' published address (pending its confirmation).
+  assert.equal(v.FROM_EMAIL, 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>');
+  // Notifications and replies go to the mailbox that receives mail today until Good Times confirms hello@ does (A4)
   assert.equal(v.ENQUIRY_TEAM_EMAIL, 'info@goodtimesincapetown.co.za');
   assert.equal(v.REPLY_TO_EMAIL, 'info@goodtimesincapetown.co.za');
   assert.equal(v.ADMIN_EMAILS, 'info@goodtimesincapetown.co.za');
@@ -50,13 +50,17 @@ test('production values: Good Times’ own domain, indexable, enquiries still in
     for (const value of Object.values(env.vars)) assert.doesNotMatch(value, /japshuttlesandtours|shuttlejap|\banesu\b/i, name); // brand-guard-allow: proves no former operator's address remains
   }
   // The release and the domain wait for the owner: a production deployment is refused, staging is not.
-  assert.equal(RELEASE.approved, false);
+  // The release (A1) is recorded for the project's own production address; the domain cutover (A2) is not
+  assert.equal(RELEASE.approved, true);
+  assert.match(RELEASE.scope, /not the domain/);
   assert.equal(DOMAIN.approved, false);
-  assert.throws(() => deployTarget(PROJECT.productionBranch), /owner has not approved/);
+  assert.deepEqual(deployTarget(PROJECT.productionBranch), { environment: 'production', alias: PROJECT.productionBranch });
+  assert.throws(() => deployTarget(PROJECT.productionBranch, { release: { approved: false } }), /owner has not approved/);
   assert.deepEqual(deployTarget('feature-x'), { environment: 'preview', alias: PROJECT.stagingBranch, url: `https://${PROJECT.stagingBranch}.${PROJECT.name}.pages.dev` });
 });
 
-test('every page’s canonical and og:url is its own https://goodtimesincapetown.co.za address; pages are indexable', () => {
+test('every page’s canonical and og:url is its own https://goodtimesincapetown.co.za address; pages are indexable, the draft terms excepted', async () => {
+  const { site } = await import('../src/data/site.mjs');
   for (const file of html()) {
     const page = readFileSync(file, 'utf8');
     const rel = relative(out, file);
@@ -64,7 +68,9 @@ test('every page’s canonical and og:url is its own https://goodtimesincapetown
     const path = rel === 'index.html' ? '' : rel.replace(/index\.html$/, '');
     assert.match(page, new RegExp(`<link rel="canonical" href="${ORIGIN}/${path.replace(/[.]/g, '\\.')}">`), rel);
     assert.match(page, new RegExp(`<meta property="og:url" content="${ORIGIN}/${path.replace(/[.]/g, '\\.')}">`), rel);
-    assert.match(page, /<meta name="robots" content="index,follow">/, rel);
+    // The terms, published as a draft under the owner's release override, stay out of search until approved
+    const draft = rel === join('terms', 'index.html') && !site.legal.termsApproved;
+    assert.match(page, draft ? /<meta name="robots" content="noindex,nofollow">/ : /<meta name="robots" content="index,follow">/, rel);
     assert.doesNotMatch(page, /preview-bar|goodtimesincapetown\.invalid/, `${rel}: no preview banner or placeholder origin`);
   }
 });
@@ -99,22 +105,36 @@ test('no other business’s name or domain, and no preview placeholder, appears 
 
 test('booking links stay on the site; only the verified email addresses are published', () => {
   const contact = read('contact/index.html');
-  // Good Times' published address (goodtimesincapetown.co.za, read on 5 Nov 2026): exactly this one, never a guessed one
+  // Good Times' own addresses (its instruction of 6 Nov 2026): exactly these, never a guessed one
   const mailto = [...new Set([...contact.matchAll(/href="mailto:([^"]+)"/g)].map((m) => m[1]))].sort();
-  assert.deepEqual(mailto, ['info@goodtimesincapetown.co.za']);
+  assert.deepEqual(mailto, ['hello@goodtimesincapetown.co.za', 'stuart@goodtimesincapetown.co.za']);
   const tel = [...new Set([...contact.matchAll(/href="tel:([^"]+)"/g)].map((m) => m[1]))];
   assert.deepEqual(tel, ['+27723768432'], 'the published number');
-  assert.doesNotMatch(contact, /wa\.me/, 'no WhatsApp link until Good Times confirms the number takes WhatsApp');
+  // The same number takes WhatsApp (Good Times' confirmation of 7 Nov 2026): one link, to that number, nothing in its URL
+  const wa = [...new Set([...contact.matchAll(/href="(https:\/\/wa\.me\/[^"]*)"/g)].map((m) => m[1]))];
+  assert.deepEqual(wa, ['https://wa.me/27723768432'], 'the confirmed WhatsApp number');
   const pkg = read('packages/garden-route-private-tour/index.html');
   assert.match(pkg, /<form class="enquiry-card" action="\.\.\/\.\.\/enquire\/"/);
   assert.match(read('index.html'), /href="enquire\/\?type=transfer/);
 });
 
-test('until Good Times approves them, the booking terms are not published and the privacy notice says it is a draft', async () => {
+test('the booking terms are published once approved, or as a marked draft under the owner’s release override; the privacy notice says it is a draft until approved', async () => {
   const { site } = await import('../src/data/site.mjs');
+  const { termsPublished } = await import('../src/pages/terms.mjs');
   const files = html().map((f) => relative(out, f));
-  assert.equal(files.includes(join('terms', 'index.html')), site.legal.termsApproved);
-  assert.equal(/href="terms\/"/.test(read('index.html')), site.legal.termsApproved, 'the footer links to the terms only once they are published');
+  const published = termsPublished({ ...site, preview: false });
+  // 7 Nov 2026: the owner's release accepts the unapproved terms as a draft, so production publishes them
+  assert.equal(published, site.legal.termsApproved || site.legal.releaseOverride.accepted.includes('site.legal.termsApproved'));
+  assert.equal(files.includes(join('terms', 'index.html')), published);
+  assert.equal(/href="terms\/"/.test(read('index.html')), published, 'the footer links to the terms only when they are published');
+  // The booking form's Terms & Conditions link always leads to a published page
+  assert.equal(/<a href="\.\.\/terms\/" target="_blank"/.test(read('enquire/index.html')), true, 'the form links to the terms');
+  assert.ok(published, 'and so the terms are published wherever the form asks for them');
+  if (published && !site.legal.termsApproved) {
+    const terms = read('terms/index.html');
+    assert.match(terms, /Draft for Good Times’ approval/, 'a draft says so');
+    assert.match(terms, /<meta name="robots" content="noindex,nofollow">/, 'and is never indexed');
+  }
   assert.equal(/Draft for Good Times’ approval/.test(read('privacy/index.html')), !site.legal.privacyApproved);
   for (const f of files) assert.doesNotMatch(read(f), /class="pending"/, `${f}: production never shows a pending slot`);
 });

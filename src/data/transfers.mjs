@@ -3,10 +3,13 @@
  *
  * `services` is the one transfer the company publishes: the Airport Private
  * Transfer (goodtimesincapetown.co.za/tour/airport-private-transfer/, read on
- * 5 Nov 2026), with its own inclusions, exclusions, cancellation terms and
- * per-trip rates. `types` drive the transfer request form. "Something else" is an
- * open request, not an advertised service: the team replies whether it can help.
+ * 5 Nov 2026), with its own inclusions, exclusions and cancellation terms, and
+ * its per-trip rates from pricing.mjs (the owner's approved prices of 7 Nov 2026).
+ * `types` drive the transfer request form. "Something else" is an open request,
+ * not an advertised service: the team replies whether it can help.
  */
+
+import { priceFor } from './pricing.mjs';
 
 const SOURCE = { listing: 'https://www.goodtimesincapetown.co.za/tour/airport-private-transfer/', checked: '2026-11-05' };
 
@@ -26,12 +29,12 @@ export const services = [
     notIncluded: ['Flights', 'Tips', 'Extra stops not arranged in advance'],
     accessibility: 'Tell us about any mobility needs or child seats you need when you request your transfer.',
     cancellation: 'Free cancellation up to 24 hours before your scheduled pickup time.',
-    price: { from: 800, currency: 'ZAR', unit: 'per trip', tiers: [{ label: '1–4 guests', max: 4, amount: 800 }, { label: '5–8 guests', max: 8, amount: 1600 }], note: 'Prices per trip, not per person.' },
+    price: priceFor('airport-private-transfer', 'Prices per trip, not per person.'),
     // The airport arrival's welcome sign and the car boot are the request rows' own thumbnails (transfers page), so the
     // service shows three other photographs: a sharp 3105 px departures scene first (the 1000 px sign was soft at this size)
-    images: { hero: 'airport-departures-group', gallery: ['airport-guests-luggage', 'airport-departures-trolley'] },
+    images: { hero: 'airport-meet-and-greet', gallery: ['airport-guests-luggage', 'airport-departures-trolley'] },
     tripadvisor: { url: 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-d19930417-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html', rating: 5.0, reviews: 89, checked: '2026-11-05' },
-    confirm: ['The official page says “Max 4” and also lists a rate for 5–8 guests: confirm the vehicles and group sizes offered.', 'Child seats are not mentioned on the official page: confirm whether they are available.'],
+    confirm: ['The rates for 1–4 and 5–8 guests were approved on 7 Nov 2026: confirm the vehicle used for a group of 5–8.', 'Child seats are not mentioned on the official page: confirm whether they are available.'],
     source: SOURCE,
     approval: 'published by Good Times on goodtimesincapetown.co.za; wording adapted for this site',
   },

@@ -193,10 +193,6 @@
 .sand-journey {
   --pin: 200svh;
   --words: 1;
-  --w0: 1;
-  --w1: 1;
-  --w2: 1;
-  --w3: 1;
   --sand: #dcb594; /* the image's own sand: its open sand and its edges average sRGB 220, 181, 148 */
   --sand-top: calc(var(--header-h) + 1px);
   --bar: 0px; /* the call bar fixed at the foot of the screen, where there is one */
@@ -300,22 +296,18 @@
   bottom: calc(var(--bar) + clamp(1.5rem, 5svh, 3.5rem));
   width: min(26rem, calc(455 * var(--u) - var(--edge)));
 }
-/* One after another as the sand clears (the controller sets --w0…--w3 from the scroll) */
-.sand-journey__eyebrow {
-  opacity: var(--w0);
-  transform: translateY(calc((1 - var(--w0)) * 16px));
+/* With motion the words enter one after another once the sand has cleared (sand-journey.js: a triggered GSAP
+   entrance, opacity and transforms only). The headline is split into lines and words (SplitText), each line a mask
+   its words rise through; the mask reaches a little below the line box so no descender is ever clipped, without
+   changing the layout. While the words wait for the sand they take no pointer events (they can still be focused,
+   which shows them at once). */
+.sand-journey__title-line-mask {
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
 }
-.sand-journey__title {
-  opacity: var(--w1);
-  transform: translateY(calc((1 - var(--w1)) * 16px));
-}
-.sand-journey__line {
-  opacity: var(--w2);
-  transform: translateY(calc((1 - var(--w2)) * 16px));
-}
-.sand-journey__cta {
-  opacity: var(--w3);
-  transform: translateY(calc((1 - var(--w3)) * 16px));
+.sand-journey.is-waiting .sand-journey__head,
+.sand-journey.is-waiting .sand-journey__foot {
+  pointer-events: none;
 }
 .sand-journey__eyebrow {
   /* the surf's edge is nearest at the headline's top: the eyebrow wraps before it reaches it */
@@ -524,19 +516,20 @@ html.cine .sand-journey.is-live .sand-journey__stage {
 .sand-journey.is-lost,
 .sand-journey.is-static {
   --words: 1 !important;
-  --w0: 1 !important;
-  --w1: 1 !important;
-  --w2: 1 !important;
-  --w3: 1 !important;
 }
-/* The renderer arriving while the scene is on screen: a 0.7 s cross-fade, never a one-frame swap */
+/* The renderer arriving while the scene is on screen: a 0.7 s cross-fade, never a one-frame swap (the words run back
+   over the same 0.7 s, sand-journey.js; the scenery takes its scale for this p over it too) */
 .sand-journey.is-arriving .sand-journey__sand {
   animation: sand-arrive 0.7s ease-out both;
 }
-.sand-journey.is-arriving .sand-journey__head > *,
-.sand-journey.is-arriving .sand-journey__foot > *,
 .sand-journey.is-arriving .sand-journey__credit {
-  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  transition: opacity 0.7s ease-out;
+}
+.sand-journey.is-arriving .sand-journey__beach img {
+  transition: transform 0.7s ease-out;
+}
+.sand-journey.is-arriving .sand-journey__film {
+  transition: opacity 0.6s ease, transform 0.7s ease-out;
 }
 @keyframes sand-arrive {
   from {
@@ -555,26 +548,22 @@ html.cine .sand-journey.is-ready .sand-journey__stage::after {
   pointer-events: none;
   opacity: calc(1 - var(--words));
 }
-/* Reduced motion (and the other static cases with the script): the final scene at once, its words fading in once as
-   it comes into view; opacity only, nothing moves */
+/* The static cases with motion allowed (?nomotion, no WebGL, ?sand=static): the final scene at once, its words fading in
+   once as it comes into view; opacity only, nothing moves. With reduced motion the script adds no fade at all */
 .sand-journey.is-fading:not(.is-seen) .sand-journey__words:not(:focus-within) {
   opacity: 0; /* at once, never a fade out */
 }
 .sand-journey.is-fading.is-seen .sand-journey__words {
   transition: opacity 0.6s ease-out;
 }
-/* Anything focused in the words shows at once, whatever the sand is doing */
-.sand-journey__words:focus-within .sand-journey__head > *,
-.sand-journey__words:focus-within .sand-journey__foot > * {
-  opacity: 1;
-  transform: none;
-}
 @media print {
   .sand-journey__sand {
     display: none !important;
   }
-  .sand-journey .sand-journey__words {
+  .sand-journey .sand-journey__words,
+  .sand-journey .sand-journey__words * {
     opacity: 1 !important;
+    transform: none !important;
   }
   html.cine .sand-journey.is-live {
     height: auto;

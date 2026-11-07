@@ -1,0 +1,548 @@
+{
+ "base": "https://ab1a914c.good-times-in-cape-town.pages.dev",
+ "when": "2026-11-06T22:56:46.499Z",
+ "runs": 3,
+ "profiles": {
+  "desktop": {
+   "/": {
+    "median": {
+     "lcpMs": 600,
+     "clsAtLoad": 0.0006,
+     "clsVisit": 0.0006,
+     "loadImageKB": 563,
+     "loadVideoKB": 204,
+     "visitImageKB": 2067,
+     "visitVideoKB": 2597,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 692,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 1435,
+      "loadBytes": {
+       "image": 576512,
+       "video": 209107,
+       "all": 1227275
+      },
+      "loadMediaRequests": 20,
+      "visitBytes": {
+       "image": 2116751,
+       "video": 2659443,
+       "all": 5252886
+      },
+      "visitMediaRequests": 54,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209107",
+       "scroll:video/beach-film-1280.mp4:206:2450336"
+      ],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 600,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 1245,
+      "loadBytes": {
+       "image": 576556,
+       "video": 209105,
+       "all": 1227265
+      },
+      "loadMediaRequests": 20,
+      "visitBytes": {
+       "image": 2116811,
+       "video": 2659443,
+       "all": 5252806
+      },
+      "visitMediaRequests": 54,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209105",
+       "scroll:video/beach-film-1280.mp4:206:2450338"
+      ],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 580,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 1272,
+      "loadBytes": {
+       "image": 576520,
+       "video": 209111,
+       "all": 1227245
+      },
+      "loadMediaRequests": 20,
+      "visitBytes": {
+       "image": 2116799,
+       "video": 2659451,
+       "all": 5252892
+      },
+      "visitMediaRequests": 54,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209111",
+       "scroll:video/beach-film-1280.mp4:206:2450340"
+      ],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   },
+   "/tours/": {
+    "median": {
+     "lcpMs": 500,
+     "clsAtLoad": 0.0007,
+     "clsVisit": 0.0007,
+     "loadImageKB": 398,
+     "loadVideoKB": 0,
+     "visitImageKB": 406,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 500,
+      "lcpElement": "img cape-point-headland-1600.avif",
+      "clsAtLoad": 0.0007,
+      "clsVisit": 0.0007,
+      "loadEventMs": 631,
+      "loadBytes": {
+       "image": 407811,
+       "video": 0,
+       "all": 638039
+      },
+      "loadMediaRequests": 16,
+      "visitBytes": {
+       "image": 416116,
+       "video": 0,
+       "all": 646344
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 592,
+      "lcpElement": "img cape-point-headland-1600.avif",
+      "clsAtLoad": 0.0007,
+      "clsVisit": 0.0007,
+      "loadEventMs": 586,
+      "loadBytes": {
+       "image": 407797,
+       "video": 0,
+       "all": 638062
+      },
+      "loadMediaRequests": 16,
+      "visitBytes": {
+       "image": 416102,
+       "video": 0,
+       "all": 646367
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 496,
+      "lcpElement": "img cape-point-headland-1600.avif",
+      "clsAtLoad": 0.001,
+      "clsVisit": 0.001,
+      "loadEventMs": 647,
+      "loadBytes": {
+       "image": 407805,
+       "video": 0,
+       "all": 638045
+      },
+      "loadMediaRequests": 16,
+      "visitBytes": {
+       "image": 416114,
+       "video": 0,
+       "all": 646354
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": [
+       {
+        "at": 646,
+        "value": 0.001,
+        "nodes": [
+         "nav.primary-nav",
+         "div.grid"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "/contact/": {
+    "median": {
+     "lcpMs": 448,
+     "clsAtLoad": 0.0006,
+     "clsVisit": 0.0006,
+     "loadImageKB": 16,
+     "loadVideoKB": 0,
+     "visitImageKB": 16,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 448,
+      "lcpElement": "p.lead",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 535,
+      "loadBytes": {
+       "image": 16622,
+       "video": 0,
+       "all": 233808
+      },
+      "loadMediaRequests": 2,
+      "visitBytes": {
+       "image": 16622,
+       "video": 0,
+       "all": 233808
+      },
+      "visitMediaRequests": 2,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 468,
+      "lcpElement": "p.lead",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 546,
+      "loadBytes": {
+       "image": 16618,
+       "video": 0,
+       "all": 233792
+      },
+      "loadMediaRequests": 2,
+      "visitBytes": {
+       "image": 16618,
+       "video": 0,
+       "all": 233792
+      },
+      "visitMediaRequests": 2,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 400,
+      "lcpElement": "p.lead",
+      "clsAtLoad": 0.0006,
+      "clsVisit": 0.0006,
+      "loadEventMs": 496,
+      "loadBytes": {
+       "image": 16622,
+       "video": 0,
+       "all": 233865
+      },
+      "loadMediaRequests": 2,
+      "visitBytes": {
+       "image": 16622,
+       "video": 0,
+       "all": 233865
+      },
+      "visitMediaRequests": 2,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   }
+  },
+  "mobile": {
+   "/": {
+    "median": {
+     "lcpMs": 3028,
+     "clsAtLoad": 0.0106,
+     "clsVisit": 0.0106,
+     "loadImageKB": 409,
+     "loadVideoKB": 204,
+     "visitImageKB": 3156,
+     "visitVideoKB": 2597,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 2924,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0109,
+      "clsVisit": 0.0109,
+      "loadEventMs": 5404,
+      "loadBytes": {
+       "image": 418914,
+       "video": 209111,
+       "all": 1104674
+      },
+      "loadMediaRequests": 18,
+      "visitBytes": {
+       "image": 3231478,
+       "video": 2659457,
+       "all": 6367584
+      },
+      "visitMediaRequests": 53,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209111",
+       "scroll:video/beach-film-1280.mp4:206:2450346"
+      ],
+      "failed": [],
+      "shiftsAtLoad": [
+       {
+        "at": 1809,
+        "value": 0.0109,
+        "nodes": [
+         "div.phone-gallery__device",
+         "div.hero__content",
+         "span.phone-gallery__home"
+        ]
+       }
+      ]
+     },
+     {
+      "lcpMs": 3052,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0106,
+      "clsVisit": 0.0106,
+      "loadEventMs": 5508,
+      "loadBytes": {
+       "image": 418954,
+       "video": 209115,
+       "all": 1104846
+      },
+      "loadMediaRequests": 18,
+      "visitBytes": {
+       "image": 3231470,
+       "video": 2659451,
+       "all": 6367698
+      },
+      "visitMediaRequests": 53,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209115",
+       "scroll:video/beach-film-1280.mp4:206:2450336"
+      ],
+      "failed": [],
+      "shiftsAtLoad": [
+       {
+        "at": 1834,
+        "value": 0.01,
+        "nodes": [
+         "div.phone-gallery__device",
+         "div.hero__content",
+         "span.phone-gallery__home"
+        ]
+       }
+      ]
+     },
+     {
+      "lcpMs": 3028,
+      "lcpElement": "img hero-moment-poster-1280.avif",
+      "clsAtLoad": 0.0106,
+      "clsVisit": 0.0106,
+      "loadEventMs": 5478,
+      "loadBytes": {
+       "image": 418906,
+       "video": 209115,
+       "all": 1104645
+      },
+      "loadMediaRequests": 18,
+      "visitBytes": {
+       "image": 3231444,
+       "video": 2659453,
+       "all": 6367521
+      },
+      "visitMediaRequests": 53,
+      "videoRequests": [
+       "load:video/hero-moment-1280.webm:206:209115",
+       "scroll:video/beach-film-1280.mp4:206:2450338"
+      ],
+      "failed": [],
+      "shiftsAtLoad": [
+       {
+        "at": 1849,
+        "value": 0.01,
+        "nodes": [
+         "div.phone-gallery__device",
+         "div.hero__content",
+         "span.phone-gallery__home"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "/tours/": {
+    "median": {
+     "lcpMs": 2656,
+     "clsAtLoad": 0,
+     "clsVisit": 0,
+     "loadImageKB": 388,
+     "loadVideoKB": 0,
+     "visitImageKB": 1152,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 2660,
+      "lcpElement": "img cape-point-headland-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3429,
+      "loadBytes": {
+       "image": 397679,
+       "video": 0,
+       "all": 627929
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 1179848,
+       "video": 0,
+       "all": 1410098
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2656,
+      "lcpElement": "img cape-point-headland-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3465,
+      "loadBytes": {
+       "image": 397707,
+       "video": 0,
+       "all": 627992
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 1179878,
+       "video": 0,
+       "all": 1410163
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 2648,
+      "lcpElement": "img cape-point-headland-1200.avif",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 3457,
+      "loadBytes": {
+       "image": 397703,
+       "video": 0,
+       "all": 628014
+      },
+      "loadMediaRequests": 5,
+      "visitBytes": {
+       "image": 1179848,
+       "video": 0,
+       "all": 1410159
+      },
+      "visitMediaRequests": 17,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   },
+   "/contact/": {
+    "median": {
+     "lcpMs": 984,
+     "clsAtLoad": 0,
+     "clsVisit": 0,
+     "loadImageKB": 8,
+     "loadVideoKB": 0,
+     "visitImageKB": 16,
+     "visitVideoKB": 0,
+     "failed": 0
+    },
+    "runs": [
+     {
+      "lcpMs": 920,
+      "lcpElement": "p.lead",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 1513,
+      "loadBytes": {
+       "image": 8311,
+       "video": 0,
+       "all": 225663
+      },
+      "loadMediaRequests": 1,
+      "visitBytes": {
+       "image": 16622,
+       "video": 0,
+       "all": 233974
+      },
+      "visitMediaRequests": 2,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 984,
+      "lcpElement": "p.lead",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 1507,
+      "loadBytes": {
+       "image": 8307,
+       "video": 0,
+       "all": 225666
+      },
+      "loadMediaRequests": 1,
+      "visitBytes": {
+       "image": 16612,
+       "video": 0,
+       "all": 233971
+      },
+      "visitMediaRequests": 2,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     },
+     {
+      "lcpMs": 1000,
+      "lcpElement": "p.lead",
+      "clsAtLoad": 0,
+      "clsVisit": 0,
+      "loadEventMs": 1519,
+      "loadBytes": {
+       "image": 8305,
+       "video": 0,
+       "all": 225530
+      },
+      "loadMediaRequests": 1,
+      "visitBytes": {
+       "image": 16612,
+       "video": 0,
+       "all": 233837
+      },
+      "visitMediaRequests": 2,
+      "videoRequests": [],
+      "failed": [],
+      "shiftsAtLoad": []
+     }
+    ]
+   }
+  }
+ }
+}

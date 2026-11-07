@@ -25,8 +25,10 @@
                 uncovering the destination: the woman at the water's edge, the walk's last four prints behind her, in
                 the same places as the animated ones (the animated prints go with the sand they were pressed into; the
                 image's stay)
-     0.84–0.97  the eyebrow, the headline, the line and the link rise in, one after another; from 0.95 no sand is left
-                anywhere (revealAt is exactly 1) */
+     0.84       the words' entrance starts (eyebrow, headline, line, then the leaf; time-based, sand-journey.js), and
+                the scenery's caption fades in up to 0.97; from 0.95 no sand is left anywhere (revealAt is exactly 1).
+                Around the reveal the scenery takes a small scale (sand and photograph together, so the trail stays
+                registered): leaning in from 0.44 to 0.60, settling back to its own framing from 0.605 to 0.93 */
 import { seeded, range, hash, clamp, mix, smoothstep } from './random.js';
 import { FOOT, envelopes, variation } from './foot.js';
 import { vnoise, h2f } from './noise.js';

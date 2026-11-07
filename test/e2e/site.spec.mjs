@@ -301,30 +301,35 @@ test.describe('home hero', () => {
   // bottom right (index.mjs, styles.css › Home hero, HeroPhoneGallery). Face clearances at every size: qa/hero.mjs.
   const box = (loc) => loc.evaluate((el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, right: r.right, bottom: r.bottom }; });
 
-  test('shows the held café scene, one call to action bottom left and the phone bottom right: no paragraph, search panel, rating badge or second action', async ({ page }) => {
+  test('shows the held café scene, the headline Good Times Start Here! on the left and the phone bottom right: no call to action, search panel, rating badge or second action', async ({ page, isMobile }) => {
     await page.goto('/?nomotion');
     await expect(page.locator('.hero h1')).toHaveText('Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014');
     await expect(page.locator('.hero h1')).toHaveClass('visually-hidden');
-    const cta = page.locator('.hero a');
-    await expect(cta).toHaveCount(1);
-    await expect(cta).toHaveText('Good Times start Here!');
-    await expect(cta).toHaveAttribute('href', /(^|\/)tours\/$/);
-    await expect(cta).toBeVisible();
+    // The owner's choice of 7 Nov 2026: the headline in place of the Find Your Good Time leaf, so no link in the hero
+    await expect(page.locator('.hero a, .hero__cta')).toHaveCount(0);
+    const headline = page.locator('.hero-headline');
+    await expect(headline).toHaveText(/^\s*Good Times\s+Start Here!\s*$/);
+    await expect(headline).toBeVisible();
     await expect(page.locator('.hero__poster img')).toBeVisible();
     await expect(page.locator('.hero__poster img')).toHaveAttribute('alt', /^Four friends laughing at a photo on a phone/);
     await expect(page.locator('.hero .phone-gallery')).toBeVisible();
-    // Bottom left and bottom right of the hero, apart from each other
-    const [hero, c, phone] = [await box(page.locator('.hero')), await box(cta), await box(page.locator('.phone-gallery'))];
-    expect(c.x + c.w / 2, 'call to action on the left').toBeLessThan(hero.x + hero.w / 2);
+    // The headline on the left of the hero (bottom left on a phone, where the leaf was; heading the services on a
+    // desktop), the phone bottom right, apart from each other
+    const [hero, c, phone] = [await box(page.locator('.hero')), await box(headline), await box(page.locator('.phone-gallery'))];
+    expect(c.x + c.w / 2, 'the headline on the left').toBeLessThan(hero.x + hero.w / 2);
     expect(phone.x + phone.w / 2, 'phone on the right').toBeGreaterThan(hero.x + hero.w / 2);
-    for (const b of [c, phone]) expect(hero.bottom - b.bottom, 'near the hero’s foot').toBeLessThan(40);
+    expect(hero.bottom - phone.bottom, 'the phone at the hero’s foot').toBeLessThan(40);
+    if (isMobile) expect(hero.bottom - c.bottom, 'the headline at the hero’s foot, where the leaf was').toBeLessThan(40);
+    expect(c.bottom, 'inside the hero').toBeLessThanOrEqual(hero.bottom + 1);
     expect(c.right, 'never under the phone').toBeLessThan(phone.x);
     expect(phone.right).toBeLessThanOrEqual(hero.right);
     await expect(page.locator('.hero p.hero__lead, .hero__link, .hero .search, .hero form, .hero [role="tablist"], .hero input, .hero .eyebrow, .hero .btn')).toHaveCount(0);
     await expect(page.locator('.hero .medallion, .hero .stars, .hero .rating')).toHaveCount(0);
-    await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon')).toHaveCount(0);
+    // No icon, arrow or leaf in the hero section; the headline's swash is decoration (aria-hidden)
+    await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon, .hero .leaf-btn')).toHaveCount(0);
+    await expect(headline.locator('svg.hero-headline__swash[aria-hidden="true"]')).toHaveCount(1);
     await expect(page.locator('.hero')).not.toContainText(/tripadvisor|extraordinary places|cape town, personally|tailored|find experiences/i);
-    // The header over the hero: the reversed logo from the approved logo pack, Make It Yours with its ornamental coin
+    // The header over the hero: the reversed logo from the approved logo pack, Plan My Day with its ornamental coin
     const header = page.locator('.site-header--overlay');
     await expect(header.locator('.brand__logo--gold')).toBeVisible();
     // The approved compact lockup (light over the photograph, dark once condensed), drawn at its own proportions, never clipped or squeezed
@@ -338,10 +343,13 @@ test.describe('home hero', () => {
     expect(lockup.width, 'never narrower than the kit minimum').toBeGreaterThanOrEqual(180);
     expect(lockup.clipped).not.toContain('hidden');
     await expect(header.locator('.header-cta')).toHaveAttribute('href', /(^|\/)enquire\/$/);
-    await expect(header.locator('.header-cta .btn-coin__coin svg')).toHaveCount(1);
+    await expect(header.locator('.header-cta .leaf-btn__shape')).toHaveCount(1);
     await expect(header.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
-    const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.family === 'Plus Jakarta Sans' && f.status === 'loaded').map((f) => f.style));
-    expect(fonts, 'Plus Jakarta Sans roman and italic loaded (“Here!” leans)').toEqual(expect.arrayContaining(['normal', 'italic']));
+    const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/['"]/g, '')));
+    expect(fonts, 'Bricolage Grotesque (display) and DM Sans (body) loaded').toEqual(expect.arrayContaining(['Bricolage Grotesque', 'DM Sans']));
+    // The headline in the site's handwriting, Caveat, at its boldest: "Start Here!" in leaf green on its lime swash
+    expect(await headline.evaluate((el) => [getComputedStyle(el).fontFamily.split(',')[0].replace(/['"]/g, ''), getComputedStyle(el).fontWeight])).toEqual(['Caveat', '700']);
+    expect(await page.locator('.hero-headline__start').evaluate((el) => getComputedStyle(el.parentElement).color)).toBe('rgb(16, 91, 53)');
   });
 
   test('with motion the film fades in over its own first frame, muted and looping, with no controls or play button', async ({ page }) => {
@@ -448,7 +456,8 @@ test.describe('home hero', () => {
     await expect(zoom).toHaveJSProperty('open', true);
     await page.keyboard.press('Escape');
     await expect(zoom).toHaveJSProperty('open', false, { timeout: 3_000 });
-    await expect(page.locator('.hero a')).toHaveCount(1);
+    // Nothing left behind in the hero, which has no link (its headline took the leaf's place on 7 Nov 2026)
+    await expect(page.locator('.hero a')).toHaveCount(0);
   });
 
   test('without motion the photograph is enlarged and put back at once, from the keyboard too, and the open dialog passes axe', async ({ page }) => {
@@ -482,7 +491,7 @@ test.describe('home hero', () => {
     const boxes = (p) =>
       p.evaluate(() =>
         Object.fromEntries(
-          ['.site-header--overlay .brand', '.site-header--overlay .header-cta', '.hero__cta', '.phone-gallery'].map((sel) => {
+          ['.site-header--overlay .brand', '.site-header--overlay .header-cta', '.hero-headline', '.phone-gallery'].map((sel) => {
             const r = document.querySelector(sel).getBoundingClientRect();
             return [sel, [r.x, r.y, r.width, r.height].map((n) => Math.round(n))];
           }),
@@ -498,13 +507,14 @@ test.describe('home hero', () => {
     // One master timeline, acts in the directed order, timed for the screen
     const plan = await page.evaluate(() => {
       const tl = window.__heroEntrance;
-      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero__cta') ? 'cta' : el.className.split(' ')[0]);
-      return { duration: tl.duration(), timeScale: tl.timeScale(), landsAt: window.__brandPlane && window.__brandPlane.landsAt, tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), targets: t.targets().map(name) })) };
+      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero-headline') ? 'headline' : (el.getAttribute('class') || '').split(' ')[0]);
+      return { duration: tl.duration(), timeScale: tl.timeScale(), landsAt: window.__brandPlane && window.__brandPlane.landsAt, handoverAt: window.__brandPlane && window.__brandPlane.handoverAt, tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), duration: t.duration(), targets: t.targets().map(name) })) };
     });
     const startOf = (n) => plan.tweens.find((t) => t.targets.includes(n))?.at;
     expect(startOf('brand')).toBe(0);
     if (!isMobile) {
-      expect(startOf('bookNow')).toBeCloseTo(0.15, 2);
+      // Plan My Day, the navigation's leaf, unfolds last, as the statement settles (the brief of 6 Nov 2026)
+      expect(startOf('bookNow')).toBeCloseTo(0.15 + plan.handoverAt + 0.1, 2);
       const titles = plan.tweens.find((t) => t.targets[0]?.startsWith('title:')).targets;
       expect(titles).toEqual(['title:Tours', 'title:Transfers', 'title:Destinations', 'title:About', 'title:Contact']);
       // The brand aircraft (brand-plane.js) flies from 0.15 s; its landing starts the titles
@@ -513,16 +523,27 @@ test.describe('home hero', () => {
     } else {
       expect(plan.tweens.some((t) => t.targets.some((n) => n.startsWith('title:') || n === 'bookNow')), 'hidden desktop titles and Book Now are left alone on phones').toBe(false);
     }
-    expect(startOf('cta')).toBeCloseTo(2.2, 2);
-    expect(startOf('hero__cta-sheen')).toBeCloseTo(2.82, 2);
+    // The headline takes the leaf's moment (the owner's choice of 7 Nov 2026): it rises at 2.2 s, its swash draws after
+    expect(startOf('headline')).toBeCloseTo(2.2, 2);
+    expect(startOf('hero-headline__swash')).toBeCloseTo(2.4, 2);
+    await expect(page.locator('.hero__cta, .hero__cta-sheen')).toHaveCount(0);
+    // The company statement under the logo (Addendum, 6 Nov 2026): drawn in once the logo entrance is complete, when the
+    // aircraft hands the logo back whole, after its touchdown and settle; it is the entrance's last step
+    expect(plan.handoverAt).toBeGreaterThan(plan.landsAt);
+    expect(startOf('brand-lockup__statement')).toBeCloseTo(0.15 + plan.handoverAt, 2);
+    // After the statement only the navigation's leaf (desktop and tablets: phones show no header leaf)
+    const last = Math.max(...plan.tweens.filter((t) => !t.targets.includes('bookNow')).map((t) => t.at + t.duration));
+    expect(last, 'nothing after the statement but the navigation leaf').toBeCloseTo(0.15 + plan.handoverAt + 0.5, 2);
     expect(plan.tweens.some((t) => t.targets.some((n) => /phone-gallery|hero__poster|hero__video/.test(n))), 'the scene and the phone are not part of it').toBe(false);
     const seconds = plan.duration / plan.timeScale;
-    // With the brand aircraft at the owner's slower pace (6 Nov 2026) the entrance ends with the landing and the titles
-    if (isMobile) expect(seconds).toBeLessThanOrEqual(3.1);
+    // With the brand aircraft at the owner's slower pace (6 Nov 2026) the landing and the titles come at about 4.1–4.8 s,
+    // the company statement (Addendum, 6 Nov 2026) adds its 0.5 s once the logo is whole, and the navigation's leaf unfolds
+    // last (desktop and tablets)
+    if (isMobile) expect(seconds).toBeLessThanOrEqual(3.3);
     else expect(seconds).toBeGreaterThan(3.4);
-    expect(seconds).toBeLessThanOrEqual(5);
-    // Nothing invisible can take focus while its entrance is pending
-    expect(await page.locator('.hero__cta').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
+    expect(seconds).toBeLessThanOrEqual(5.9);
+    // The headline is staged with opacity only: its words stay in the accessibility tree while they wait
+    expect(await page.locator('.hero-headline').evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
     const states = await page.evaluate(() =>
       [...document.querySelectorAll('.hero [data-intro], .site-header--overlay [data-intro]')].map((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility]),
@@ -535,7 +556,7 @@ test.describe('home hero', () => {
   test('with reduced motion the scene stays a still, the gallery shows its first photograph and loads no other, and nothing is hidden', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const media = [];
-    const PHONE = /\/assets\/(video\/|img\/(chapmans-peak-couple|bokaap-street-pair|boulders-penguin-selfie|vineyard-couple|cape-point-lighthouse-trio|guide-selfie-peninsula)-)/;
+    const PHONE = /\/assets\/(video\/|img\/(chapmans-peak-couple|bokaap-street-pair|boulders-penguin-selfie|vineyard-couple|cape-point-lighthouse-trio|peninsula-rocks-pair)-)/;
     page.on('request', (r) => PHONE.test(r.url()) && media.push(r.url().split('/').pop()));
     await page.goto('/');
     await page.waitForTimeout(1_200);
@@ -544,7 +565,10 @@ test.describe('home hero', () => {
     expect(await page.locator('.hero__video').evaluate((v) => v.currentSrc)).toBe('');
     await expect(page.locator('.hero__media')).not.toHaveClass(/\bis-playing\b/);
     await expect(page.locator('.hero h1')).toHaveCount(1);
-    expect(await page.locator('.hero__cta').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none']);
+    expect(await page.locator('.hero-headline').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none']);
+    expect(await page.locator('.hero-headline__swash').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
+    // The statement under the logo is simply there: no reveal, no clip
+    expect(await page.locator('.site-header .brand-lockup__statement').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).clipPath, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none', 'none']);
     // No timeline is built under reduced motion (the gallery's lift still works: it simply does not fly)
     expect(await page.evaluate(() => [window.__heroEntrance, window.__phoneGalleries[0].timeline()]), 'no timeline under reduced motion').toEqual([undefined, null]);
     await expect(page.locator('[data-phone-toggle]')).toBeHidden();
@@ -554,11 +578,96 @@ test.describe('home hero', () => {
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/);
   });
 
-  test('the call to action leads to the tours catalogue', async ({ page }) => {
+  test('the hero’s words (7 Nov 2026): the headline, the sentence, its brush and the four services; at the photograph’s bottom left just above the calls to action on a desktop, the headline in the hero and the rest beneath it on a phone; part of the entrance', async ({ page, isMobile }) => {
     await page.goto('/?nomotion');
-    await page.locator('.hero__cta').click();
+    const block = page.locator('.hero-services');
+    await expect(block).toHaveCount(1);
+    await expect(block.locator('.hero-services__lead')).toHaveText('Private tours, airport transfers and authentic Cape Town experiences tailored for you.');
+    await expect(block.locator('.hero-services__mark')).toHaveText('tailored for you.');
+    await expect(block.locator('.hero-services__mark svg.hero-services__brush[aria-hidden="true"]')).toBeVisible();
+    await expect(block.locator('.hero-services__title')).toHaveText(['Private Tours', 'Airport Transfers', 'Adventure Add-ons', 'Custom Journeys']);
+    await expect(block.locator('.hero-services__text')).toHaveText(['City, township & cultural experiences', 'Reliable, safe & comfortable travel', 'Wine, wildlife, scenic & outdoor experiences', 'Personalised tours for individuals, families & groups']);
+    for (const [i, name] of ['camera', 'van', 'mountain', 'group'].entries()) await expect(block.locator('.hero-services__item').nth(i).locator(`.hero-services__icon svg.icon--${name}`)).toBeVisible();
+    await expect(page.getByRole('list', { name: 'What we do' })).toBeVisible();
+    // The headline heads the block: Good Times Start Here!, the owner's choice of 7 Nov 2026
+    await expect(block.locator('.hero-headline')).toHaveText(/^\s*Good Times\s+Start Here!\s*$/);
+    // Its only links are the two calls to action (the owner's choice of 7 Nov 2026); the hero section has none
+    const actions = block.locator('.hero-services__actions a');
+    await expect(actions).toHaveText(['Explore Our Tours', 'Our Experiences']);
+    expect(await actions.evaluateAll((els) => els.map((a) => a.getAttribute('href')))).toEqual(['tours/', 'tours/#adventure']);
+    await expect(block.locator('button, [tabindex]')).toHaveCount(0);
+    await expect(page.locator('.hero a')).toHaveCount(0);
+    const [hero, b, headline, phone] = [await box(page.locator('.hero')), await box(block), await box(block.locator('.hero-headline')), await box(page.locator('.phone-gallery'))];
+    if (isMobile) {
+      // The sentence and the services beneath the hero, which keeps its one-screen composition; the headline in the
+      // hero's foot, where the leaf was, beside the phone
+      expect(await block.evaluate((el) => getComputedStyle(el).position)).not.toBe('absolute');
+      expect(b.y).toBeGreaterThanOrEqual(hero.bottom - 1);
+      expect(headline.bottom).toBeLessThanOrEqual(hero.bottom);
+      expect(hero.bottom - headline.bottom).toBeLessThan(40);
+      expect(headline.right).toBeLessThan(phone.x);
+      // The calls to action after the services
+      const [list, act] = [await box(block.locator('.hero-services__list')), await box(block.locator('.hero-services__actions'))];
+      expect(act.y).toBeGreaterThanOrEqual(list.bottom);
+    } else {
+      // At the photograph's bottom left, just above the calls to action (the owner's request of 7 Nov 2026): the headline
+      // first, then the sentence, the services and the buttons, left of the phone and clear of the header
+      expect(await block.evaluate((el) => getComputedStyle(el).position)).toBe('absolute');
+      expect(headline.y).toBeLessThan((await box(block.locator('.hero-services__lead'))).y);
+      expect(b.right).toBeLessThan(phone.x);
+      expect(b.right).toBeLessThan(hero.x + hero.w * 0.55);
+      expect(Math.min(b.y, headline.y)).toBeGreaterThan((await box(page.locator('.site-header--overlay'))).bottom);
+      expect(hero.bottom - b.bottom, 'at the hero’s foot').toBeLessThan(40);
+      // The calls to action close the block, right after the services: bottom left, inside the hero, clear of the phone
+      const [list, act] = [await box(block.locator('.hero-services__list')), await box(block.locator('.hero-services__actions'))];
+      expect(act.y).toBeGreaterThanOrEqual(list.bottom);
+      expect(act.y - list.bottom, 'just below the services').toBeLessThan(48);
+      expect(hero.bottom - act.bottom).toBeLessThan(40);
+      expect(act.bottom).toBeLessThanOrEqual(hero.bottom);
+      expect(act.right).toBeLessThan(phone.x);
+      // Four in a row from 32rem (at 1440 × 900 the row is wider than that)
+      const tops = await block.locator('.hero-services__item').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
+      expect(new Set(tops).size).toBe(b.w >= 512 ? 1 : 2);
+    }
+    // With motion: steps of the hero's own timeline: the headline (2.2 s) and its swash (2.4 s), the sentence (2.65 s),
+    // the brush drawing from the left (3.1 s), the services in turn (3.35 s, 0.12 s apart); then everything settles
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/');
+    const plan = await page.evaluate(() =>
+      window.__heroEntrance.getChildren(false, true, false).map((t) => ({ at: Math.round(t.startTime() * 100) / 100, stagger: t.vars.stagger || 0, targets: t.targets().map((el) => (el.getAttribute('class') || '').split(' ')[0]) })),
+    );
+    const at = (cls) => plan.find((t) => t.targets.includes(cls));
+    expect(at('hero-headline').at).toBeCloseTo(2.2, 2);
+    expect(at('hero-headline__swash').at).toBeCloseTo(2.4, 2);
+    expect(at('hero-services__lead').at).toBeCloseTo(2.65, 2);
+    expect(at('hero-services__brush').at).toBeCloseTo(3.1, 2);
+    expect(at('hero-services__item').at).toBeCloseTo(3.35, 2);
+    expect(at('hero-services__item').targets).toHaveLength(4);
+    expect(at('hero-services__item').stagger).toBeCloseTo(0.12, 2);
+    // Staged with opacity only, so the words stay in the accessibility tree while they wait
+    expect(await block.locator('.hero-services__lead').evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
+    await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
+    for (const el of await block.locator('.hero-headline, .hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => [getComputedStyle(n).opacity, getComputedStyle(n).transform])).toEqual(['1', 'none']);
+    expect(await block.locator('.hero-services__brush').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
+    expect(await block.locator('.hero-headline__swash').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
+    const round = (r) => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, Math.round(v)]));
+    expect(round(await box(block)), 'it settles exactly where the static hero draws it').toEqual(round(b));
+    // Reduced motion: all of it at once
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    for (const el of await block.locator('.hero-headline, .hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => getComputedStyle(n).opacity)).toBe('1');
+    expect(await block.locator('.hero-services__brush').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
+  });
+
+  test('the hero’s calls to action lead to the tours, and to their experiences', async ({ page }) => {
+    await page.goto('/?nomotion');
+    await page.getByRole('link', { name: 'Explore Our Tours' }).click();
     await expect(page).toHaveURL(/\/tours\/$/);
     await expect(page.locator('h1')).toHaveText('Tours & Experiences');
+    await page.goto('/?nomotion');
+    await page.getByRole('link', { name: 'Our Experiences' }).click();
+    await expect(page).toHaveURL(/\/tours\/#adventure$/);
+    await expect(page.locator('[data-filter-value="adventure"]')).toHaveAttribute('aria-pressed', 'true');
   });
 
   test('a plan carried in the URL still reaches the tours page, which shows it and passes it on', async ({ page }) => {
@@ -570,398 +679,114 @@ test.describe('home hero', () => {
 });
 
 test.describe('guest stories', () => {
-  const real = (page) => page.locator('.stories [data-story-card]:not(.is-clone)');
-  const running = (page) => page.evaluate(() => window.__stories.running());
-  const index = (page) => page.evaluate(() => window.__stories.state.index);
-  const trackX = (page) => page.evaluate(() => new DOMMatrixReadOnly(getComputedStyle(document.querySelector('[data-stories-track]')).transform).m41);
-  /** The real cards whose boxes lie within the viewport's inner box */
-  const inView = (page) =>
-    page.evaluate(() => {
-      const v = document.querySelector('[data-stories-viewport]').getBoundingClientRect();
-      const cs = getComputedStyle(document.querySelector('[data-stories-viewport]'));
-      const left = v.left + parseFloat(cs.paddingLeft);
-      const right = v.right - parseFloat(cs.paddingRight);
-      return [...document.querySelectorAll('.stories [data-story-card]')].filter((c) => {
-        const r = c.getBoundingClientRect();
-        return r.left >= left - 1 && r.right <= right + 1;
-      }).map((c) => (c.classList.contains('is-clone') ? 'clone:' : '') + c.querySelector('.story-card__name').textContent.trim());
-    });
+  // Chapter 09, "The people behind the good times" (the brief of 6 Nov 2026, §7): a light grid of review cards in place
+  // of the auto-advancing carousel. Several in view at once, nothing moving by itself, the rest a press away.
+  const cards = (page) => page.locator('.stories [data-story-card]');
+  const visible = (page) => page.locator('.stories [data-story-card]').evaluateAll((els) => els.filter((el) => el.offsetParent !== null).length);
 
-  test('shows the compact design in the Living Cape surfaces: the heading beside the two listing figures, every review as a card with an illustrated avatar, our labelled summary, the reviewer’s rating and the link, and one Tripadvisor action', async ({ page, isMobile }) => {
+  test('shows real reviews as friendly cards on a soft leaf ground: initials, name, place, rating, tour, our labelled summary, the month and the link; the listing’s rating dated beside the heading', async ({ page }) => {
     await page.goto('/?nomotion');
     const section = page.locator('section.stories#reviews');
     await expect(section).toHaveCount(1);
-    // Chapter 10, "Words from the road", on deep navy
-    await expect(section.locator('.stories__eyebrow .lc-mark__num')).toHaveText('10');
-    await expect(section.locator('.stories__eyebrow .lc-mark__label')).toHaveText('Words from the road');
-    await expect(section.locator('h2')).toHaveText('Beautiful places. Beautifully remembered.');
-    await expect(section.locator('h2 em')).toHaveText('Beautifully remembered.');
-    // Exactly two figures, the listing's own (site.tripadvisor), and nothing of the old strip: no breakdown, no checked date, no lead
-    const stats = section.locator('[data-story-stats] .stories__stat');
-    await expect(stats).toHaveCount(2);
-    await expect(section.locator('.stories__stat-value')).toHaveText(['264', '5.0']);
-    await expect(section.locator('.stories__stat-label')).toHaveText(['Tripadvisor reviews', 'Average rating']);
-    await expect(section.locator('.stories__stat-sub')).toHaveText('out of 5');
-    await expect(section.locator('.stories__stat-icon')).toHaveCount(2);
-    await expect(section).not.toContainText(/259|Excellent reviews|Other reviews|Checked|names and places are as the reviewers gave them/);
-    await expect(section.locator('.guest__lead, .guest__attribution, .guest__note, .guest__trio, .guest-card, [data-guest-dialog]')).toHaveCount(0);
-    if (!isMobile) {
-      const [head, statsBox] = await Promise.all([section.locator('.stories__intro').boundingBox(), section.locator('[data-story-stats]').boundingBox()]);
-      expect(statsBox.x, 'the figures sit to the right of the heading on desktop').toBeGreaterThan(head.x + head.width);
-    }
-    // Every review, once, as a compact card: an illustrated avatar, name, place where given, our labelled summary
-    // (never the reviewer's words: no permission to quote is recorded), the reviewer's own rating and the link to the review
-    const cards = real(page);
+    await expect(section.locator('.stories__eyebrow .lc-mark__num')).toHaveText('09');
+    await expect(section.locator('.stories__eyebrow .lc-mark__label')).toHaveText('The people behind the good times');
+    await expect(section.locator('h2')).toHaveText('Good times, by the people who had them.');
+    expect(await section.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(239, 248, 240)');
+    // The listing's own rating, dated, linked, and no review count that would go stale
+    const rating = section.locator('.stories__rating');
+    await expect(rating).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
+    await expect(rating).toHaveAttribute('target', '_blank');
+    await expect(rating.locator('.stories__rating-label')).toHaveText('Rated 5.0 out of 5 on Tripadvisor');
+    await expect(rating.locator('.stories__rating-date')).toContainText('As listed on 5 November 2026');
+    await expect(section).not.toContainText('264');
     const { reviews } = await import('../../src/data/reviews.mjs');
-    const { tours } = await import('../../src/data/tours.mjs');
-    await expect(cards).toHaveCount(reviews.length);
-    for (const [i, r] of reviews.entries()) {
-      const card = cards.nth(i);
-      await expect(card.locator('.story-card__name'), r.author).toHaveText(r.author);
+    await expect(cards(page)).toHaveCount(reviews.length);
+    // Open the collapsed grid first: a hidden card's link has no accessible name to check
+    const more = page.locator('[data-stories-more]');
+    if (await more.isVisible()) await more.click();
+    for (const r of reviews) {
+      const card = section.locator('[data-story-card]', { has: page.locator(`.story-card__source a[href="${r.url}"]`) });
+      await expect(card, r.author).toHaveCount(1);
+      await expect(card.locator('.story-card__name')).toHaveText(r.author);
       if (r.origin) await expect(card.locator('.story-card__place')).toHaveText(r.origin);
-      else await expect(card.locator('.story-card__place')).toHaveCount(0);
-      const about = r.tour ? tours.find((t) => t.slug === r.tour).shortTitle : r.label;
-      await expect(card.locator('.story-card__label'), r.author).toHaveText(about ? `Review summary · ${about}` : 'Review summary');
-      await expect(card.locator('.story-card__quote--summary p').last(), r.author).toHaveText(r.summary);
-      await expect(card.locator('blockquote'), `${r.author}: no verbatim quote`).toHaveCount(0);
-      await expect(card.locator('.story-card__source a')).toHaveAttribute('href', r.url);
-      await expect(card.locator('.story-card__source a')).toHaveAttribute('target', '_blank');
+      // Initials, never a stand-in face; an approved photo would cover them (none is supplied yet)
+      await expect(card.locator('.story-card__initials')).toHaveAttribute('aria-hidden', 'true');
+      await expect(card.locator('.story-card__avatar img')).toHaveCount(0);
+      await expect(card.locator('.story-card__label')).toHaveText('The review in short, in our words');
+      await expect(card.locator('.story-card__quote--summary p').last()).toHaveText(r.summary);
+      if (r.rating) await expect(card.locator('.story-card__meta .visually-hidden')).toHaveText(`Rated ${r.rating} out of 5.`);
       await expect(card.locator('.story-card__source a')).toHaveAttribute('rel', /\bnoopener\b/);
-      // The reviewer's own profile photo once its file is supplied (named in the alt), otherwise an original illustration
-      // over the initials (nobody's likeness, no alt)
-      const src = await card.locator('.story-card__avatar img').getAttribute('src');
-      if (src.startsWith('assets/img/reviewers/')) {
-        expect(src, r.author).toBe(`assets/img/reviewers/${r.avatar}`);
-        await expect(card.locator('.story-card__avatar img')).toHaveAttribute('alt', `${r.author}’s Tripadvisor profile photo`);
-      } else {
-        expect(src, r.author).toMatch(/^assets\/img\/avatars\/guest-\d{2}\.svg$/);
-        await expect(card.locator('.story-card__avatar img')).toHaveAttribute('alt', '');
-      }
-      // Stars only where the review's own rating is recorded
-      await expect(card.locator('.stars')).toHaveCount(r.rating ? 1 : 0);
-      if (r.rating) await expect(card.locator('.story-card__stars .visually-hidden')).toHaveText(`Rated ${r.rating} out of 5`);
+      await expect(card.locator('.story-card__source a')).toHaveAccessibleName(`Read the full review by ${r.author} on Tripadvisor (opens in a new tab)`);
     }
-    // The avatars are lazy; load every one so a missing file would fail here, and check their size
-    const avatars = await cards.locator('.story-card__avatar').evaluateAll((els) =>
-      Promise.all(
-        els.map(async (el) => {
-          const img = el.querySelector('img');
-          img.loading = 'eager';
-          const loaded = await img.decode().then(() => img.naturalWidth > 0, () => false);
-          const r = el.getBoundingClientRect();
-          return { size: Math.round(r.width), loaded, round: getComputedStyle(el).borderRadius };
-        }),
-      ),
-    );
-    for (const a of avatars) {
-      expect(a.loaded).toBe(true);
-      expect(a.size).toBe(isMobile ? 48 : 56); // compact, human-scale portraits (design.md §06: 40–56 px)
-      expect(a.round).toBe('50%');
-    }
-    // No avatar strip or marquee and no backdrop photograph: the only images in the section are one avatar per card
-    expect(await section.locator('img').count()).toBe(reviews.length);
-    await expect(section.locator('.stories__avatars, .stories__marquee, [class*="strip"]')).toHaveCount(0);
-    // One action beneath the cards, to the listing
-    const cta = section.locator('.stories__cta');
-    await expect(cta).toHaveCount(1);
-    await expect(cta).toHaveText(/Read All Our Reviews on Tripadvisor/);
-    await expect(cta).toHaveAttribute('href', /^https:\/\/www\.tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200-/);
-    await expect(cta).toHaveAttribute('target', '_blank');
-    await expect(cta).toHaveAttribute('rel', /\bnoopener\b/);
-    await expect(section.locator('a.btn, a[href$="reviews/"]')).toHaveCount(0);
-    const [ctaBox, carouselBox] = await Promise.all([cta.boundingBox(), section.locator('[data-stories]').boundingBox()]);
-    expect(ctaBox.y).toBeGreaterThanOrEqual(carouselBox.y + carouselBox.height - 1);
-    // Compact: the whole section on a 1440 × 900 desktop stays well under a screen and a half (each card carries a
-    // summary label and the reviewer's stars, a line more than a bare quote)
-    if (!isMobile) expect((await section.boundingBox()).height, 'section height').toBeLessThanOrEqual(760);
-    // Deep navy ground and white review panels; nothing overflows the page
-    expect(await section.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(11, 34, 51)');
-    expect(await section.locator('.story-card__inner').first().evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+    // White, rounded cards; no giant quotation marks, no carousel controls, nothing that plays by itself
+    expect(await section.locator('.story-card__inner').first().evaluate((el) => [getComputedStyle(el).backgroundColor, parseFloat(getComputedStyle(el).borderTopLeftRadius) >= 20])).toEqual(['rgb(255, 255, 255)', true]);
+    await expect(section.locator('blockquote, [data-stories-prev], [data-stories-next], [data-stories-toggle], .is-clone')).toHaveCount(0);
+    await expect(section.locator('.stories__cta')).toHaveAttribute('href', /tripadvisor/);
   });
 
-  test('the rating is promoted here alone: the Tripadvisor band, the medallion and the duplicate figures are gone from every page', async ({ page }) => {
-    for (const path of ['/', '/about/', '/contact/', '/tours/', '/transfers/', '/reviews/']) {
-      await page.goto(`${path}?nomotion`);
-      await expect(page.locator('.ta-band, .medallion'), path).toHaveCount(0);
-      if (path !== '/reviews/') await expect(page.locator('.reviews-photo'), `${path} (the Reviews page keeps its own photo hero)`).toHaveCount(0);
-      await expect(page.locator('body'), path).not.toContainText(/Rated 5\.0 on Tripadvisor|traveller reviews|271 of them Excellent|what guests say about their days/i);
-    }
+  test('several reviews are in view at once and the rest open with a real button; without JavaScript every card shows', async ({ page, isMobile, browser }) => {
     await page.goto('/?nomotion');
-    await expect(page.locator('.band')).toHaveCount(0); // no trust band: its cues are part of the home story
-    await expect(page.locator('.stories')).toHaveCount(1);
-    // The only star rows on the home page are the reviewers' own ratings, one per review card
+    const more = page.locator('[data-stories-more]');
     const { reviews } = await import('../../src/data/reviews.mjs');
-    await expect(page.locator('main .stars')).toHaveCount(reviews.filter((r) => r.rating).length);
-    expect(await page.locator('main .stars').evaluateAll((els) => els.every((el) => el.closest('[data-story-card]')))).toBe(true);
-    await page.goto('/about/?nomotion');
-    await expect(page.locator('.stats, .themes .stars')).toHaveCount(0); // no figures strip on About
-    await expect(page.locator('main')).not.toContainText(/tripadvisor|264|5\.0/i);
-    await page.goto('/contact/?nomotion');
-    await expect(page.locator('main')).not.toContainText(/Rated \d|264/);
-    await expect(page.locator('main a[href$="reviews/"]')).toHaveCount(1);
-  });
-
-  test('the two figures count up once, from zero to the exact values, when they scroll into view; without motion they are simply there', async ({ page }) => {
-    const values = () => page.locator('[data-story-stats] [data-count]').evaluateAll((els) => els.map((el) => el.textContent));
-    const show = () => page.evaluate(() => { const r = document.querySelector('[data-story-stats]').getBoundingClientRect(); window.scrollTo({ top: window.scrollY + r.top - window.innerHeight * 0.6, behavior: 'instant' }); });
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    expect(await values(), 'zero until the figures are in view').toEqual(['0', '0.0']);
-    expect(await page.evaluate(() => window.__guestCounters.timeline.isActive())).toBe(false);
-    await show();
-    await page.waitForTimeout(700);
-    const mid = await values();
-    expect(Number(mid[0])).toBeGreaterThan(0);
-    expect(Number(mid[0])).toBeLessThan(264);
-    expect(mid[1]).toMatch(/^\d\.\d$/);
-    await expect.poll(values, { timeout: 4_000 }).toEqual(['264', '5.0']);
-    await expect(page.locator('[data-story-stats]')).toHaveAttribute('data-counted', '');
-    // Once only: leaving and returning changes nothing
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-    await page.waitForTimeout(200);
-    await show();
-    await page.waitForTimeout(400);
-    expect(await values()).toEqual(['264', '5.0']);
-    // Reduced motion and ?nomotion: the exact figures from the first paint, no timeline
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-    expect(await values()).toEqual(['264', '5.0']);
-    expect(await page.evaluate(() => window.__guestCounters)).toBeUndefined();
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/?nomotion');
-    expect(await values()).toEqual(['264', '5.0']);
-    expect(await page.evaluate(() => window.__guestCounters)).toBeUndefined();
-  });
-
-  test('with motion the carousel moves a card at a time under GSAP, loops without a visible seam, advances by itself about every 5 s, and rests for the pointer, focus, the Pause control and the page scrolling on', async ({ page, isMobile }) => {
-    test.setTimeout(90_000);
-    const errors = [];
-    page.on('pageerror', (e) => errors.push(e.message));
-    page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    const carousel = page.locator('[data-stories]');
-    await carousel.scrollIntoViewIfNeeded();
-    await expect(carousel).toHaveClass(/\bis-motion\b/);
-    expect(await page.evaluate(() => window.__stories.mounted())).toBe(true);
-    const total = await real(page).count();
-    const visible = isMobile ? 1 : 3;
-    // The cloned run at each end: hidden from assistive technology, inert, never a tab stop
-    const clones = page.locator('.stories [data-story-card].is-clone');
-    await expect(clones).toHaveCount(2 * visible);
-    expect(await clones.evaluateAll((els) => els.every((el) => el.getAttribute('aria-hidden') === 'true' && el.hasAttribute('inert')))).toBe(true);
-    expect(await clones.locator('a, button').evaluateAll((els) => els.every((el) => el.tabIndex === -1))).toBe(true);
-    // Exactly `visible` real cards in view, starting with the first; no clone on screen at rest
-    // (checked before the axe scan: on the long home page the scan can outlast the 5 s autoplay)
-    const first = await real(page).first().locator('.story-card__name').textContent();
-    expect(await inView(page)).toHaveLength(visible);
-    expect((await inView(page))[0]).toBe(first.trim());
-    const axe = await new AxeBuilder({ page }).include('.stories').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
-    expect(axe.violations.filter((v) => ['serious', 'critical'].includes(v.impact)).map((v) => v.id)).toEqual([]);
-    // Next glides exactly one card; Previous glides back; the transform alone moves the track
-    const step = await page.evaluate(() => {
-      const track = document.querySelector('[data-stories-track]');
-      return track.children[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap);
-    });
-    // The scan may have outlasted an autoplay step: start the button checks from the first card, settled
-    if ((await index(page)) !== 0) {
-      await page.locator('[data-stories-viewport]').hover();
-      await expect.poll(() => running(page)).toBe(false);
-      while ((await index(page)) !== 0) {
-        await page.locator('[data-stories-prev]').click();
-        await page.waitForTimeout(850);
-      }
-    }
-    const x0 = await trackX(page);
-    await page.locator('[data-stories-next]').click();
-    await expect.poll(() => index(page)).toBe(1);
-    await page.waitForTimeout(900);
-    expect(Math.abs((await trackX(page)) - (x0 - step))).toBeLessThan(1);
-    expect(await page.locator('[data-stories-viewport]').evaluate((el) => [getComputedStyle(el).overflowX, el.scrollLeft])).toEqual(['hidden', 0]);
-    await page.locator('[data-stories-prev]').click();
-    await expect.poll(() => index(page)).toBe(0);
-    await page.waitForTimeout(900);
-    expect(Math.abs((await trackX(page)) - x0)).toBeLessThan(1);
-    // Round the whole collection: after `total` presses the first card leads again at the same x, with no clone left in view
-    for (let i = 0; i < total; i++) {
-      await page.locator('[data-stories-next]').click();
-      await page.waitForTimeout(850);
-    }
-    await expect.poll(() => index(page)).toBe(0);
-    expect(Math.abs((await trackX(page)) - x0), 'seamless loop').toBeLessThan(1);
-    expect((await inView(page)).some((n) => n.startsWith('clone:'))).toBe(false);
-    expect((await inView(page))[0]).toBe(first.trim());
-    // Backwards past the start: the last card comes round
-    await page.locator('[data-stories-prev]').click();
-    await expect.poll(() => index(page)).toBe(total - 1);
-    await page.waitForTimeout(900);
-    expect((await inView(page))[0]).toBe((await real(page).nth(total - 1).locator('.story-card__name').textContent()).trim());
-    await page.locator('[data-stories-next]').click();
-    await expect.poll(() => index(page)).toBe(0);
-    await page.waitForTimeout(900);
-    // Autoplay: with the pointer away and nothing focused, the next card comes by itself within about six seconds
-    await page.evaluate(() => document.activeElement.blur());
-    await page.mouse.move(2, 2);
-    await expect.poll(() => running(page), { timeout: 3_000 }).toBe(true);
-    const before = await index(page);
-    await expect.poll(() => index(page), { timeout: 7_000 }).toBe((before + 1) % total);
-    // Rest while the pointer is over it
-    const box = await page.locator('[data-stories-viewport]').boundingBox();
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await expect.poll(() => running(page)).toBe(false);
-    const held = await index(page);
-    await page.waitForTimeout(5_600);
-    expect(await index(page), 'nothing moves under the pointer').toBe(held);
-    await page.mouse.move(2, 2);
-    await expect.poll(() => running(page)).toBe(true);
-    // Rest while anything inside has focus; the keyboard steps a card from the scroller
-    const viewport = page.locator('[data-stories-viewport]');
-    await viewport.focus();
-    await expect.poll(() => running(page)).toBe(false);
-    const at = await index(page);
-    await page.keyboard.press('ArrowRight');
-    await expect.poll(() => index(page)).toBe((at + 1) % total);
-    await page.keyboard.press('ArrowLeft');
-    await expect.poll(() => index(page)).toBe(at);
-    await page.evaluate(() => document.activeElement.blur());
-    await expect.poll(() => running(page)).toBe(true);
-    // The explicit control
-    const toggle = page.locator('[data-stories-toggle]');
-    await expect(toggle).toBeVisible();
-    await expect(toggle).toHaveAttribute('aria-label', 'Pause the reviews');
-    await toggle.click();
-    await expect(toggle).toHaveAttribute('aria-label', 'Play the reviews');
-    await expect(toggle).toHaveClass(/\bis-paused\b/);
-    await page.mouse.move(2, 2);
-    await page.evaluate(() => document.activeElement.blur());
-    expect(await running(page)).toBe(false);
-    await toggle.click();
-    await page.mouse.move(2, 2);
-    await page.evaluate(() => document.activeElement.blur());
-    await expect.poll(() => running(page)).toBe(true);
-    // Rest while the section is off screen
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-    await expect.poll(() => page.evaluate(() => window.__stories.state.offscreen)).toBe(true);
-    expect(await running(page)).toBe(false);
-    // Tabbing through the region reaches the arrows, the scroller, each real card's link and the control, never a clone
-    await carousel.scrollIntoViewIfNeeded();
-    await page.locator('[data-stories-prev]').focus();
-    const visited = [];
-    for (let i = 0; i < 40; i++) {
-      await page.keyboard.press('Tab');
-      const where = await page.evaluate(() => {
-        const el = document.activeElement;
-        return { inside: !!el.closest('[data-stories]'), clone: !!el.closest('.is-clone'), inCard: !!el.closest('[data-story-card]') };
-      });
-      if (!where.inside) break;
-      visited.push(where);
-    }
-    expect(visited.some((v) => v.clone), 'a clone took focus').toBe(false);
-    expect(visited.filter((v) => v.inCard).length, 'each real card’s link once').toBe(total);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-    expect(errors).toEqual([]);
-  });
-
-  test('a swipe moves the carousel a card', async ({ page, isMobile }) => {
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    const carousel = page.locator('[data-stories]');
-    await carousel.scrollIntoViewIfNeeded();
-    await expect(carousel).toHaveClass(/\bis-motion\b/);
-    const box = await page.locator('[data-stories-viewport]').boundingBox();
-    const y = box.y + box.height / 2;
-    const swipe = async (from, to) => {
-      await page.mouse.move(from, y);
-      await page.mouse.down();
-      for (let i = 1; i <= 8; i++) await page.mouse.move(from + ((to - from) * i) / 8, y + (i % 2));
-      await page.mouse.up();
-    };
-    await swipe(box.x + box.width * 0.7, box.x + box.width * 0.2);
-    await expect.poll(() => index(page), { timeout: 3_000 }).toBe(1);
-    await expect(carousel).not.toHaveClass(/is-dragging/);
-    await page.waitForTimeout(900);
-    if (isMobile) expect((await inView(page))[0]).toBe((await real(page).nth(1).locator('.story-card__name').textContent()).trim());
-    await swipe(box.x + box.width * 0.2, box.x + box.width * 0.7);
-    await expect.poll(() => index(page), { timeout: 3_000 }).toBe(0);
-    // A short drag lands back where it was
-    await swipe(box.x + box.width * 0.5, box.x + box.width * 0.5 - 12);
-    await page.waitForTimeout(900);
-    expect(await index(page)).toBe(0);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-  });
-
-  test('with reduced motion or ?nomotion the carousel is a native snapping scroller with no autoplay and no clones, and the arrows scroll it a card at a time', async ({ page, isMobile }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-    const carousel = page.locator('[data-stories]');
-    await carousel.scrollIntoViewIfNeeded();
-    await expect(carousel).not.toHaveClass(/is-motion/);
-    await expect(page.locator('.stories .is-clone')).toHaveCount(0);
-    expect(await page.evaluate(() => window.__stories.mounted())).toBe(false);
-    await expect(page.locator('[data-stories-toggle]')).toBeHidden();
-    const viewport = page.locator('[data-stories-viewport]');
-    expect(await viewport.evaluate((el) => [getComputedStyle(el).overflowX, getComputedStyle(el).scrollSnapType])).toEqual(['auto', expect.stringMatching(/^x/)]);
-    expect(await page.locator('[data-stories-track]').evaluate((el) => getComputedStyle(el).transform)).toBe('none');
-    const at = () => viewport.evaluate((el) => el.scrollLeft);
-    const x0 = await at();
-    await page.waitForTimeout(5_600);
-    expect(await at(), 'nothing moves by itself').toBe(x0);
-    const card = await real(page).first().boundingBox();
-    const box = await viewport.boundingBox();
-    if (isMobile) {
-      expect(card.width / box.width).toBeGreaterThan(0.8);
-      expect(card.width / box.width).toBeLessThan(1);
-    }
-    for (const sel of ['[data-stories-prev]', '[data-stories-next]']) await expect(page.locator(sel)).toBeVisible();
-    await page.locator('[data-stories-next]').click();
-    await expect.poll(at).toBeGreaterThan(card.width * 0.9);
-    await page.locator('[data-stories-prev]').click();
-    await expect.poll(at).toBeLessThan(2);
-    if (isMobile) {
-      // A swipe (here a horizontal wheel over the scroller) scrolls the row, not the page
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-      await page.mouse.wheel(260, 0);
-      await expect.poll(at).toBeGreaterThan(100);
-    }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/?nomotion');
-    await expect(page.locator('[data-stories]')).not.toHaveClass(/is-motion/);
-    await expect(page.locator('.stories .is-clone')).toHaveCount(0);
+    const first = isMobile ? 3 : 6;
+    await expect.poll(() => visible(page)).toBe(first);
+    await expect(more).toBeVisible();
+    await expect(more).toHaveAttribute('aria-expanded', 'false');
+    await expect(more).toHaveAttribute('aria-controls', 'stories-grid');
+    await expect(more).toHaveText(`Show ${reviews.length - first} more reviews`);
+    await more.click();
+    await expect.poll(() => visible(page)).toBe(reviews.length);
+    await expect(more).toHaveAttribute('aria-expanded', 'true');
+    await expect(more).toHaveText('Show fewer reviews');
+    // Focus moves to the first review that was hidden, so a keyboard user lands on the new cards
+    expect(await page.evaluate(() => Boolean(document.activeElement && document.activeElement.closest('[data-story-card]')))).toBe(true);
+    await more.click();
+    await expect.poll(() => visible(page)).toBe(first);
+    // No script: the whole grid, and no button
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: page.viewportSize() || undefined });
+    const plain = await ctx.newPage();
+    await plain.goto('/?nomotion');
+    await expect.poll(() => visible(plain)).toBe(reviews.length);
+    await expect(plain.locator('[data-stories-more]')).toBeHidden();
+    await ctx.close();
   });
 });
 
 test.describe('home story: The Cape, A Living Story', () => {
   // The taste composition (`taste`) is a second, unnumbered interlude between 07 and 08
-  const CHAPTERS = ['lc-sun', 'lc-scene', 'lc-moments', 'lc-film', 'lc-wild', 'lc-ways', 'lc-people', 'taste', 'lc-gallery', 'lc-scene', 'lc-ease', 'stories', 'lc-scene'];
+  // The water chapter that followed the sand journey was removed on 6 Nov 2026 (qa/surgical-change-report.md); the
+  // owner's Cape Peninsula photograph (lc-memory) continues chapter 01, and the review grid is chapter 09
+  const CHAPTERS = ['lc-scene', 'lc-memory', 'lc-moments', 'lc-film', 'lc-wild', 'lc-ways', 'lc-people', 'taste', 'lc-gallery', 'lc-scene', 'lc-ease', 'stories', 'lc-scene'];
 
-  test('tells one story in order below the hero: eleven chapters and two interludes, each with its own heading', async ({ page }) => {
+  test('tells one story in order below the hero: ten chapters and two interludes, each with its own heading', async ({ page }) => {
     await page.goto('/?nomotion');
-    // The hero is the first thing in <main>; the story is one scoped block beneath it
-    await expect(page.locator('main > :first-child')).toHaveClass(/^hero$/);
+    // The hero is the first thing in <main> (with its words, in .hero-shell, the hero's frame); the story is one scoped
+    // block beneath it
+    await expect(page.locator('main > :first-child')).toHaveClass(/^hero-shell$/);
+    expect(await page.locator('.hero-shell > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero', 'hero-services']);
     // Between them, the sand journey (partials/sand-journey.mjs; test/e2e/motion.spec.mjs)
-    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero', 'sand-journey', 'living-cape']);
+    // then the credentials strip, where the removed water chapter was
+    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero-shell', 'sand-journey', 'gt-credentials', 'living-cape']);
     expect(await page.locator('.living-cape > section').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(CHAPTERS);
     const heroBottom = await page.locator('.hero').evaluate((el) => el.getBoundingClientRect().bottom + scrollY);
     expect(await page.locator('.living-cape').evaluate((el) => el.getBoundingClientRect().top + scrollY)).toBeGreaterThanOrEqual(heroBottom - 1);
     await expect(page.locator('.hero .living-cape, .hero [data-reveal], .hero .gt-engraved-icon, .hero .lc-seal, .hero .lc-note')).toHaveCount(0);
-    // Chapter marks 01–11 in order, and the chapters' headings
-    expect(await page.locator('.living-cape .lc-mark__num').allTextContents()).toEqual(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
+    // Chapter marks 01–10 in order, and the chapters' headings
+    expect(await page.locator('.living-cape .lc-mark__num').allTextContents()).toEqual(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']);
     expect(await page.locator('.living-cape > section h2').evaluateAll((els) => els.filter((h) => !h.closest('dialog')).map((h) => h.textContent.replace(/\s+/g, ' ').trim()))).toEqual([
-      'A private day, shaped around you.',
-      'The coast road is half the adventure.',
-      'It’s not only where you go. It’s everything along the way.',
-      'Which side of the Cape will you fall in love with?',
-      'The best journeys leave room for the unexpected.',
+      'Follow the coast. Forget the clock.',
+      'The best bits? They’re yours to remember.',
+      'The big sights are great. The bits in between? Even better.',
+      'Which side of the Cape will you fall for first?',
+      'For the stories you’ll tell twice.',
       'Four ways to see the Cape with us.',
-      'The beautiful places are only part of the story.',
-      'The Cape is also something you taste.',
-      'Some memories never leave the frame.',
+      'The views do half the work. We do the rest.',
+      'Good views. Better pours.',
+      'Snapshots from real days out.',
       'Some days you wish could last a little longer.',
       'All the wonder. None of the worry.',
-      'Beautiful places. Beautifully remembered.',
-      'The Cape is waiting. Make the journey yours.',
+      'Good times, by the people who had them.',
+      'Your Cape Town story starts here.',
     ]);
     // One h1 (the hero's); every chapter heading is an h2
     await expect(page.locator('h1')).toHaveCount(1);
@@ -973,15 +798,16 @@ test.describe('home story: The Cape, A Living Story', () => {
     await page.goto('/?nomotion');
     const ways = page.locator('.lc-way__name a');
     await expect(ways).toHaveText(['Private Tours', 'Airport Transfers', 'Adventure Activities', 'Custom Journeys']);
-    await expect(page.locator('.lc-way__go')).toHaveText(['Explore Tours', 'Arrange a Transfer', 'Add an Adventure', 'Tailor Your Journey']);
+    await expect(page.locator('.lc-way__go')).toHaveText(['Explore Tours', 'Arrange My Transfer', 'Add an Adventure', 'Tailor Your Journey']);
     await expect(page.locator('.lc-way__extra')).toHaveText('The Garden Route Tour');
     for (const [i, href] of [/(^|\/)tours\/$/, /(^|\/)transfers\/#airport$/, /(^|\/)tours\/#adventure$/, /(^|\/)enquire\/\?type=tour&tour=custom$/].entries()) await expect(ways.nth(i)).toHaveAttribute('href', href);
     await expect(page.locator('.lc-way__extra')).toHaveAttribute('href', /(^|\/)packages\/$/);
-    // Each service is shown with a photograph of its own, not an icon card: three Good Times photographs and, for the
-    // adventures, a credited, openly licensed photograph of shark-cage diving off Gansbaai (the library's adventure
-    // photographs lead the quad-biking tour and the home page's adventure chapter)
+    // Each service is shown with a photograph of its own, not an icon card: Good Times photographs (the airport's is the
+    // terminal's welcome banner, traveller 11, in place of the selfie the owner disliked: the brief of 6 Nov 2026 §2.3)
+    // and, for the adventures, a credited, openly licensed photograph of shark-cage diving off Gansbaai (the library's
+    // adventure photographs lead the quad-biking tour and the home page's adventure chapter)
     await expect(page.locator('.lc-way__photo img')).toHaveCount(4);
-    expect(await page.locator('.lc-way__photo img').evaluateAll((imgs) => imgs.map((i) => i.alt))).toEqual([expect.stringMatching(/Chapman’s Peak/), expect.stringMatching(/departures/), expect.stringMatching(/shark cage/), expect.stringMatching(/Cape Point/)]);
+    expect(await page.locator('.lc-way__photo img').evaluateAll((imgs) => imgs.map((i) => i.alt))).toEqual([expect.stringMatching(/Chapman’s Peak/), expect.stringMatching(/welcome banner for Cape Town International Airport/), expect.stringMatching(/shark cage/), expect.stringMatching(/Cape Point/)]);
     await expect(page.locator('.lc-way .gt-engraved-icon:not(.lc-way__go .gt-engraved-icon)')).toHaveCount(0);
     await expect(page.locator('.lc-ways__book .lc-seal')).toHaveAttribute('href', /(^|\/)enquire\/$/);
     const { destinations } = await import('../../src/data/tours.mjs');
@@ -1039,47 +865,28 @@ test.describe('home story: The Cape, A Living Story', () => {
     for (const name of WITHDRAWN) await expect(page.locator(`img[src*="${name}-"]`), name).toHaveCount(0);
   });
 
-  test('with motion water trickles from the hero’s edge and uncovers the coast as you scroll, keeps moving while the page is still, and reverses; without motion the photograph simply stands', async ({ page }) => {
-    // Without motion: no water layer over the photograph, no timeline
-    await page.goto('/?nomotion');
-    await expect(page.locator('[data-sun-water]')).toBeHidden();
-    await expect(page.locator('[data-sun-frame] img')).toBeVisible();
-    expect(await page.evaluate(() => window.__livingCape.motion)).toBe(false);
-    expect(await page.evaluate(() => window.__livingCape.sun)).toBeUndefined();
-    // With motion: scrubbed by the scroll position
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    await page.waitForFunction(() => Boolean(window.__livingCape && window.__livingCape.sun));
-    const st = await page.evaluate(() => ({ start: window.__livingCape.sun.scrollTrigger.start, end: window.__livingCape.sun.scrollTrigger.end }));
-    const to = (y) => page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
-    const at = (f) => to(st.start + (st.end - st.start) * f);
-    const water = () => page.evaluate(() => ({ reach: window.__livingCape.water.reach, wet: window.__livingCape.water.wet }));
-    // On the way down: a stream running beside the words, the photograph not reached yet
-    await at(0.45);
-    await expect.poll(async () => (await water()).reach, { timeout: 5_000 }).toBeGreaterThan(60);
-    await expect(page.locator('[data-sun-water]')).toBeVisible();
-    expect((await water()).wet).toBe(0);
-    // The water keeps moving while the page is still
-    await page.waitForTimeout(800);
-    const shape = () => page.locator('.lc-water__body').getAttribute('d');
-    const before = await shape();
-    await page.waitForTimeout(400);
-    expect(await shape(), 'the stream is redrawn while the scroll is held').not.toBe(before);
-    // Over the photograph: wet channels and spreading fronts uncover it
-    await at(0.8);
-    await expect.poll(async () => (await water()).wet, { timeout: 5_000 }).toBeGreaterThan(5);
-    // At the end the layer is gone and the photograph stands whole, at its own scale
-    await to(st.end + 200);
-    await expect.poll(() => page.evaluate(() => window.__livingCape.sun.progress()), { timeout: 5_000 }).toBe(1);
-    await expect(page.locator('[data-sun-water]')).toBeHidden();
-    expect(await page.locator('[data-sun-frame] img').evaluate((el) => el.style.transform)).toBe('');
-    // Scrolling back up draws the water back
-    await at(0.45);
-    await expect.poll(async () => (await water()).wet, { timeout: 5_000 }).toBe(0);
-    await to(0);
-    await expect.poll(() => page.evaluate(() => window.__livingCape.sun.progress()), { timeout: 5_000 }).toBe(0);
-    // Nothing of this touches the hero or the header
-    expect(await page.evaluate(() => [...document.querySelectorAll('.hero, .hero *, .site-header .brand, .site-header .primary-nav, .site-header .primary-nav *, .header-cta, .header-cta *')].some((el) => /water|journey|thread/.test(el.style.cssText)))).toBe(false);
+  test('the water chapter is gone, with and without motion: the sand journey hands straight over to the credentials strip and the coast road, with no blank screen between', async ({ page }) => {
+    for (const motion of [false, true]) {
+      await page.emulateMedia({ reducedMotion: motion ? 'no-preference' : 'reduce' });
+      await page.goto(motion ? '/' : '/?nomotion');
+      await page.waitForFunction(() => Boolean(window.__livingCape));
+      // Nothing of it in the page or in the script's API
+      await expect(page.locator('[data-sun], [data-sun-water], [data-sun-frame], .lc-sun, .lc-water__body')).toHaveCount(0);
+      expect(await page.evaluate(() => [window.__livingCape.sun, window.__livingCape.water])).toEqual([undefined, undefined]);
+      // No scroll trigger is left pointing at a removed element
+      if (motion) expect(await page.evaluate(() => (window.ScrollTrigger ? window.ScrollTrigger.getAll().filter((t) => t.trigger && !document.contains(t.trigger)).length : 0))).toBe(0);
+      // The join: the strip starts where the sand journey ends and the coast road where the strip ends
+      const box = (sel) => page.locator(sel).evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return { top: Math.round(r.top + scrollY), bottom: Math.round(r.bottom + scrollY), h: Math.round(r.height) };
+      });
+      const [sand, strip, road] = await Promise.all([box('.sand-journey'), box('.gt-credentials'), box('.lc-scene--road')]);
+      expect(Math.abs(strip.top - sand.bottom), 'the strip follows the sand journey').toBeLessThanOrEqual(1);
+      expect(Math.abs(road.top - strip.bottom), 'the coast road follows the strip').toBeLessThanOrEqual(1);
+      const vh = page.viewportSize().height;
+      expect(strip.h, 'a strip, not a screen of empty space').toBeLessThan(Math.max(vh, 760));
+      await expect(page.locator('.gt-credentials h2')).toHaveText('Local knowledge. Professional guiding.');
+    }
   });
 
   test('with motion the journey line draws as the steps scroll into view; without motion it is simply drawn', async ({ page }) => {
@@ -1485,11 +1292,11 @@ test.describe('media system (design.md)', () => {
 });
 
 test.describe('travel concierge', () => {
-  test('desktop: the trigger opens a sheet from the right: a modal dialog with photo cards, popular days, Make It Yours and the direct line; Escape, the close button and a click outside close it', async ({ page, isMobile }) => {
+  test('desktop: the trigger opens a sheet from the right: a modal dialog with photo cards, popular days, Plan My Day and the direct line; Escape, the close button and a click outside close it', async ({ page, isMobile }) => {
     test.skip(isMobile, 'the desktop sheet; phones use the menu');
     for (const path of ['/?nomotion', '/tours/?nomotion']) {
       await page.goto(path);
-      // The navigation: five titles beside the trigger and the Make It Yours coin
+      // The navigation: five titles beside the trigger and the Plan My Day coin
       await expect(page.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
       const toggle = page.locator('[data-concierge-toggle]');
       await expect(toggle).toBeVisible();
@@ -1513,18 +1320,18 @@ test.describe('travel concierge', () => {
       // Focus moves to the first service
       await expect(panel.locator('.lc-invite__name a').first()).toBeFocused();
       // Four photograph cards, each with its badge; the four most-booked days, each with its photograph; the way to all tours
-      await expect(panel.locator('.lc-invite__name a')).toHaveText(['Explore Tours', 'Arrange a Transfer', 'Add an Adventure', 'Tailor Your Journey']);
+      await expect(panel.locator('.lc-invite__name a')).toHaveText(['Explore Tours', 'Arrange My Transfer', 'Add an Adventure', 'Tailor Your Journey']);
       await expect(panel.locator('.lc-invite__photo img')).toHaveCount(4);
       await expect(panel.locator('.lc-invite__badge svg')).toHaveCount(4);
       await expect(panel.locator('.gt-concierge__day')).toHaveCount(4);
       await expect(panel.locator('.gt-concierge__thumb img')).toHaveCount(4);
       await expect(panel.locator('.gt-concierge__all')).toHaveText('View All Private Tours');
-      await expect(panel.locator('.gt-concierge-panel__cta')).toHaveText('Make It Yours');
-      // The direct line calls or writes, exactly; WhatsApp is not offered until the number is confirmed for it
+      await expect(panel.locator('.gt-concierge-panel__cta')).toHaveText('Plan My Day');
+      // The direct line messages, calls or writes, exactly: WhatsApp first, since Good Times confirmed it (7 Nov 2026)
       const reach = panel.locator('.gt-concierge-panel__reach a');
-      expect(await reach.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['tel:+27723768432', 'mailto:info@goodtimesincapetown.co.za']);
-      await expect(reach.locator('.gt-concierge-reach__name')).toHaveText(['Call Us', 'Email Us']);
-      await expect(panel.locator('a[href*="wa.me"]')).toHaveCount(0);
+      expect(await reach.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['https://wa.me/27723768432', 'tel:+27723768432', 'mailto:hello@goodtimesincapetown.co.za']);
+      await expect(reach.locator('.gt-concierge-reach__name')).toHaveText(['WhatsApp (opens in a new tab)', 'Call Us', 'Email Us']);
+      await expect(reach.first()).toHaveAttribute('target', '_blank');
       // Every other link in the sheet answers
       const hrefs = await panel.locator('a[href]:not(.gt-concierge-panel__reach a)').evaluateAll((as) => as.map((a) => a.href));
       expect(hrefs.length).toBe(10);
@@ -1582,7 +1389,7 @@ test.describe('travel concierge', () => {
     await page.locator('[data-nav-toggle]').click();
     const rows = page.locator('#drawer .gt-concierge-row');
     await expect(rows).toHaveCount(4);
-    await expect(rows.locator('.gt-concierge-row__name')).toHaveText(['Explore Tours', 'Arrange a Transfer', 'Add an Adventure', 'Tailor Your Journey']);
+    await expect(rows.locator('.gt-concierge-row__name')).toHaveText(['Explore Tours', 'Arrange My Transfer', 'Add an Adventure', 'Tailor Your Journey']);
     await expect(rows.locator('.gt-concierge-row__photo img')).toHaveCount(4);
     for (const box of await rows.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height))) expect(box).toBeGreaterThanOrEqual(44);
     await expect(page.locator('#drawer .drawer__nav a').first()).toHaveText(/Home/);
@@ -1691,6 +1498,8 @@ test.describe('taste compositions and About’s photographs', () => {
     ['/destinations/', '[data-taste="quiet"]', ['pergola-lunch-table']],
     // About's penguins and Langa mural share the Reveal's choreography
     ['/about/', '[data-taste="reveal"]', ['boulders-beach-penguins', 'langa-mural-visit']],
+    // About's team: the Portrait (design/motion-bible.md §11)
+    ['/about/', '[data-taste="portrait"]', ['winelands-garden-lunch']],
   ];
   const settled = (sel) =>
     `[...document.querySelectorAll('${sel} [data-taste-main], ${sel} [data-taste-frame], ${sel} [data-taste-layer], ${sel} [data-taste-words] > *, ${sel} figcaption')].every((e) => { const cs = getComputedStyle(e); return Number(cs.opacity) === 1 && cs.visibility === 'visible' && cs.clipPath === 'none'; })`;
@@ -1718,7 +1527,9 @@ test.describe('taste compositions and About’s photographs', () => {
       if (path !== '/about/') expect(await page.evaluate(settled(sel)), `${path}: waiting below the fold`).toBe(false);
       await page.locator(sel).scrollIntoViewIfNeeded();
       await page.mouse.wheel(0, 200);
-      await expect.poll(() => page.evaluate(settled(sel)), { timeout: 6000 }).toBe(true);
+      // It must settle, however slowly the browser draws: in a software-rendered test browser the jump past the home
+      // page's sand scene alone takes several seconds (the approved baseline settles there after about 6 s too)
+      await expect.poll(() => page.evaluate(settled(sel)), { timeout: 15_000 }).toBe(true);
     }
     expect(errors).toEqual([]);
   });
@@ -1745,7 +1556,57 @@ test.describe('taste compositions and About’s photographs', () => {
 });
 
 test.describe('header', () => {
-  test('the header carries no contact links and Make It Yours never leaves the bar', async ({ page, isMobile }) => {
+  test('the brand lockup: the statement, exactly as supplied, directly beneath the logo at every width, inside the header; never inside the logo link', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'widths set explicitly');
+    for (const [w, h] of [[320, 640], [360, 780], [390, 844], [768, 1024], [1024, 768], [1440, 900], [1920, 1080]]) {
+      await page.setViewportSize({ width: w, height: h });
+      for (const path of ['/', '/tours/', '/contact/']) {
+        await page.goto(`${path}?nomotion`);
+        const r = await page.evaluate(() => {
+          const box = (el) => { const b = el.getBoundingClientRect(); return { x: b.x, y: b.y, w: b.width, right: b.right, bottom: b.bottom }; };
+          const header = document.querySelector('.site-header');
+          const logo = [...header.querySelectorAll('.brand .brand__logo')].find((i) => i.getClientRects().length);
+          const st = header.querySelector('.brand-lockup__statement');
+          const cs = getComputedStyle(st);
+          return { text: st.textContent, inLink: !!st.closest('a'), shown: cs.display !== 'none', logo: box(logo), st: box(st), header: box(header), size: parseFloat(cs.fontSize), family: cs.fontFamily, opacity: cs.opacity, toggle: document.querySelector('.nav-toggle').getClientRects().length ? box(document.querySelector('.nav-toggle')) : null, overflow: document.documentElement.scrollWidth - innerWidth };
+        });
+        const at = `${path} at ${w}px`;
+        expect(r.text, at).toBe('Make Unforgettable Experience In The Mother City');
+        expect(r.inLink, `${at}: beside the logo link, not in it (the aircraft's dock is measured from the link)`).toBe(false);
+        expect(r.overflow, at).toBe(0);
+        if (w < 360) {
+          expect(r.shown, `${at}: no room in the row, so left out of the header`).toBe(false);
+          continue;
+        }
+        expect(r.shown, at).toBe(true);
+        expect(r.opacity, at).toBe('1');
+        expect(r.st.y - r.logo.bottom, `${at}: directly beneath the logo`).toBeGreaterThanOrEqual(0);
+        expect(r.st.y - r.logo.bottom, `${at}: directly beneath the logo`).toBeLessThan(6);
+        expect(Math.abs(r.st.x - r.logo.x), `${at}: from the artwork's left edge`).toBeLessThan(1);
+        expect(r.st.right - r.logo.right, `${at}: about the artwork's width`).toBeLessThan(26);
+        expect(r.st.bottom, `${at}: inside the header`).toBeLessThanOrEqual(r.header.bottom);
+        if (r.toggle) expect(r.st.right, `${at}: clear of the menu button`).toBeLessThan(r.toggle.x);
+        expect(r.size, at).toBeGreaterThanOrEqual(10);
+        expect(r.size, at).toBeLessThanOrEqual(13);
+        expect(r.family, at).toMatch(/^"?DM Sans/);
+      }
+    }
+  });
+
+  test('the footer’s lockup: the reversed compact logo with the statement under it; the logo pack’s older tagline is never shown beside it', async ({ page }) => {
+    await page.goto('/tours/?nomotion');
+    const lockup = page.locator('.site-footer .brand-lockup');
+    await expect(lockup.locator('img')).toHaveAttribute('src', /gt-logo-reversed-compact\.svg$/);
+    await expect(lockup.locator('img')).toHaveAttribute('alt', 'Good Times in Cape Town');
+    await expect(lockup.locator('.brand-lockup__statement')).toHaveText('Make Unforgettable Experience In The Mother City');
+    await expect(page.locator('img[src*="gt-logo-reversed.svg"], img[src*="gt-logo-primary.svg"]')).toHaveCount(0);
+    const [img, st] = await Promise.all([lockup.locator('img').boundingBox(), lockup.locator('.brand-lockup__statement').boundingBox()]);
+    expect(st.y - (img.y + img.height)).toBeGreaterThanOrEqual(0);
+    expect(st.y - (img.y + img.height)).toBeLessThan(8);
+    expect(await lockup.locator('.brand-lockup__statement').evaluate((el) => getComputedStyle(el).color)).toBe('rgb(69, 227, 117)');
+  });
+
+  test('the header carries no contact links and Plan My Day never leaves the bar', async ({ page, isMobile }) => {
     test.skip(isMobile, 'desktop widths set explicitly');
     for (const [w, h] of [[1024, 768], [1280, 800], [1440, 900], [1600, 900], [1920, 1080]]) {
       await page.setViewportSize({ width: w, height: h });
@@ -1757,7 +1618,7 @@ test.describe('header', () => {
           return { barRight: bar.right, ctaRight: cta.right, links: document.querySelectorAll('.site-header a[href^="tel:"], .site-header a[href*="wa.me"]').length, overflow: document.documentElement.scrollWidth - innerWidth };
         });
         expect(r.overflow, `${path} at ${w}px`).toBe(0);
-        expect(r.ctaRight, `${path} at ${w}px: Make It Yours inside the bar`).toBeLessThanOrEqual(r.barRight + 1);
+        expect(r.ctaRight, `${path} at ${w}px: Plan My Day inside the bar`).toBeLessThanOrEqual(r.barRight + 1);
         expect(r.links, `${path} at ${w}px: no WhatsApp or call link in the header`).toBe(0);
       }
     }
@@ -1779,22 +1640,24 @@ test.describe('the button system', () => {
     }
   });
 
-  test('Make It Yours is the signature enquiry action: the header and the concierge carry it with the compass medallion, the phone menu as the primary button', async ({ page, isMobile }) => {
+  test('Plan My Day is the signature enquiry action: the header, the concierge and the phone menu carry it as the leaf', async ({ page, isMobile }) => {
     await page.goto('/tours/?nomotion');
     if (!isMobile) {
-      await expect(page.locator('.header-cta')).toHaveText('Make It Yours');
-      await expect(page.locator('.header-cta')).toHaveAccessibleName('Make It Yours');
+      await expect(page.locator('.header-cta')).toHaveText('Plan My Day');
+      await expect(page.locator('.header-cta')).toHaveAccessibleName('Plan My Day');
       await expect(page.locator('.header-cta')).toHaveAccessibleDescription(/Opens our enquiry form/);
-      await expect(page.locator('.header-cta .btn-coin__coin')).toHaveAttribute('aria-hidden', 'true');
+      await expect(page.locator('.header-cta .leaf-btn__shape')).toHaveAttribute('aria-hidden', 'true');
       await page.locator('[data-concierge-toggle]').click();
       const cta = page.locator('#concierge .gt-concierge-panel__cta');
-      await expect(cta).toHaveText('Make It Yours');
+      await expect(cta).toHaveText('Plan My Day');
       await expect(cta).toHaveAttribute('href', /enquire\/$/);
-      await expect(cta.locator('.btn-coin__coin')).toHaveCount(1);
+      await expect(cta.locator('.leaf-btn__shape')).toHaveCount(1);
     } else {
+      // Below 40em the header has no Plan My Day (it is in the menu and the call bar): never a squeezed leaf in the bar
+      await expect(page.locator('.header-cta')).toBeHidden();
       await page.locator('[data-nav-toggle]').click();
-      const drawer = page.locator('.drawer__footer .gt-button--primary');
-      await expect(drawer).toHaveText('Make It Yours');
+      const drawer = page.locator('.drawer__footer .leaf-btn');
+      await expect(drawer).toHaveText('Plan My Day');
       await expect(drawer).toHaveAttribute('href', /enquire\/$/);
     }
     // Nothing on the site still says Book Now or Start Planning
@@ -1804,28 +1667,36 @@ test.describe('the button system', () => {
     }
   });
 
-  test('every primary is the Good Times green plate with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
+  test('every primary is the leaf-green pill or the signature leaf, with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
     for (const path of ['/', '/tours/cape-winelands-private-tour/', '/contact/', '/destinations/', '/enquire/']) {
       await page.goto(`${path}?nomotion`);
-      const primaries = await page.locator('.gt-button--primary:visible').evaluateAll((els) => els.map((e) => { const cs = getComputedStyle(e); return { text: e.textContent.trim(), bg: cs.backgroundImage, ink: cs.color, h: e.getBoundingClientRect().height }; }));
-      expect(primaries.length, path).toBeGreaterThan(0);
+      const primaries = await page.locator('.gt-button--primary:visible').evaluateAll((els) => els.map((e) => { const cs = getComputedStyle(e); return { text: e.textContent.trim(), fill: cs.backgroundColor, ink: cs.color, radius: parseFloat(cs.borderTopLeftRadius), h: e.getBoundingClientRect().height }; }));
+      const leaves = await page.locator('.leaf-btn:visible').evaluateAll((els) => els.map((e) => { const body = e.querySelector('.leaf-btn__body'); return { text: e.textContent.trim(), fill: body && getComputedStyle(body).fill, ink: getComputedStyle(e).color, h: e.getBoundingClientRect().height }; }));
+      expect(primaries.length + leaves.length, path).toBeGreaterThan(0);
       for (const b of primaries) {
-        expect(b.bg, `${path}: ${b.text}`).toMatch(/linear-gradient/);
+        // --green-primary (#147D43), a pill (design/button-design.md)
+        expect(b.fill, `${path}: ${b.text}`).toBe('rgb(20, 125, 67)');
         expect(b.ink, `${path}: ${b.text}`).toBe('rgb(255, 255, 255)');
+        expect(b.radius, `${path}: ${b.text}`).toBeGreaterThanOrEqual(b.h / 2 - 1);
       }
-      const short = await page.locator('.gt-button:visible').evaluateAll((els) => els.filter((e) => e.getBoundingClientRect().height < 43.5).map((e) => e.textContent.trim()));
+      for (const b of leaves) {
+        // The signature leaf (design/button-tokens.md): the leaf gradient behind white words, on a 44 px target at least
+        expect(b.fill, `${path}: ${b.text}`).toMatch(/url\("?#gt-leaf-fill(-hover)?"?\)/);
+        expect(b.ink, `${path}: ${b.text}`).toBe('rgb(255, 255, 255)');
+        expect(b.h, `${path}: ${b.text}`).toBeGreaterThanOrEqual(43.5);
+      }
+      const short = await page.locator('.gt-button:visible, .leaf-btn:visible').evaluateAll((els) => els.filter((e) => e.getBoundingClientRect().height < 43.5).map((e) => e.textContent.trim()));
       expect(short, `${path}: 44 px targets`).toEqual([]);
     }
     await page.goto('/?nomotion');
     await expect(page.locator('[data-film-prev]')).toContainText('Previous');
     await expect(page.locator('[data-film-next]')).toContainText('Next');
-    await expect(page.locator('[data-stories-prev]')).toContainText('Previous');
-    await expect(page.locator('[data-stories-next]')).toContainText('Next');
+    await expect(page.locator('[data-stories-more]')).toContainText(/Show \d+ more reviews/);
     await expect(page.locator('[data-lc-prev]')).toHaveText(/Previous/);
     await expect(page.locator('[data-lc-next]')).toHaveText(/Next/);
     // Each control's name begins with the words on it (WCAG 2.5.3)
     await expect(page.locator('[data-film-prev]')).toHaveAccessibleName('Previous destination');
-    await expect(page.locator('[data-stories-next]')).toHaveAccessibleName('Next review');
+    await expect(page.locator('[data-stories-more]')).toHaveAccessibleName(/^Show \d+ more reviews$/);
   });
 
   test('from 320 px up no button’s words are clipped or pushed past the screen (the phone bar included)', async ({ page, isMobile }) => {
@@ -1835,7 +1706,7 @@ test.describe('the button system', () => {
       for (const path of ['/', '/tours/cape-town-city-private-tour/', '/packages/garden-route-private-tour/', '/contact/', '/enquire/']) {
         await page.goto(`${path}?nomotion`);
         await page.evaluate(() => scrollTo(0, 1200));
-        const clipped = await page.evaluate(() => [...document.querySelectorAll('.gt-button, .btn-coin')].filter((e) => e.offsetParent && (e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > innerWidth + 0.5)).map((e) => e.textContent.trim()));
+        const clipped = await page.evaluate(() => [...document.querySelectorAll('.gt-button, .leaf-btn')].filter((e) => e.offsetParent && (e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > innerWidth + 0.5)).map((e) => e.textContent.trim()));
         expect(clipped, `${path} at ${w}px`).toEqual([]);
       }
     }
@@ -1843,7 +1714,8 @@ test.describe('the button system', () => {
 
   test('keyboard focus is a 3 px ring with an offset; reduced motion keeps every state but moves nothing', async ({ page, isMobile }) => {
     test.skip(isMobile, 'keyboard and pointer hover');
-    await page.goto('/contact/?nomotion');
+    // A pill (the contact page's primary is the leaf since the brief of 6 Nov 2026; the FAQ keeps a primary pill)
+    await page.goto('/faq/?nomotion');
     const primary = page.locator('main .gt-button--primary').first();
     await primary.focus();
     await page.keyboard.press('Shift+Tab');
@@ -1851,10 +1723,23 @@ test.describe('the button system', () => {
     const ring = await primary.evaluate((e) => { const cs = getComputedStyle(e); return [cs.outlineStyle, cs.outlineWidth, cs.outlineOffset]; });
     expect(ring).toEqual(['solid', '3px', '3px']);
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/contact/');
+    await page.goto('/faq/');
     await primary.hover();
     expect(await primary.evaluate((e) => getComputedStyle(e).transform)).toBe('none');
     expect(await primary.evaluate((e) => getComputedStyle(e).transitionDuration.split(',').every((d) => parseFloat(d) === 0))).toBe(true);
+    // The leaf: its ring is its own outline, 3 px, ink on a light ground; transparent until keyboard focus
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/contact/?nomotion');
+    const leaf = page.locator('main .leaf-btn').first();
+    const stroke = () => leaf.locator('.leaf-btn__ring').evaluate((r) => [getComputedStyle(r).stroke, getComputedStyle(r).strokeWidth]);
+    expect((await stroke())[0]).toBe('rgba(0, 0, 0, 0)');
+    await leaf.focus();
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
+    expect(await leaf.evaluate((e) => e === document.activeElement)).toBe(true);
+    const [color, width] = await stroke();
+    expect(color).not.toBe('rgba(0, 0, 0, 0)');
+    expect(width).toBe('3px');
   });
 });
 
@@ -1891,21 +1776,28 @@ test.describe('content honesty', () => {
     }
   });
 
-  test('the published contact details are the confirmed ones and every link works: call, email and the office; no WhatsApp until it is confirmed; no pending notes', async ({ page }) => {
+  test('the published contact details are the confirmed ones and every link works: call, WhatsApp (confirmed 7 Nov 2026), email and the office; no pending notes', async ({ page }) => {
     await page.goto('/contact/?nomotion');
     const main = page.locator('main');
     await expect(main.locator('a[href="tel:+27723768432"]')).toHaveCount(1);
-    await expect(main.locator('a[href="mailto:info@goodtimesincapetown.co.za"]')).toHaveCount(1);
-    // The number is confirmed for calls only, so nothing offers WhatsApp on it yet
-    await expect(page.locator('a[href*="wa.me"], .brand-mark--whatsapp')).toHaveCount(0);
-    // Call sits under the number in its familiar colour; Tripadvisor is named plainly
+    // hello@ is the primary address and stuart@ the additional one, in that order (Good Times, 6 Nov 2026); info@ is gone
+    await expect(main.locator('a[href^="mailto:"]')).toHaveCount(2);
+    expect(await main.locator('a[href^="mailto:"]').evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['mailto:hello@goodtimesincapetown.co.za', 'mailto:stuart@goodtimesincapetown.co.za']);
+    await expect(main.locator('.contact-list__label')).toContainText(['Email us', 'Email Stuart']);
+    await expect(page.locator('a[href*="info@"]')).toHaveCount(0);
+    // The number takes calls and WhatsApp (Good Times' confirmation of 7 Nov 2026): one entry, with both actions
+    await expect(main.locator('.contact-list__label').first()).toHaveText('Phone and WhatsApp');
+    await expect(main.locator('a[href="https://wa.me/27723768432"]')).toHaveCount(1);
+    await expect(page.locator('a[href*="wa.me"]:not([href="https://wa.me/27723768432"])')).toHaveCount(0);
+    // WhatsApp and Call sit under the number in their familiar colours; Tripadvisor is named plainly
+    await expect(main.locator('.contact-action .brand-mark--whatsapp')).toHaveCount(1);
     await expect(main.locator('.contact-action .brand-mark--phone')).toHaveCount(1);
     await expect(main.locator('.contact-links a[href*="tripadvisor"]')).toHaveText(/^\s*Tripadvisor\s*\(opens in a new tab\)\s*$/);
     await expect(main).toContainText('+27 72 376 8432');
     // The office, as published, with a link to the map
     await expect(main).toContainText('277 Main Road, Adelphi Centre');
     await expect(main.locator('a[href^="https://www.google.com/maps"], a[href^="https://maps.google"], a[href*="goo.gl/maps"]')).toHaveCount(1);
-    // The footer: the call link, and the social icons with their names
+    // The footer: the call link, and the social icons with their names, WhatsApp first
     const footer = page.locator('.site-footer');
     await expect(footer.locator('a[href="tel:+27723768432"]')).toHaveCount(1);
     // Each in its network's own colours
@@ -1913,11 +1805,12 @@ test.describe('content honesty', () => {
       as.map((a) => { const m = a.querySelector('.brand-mark'); return [a.getAttribute('aria-label'), m.className.match(/brand-mark--(\w+)/)[1], getComputedStyle(m).backgroundImage !== 'none' ? 'gradient' : getComputedStyle(m).backgroundColor]; }),
     );
     expect(social.map(([, n, bg]) => [n, bg])).toEqual([
+      ['whatsapp', 'rgb(37, 211, 102)'],
       ['instagram', 'gradient'],
       ['facebook', 'rgb(8, 102, 255)'],
       ['tripadvisor', 'rgb(52, 224, 161)'],
     ]);
-    for (const [label] of social) expect(label).toMatch(/^Good Times in Cape Town on .+ \(opens in a new tab\)$/);
+    for (const [label] of social) expect(label).toMatch(/^(Good Times in Cape Town on .+|Message Good Times in Cape Town on WhatsApp) \(opens in a new tab\)$/);
     for (const path of PAGES) {
       await page.goto(`${path}?nomotion`);
       await expect(page.locator('body'), path).not.toContainText(/awaiting (our |owner |Good Times )?confirmation|once Good Times confirms|Every booking request is confirmed by/i);

@@ -22,7 +22,7 @@ export const page = {
     ${breadcrumb(crumbs)}
     <p class="eyebrow">Good to know</p>
     <h1>Frequently asked questions</h1>
-    <p class="lead">Quick answers about booking, prices, pickups and what to expect. Anything else, ask us before you book.</p>
+    <p class="lead">Quick answers about booking, prices, pickups and what to expect. Still wondering about something? Just ask us before you book.</p>
   </div>
 </section>
 

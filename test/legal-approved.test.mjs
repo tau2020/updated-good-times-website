@@ -15,7 +15,7 @@ import { readdirSync } from 'node:fs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
 import { page as privacy } from '../src/pages/privacy.mjs';
-import { termsPage, pages as termsPages, OPEN_POINTS } from '../src/pages/terms.mjs';
+import { termsPage, pages as termsPages, OPEN_POINTS, termsPublished } from '../src/pages/terms.mjs';
 import { faqs } from '../src/data/faq.mjs';
 import { releaseBlockers, releaseDecision } from '../scripts/release-gate.mjs';
 
@@ -34,7 +34,11 @@ test('nothing is approved yet, and the facts only Good Times can give stay uncon
   assert.equal(site.legal.privacyApproved, false);
   assert.equal(site.legal.termsApproved, false);
   assert.equal(site.legal.effective, '', 'no effective date before the approval');
-  assert.equal(site.legal.releaseOverride, null, 'no override of the release gate');
+  // The one override on record: the release to good-times-in-cape-town.pages.dev of 7 Nov 2026 (A1), accepting exactly
+  // the items still open; the texts themselves stay unapproved and say so
+  assert.deepEqual(site.legal.releaseOverride.accepted, ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS']);
+  assert.match(site.legal.releaseOverride.date, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(site.legal.releaseOverride.scope, /pages\.dev only/);
   for (const key of ['entity', 'informationOfficer', 'retention']) assert.equal(site.legal[key].verified, false, key);
   // The one fact taken as published: the office on the official site (to be confirmed as the address for notices).
   assert.deepEqual(site.legal.address, { text: '277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005', verified: true });
@@ -53,16 +57,22 @@ test('the Privacy Notice: says it is a draft for Good Times’ approval, and kee
   assert.doesNotMatch(approved, /Draft for Good Times|notice--warning/, 'once approved, no draft notice');
 });
 
-test('the Terms & Conditions: a draft, noindex and preview-only; the footer links them only where the page exists', () => {
+test('the Terms & Conditions: a draft and noindex until approved; built for a preview, or for production under the owner’s release override; the footer links them only where the page exists', () => {
   const html = termsPage.body({ site: production });
   assert.match(html, /<p class="notice notice--warning">[\s\S]*?Draft for Good Times’ approval\./);
   assert.equal(termsPage.noindex, true);
-  assert.equal(termsPages.length, site.preview ? 1 : 0, 'built only for a preview while unapproved');
+  assert.equal(termsPages.length, termsPublished(site) ? 1 : 0);
   const home = pages.find((p) => p.path === 'index.html');
-  // A preview build has the page, so its footer links it; a production build has neither yet.
+  // A preview build has the page, so its footer links it
   const previewFooter = footerOf(layout(home, { ...site, preview: true }));
   assert.match(previewFooter, /<a href="terms\/">Terms &amp; Conditions<\/a>/);
-  const productionFooter = footerOf(layout(home, production));
+  // So does production under the owner's release override (7 Nov 2026), which accepts the unapproved terms as a draft
+  assert.equal(termsPublished(production), true);
+  assert.match(footerOf(layout(home, production)), /<a href="terms\/">Terms &amp; Conditions<\/a>/);
+  // Without that override a production build has neither the page nor a link to it
+  const locked = { ...production, legal: { ...production.legal, releaseOverride: null } };
+  assert.equal(termsPublished(locked), false);
+  const productionFooter = footerOf(layout(home, locked));
   assert.doesNotMatch(productionFooter, /href="terms\//, 'no link to a page that is not built');
   assert.match(productionFooter, /<a href="privacy\/">Privacy<\/a>/);
   // Once approved: no draft notice, and every footer links the terms.
@@ -81,7 +91,11 @@ test('the release gate names everything still open: both approvals, the effectiv
     else assert.match(open, new RegExp(`site\\.legal\\.${key}`), key);
   }
   for (const point of OPEN_POINTS) assert.ok(open.includes(point), point);
-  assert.equal(releaseDecision(site).clear, false, 'no production release while anything is open');
+  // Clear only through the recorded override of 7 Nov 2026 (A1): every open item is one it names; without it, no release
+  const d = releaseDecision(site);
+  assert.equal(d.clear, true);
+  assert.deepEqual(d.overridden, d.open, 'everything open is accepted by name');
+  assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } }).clear, false, 'no production release without the override');
 });
 
 test('every "From" price states Good Times’ own basis, never "per adult"; the FAQ says prices are per group', () => {
@@ -100,9 +114,9 @@ test('every "From" price states Good Times’ own basis, never "per adult"; the 
   }
   assert.ok(seen > 10, 'the prices were found');
   const tours = layout(pages.find((p) => p.path === 'tours/index.html'), site);
-  assert.match(tours, /<span class="price__amount">From <span data-money="4000">R4,000<\/span><\/span><span class="price__note">per group<\/span>/);
+  assert.match(tours, /<span class="price__amount">From <span data-money="4500">R4,500<\/span><\/span><span class="price__note">per group<\/span>/);
   const tour = pages.find((p) => p.path === 'tours/cape-town-city-private-tour/index.html');
-  assert.match(tour.mobileCta({ site }), /<strong>From <span data-money="4000">R4,000<\/span><\/strong>per group/);
+  assert.match(tour.mobileCta({ site }), /<strong>From <span data-money="4500">R4,500<\/span><\/strong>per group/);
   // The basis is stated where a visitor reads how prices work.
   const faq = faqs.find((f) => /per person or per group/i.test(f.q));
   assert.ok(faq, 'the FAQ on prices');

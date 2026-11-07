@@ -1,0 +1,902 @@
+[
+ {
+  "width": 360,
+  "label": "header-and-hero",
+  "before": "360/home--01-section-hero.jpg",
+  "after": "360/home--01-section-hero.jpg",
+  "file": "qa/surgical/compare/360/header-and-hero.jpg"
+ },
+ {
+  "width": 360,
+  "label": "sand-journey",
+  "before": "360/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "after": "360/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "file": "qa/surgical/compare/360/sand-journey.jpg"
+ },
+ {
+  "width": 360,
+  "label": "after-the-sand-journey",
+  "before": "360/home--03-section-lc-sun.jpg",
+  "after": "360/home--03-section-gt-credentials.jpg",
+  "file": "qa/surgical/compare/360/after-the-sand-journey.jpg"
+ },
+ {
+  "width": 360,
+  "label": "peninsula-photograph",
+  "before": "",
+  "after": "360/home--05-section-lc-memory.jpg",
+  "file": "qa/surgical/compare/360/peninsula-photograph.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch01-coast-road",
+  "before": "360/home--04-section-lc-scene-lc-scene-road.jpg",
+  "after": "360/home--04-section-lc-scene-lc-scene-road.jpg",
+  "file": "qa/surgical/compare/360/ch01-coast-road.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch02-moments",
+  "before": "360/home--05-section-lc-moments.jpg",
+  "after": "360/home--06-section-lc-moments.jpg",
+  "file": "qa/surgical/compare/360/ch02-moments.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch03-destinations",
+  "before": "360/home--06-section-lc-film-is-enhanced.jpg",
+  "after": "360/home--07-section-lc-film-is-enhanced.jpg",
+  "file": "qa/surgical/compare/360/ch03-destinations.jpg"
+ },
+ {
+  "width": 360,
+  "label": "interlude-adventure",
+  "before": "360/home--07-section-lc-wild-lc-dark.jpg",
+  "after": "360/home--08-section-lc-wild-lc-dark.jpg",
+  "file": "qa/surgical/compare/360/interlude-adventure.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch04-ways-and-buttons",
+  "before": "360/home--08-section-lc-ways.jpg",
+  "after": "360/home--09-section-lc-ways.jpg",
+  "file": "qa/surgical/compare/360/ch04-ways-and-buttons.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch05-people",
+  "before": "360/home--09-section-lc-people.jpg",
+  "after": "360/home--10-section-lc-people.jpg",
+  "file": "qa/surgical/compare/360/ch05-people.jpg"
+ },
+ {
+  "width": 360,
+  "label": "interlude-taste",
+  "before": "360/home--10-section-taste-taste-reveal.jpg",
+  "after": "360/home--11-section-taste-taste-reveal.jpg",
+  "file": "qa/surgical/compare/360/interlude-taste.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch08-easy",
+  "before": "360/home--13-section-lc-ease.jpg",
+  "after": "360/home--14-section-lc-ease.jpg",
+  "file": "qa/surgical/compare/360/ch08-easy.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch09-reviews",
+  "before": "360/home--14-section-stories-lc-dark-reviews.jpg",
+  "after": "360/home--15-section-stories-reviews.jpg",
+  "file": "qa/surgical/compare/360/ch09-reviews.jpg"
+ },
+ {
+  "width": 360,
+  "label": "ch10-final-call",
+  "before": "360/home--15-section-lc-scene-lc-scene-invite.jpg",
+  "after": "360/home--16-section-lc-scene-lc-scene-invite.jpg",
+  "file": "qa/surgical/compare/360/ch10-final-call.jpg"
+ },
+ {
+  "width": 360,
+  "label": "footer",
+  "before": "360/home--16-footer.jpg",
+  "after": "360/home--17-footer.jpg",
+  "file": "qa/surgical/compare/360/footer.jpg"
+ },
+ {
+  "width": 360,
+  "label": "tours-banner",
+  "before": "360/tours--01-section-banner.jpg",
+  "after": "360/tours--01-section-banner.jpg",
+  "file": "qa/surgical/compare/360/tours-banner.jpg"
+ },
+ {
+  "width": 360,
+  "label": "tours-catalogue",
+  "before": "360/tours--02-section-section-section-paper.jpg",
+  "after": "360/tours--02-section-section-section-paper.jpg",
+  "file": "qa/surgical/compare/360/tours-catalogue.jpg"
+ },
+ {
+  "width": 360,
+  "label": "peninsula-title",
+  "before": "360/peninsula--02-section-tour-title.jpg",
+  "after": "360/peninsula--02-section-tour-title.jpg",
+  "file": "qa/surgical/compare/360/peninsula-title.jpg"
+ },
+ {
+  "width": 360,
+  "label": "peninsula-overview",
+  "before": "360/peninsula--03-div-tabs-is-enhanced.jpg",
+  "after": "360/peninsula--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/360/peninsula-overview.jpg"
+ },
+ {
+  "width": 360,
+  "label": "winelands-overview",
+  "before": "360/winelands--03-div-tabs-is-enhanced.jpg",
+  "after": "360/winelands--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/360/winelands-overview.jpg"
+ },
+ {
+  "width": 360,
+  "label": "transfers-banner",
+  "before": "360/transfers--01-section-banner.jpg",
+  "after": "360/transfers--01-section-banner.jpg",
+  "file": "qa/surgical/compare/360/transfers-banner.jpg"
+ },
+ {
+  "width": 360,
+  "label": "about-story",
+  "before": "360/about--02-section-section.jpg",
+  "after": "360/about--02-section-section.jpg",
+  "file": "qa/surgical/compare/360/about-story.jpg"
+ },
+ {
+  "width": 360,
+  "label": "reviews-page",
+  "before": "360/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "after": "360/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "file": "qa/surgical/compare/360/reviews-page.jpg"
+ },
+ {
+  "width": 360,
+  "label": "contact",
+  "before": "360/contact--01-section-page-head.jpg",
+  "after": "360/contact--01-section-page-head.jpg",
+  "file": "qa/surgical/compare/360/contact.jpg"
+ },
+ {
+  "width": 360,
+  "label": "booking-form",
+  "before": "360/enquire-tour--02-section-section-enquiry-section.jpg",
+  "after": "360/enquire-tour--02-section-section-enquiry-section.jpg",
+  "file": "qa/surgical/compare/360/booking-form.jpg"
+ },
+ {
+  "width": 360,
+  "label": "motion-sand-journey-exit",
+  "file": "qa/surgical/compare/360/motion-sand-journey-exit.jpg"
+ },
+ {
+  "width": 390,
+  "label": "header-and-hero",
+  "before": "390/home--01-section-hero.jpg",
+  "after": "390/home--01-section-hero.jpg",
+  "file": "qa/surgical/compare/390/header-and-hero.jpg"
+ },
+ {
+  "width": 390,
+  "label": "sand-journey",
+  "before": "390/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "after": "390/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "file": "qa/surgical/compare/390/sand-journey.jpg"
+ },
+ {
+  "width": 390,
+  "label": "after-the-sand-journey",
+  "before": "390/home--03-section-lc-sun.jpg",
+  "after": "390/home--03-section-gt-credentials.jpg",
+  "file": "qa/surgical/compare/390/after-the-sand-journey.jpg"
+ },
+ {
+  "width": 390,
+  "label": "peninsula-photograph",
+  "before": "",
+  "after": "390/home--05-section-lc-memory.jpg",
+  "file": "qa/surgical/compare/390/peninsula-photograph.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch01-coast-road",
+  "before": "390/home--04-section-lc-scene-lc-scene-road.jpg",
+  "after": "390/home--04-section-lc-scene-lc-scene-road.jpg",
+  "file": "qa/surgical/compare/390/ch01-coast-road.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch02-moments",
+  "before": "390/home--05-section-lc-moments.jpg",
+  "after": "390/home--06-section-lc-moments.jpg",
+  "file": "qa/surgical/compare/390/ch02-moments.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch03-destinations",
+  "before": "390/home--06-section-lc-film-is-enhanced.jpg",
+  "after": "390/home--07-section-lc-film-is-enhanced.jpg",
+  "file": "qa/surgical/compare/390/ch03-destinations.jpg"
+ },
+ {
+  "width": 390,
+  "label": "interlude-adventure",
+  "before": "390/home--07-section-lc-wild-lc-dark.jpg",
+  "after": "390/home--08-section-lc-wild-lc-dark.jpg",
+  "file": "qa/surgical/compare/390/interlude-adventure.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch04-ways-and-buttons",
+  "before": "390/home--08-section-lc-ways.jpg",
+  "after": "390/home--09-section-lc-ways.jpg",
+  "file": "qa/surgical/compare/390/ch04-ways-and-buttons.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch05-people",
+  "before": "390/home--09-section-lc-people.jpg",
+  "after": "390/home--10-section-lc-people.jpg",
+  "file": "qa/surgical/compare/390/ch05-people.jpg"
+ },
+ {
+  "width": 390,
+  "label": "interlude-taste",
+  "before": "390/home--10-section-taste-taste-reveal.jpg",
+  "after": "390/home--11-section-taste-taste-reveal.jpg",
+  "file": "qa/surgical/compare/390/interlude-taste.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch08-easy",
+  "before": "390/home--13-section-lc-ease.jpg",
+  "after": "390/home--14-section-lc-ease.jpg",
+  "file": "qa/surgical/compare/390/ch08-easy.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch09-reviews",
+  "before": "390/home--14-section-stories-lc-dark-reviews.jpg",
+  "after": "390/home--15-section-stories-reviews.jpg",
+  "file": "qa/surgical/compare/390/ch09-reviews.jpg"
+ },
+ {
+  "width": 390,
+  "label": "ch10-final-call",
+  "before": "390/home--15-section-lc-scene-lc-scene-invite.jpg",
+  "after": "390/home--16-section-lc-scene-lc-scene-invite.jpg",
+  "file": "qa/surgical/compare/390/ch10-final-call.jpg"
+ },
+ {
+  "width": 390,
+  "label": "footer",
+  "before": "390/home--16-footer.jpg",
+  "after": "390/home--17-footer.jpg",
+  "file": "qa/surgical/compare/390/footer.jpg"
+ },
+ {
+  "width": 390,
+  "label": "tours-banner",
+  "before": "390/tours--01-section-banner.jpg",
+  "after": "390/tours--01-section-banner.jpg",
+  "file": "qa/surgical/compare/390/tours-banner.jpg"
+ },
+ {
+  "width": 390,
+  "label": "tours-catalogue",
+  "before": "390/tours--02-section-section-section-paper.jpg",
+  "after": "390/tours--02-section-section-section-paper.jpg",
+  "file": "qa/surgical/compare/390/tours-catalogue.jpg"
+ },
+ {
+  "width": 390,
+  "label": "peninsula-title",
+  "before": "390/peninsula--02-section-tour-title.jpg",
+  "after": "390/peninsula--02-section-tour-title.jpg",
+  "file": "qa/surgical/compare/390/peninsula-title.jpg"
+ },
+ {
+  "width": 390,
+  "label": "peninsula-overview",
+  "before": "390/peninsula--03-div-tabs-is-enhanced.jpg",
+  "after": "390/peninsula--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/390/peninsula-overview.jpg"
+ },
+ {
+  "width": 390,
+  "label": "winelands-overview",
+  "before": "390/winelands--03-div-tabs-is-enhanced.jpg",
+  "after": "390/winelands--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/390/winelands-overview.jpg"
+ },
+ {
+  "width": 390,
+  "label": "transfers-banner",
+  "before": "390/transfers--01-section-banner.jpg",
+  "after": "390/transfers--01-section-banner.jpg",
+  "file": "qa/surgical/compare/390/transfers-banner.jpg"
+ },
+ {
+  "width": 390,
+  "label": "about-story",
+  "before": "390/about--02-section-section.jpg",
+  "after": "390/about--02-section-section.jpg",
+  "file": "qa/surgical/compare/390/about-story.jpg"
+ },
+ {
+  "width": 390,
+  "label": "reviews-page",
+  "before": "390/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "after": "390/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "file": "qa/surgical/compare/390/reviews-page.jpg"
+ },
+ {
+  "width": 390,
+  "label": "contact",
+  "before": "390/contact--01-section-page-head.jpg",
+  "after": "390/contact--01-section-page-head.jpg",
+  "file": "qa/surgical/compare/390/contact.jpg"
+ },
+ {
+  "width": 390,
+  "label": "booking-form",
+  "before": "390/enquire-tour--02-section-section-enquiry-section.jpg",
+  "after": "390/enquire-tour--02-section-section-enquiry-section.jpg",
+  "file": "qa/surgical/compare/390/booking-form.jpg"
+ },
+ {
+  "width": 390,
+  "label": "motion-sand-journey-exit",
+  "file": "qa/surgical/compare/390/motion-sand-journey-exit.jpg"
+ },
+ {
+  "width": 768,
+  "label": "header-and-hero",
+  "before": "768/home--01-section-hero.jpg",
+  "after": "768/home--01-section-hero.jpg",
+  "file": "qa/surgical/compare/768/header-and-hero.jpg"
+ },
+ {
+  "width": 768,
+  "label": "sand-journey",
+  "before": "768/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "after": "768/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "file": "qa/surgical/compare/768/sand-journey.jpg"
+ },
+ {
+  "width": 768,
+  "label": "after-the-sand-journey",
+  "before": "768/home--03-section-lc-sun.jpg",
+  "after": "768/home--03-section-gt-credentials.jpg",
+  "file": "qa/surgical/compare/768/after-the-sand-journey.jpg"
+ },
+ {
+  "width": 768,
+  "label": "peninsula-photograph",
+  "before": "",
+  "after": "768/home--05-section-lc-memory.jpg",
+  "file": "qa/surgical/compare/768/peninsula-photograph.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch01-coast-road",
+  "before": "768/home--04-section-lc-scene-lc-scene-road.jpg",
+  "after": "768/home--04-section-lc-scene-lc-scene-road.jpg",
+  "file": "qa/surgical/compare/768/ch01-coast-road.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch02-moments",
+  "before": "768/home--05-section-lc-moments.jpg",
+  "after": "768/home--06-section-lc-moments.jpg",
+  "file": "qa/surgical/compare/768/ch02-moments.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch03-destinations",
+  "before": "768/home--06-section-lc-film-is-enhanced.jpg",
+  "after": "768/home--07-section-lc-film-is-enhanced.jpg",
+  "file": "qa/surgical/compare/768/ch03-destinations.jpg"
+ },
+ {
+  "width": 768,
+  "label": "interlude-adventure",
+  "before": "768/home--07-section-lc-wild-lc-dark.jpg",
+  "after": "768/home--08-section-lc-wild-lc-dark.jpg",
+  "file": "qa/surgical/compare/768/interlude-adventure.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch04-ways-and-buttons",
+  "before": "768/home--08-section-lc-ways.jpg",
+  "after": "768/home--09-section-lc-ways.jpg",
+  "file": "qa/surgical/compare/768/ch04-ways-and-buttons.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch05-people",
+  "before": "768/home--09-section-lc-people.jpg",
+  "after": "768/home--10-section-lc-people.jpg",
+  "file": "qa/surgical/compare/768/ch05-people.jpg"
+ },
+ {
+  "width": 768,
+  "label": "interlude-taste",
+  "before": "768/home--10-section-taste-taste-reveal.jpg",
+  "after": "768/home--11-section-taste-taste-reveal.jpg",
+  "file": "qa/surgical/compare/768/interlude-taste.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch08-easy",
+  "before": "768/home--13-section-lc-ease.jpg",
+  "after": "768/home--14-section-lc-ease.jpg",
+  "file": "qa/surgical/compare/768/ch08-easy.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch09-reviews",
+  "before": "768/home--14-section-stories-lc-dark-reviews.jpg",
+  "after": "768/home--15-section-stories-reviews.jpg",
+  "file": "qa/surgical/compare/768/ch09-reviews.jpg"
+ },
+ {
+  "width": 768,
+  "label": "ch10-final-call",
+  "before": "768/home--15-section-lc-scene-lc-scene-invite.jpg",
+  "after": "768/home--16-section-lc-scene-lc-scene-invite.jpg",
+  "file": "qa/surgical/compare/768/ch10-final-call.jpg"
+ },
+ {
+  "width": 768,
+  "label": "footer",
+  "before": "768/home--16-footer.jpg",
+  "after": "768/home--17-footer.jpg",
+  "file": "qa/surgical/compare/768/footer.jpg"
+ },
+ {
+  "width": 768,
+  "label": "tours-banner",
+  "before": "768/tours--01-section-banner.jpg",
+  "after": "768/tours--01-section-banner.jpg",
+  "file": "qa/surgical/compare/768/tours-banner.jpg"
+ },
+ {
+  "width": 768,
+  "label": "tours-catalogue",
+  "before": "768/tours--02-section-section-section-paper.jpg",
+  "after": "768/tours--02-section-section-section-paper.jpg",
+  "file": "qa/surgical/compare/768/tours-catalogue.jpg"
+ },
+ {
+  "width": 768,
+  "label": "peninsula-title",
+  "before": "768/peninsula--02-section-tour-title.jpg",
+  "after": "768/peninsula--02-section-tour-title.jpg",
+  "file": "qa/surgical/compare/768/peninsula-title.jpg"
+ },
+ {
+  "width": 768,
+  "label": "peninsula-overview",
+  "before": "768/peninsula--03-div-tabs-is-enhanced.jpg",
+  "after": "768/peninsula--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/768/peninsula-overview.jpg"
+ },
+ {
+  "width": 768,
+  "label": "winelands-overview",
+  "before": "768/winelands--03-div-tabs-is-enhanced.jpg",
+  "after": "768/winelands--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/768/winelands-overview.jpg"
+ },
+ {
+  "width": 768,
+  "label": "transfers-banner",
+  "before": "768/transfers--01-section-banner.jpg",
+  "after": "768/transfers--01-section-banner.jpg",
+  "file": "qa/surgical/compare/768/transfers-banner.jpg"
+ },
+ {
+  "width": 768,
+  "label": "about-story",
+  "before": "768/about--02-section-section.jpg",
+  "after": "768/about--02-section-section.jpg",
+  "file": "qa/surgical/compare/768/about-story.jpg"
+ },
+ {
+  "width": 768,
+  "label": "reviews-page",
+  "before": "768/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "after": "768/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "file": "qa/surgical/compare/768/reviews-page.jpg"
+ },
+ {
+  "width": 768,
+  "label": "contact",
+  "before": "768/contact--01-section-page-head.jpg",
+  "after": "768/contact--01-section-page-head.jpg",
+  "file": "qa/surgical/compare/768/contact.jpg"
+ },
+ {
+  "width": 768,
+  "label": "booking-form",
+  "before": "768/enquire-tour--02-section-section-enquiry-section.jpg",
+  "after": "768/enquire-tour--02-section-section-enquiry-section.jpg",
+  "file": "qa/surgical/compare/768/booking-form.jpg"
+ },
+ {
+  "width": 768,
+  "label": "motion-sand-journey-exit",
+  "file": "qa/surgical/compare/768/motion-sand-journey-exit.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "header-and-hero",
+  "before": "1024/home--01-section-hero.jpg",
+  "after": "1024/home--01-section-hero.jpg",
+  "file": "qa/surgical/compare/1024/header-and-hero.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "sand-journey",
+  "before": "1024/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "after": "1024/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "file": "qa/surgical/compare/1024/sand-journey.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "after-the-sand-journey",
+  "before": "1024/home--03-section-lc-sun.jpg",
+  "after": "1024/home--03-section-gt-credentials.jpg",
+  "file": "qa/surgical/compare/1024/after-the-sand-journey.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "peninsula-photograph",
+  "before": "",
+  "after": "1024/home--05-section-lc-memory.jpg",
+  "file": "qa/surgical/compare/1024/peninsula-photograph.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch01-coast-road",
+  "before": "1024/home--04-section-lc-scene-lc-scene-road.jpg",
+  "after": "1024/home--04-section-lc-scene-lc-scene-road.jpg",
+  "file": "qa/surgical/compare/1024/ch01-coast-road.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch02-moments",
+  "before": "1024/home--05-section-lc-moments.jpg",
+  "after": "1024/home--06-section-lc-moments.jpg",
+  "file": "qa/surgical/compare/1024/ch02-moments.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch03-destinations",
+  "before": "1024/home--06-section-lc-film-is-enhanced.jpg",
+  "after": "1024/home--07-section-lc-film-is-enhanced.jpg",
+  "file": "qa/surgical/compare/1024/ch03-destinations.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "interlude-adventure",
+  "before": "1024/home--07-section-lc-wild-lc-dark.jpg",
+  "after": "1024/home--08-section-lc-wild-lc-dark.jpg",
+  "file": "qa/surgical/compare/1024/interlude-adventure.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch04-ways-and-buttons",
+  "before": "1024/home--08-section-lc-ways.jpg",
+  "after": "1024/home--09-section-lc-ways.jpg",
+  "file": "qa/surgical/compare/1024/ch04-ways-and-buttons.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch05-people",
+  "before": "1024/home--09-section-lc-people.jpg",
+  "after": "1024/home--10-section-lc-people.jpg",
+  "file": "qa/surgical/compare/1024/ch05-people.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "interlude-taste",
+  "before": "1024/home--10-section-taste-taste-reveal.jpg",
+  "after": "1024/home--11-section-taste-taste-reveal.jpg",
+  "file": "qa/surgical/compare/1024/interlude-taste.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch08-easy",
+  "before": "1024/home--13-section-lc-ease.jpg",
+  "after": "1024/home--14-section-lc-ease.jpg",
+  "file": "qa/surgical/compare/1024/ch08-easy.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch09-reviews",
+  "before": "1024/home--14-section-stories-lc-dark-reviews.jpg",
+  "after": "1024/home--15-section-stories-reviews.jpg",
+  "file": "qa/surgical/compare/1024/ch09-reviews.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "ch10-final-call",
+  "before": "1024/home--15-section-lc-scene-lc-scene-invite.jpg",
+  "after": "1024/home--16-section-lc-scene-lc-scene-invite.jpg",
+  "file": "qa/surgical/compare/1024/ch10-final-call.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "footer",
+  "before": "1024/home--16-footer.jpg",
+  "after": "1024/home--17-footer.jpg",
+  "file": "qa/surgical/compare/1024/footer.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "tours-banner",
+  "before": "1024/tours--01-section-banner.jpg",
+  "after": "1024/tours--01-section-banner.jpg",
+  "file": "qa/surgical/compare/1024/tours-banner.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "tours-catalogue",
+  "before": "1024/tours--02-section-section-section-paper.jpg",
+  "after": "1024/tours--02-section-section-section-paper.jpg",
+  "file": "qa/surgical/compare/1024/tours-catalogue.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "peninsula-title",
+  "before": "1024/peninsula--02-section-tour-title.jpg",
+  "after": "1024/peninsula--02-section-tour-title.jpg",
+  "file": "qa/surgical/compare/1024/peninsula-title.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "peninsula-overview",
+  "before": "1024/peninsula--03-div-tabs-is-enhanced.jpg",
+  "after": "1024/peninsula--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/1024/peninsula-overview.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "winelands-overview",
+  "before": "1024/winelands--03-div-tabs-is-enhanced.jpg",
+  "after": "1024/winelands--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/1024/winelands-overview.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "transfers-banner",
+  "before": "1024/transfers--01-section-banner.jpg",
+  "after": "1024/transfers--01-section-banner.jpg",
+  "file": "qa/surgical/compare/1024/transfers-banner.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "about-story",
+  "before": "1024/about--02-section-section.jpg",
+  "after": "1024/about--02-section-section.jpg",
+  "file": "qa/surgical/compare/1024/about-story.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "reviews-page",
+  "before": "1024/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "after": "1024/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "file": "qa/surgical/compare/1024/reviews-page.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "contact",
+  "before": "1024/contact--01-section-page-head.jpg",
+  "after": "1024/contact--01-section-page-head.jpg",
+  "file": "qa/surgical/compare/1024/contact.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "booking-form",
+  "before": "1024/enquire-tour--02-section-section-enquiry-section.jpg",
+  "after": "1024/enquire-tour--02-section-section-enquiry-section.jpg",
+  "file": "qa/surgical/compare/1024/booking-form.jpg"
+ },
+ {
+  "width": 1024,
+  "label": "motion-sand-journey-exit",
+  "file": "qa/surgical/compare/1024/motion-sand-journey-exit.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "header-and-hero",
+  "before": "1440/home--01-section-hero.jpg",
+  "after": "1440/home--01-section-hero.jpg",
+  "file": "qa/surgical/compare/1440/header-and-hero.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "sand-journey",
+  "before": "1440/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "after": "1440/home--02-section-sand-journey-is-static-sand-journey.jpg",
+  "file": "qa/surgical/compare/1440/sand-journey.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "after-the-sand-journey",
+  "before": "1440/home--03-section-lc-sun.jpg",
+  "after": "1440/home--03-section-gt-credentials.jpg",
+  "file": "qa/surgical/compare/1440/after-the-sand-journey.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "peninsula-photograph",
+  "before": "",
+  "after": "1440/home--05-section-lc-memory.jpg",
+  "file": "qa/surgical/compare/1440/peninsula-photograph.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch01-coast-road",
+  "before": "1440/home--04-section-lc-scene-lc-scene-road.jpg",
+  "after": "1440/home--04-section-lc-scene-lc-scene-road.jpg",
+  "file": "qa/surgical/compare/1440/ch01-coast-road.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch02-moments",
+  "before": "1440/home--05-section-lc-moments.jpg",
+  "after": "1440/home--06-section-lc-moments.jpg",
+  "file": "qa/surgical/compare/1440/ch02-moments.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch03-destinations",
+  "before": "1440/home--06-section-lc-film-is-enhanced.jpg",
+  "after": "1440/home--07-section-lc-film-is-enhanced.jpg",
+  "file": "qa/surgical/compare/1440/ch03-destinations.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "interlude-adventure",
+  "before": "1440/home--07-section-lc-wild-lc-dark.jpg",
+  "after": "1440/home--08-section-lc-wild-lc-dark.jpg",
+  "file": "qa/surgical/compare/1440/interlude-adventure.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch04-ways-and-buttons",
+  "before": "1440/home--08-section-lc-ways.jpg",
+  "after": "1440/home--09-section-lc-ways.jpg",
+  "file": "qa/surgical/compare/1440/ch04-ways-and-buttons.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch05-people",
+  "before": "1440/home--09-section-lc-people.jpg",
+  "after": "1440/home--10-section-lc-people.jpg",
+  "file": "qa/surgical/compare/1440/ch05-people.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "interlude-taste",
+  "before": "1440/home--10-section-taste-taste-reveal.jpg",
+  "after": "1440/home--11-section-taste-taste-reveal.jpg",
+  "file": "qa/surgical/compare/1440/interlude-taste.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch08-easy",
+  "before": "1440/home--13-section-lc-ease.jpg",
+  "after": "1440/home--14-section-lc-ease.jpg",
+  "file": "qa/surgical/compare/1440/ch08-easy.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch09-reviews",
+  "before": "1440/home--14-section-stories-lc-dark-reviews.jpg",
+  "after": "1440/home--15-section-stories-reviews.jpg",
+  "file": "qa/surgical/compare/1440/ch09-reviews.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "ch10-final-call",
+  "before": "1440/home--15-section-lc-scene-lc-scene-invite.jpg",
+  "after": "1440/home--16-section-lc-scene-lc-scene-invite.jpg",
+  "file": "qa/surgical/compare/1440/ch10-final-call.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "footer",
+  "before": "1440/home--16-footer.jpg",
+  "after": "1440/home--17-footer.jpg",
+  "file": "qa/surgical/compare/1440/footer.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "tours-banner",
+  "before": "1440/tours--01-section-banner.jpg",
+  "after": "1440/tours--01-section-banner.jpg",
+  "file": "qa/surgical/compare/1440/tours-banner.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "tours-catalogue",
+  "before": "1440/tours--02-section-section-section-paper.jpg",
+  "after": "1440/tours--02-section-section-section-paper.jpg",
+  "file": "qa/surgical/compare/1440/tours-catalogue.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "peninsula-title",
+  "before": "1440/peninsula--02-section-tour-title.jpg",
+  "after": "1440/peninsula--02-section-tour-title.jpg",
+  "file": "qa/surgical/compare/1440/peninsula-title.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "peninsula-overview",
+  "before": "1440/peninsula--03-div-tabs-is-enhanced.jpg",
+  "after": "1440/peninsula--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/1440/peninsula-overview.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "winelands-overview",
+  "before": "1440/winelands--03-div-tabs-is-enhanced.jpg",
+  "after": "1440/winelands--03-div-tabs-is-enhanced.jpg",
+  "file": "qa/surgical/compare/1440/winelands-overview.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "transfers-banner",
+  "before": "1440/transfers--01-section-banner.jpg",
+  "after": "1440/transfers--01-section-banner.jpg",
+  "file": "qa/surgical/compare/1440/transfers-banner.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "about-story",
+  "before": "1440/about--02-section-section.jpg",
+  "after": "1440/about--02-section-section.jpg",
+  "file": "qa/surgical/compare/1440/about-story.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "reviews-page",
+  "before": "1440/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "after": "1440/reviews--01-section-reviews-photo-reviews-photo-page.jpg",
+  "file": "qa/surgical/compare/1440/reviews-page.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "contact",
+  "before": "1440/contact--01-section-page-head.jpg",
+  "after": "1440/contact--01-section-page-head.jpg",
+  "file": "qa/surgical/compare/1440/contact.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "booking-form",
+  "before": "1440/enquire-tour--02-section-section-enquiry-section.jpg",
+  "after": "1440/enquire-tour--02-section-section-enquiry-section.jpg",
+  "file": "qa/surgical/compare/1440/booking-form.jpg"
+ },
+ {
+  "width": 1440,
+  "label": "motion-sand-journey-exit",
+  "file": "qa/surgical/compare/1440/motion-sand-journey-exit.jpg"
+ }
+]

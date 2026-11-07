@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 import { ENVIRONMENTS } from '../scripts/cloudflare/project.mjs';
 import { smoke } from '../scripts/cloudflare/smoke.mjs';
 import { startPagesDev } from './helpers/pages-dev.mjs';
+import { termsPublished } from '../src/pages/terms.mjs';
 import { startNeonStandIn } from './helpers/neon-standin.mjs';
 import { startResendStandIn } from './helpers/resend-standin.mjs';
 import { site } from '../src/data/site.mjs';
@@ -82,9 +83,9 @@ for (const env of ['preview', 'production']) {
     const dev = await startPagesDev({ dir: build(vars), bindings: bindings(vars) });
     try {
       const { results } = await smoke({ url: dev.url, env });
-      // Until Good Times approves the booking terms, a production build does not publish them (the release gate
-      // stops a production deployment before then), so that one check is expected to find nothing.
-      const unpublished = env === 'production' && !site.legal.termsApproved ? ['page /terms/'] : [];
+      // A production build publishes the booking terms once approved, or as a marked draft under the owner's release
+      // override (src/pages/terms.mjs › termsPublished); otherwise that one check is expected to find nothing.
+      const unpublished = env === 'production' && !termsPublished({ ...site, preview: false }) ? ['page /terms/'] : [];
       const failed = results.filter((r) => !r.ok && !unpublished.includes(r.name));
       assert.deepEqual(failed.map((r) => `${r.name}: ${r.detail}`), []);
       for (const name of unpublished) assert.equal(results.find((r) => r.name === name)?.detail, 'status 404', `${name}: not published before approval`);

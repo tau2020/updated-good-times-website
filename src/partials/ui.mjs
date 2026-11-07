@@ -32,6 +32,11 @@ const ICONS = {
   users:
     '<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.8 14.2c2.3.2 4 1.8 4.6 4.8"/>',
   user: '<circle cx="12" cy="8.5" r="3.6"/><path d="M5 20c.8-3.9 3.6-6.2 7-6.2s6.2 2.3 7 6.2"/>',
+  // A small group: one friend in front, two behind (the hero's Custom Journeys)
+  group:
+    '<circle cx="12" cy="8.4" r="2.9"/><path d="M6.7 19.5c.5-3.1 2.6-5 5.3-5s4.8 1.9 5.3 5"/><circle cx="5.7" cy="9.9" r="2.1"/><path d="M2.6 17.4c.3-2.2 1.6-3.5 3.4-3.6"/><circle cx="18.3" cy="9.9" r="2.1"/><path d="M21.4 17.4c-.3-2.2-1.6-3.5-3.4-3.6"/>',
+  camera:
+    '<path d="M3.5 9a1.5 1.5 0 0 1 1.5-1.5h2.6l1.5-2h5.8l1.5 2H19A1.5 1.5 0 0 1 20.5 9v8a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.8" r="3.3"/><path d="M17.3 10.3h.01"/>',
   compass:
     '<circle cx="12" cy="12" r="8.5"/><path d="M15.2 8.8l-1.9 5-5 1.9 1.9-5z"/>',
   chat: '<path d="M4.5 18.5V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/>',
@@ -124,41 +129,60 @@ export function ratingRow({ rating, reviews, url = '', label = 'Tripadvisor revi
  */
 const VARIANT = { gold: 'primary', primary: 'primary', outline: 'secondary', secondary: 'secondary', ghost: 'secondary gt-button--on-dark', tertiary: 'tertiary', '': 'secondary' };
 export function button({ href, label, variant = '', icon: ic = '', cls = '', size = '', attrs = '' }) {
+  if (label === SIGNATURE_CTA) {
+    const block = /gt-button--block/.test(cls);
+    return leafButton({ href, label, size: [block && 'block', size].filter(Boolean).join(' '), cls: cls.replace(/\bgt-button--block\b/, '').trim(), attrs: attrs.replace(SIGNATURE_ATTRS, '').trim() });
+  }
   const v = VARIANT[variant] ?? 'secondary';
   const classes = ['btn', 'gt-button', ...v.split(' ').map((x) => (x.startsWith('gt-') ? x : `gt-button--${x}`)), size && `gt-button--${size}`, cls].filter(Boolean).join(' ');
   return `<a class="${classes}" href="${esc(href)}"${attrs ? ` ${attrs}` : ''}>${ic ? icon(ic) : ''}<span>${esc(label)}</span></a>`;
 }
 
 /**
- * Ornament for the Book Now coin (D49): an eight-petal rosette in a dotted ring,
- * fine strokes only, drawn in currentColor so the coin's gold sets its tone.
- */
-const COIN_ORNAMENT = (() => {
-  const petal = 'M24 24C20.9 20.6 20.7 14.6 24 10.2C27.3 14.6 27.1 20.6 24 24Z';
-  const petals = Array.from({ length: 8 }, (_, i) => `<path d="${petal}"${i ? ` transform="rotate(${i * 45} 24 24)"` : ''}/>`).join('');
-  const dots = Array.from({ length: 8 }, (_, i) => {
-    const a = ((i * 45 + 22.5) * Math.PI) / 180;
-    return `<circle cx="${(24 + 18.4 * Math.cos(a)).toFixed(2)}" cy="${(24 + 18.4 * Math.sin(a)).toFixed(2)}" r=".85" fill="currentColor" stroke="none"/>`;
-  }).join('');
-  return `<svg class="btn-coin__ornament" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="21.6" stroke-opacity=".5"/><circle cx="24" cy="24" r="15.4" stroke-dasharray="1 2.7" stroke-opacity=".8"/>${petals}${dots}<circle cx="24" cy="24" r="3.6" stroke-opacity=".9"/><circle cx="24" cy="24" r="1.3" fill="currentColor" stroke="none"/></svg>`;
-})();
-
-/**
- * The brand's signature call to action (owner, 25 Oct 2026): "Make It Yours" replaces "Start Planning" on the global
- * booking action only (the header, the concierge, the phone menu and bar, the footer). Every other button names what it
- * does. Each signature link is described by one hidden line (layout.mjs) saying where it leads, since the words alone
+ * The brand's signature call to action: "Plan My Day" (the owner's brief of 6 Nov 2026, which retires "Make It Yours", itself
+ * the 25 Oct 2026 replacement of "Start Planning") on the global booking action only (the header, the concierge, the phone
+ * menu and bar, the footer). Every other button names what it does. Each signature link is described by one hidden line (layout.mjs) saying where it leads, since the words alone
  * don't; the visible label stays the accessible name.
  */
-export const SIGNATURE_CTA = 'Make It Yours';
+export const SIGNATURE_CTA = 'Plan My Day';
 export const SIGNATURE_DESC_ID = 'signature-cta-desc';
 export const signatureDesc = () =>
   `<p id="${SIGNATURE_DESC_ID}" hidden>Opens our enquiry form. We reply with availability and a personalised quote; nothing is booked until we confirm it with you.</p>`;
 export const SIGNATURE_ATTRS = `aria-describedby="${SIGNATURE_DESC_ID}"`;
 
+/**
+ * The signature leaf (the owner's brief of 6 Nov 2026; design/button-tokens.md): the brand's primary calls to action are
+ * leaf-shaped. One inline SVG per button draws the leaf (a rounded base with a short stem at the left, the tip at the right,
+ * the upper edge a little fuller than the lower), its midrib (clear near the base and the tip, faint under the words), two
+ * pairs of side veins that open on hover, and a leaf-shaped focus ring. The drawing stretches with the label
+ * (preserveAspectRatio none) while its lines keep their width (non-scaling strokes); the colours are gradients defined once
+ * per page (leafDefs, layout.mjs). The link itself is the target: a rectangle at least 44 px tall. Motion: leaf.js.
+ */
+export const LEAF_PATH = 'M7 34C7 14 40 4.5 112 4C172 3.6 214 14 237 31.5C214 48 172 60.4 112 60C42 59.6 7 53 7 34Z';
+export const LEAF_VEIN = 'M13 34C70 30.5 158 28.5 229 31.4';
+export const LEAF_VEINLETS = 'M203 30.4L216 24.2M209 30.8L221 37.2M24 33.2L35 26.6M30 33.1L41 39.6';
+export const LEAF_STEM = 'M7.5 36Q4 39.2 1.2 44';
+export const leafShape = () =>
+  `<svg class="leaf-btn__shape" viewBox="0 0 240 64" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="leaf-btn__ring" d="${LEAF_PATH}"/><path class="leaf-btn__body" d="${LEAF_PATH}"/><path class="leaf-btn__stem" d="${LEAF_STEM}"/><path class="leaf-btn__vein" d="${LEAF_VEIN}" pathLength="1"/><path class="leaf-btn__veinlets" d="${LEAF_VEINLETS}" pathLength="1"/></svg>`;
+/** The leaf's colours, once per page (an SVG with no size, never display:none, so every leaf can reference them). */
+export const leafDefs = () =>
+  `<svg class="leaf-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="gt-leaf-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#168447"/><stop offset=".5" stop-color="#147d43"/><stop offset="1" stop-color="#0f6236"/></linearGradient><linearGradient id="gt-leaf-fill-hover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#127a40"/><stop offset=".5" stop-color="#106638"/><stop offset="1" stop-color="#0b4f2c"/></linearGradient><linearGradient id="gt-leaf-vein" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#dff3de" stop-opacity=".78"/><stop offset=".3" stop-color="#dff3de" stop-opacity=".16"/><stop offset=".72" stop-color="#dff3de" stop-opacity=".16"/><stop offset="1" stop-color="#dff3de" stop-opacity=".82"/></linearGradient></defs></svg>`;
+/**
+ * A leaf button. `label` is the accessible name and the words (`html` may set them with emphasis); `size`: '' (48 px),
+ * 'large' (54 px), 'compact' (44 px) or 'block' (fills its column); `owner` names the timeline that plays its entrance
+ * (hero, intro, sand), otherwise leaf.js unfurls it as it scrolls into view. "Plan My Day" is the signature wherever it
+ * appears, so it carries the signature's one description.
+ */
+export function leafButton({ href, label, html = '', size = '', cls = '', attrs = '', owner = '' }) {
+  const extra = [label === SIGNATURE_CTA && SIGNATURE_ATTRS, attrs, owner && `data-leaf-owner="${owner}"`].filter(Boolean).join(' ');
+  const classes = ['leaf-btn', ...String(size).split(' ').filter(Boolean).map((x) => `leaf-btn--${x}`), cls].filter(Boolean).join(' ');
+  return `<a class="${classes}" href="${esc(href)}" data-leaf${extra ? ` ${extra}` : ''}>${leafShape()}<span class="leaf-btn__label">${html || esc(label)}</span></a>`;
+}
+
 /** The signature champagne-gold call to action: a rounded button with the ornamental coin on its left edge (header, concierge). */
-export function coinButton({ href, label = SIGNATURE_CTA, cls = '', attrs = '' }) {
-  const extra = [label === SIGNATURE_CTA && SIGNATURE_ATTRS, attrs].filter(Boolean).join(' ');
-  return `<a class="btn-coin${cls ? ` ${cls}` : ''}" href="${esc(href)}"${extra ? ` ${extra}` : ''}><span class="btn-coin__coin" aria-hidden="true">${COIN_ORNAMENT}</span><span class="btn-coin__label">${esc(label)}</span></a>`;
+export function coinButton({ href, label = SIGNATURE_CTA, cls = '', attrs = '', owner = '' }) {
+  // Since the brief of 6 Nov 2026 the header's and the concierge's signature is the leaf (the compass medallion retired)
+  return leafButton({ href, label, cls, attrs, owner });
 }
 
 /**
@@ -297,12 +321,38 @@ export function currencyPicker({ id, cls = '' }) {
     </div>`;
 }
 
+/** "per group of 5–8 guests", "per trip, 1–4 guests": one tier of a rate, in words. */
+const tierBasis = (p, t) => (p.unit === 'per group' ? `per group of ${t.label}` : `${p.unit}, ${t.label}`);
+
 /** "per group of 1–4 guests", "per trip", "per day": the basis of a published rate, in words. */
 export function priceBasis(p, { compact = false } = {}) {
   if (!p) return '';
   const first = p.tiers?.[0];
   if (compact || !first) return p.unit;
-  return p.unit === 'per group' ? `per group of ${first.label}` : `${p.unit}, ${first.label}`;
+  return tierBasis(p, first);
+}
+
+/**
+ * A rate in structured data: one Offer per group tier (data/pricing.mjs), in rand, with the group sizes it prices
+ * (eligibleQuantity) and its basis in words. A starting price ("From R6,000") says so: "From" in its description
+ * and a minimum price (priceSpecification.minPrice). One tier is one Offer, as before; several are a list.
+ */
+export function priceOffers(p, url) {
+  let min = 1;
+  const offers = p.tiers.map((t) => {
+    const offer = {
+      '@type': 'Offer',
+      price: String(t.amount),
+      priceCurrency: p.currency,
+      description: `${t.startingFrom ? `From ${money(t.amount, p.currency)} ` : ''}${tierBasis(p, t)}`,
+      ...(t.startingFrom ? { priceSpecification: { '@type': 'PriceSpecification', minPrice: t.amount, priceCurrency: p.currency } } : {}),
+      eligibleQuantity: { '@type': 'QuantitativeValue', minValue: min, maxValue: t.max, unitText: 'guests' },
+      url,
+    };
+    min = t.max + 1;
+    return offer;
+  });
+  return offers.length === 1 ? offers[0] : offers;
 }
 
 /**
@@ -353,8 +403,11 @@ export function contactNumbers(site) {
  * Verified channels as a list: each number as plain, selectable text with its
  * WhatsApp and call links beside it, then the email address. Empty when nothing
  * is verified; callers decide whether a preview build shows a pending note.
+ * `additional` adds the second address (site.contact.emailGeneral) after the
+ * primary one: the contact page asks for it (6 Nov 2026); elsewhere it shows
+ * only if the primary address is not verified.
  */
-export function contactList(site) {
+export function contactList(site, { additional = false } = {}) {
   // Each number with its two actions in their familiar colours: WhatsApp and Call (25 Oct 2026, from the header)
   const rows = contactNumbers(site).map(
     (n) => `<li class="contact-list__item">${icon(n.tel ? 'phone' : 'whatsapp', 'contact-list__icon')}<span class="contact-list__body">
@@ -363,15 +416,16 @@ export function contactList(site) {
       <span class="contact-list__actions">${n.wa ? `<a class="contact-action" href="${waHref(n.wa)}" rel="noopener" target="_blank">${brandMark('whatsapp')}<span>WhatsApp</span><span class="visually-hidden"> (opens in a new tab)</span></a>` : ''}${n.tel ? `<a class="contact-action" href="${telHref(n.tel)}">${brandMark('phone')}<span>Call</span></a>` : ''}</span>
     </span></li>`,
   );
-  // The primary address, then the secondary one (24 Oct 2026): each with its own label once both are verified, plain "Email" for one.
+  // The primary address, then the additional one where asked for: each with its own label when both show, plain "Email" for one.
   const { email, emailGeneral } = site.contact;
-  const both = email.verified && emailGeneral?.verified;
+  const second = Boolean(emailGeneral?.verified) && (additional || !email.verified);
+  const both = email.verified && second;
   const mail = (address, label) => `<li class="contact-list__item">${icon('mail', 'contact-list__icon')}<span class="contact-list__body">
-      <span class="contact-list__label">${label}</span>
+      <span class="contact-list__label">${esc(label)}</span>
       <a class="contact-list__value" href="mailto:${esc(address)}">${esc(address).replace('@', '@<wbr>')}</a>
     </span></li>`;
   if (email.verified) rows.push(mail(email.address, both ? email.label || 'Email' : 'Email'));
-  if (emailGeneral?.verified) rows.push(mail(emailGeneral.address, both ? emailGeneral.label || 'Email' : 'Email'));
+  if (second) rows.push(mail(emailGeneral.address, both ? emailGeneral.label || 'Email' : 'Email'));
   return rows.length ? `<ul class="contact-list" role="list">${rows.join('')}</ul>` : '';
 }
 
