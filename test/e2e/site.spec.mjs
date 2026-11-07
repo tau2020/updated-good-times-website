@@ -322,7 +322,9 @@ test.describe('home hero', () => {
     expect(phone.right).toBeLessThanOrEqual(hero.right);
     await expect(page.locator('.hero p.hero__lead, .hero__link, .hero .search, .hero form, .hero [role="tablist"], .hero input, .hero .eyebrow, .hero .btn')).toHaveCount(0);
     await expect(page.locator('.hero .medallion, .hero .stars, .hero .rating')).toHaveCount(0);
-    await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon')).toHaveCount(0);
+    // No icon or arrow in the hero; the one drawing is the call to action's own leaf (design/button-tokens.md)
+    await expect(page.locator('.hero svg:not(.phone-gallery svg):not(.leaf-btn__shape), .hero .icon')).toHaveCount(0);
+    await expect(cta.locator('svg.leaf-btn__shape[aria-hidden="true"]')).toHaveCount(1);
     await expect(page.locator('.hero')).not.toContainText(/tripadvisor|extraordinary places|cape town, personally|tailored|find experiences/i);
     // The header over the hero: the reversed logo from the approved logo pack, Plan My Day with its ornamental coin
     const header = page.locator('.site-header--overlay');
@@ -707,11 +709,12 @@ test.describe('home story: The Cape, A Living Story', () => {
     await expect(page.locator('.lc-way__extra')).toHaveText('The Garden Route Tour');
     for (const [i, href] of [/(^|\/)tours\/$/, /(^|\/)transfers\/#airport$/, /(^|\/)tours\/#adventure$/, /(^|\/)enquire\/\?type=tour&tour=custom$/].entries()) await expect(ways.nth(i)).toHaveAttribute('href', href);
     await expect(page.locator('.lc-way__extra')).toHaveAttribute('href', /(^|\/)packages\/$/);
-    // Each service is shown with a photograph of its own, not an icon card: three Good Times photographs and, for the
-    // adventures, a credited, openly licensed photograph of shark-cage diving off Gansbaai (the library's adventure
-    // photographs lead the quad-biking tour and the home page's adventure chapter)
+    // Each service is shown with a photograph of its own, not an icon card: Good Times photographs (the airport's is the
+    // terminal's welcome banner, traveller 11, in place of the selfie the owner disliked: the brief of 6 Nov 2026 §2.3)
+    // and, for the adventures, a credited, openly licensed photograph of shark-cage diving off Gansbaai (the library's
+    // adventure photographs lead the quad-biking tour and the home page's adventure chapter)
     await expect(page.locator('.lc-way__photo img')).toHaveCount(4);
-    expect(await page.locator('.lc-way__photo img').evaluateAll((imgs) => imgs.map((i) => i.alt))).toEqual([expect.stringMatching(/Chapman’s Peak/), expect.stringMatching(/departures/), expect.stringMatching(/shark cage/), expect.stringMatching(/Cape Point/)]);
+    expect(await page.locator('.lc-way__photo img').evaluateAll((imgs) => imgs.map((i) => i.alt))).toEqual([expect.stringMatching(/Chapman’s Peak/), expect.stringMatching(/welcome banner for Cape Town International Airport/), expect.stringMatching(/shark cage/), expect.stringMatching(/Cape Point/)]);
     await expect(page.locator('.lc-way .gt-engraved-icon:not(.lc-way__go .gt-engraved-icon)')).toHaveCount(0);
     await expect(page.locator('.lc-ways__book .lc-seal')).toHaveAttribute('href', /(^|\/)enquire\/$/);
     const { destinations } = await import('../../src/data/tours.mjs');
@@ -1402,6 +1405,8 @@ test.describe('taste compositions and About’s photographs', () => {
     ['/destinations/', '[data-taste="quiet"]', ['pergola-lunch-table']],
     // About's penguins and Langa mural share the Reveal's choreography
     ['/about/', '[data-taste="reveal"]', ['boulders-beach-penguins', 'langa-mural-visit']],
+    // About's team: the Portrait (design/motion-bible.md §11)
+    ['/about/', '[data-taste="portrait"]', ['winelands-garden-lunch']],
   ];
   const settled = (sel) =>
     `[...document.querySelectorAll('${sel} [data-taste-main], ${sel} [data-taste-frame], ${sel} [data-taste-layer], ${sel} [data-taste-words] > *, ${sel} figcaption')].every((e) => { const cs = getComputedStyle(e); return Number(cs.opacity) === 1 && cs.visibility === 'visible' && cs.clipPath === 'none'; })`;
@@ -1429,7 +1434,9 @@ test.describe('taste compositions and About’s photographs', () => {
       if (path !== '/about/') expect(await page.evaluate(settled(sel)), `${path}: waiting below the fold`).toBe(false);
       await page.locator(sel).scrollIntoViewIfNeeded();
       await page.mouse.wheel(0, 200);
-      await expect.poll(() => page.evaluate(settled(sel)), { timeout: 6000 }).toBe(true);
+      // It must settle, however slowly the browser draws: in a software-rendered test browser the jump past the home
+      // page's sand scene alone takes several seconds (the approved baseline settles there after about 6 s too)
+      await expect.poll(() => page.evaluate(settled(sel)), { timeout: 15_000 }).toBe(true);
     }
     expect(errors).toEqual([]);
   });
@@ -1614,7 +1621,8 @@ test.describe('the button system', () => {
 
   test('keyboard focus is a 3 px ring with an offset; reduced motion keeps every state but moves nothing', async ({ page, isMobile }) => {
     test.skip(isMobile, 'keyboard and pointer hover');
-    await page.goto('/contact/?nomotion');
+    // A pill (the contact page's primary is the leaf since the brief of 6 Nov 2026; the FAQ keeps a primary pill)
+    await page.goto('/faq/?nomotion');
     const primary = page.locator('main .gt-button--primary').first();
     await primary.focus();
     await page.keyboard.press('Shift+Tab');
@@ -1622,10 +1630,23 @@ test.describe('the button system', () => {
     const ring = await primary.evaluate((e) => { const cs = getComputedStyle(e); return [cs.outlineStyle, cs.outlineWidth, cs.outlineOffset]; });
     expect(ring).toEqual(['solid', '3px', '3px']);
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/contact/');
+    await page.goto('/faq/');
     await primary.hover();
     expect(await primary.evaluate((e) => getComputedStyle(e).transform)).toBe('none');
     expect(await primary.evaluate((e) => getComputedStyle(e).transitionDuration.split(',').every((d) => parseFloat(d) === 0))).toBe(true);
+    // The leaf: its ring is its own outline, 3 px, ink on a light ground; transparent until keyboard focus
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/contact/?nomotion');
+    const leaf = page.locator('main .leaf-btn').first();
+    const stroke = () => leaf.locator('.leaf-btn__ring').evaluate((r) => [getComputedStyle(r).stroke, getComputedStyle(r).strokeWidth]);
+    expect((await stroke())[0]).toBe('rgba(0, 0, 0, 0)');
+    await leaf.focus();
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
+    expect(await leaf.evaluate((e) => e === document.activeElement)).toBe(true);
+    const [color, width] = await stroke();
+    expect(color).not.toBe('rgba(0, 0, 0, 0)');
+    expect(width).toBe('3px');
   });
 });
 

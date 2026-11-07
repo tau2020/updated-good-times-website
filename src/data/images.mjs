@@ -234,7 +234,7 @@ export const images = [
   // The home page's Airport Transfers way (living-cape.mjs › SERVICES): the brief's second candidate for the airport
   // transfer photograph (§2.3, traveller 11), in place of the selfie the owner disliked; the terminal's welcome banner
   // under its glass roof, a clear "you have arrived" without anyone's face
-  { name: 'airport-welcome-banner', src: `${D}Cape Town Private Airport Transfer - traveller 11.jpg`, origin: 'O', focus: '50% 42%', alt: 'A banner under the glass roof of the terminal at Cape Town International Airport: Welcome to the most award winning airport in Africa' },
+  { name: 'airport-welcome-banner', src: `${D}Cape Town Private Airport Transfer - traveller 11.jpg`, origin: 'O', focus: '50% 42%', alt: 'A welcome banner for Cape Town International Airport hanging under the glass roof of its terminal' },
   { name: 'airport-meet-and-greet', src: `${D}Cape Town Private Airport Transfer - traveller 13-name-blurred.jpg`, origin: 'S', focus: '45% 40%', alt: 'A Good Times driver with a welcome sign giving a thumbs-up beside an arriving guest and his suitcases in the terminal at Cape Town International Airport' },
   { name: 'bokaap-pink-blue-houses', src: `${D}Cape Town Private City Tour - traveller 10.jpg`, origin: 'O', full: true, focus: '50% 66%', alt: 'A guest at the white-railed steps of a bright pink house beside a blue one on a Bo-Kaap street' },
   { name: 'peninsula-rocks-pair', src: `${D}Cape Peninsula Private Tour - traveller 050.jpg`, origin: 'S', ambient: true, focus: '50% 56%', alt: 'Two guests on the rocks above a turquoise sea on the Cape Peninsula, mountains across the water behind them' },
