@@ -38,6 +38,8 @@ export const ROUTES = {
   tours: '/tours/',
   peninsula: '/tours/cape-peninsula-private-tour/',
   winelands: '/tours/cape-winelands-private-tour/',
+  city: '/tours/cape-town-city-private-tour/', // the brief of 6 Nov 2026, §2.6
+  experience: '/tours/private-cape-town-experience/', // its banner gave the interlude its photograph (§2.2)
   transfers: '/transfers/',
   destinations: '/destinations/',
   packages: '/packages/',

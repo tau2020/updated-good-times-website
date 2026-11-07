@@ -34,6 +34,13 @@
 
   if (!motion) return;
 
+  // A once-only entrance built after the visitor has already passed its start line (gsap.matchMedia rebuilding it
+  // after a resize, a restored scroll position) plays at once rather than waiting for a scroll that will not come
+  var whenReached = function (el, frac, tl) {
+    ST.create({ trigger: el, start: 'top ' + Math.round(frac * 100) + '%', once: true, onEnter: function () { tl.play(); } });
+    if (el.getBoundingClientRect().top < window.innerHeight * frac) tl.play();
+  };
+
   /* ---------- Scenes: Atlantic Drift (the photograph a little slower than the page, ±5% of its oversized crop) and
      Air Reveal (the words). The drift is scrubbed from 48em only: on phones each scene is a still, correctly cropped
      photograph (D66, design.md §06). ---------- */
@@ -205,7 +212,7 @@
           if (photo) gsap.set(photo, { clearProps: 'clipPath' });
         });
         card.__entrance = tl;
-        ST.create({ trigger: card, start: 'top 84%', once: true, onEnter: function () { tl.play(); } });
+        whenReached(card, 0.84, tl);
       });
     });
     root.addEventListener('focusin', function (e) {
@@ -259,7 +266,7 @@
       if (rest.length) tl.fromTo(rest, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'opacity,transform' }, at + 0.45);
       s.__entrance = tl;
       api.invite = tl;
-      ST.create({ trigger: s, start: 'top 62%', once: true, onEnter: function () { tl.play(); } });
+      whenReached(s, 0.62, tl);
     });
     s.addEventListener('focusin', function () {
       if (s.__entrance && s.__entrance.progress() < 1) s.__entrance.progress(1);
@@ -282,7 +289,7 @@
       if (statement) tl.fromTo(statement, { opacity: 0 }, { opacity: 1, duration: 0.5, clearProps: 'opacity' }, 0.3);
       if (groups.length) tl.fromTo(groups, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.07, clearProps: 'opacity,transform' }, 0.2);
       f.__entrance = tl;
-      ST.create({ trigger: f, start: 'top 90%', once: true, onEnter: function () { tl.play(); } });
+      whenReached(f, 0.9, tl);
     });
     f.addEventListener('focusin', function () {
       if (f.__entrance && f.__entrance.progress() < 1) f.__entrance.progress(1);

@@ -38,7 +38,10 @@
     tl.eventCallback('onComplete', function () {
       gsap.set(masks, { clearProps: 'clipPath' });
     });
-    ST.create({ trigger: trigger, start: start || 'top 72%', once: true, onEnter: function () { tl.play(); } });
+    start = start || 'top 72%';
+    ST.create({ trigger: trigger, start: start, once: true, onEnter: function () { tl.play(); } });
+    // Rebuilt after the visitor has passed it (gsap.matchMedia after a resize, a restored scroll): play at once
+    if (trigger.getBoundingClientRect().top < (window.innerHeight * parseFloat(start.split(' ')[1])) / 100) tl.play();
   };
   // A scroll-linked drift: transforms only, scrubbed with a little smoothing
   var drift = function (target, trigger, from, to) {
