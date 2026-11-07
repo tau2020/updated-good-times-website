@@ -32,6 +32,11 @@ const ICONS = {
   users:
     '<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.8 14.2c2.3.2 4 1.8 4.6 4.8"/>',
   user: '<circle cx="12" cy="8.5" r="3.6"/><path d="M5 20c.8-3.9 3.6-6.2 7-6.2s6.2 2.3 7 6.2"/>',
+  // A small group: one friend in front, two behind (the hero's Custom Journeys)
+  group:
+    '<circle cx="12" cy="8.4" r="2.9"/><path d="M6.7 19.5c.5-3.1 2.6-5 5.3-5s4.8 1.9 5.3 5"/><circle cx="5.7" cy="9.9" r="2.1"/><path d="M2.6 17.4c.3-2.2 1.6-3.5 3.4-3.6"/><circle cx="18.3" cy="9.9" r="2.1"/><path d="M21.4 17.4c-.3-2.2-1.6-3.5-3.4-3.6"/>',
+  camera:
+    '<path d="M3.5 9a1.5 1.5 0 0 1 1.5-1.5h2.6l1.5-2h5.8l1.5 2H19A1.5 1.5 0 0 1 20.5 9v8a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.8" r="3.3"/><path d="M17.3 10.3h.01"/>',
   compass:
     '<circle cx="12" cy="12" r="8.5"/><path d="M15.2 8.8l-1.9 5-5 1.9 1.9-5z"/>',
   chat: '<path d="M4.5 18.5V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/>',

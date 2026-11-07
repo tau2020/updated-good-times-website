@@ -5,6 +5,7 @@ import { destinationCarousel, photoExhibition, mediaLightbox, focusOf } from '..
 import { culinaryReveal, tasteRule } from '../partials/culinary.mjs';
 import { licensedCredit } from '../partials/cards.mjs';
 import { heroPhoneGallery } from '../partials/phone-gallery.mjs';
+import { heroServices } from '../partials/hero-services.mjs';
 import { sandJourney } from '../partials/sand-journey.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
@@ -235,8 +236,9 @@ export const page = {
   // The hero's held frame is the first paint (one 16:9 rendition set for every screen; the crop is CSS).
   preload: [preloadFor('hero-moment-poster')],
   // The Living Cape chapters have their own sheet, loaded after styles.css and the system sheet, scoped to .living-cape.
-  // The hero's phone gallery has its own sheet and script (HeroPhoneGallery, partials/phone-gallery.mjs).
-  styles: ['assets/css/phone-gallery.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css'],
+  // The hero's phone gallery has its own sheet and script (HeroPhoneGallery, partials/phone-gallery.mjs), and so do its
+  // services (HeroServices, partials/hero-services.mjs; their entrance is part of hero.js).
+  styles: ['assets/css/phone-gallery.css', 'assets/css/hero-services.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css'],
   // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger, Flip and MotionPathPlugin, and
   // CustomEase and SplitText for the Cape Peninsula entrance and the leaf's unfurl (GSAP 3.15, self-hosted; the policy
   // allows same-origin scripts only), the hero's entrance, its phone gallery, the guest stories carousel, the chapters
@@ -249,8 +251,11 @@ export const page = {
    * sleeping friend's face, never over it) and the phone bottom right, the only thing that keeps moving. The scene and
    * the gallery are AI-generated illustrations supplied by the owner (docs/RIGHTS_REGISTER.md, G). The h1 names the
    * business for search and screen readers; on screen the picture and the call to action say it.
+   * The services (partials/hero-services.mjs) follow the hero in the page: over the photograph's faceless left on wide
+   * screens, beneath the hero everywhere else; .hero-shell is their positioning frame and changes nothing else.
    */
   body: ({ site }) => `
+<div class="hero-shell">
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero__media" data-hero-film>
     ${picture({ name: 'hero-moment-poster', cls: 'hero__poster', eager: true, fetchpriority: 'high' })}
@@ -265,6 +270,8 @@ export const page = {
     ${heroPhoneGallery()}
   </div>
 </section>
+${heroServices()}
+</div>
 
 ${sandJourney()}
 

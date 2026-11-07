@@ -9,7 +9,10 @@
    aircraft has handed the logo back whole, the company statement under it is drawn in from left to right, softly, in
    0.5 s (Addendum, 6 Nov 2026), and last the navigation's Plan My Day leaf unfolds from its stem (the brief of 6 Nov 2026):
    about 5.8 s on desktop, 4.8 s on tablets, 3.2 s on phones (which show no header leaf). The hero's call to action is the
-   signature leaf too (leaf.js): it rises at 2.2 s and unfolds as it settles.
+   signature leaf too (leaf.js): it rises at 2.2 s and unfolds as it settles. As it settles, the hero's services
+   (HeroServices, the hero-services brief of 7 Nov 2026) follow it: the sentence rises, its lime brush draws under
+   "tailored for you." from left to right, and the four services settle in turn, in place by about 4.25 s on desktop,
+   as the aircraft lands. They are staged with opacity only, so their words stay in the accessibility tree.
    The phone is not part of it: its first photograph is there from the first paint, and its gallery
    (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
    (html.cine from the inline gate) and GSAP has loaded; otherwise nothing is hidden or moved and the logo is whole.
@@ -44,6 +47,11 @@
   var bookNow = header && one('.header-cta', header);
   var titles = header ? list('.primary-nav a', header) : [];
   var cta = one('.hero__cta');
+  // The hero's services (partials/hero-services.mjs): over the photograph on wide screens, beneath the hero elsewhere
+  var services = document.querySelector('[data-hero-services]');
+  var lead = services ? one('.hero-services__lead', services) : null;
+  var brush = services ? one('.hero-services__brush', services) : null;
+  var items = services ? list('.hero-services__item', services) : [];
   var leaf = window.GTLeaf && window.GTLeaf.unfurl ? window.GTLeaf.unfurl : function () { return null; };
 
   // The aircraft is measured before anything moves (the brand's own entrance shifts it by a few pixels)
@@ -66,6 +74,11 @@
     if (bookNow) gsap.set(bookNow, { y: 6 });
     if (titles.length) gsap.set(titles, { y: 8 });
     if (cta) gsap.set(cta, { y: 14 });
+    // The services: opacity and a few pixels of rise (never visibility), and the brush clipped to nothing from the right
+    if (lead) gsap.set(lead, { opacity: 0, y: 14 });
+    if (services) gsap.set(services, { '--hs-veil': 0 }); // the shade behind the words (hero-services.css) waits for them
+    if (items.length) gsap.set(items, { opacity: 0, y: 12 });
+    if (brush) gsap.set(brush, { clipPath: 'inset(-50% 100% -50% -5%)' });
     html.classList.add('intro-ready');
 
     var tl = gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: finish });
@@ -107,6 +120,15 @@
       var ctaLeaf = leaf(cta);
       if (ctaLeaf) tl.add(ctaLeaf, 'cta+=0.05');
     }
+
+    // Act III·b — the hero's services, once the call to action has risen (2.65–4.25 s): the sentence rises; the brush
+    // draws under its last words, one quick stroke from left to right; then the four services settle in turn, each icon,
+    // title and line as one. Nothing keeps moving afterwards
+    tl.addLabel('services', 'cta+=0.45');
+    if (services) tl.to(services, { '--hs-veil': 1, duration: 0.65, ease: 'power1.out', clearProps: '--hs-veil' }, 'services');
+    if (lead) tl.to(lead, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', clearProps: 'transform' }, 'services');
+    if (brush) tl.to(brush, { clipPath: 'inset(-50% 0% -50% -5%)', duration: 0.55, ease: 'power2.inOut', clearProps: 'clipPath' }, 'services+=0.45');
+    if (items.length) tl.to(items, { opacity: 1, y: 0, duration: 0.55, stagger: 0.12, ease: 'power2.out', clearProps: 'transform' }, 'services+=0.7');
 
     // The same composition, quicker where the screen is smaller
     var desktop = window.matchMedia('(min-width: 64em)').matches;

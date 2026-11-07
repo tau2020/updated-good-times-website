@@ -502,7 +502,7 @@ test.describe('home hero', () => {
     // One master timeline, acts in the directed order, timed for the screen
     const plan = await page.evaluate(() => {
       const tl = window.__heroEntrance;
-      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero__cta') ? 'cta' : el.className.split(' ')[0]);
+      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero__cta') ? 'cta' : (el.getAttribute('class') || '').split(' ')[0]);
       return { duration: tl.duration(), timeScale: tl.timeScale(), landsAt: window.__brandPlane && window.__brandPlane.landsAt, handoverAt: window.__brandPlane && window.__brandPlane.handoverAt, tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), duration: t.duration(), targets: t.targets().map(name) })) };
     });
     const startOf = (n) => plan.tweens.find((t) => t.targets.includes(n))?.at;
@@ -570,6 +570,63 @@ test.describe('home hero', () => {
     expect(await page.locator('[data-phone-track]').evaluate((t) => getComputedStyle(t).transform)).toBe('none');
     expect(await page.locator('.phone-gallery__slide').first().locator('.phone-gallery__img').evaluate((i) => i.complete && i.naturalWidth > 1)).toBe(true);
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/);
+  });
+
+  test('the hero services (7 Nov 2026): the sentence, its brush and the four services; over the photograph’s faceless left on a desktop, beneath the hero on a phone; part of the entrance, after the call to action', async ({ page, isMobile }) => {
+    await page.goto('/?nomotion');
+    const block = page.locator('.hero-services');
+    await expect(block).toHaveCount(1);
+    await expect(block.locator('.hero-services__lead')).toHaveText('Private tours, airport transfers and authentic Cape Town experiences tailored for you.');
+    await expect(block.locator('.hero-services__mark')).toHaveText('tailored for you.');
+    await expect(block.locator('.hero-services__mark svg.hero-services__brush[aria-hidden="true"]')).toBeVisible();
+    await expect(block.locator('.hero-services__title')).toHaveText(['Private Tours', 'Airport Transfers', 'Adventure Add-ons', 'Custom Journeys']);
+    await expect(block.locator('.hero-services__text')).toHaveText(['City, township & cultural experiences', 'Reliable, safe & comfortable travel', 'Wine, wildlife, scenic & outdoor experiences', 'Personalised tours for individuals, families & groups']);
+    for (const [i, name] of ['camera', 'van', 'mountain', 'group'].entries()) await expect(block.locator('.hero-services__item').nth(i).locator(`.hero-services__icon svg.icon--${name}`)).toBeVisible();
+    await expect(page.getByRole('list', { name: 'What we do' })).toBeVisible();
+    // Nothing in it takes focus, and the hero keeps its one call to action
+    await expect(block.locator('a, button, [tabindex]')).toHaveCount(0);
+    await expect(page.locator('.hero a')).toHaveCount(1);
+    const [hero, b, cta, phone] = [await box(page.locator('.hero')), await box(block), await box(page.locator('.hero__cta')), await box(page.locator('.phone-gallery'))];
+    if (isMobile) {
+      // Beneath the hero, which keeps its one-screen composition
+      expect(await block.evaluate((el) => getComputedStyle(el).position)).not.toBe('absolute');
+      expect(b.y).toBeGreaterThanOrEqual(hero.bottom - 1);
+    } else {
+      // Over the photograph's left, above the call to action and left of the phone, clear of the header
+      expect(await block.evaluate((el) => getComputedStyle(el).position)).toBe('absolute');
+      expect(b.bottom).toBeLessThan(cta.y);
+      expect(b.right).toBeLessThan(phone.x);
+      expect(b.right).toBeLessThan(hero.x + hero.w * 0.4);
+      expect(b.y).toBeGreaterThan((await box(page.locator('.site-header--overlay'))).bottom);
+      // Four in a row needs 33rem; at 1440 × 900 the stretch with no face is narrower, so two by two
+      const tops = await block.locator('.hero-services__item').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
+      expect(new Set(tops).size).toBe(b.w >= 528 ? 1 : 2);
+    }
+    // With motion: three steps of the hero's own timeline, after the call to action rises (2.2 s): the sentence (2.65 s),
+    // the brush drawing from the left (3.1 s), the services in turn (3.35 s, 0.12 s apart); then everything settles
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/');
+    const plan = await page.evaluate(() =>
+      window.__heroEntrance.getChildren(false, true, false).map((t) => ({ at: Math.round(t.startTime() * 100) / 100, stagger: t.vars.stagger || 0, targets: t.targets().map((el) => (el.getAttribute('class') || '').split(' ')[0]) })),
+    );
+    const at = (cls) => plan.find((t) => t.targets.includes(cls));
+    expect(at('hero-services__lead').at).toBeCloseTo(2.65, 2);
+    expect(at('hero-services__brush').at).toBeCloseTo(3.1, 2);
+    expect(at('hero-services__item').at).toBeCloseTo(3.35, 2);
+    expect(at('hero-services__item').targets).toHaveLength(4);
+    expect(at('hero-services__item').stagger).toBeCloseTo(0.12, 2);
+    // Staged with opacity only, so the words stay in the accessibility tree while they wait
+    expect(await block.locator('.hero-services__lead').evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
+    await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
+    for (const el of await block.locator('.hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => [getComputedStyle(n).opacity, getComputedStyle(n).transform])).toEqual(['1', 'none']);
+    expect(await block.locator('.hero-services__brush').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
+    const round = (r) => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, Math.round(v)]));
+    expect(round(await box(block)), 'it settles exactly where the static hero draws it').toEqual(round(b));
+    // Reduced motion: all of it at once
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    for (const el of await block.locator('.hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => getComputedStyle(n).opacity)).toBe('1');
+    expect(await block.locator('.hero-services__brush').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
   });
 
   test('the call to action leads to the tours catalogue', async ({ page }) => {
