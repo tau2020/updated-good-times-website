@@ -109,3 +109,18 @@ faux italic. Calls to action are written in title case, as the brief writes them
 Bricolage's quirk carries the headlines and the large leaves; DM Sans keeps every fact, form and caption calm; Caveat
 appears a handful of times as a hand-written note beside a photograph. Captions name places plainly and credit
 photographs honestly. The motion follows the same temperament: confident at the story's turns, quiet in between.
+
+## 10. The hero's services (7 Nov 2026)
+
+The owner's hero-services brief, after the "Cape Town Good Times Banner" reference, in the site's own two families
+(no new font):
+- **The sentence** ("Private tours, airport transfers and authentic Cape Town experiences tailored for you."): DM Sans
+  650, white, left-aligned, at most three lines on wide screens; 16–20 px over the photograph (by the screen's height),
+  17–21 px beneath the hero. Below the call to action in weight and size, never competing with it.
+- **The four titles**: Bricolage Grotesque 700 in its display cut (`font-variation-settings: 'opsz' 96`: the narrower,
+  livelier drawing gives the slightly condensed look of the reference without a condensed font), 14–17 px, one line
+  each (in a row of four they are held to 2.7% of the row's width).
+- **The four lines**: DM Sans 500, 12.5–14 px, centred and balanced under their titles.
+- Over the photograph, every line holds at least 5.4:1 against the brightest part of the town behind it, measured
+  without the words' own shadow (`qa/hero-services-shots.mjs`); beneath the hero, 16:1 on the navy.
+

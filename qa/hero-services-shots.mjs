@@ -37,6 +37,11 @@ export const VIEWPORTS = [
   [360, 740, 'small mobile'],
 ];
 const PHONE = (w) => w < 600;
+// --viewports=1280x800,2560x1440 measures other sizes instead (no frames)
+const EXTRA = arg('viewports', '')
+  .split(',')
+  .filter(Boolean)
+  .map((v) => [...v.split('x').map(Number), 'extra']);
 
 /**
  * The faces in the hero poster (1280 × 720, hero-moment-poster), generous boxes from forehead to chin: the sleeping
@@ -213,10 +218,10 @@ async function shoot(browser, [w, h], state, out) {
 await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch();
 const metrics = {};
-for (const vp of VIEWPORTS) {
+for (const vp of EXTRA.length ? EXTRA : VIEWPORTS) {
   const key = `${vp[0]}x${vp[1]}`;
   metrics[key] = { label: vp[2] };
-  for (const state of ['motion', 'static', 'reduced']) metrics[key][state] = await shoot(browser, vp, state, OUT);
+  for (const state of EXTRA.length ? ['motion'] : ['motion', 'static', 'reduced']) metrics[key][state] = await shoot(browser, vp, state, OUT);
   const m = metrics[key].motion;
   const low = (list) => (list || []).reduce((a, c) => (!a || c.contrastP90 < a.contrastP90 ? c : a), null);
   const worst = low(m.contrast);

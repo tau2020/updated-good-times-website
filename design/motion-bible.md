@@ -78,7 +78,7 @@ already in or above the view is shown whole. `main.js` has the same for `[data-r
 | Narrative purpose | Energy and identity: the brand arrives, the people stay frozen in their good time |
 | Trigger | Page load (once per load). The **Replay the intro** control in the preview bar replays it |
 | ScrollTrigger | None. Scrolling during the flight lands the aircraft at once |
-| Sequence | The wordmark and Book Now; the logo's green airliner flies in from the left along the logo's dotted route and lands as the "i" of "in" (`brand-plane.js`, MotionPathPlugin); its landing starts the navigation titles one by one; the hero's **Find Your Good Time** rises into its corner and unfurls as a leaf (2.2 s); the company statement is drawn in under the logo once the logo is whole (0.5 s); last, the header's **Plan My Day** leaf unfurls |
+| Sequence | The wordmark and Book Now; the logo's green airliner flies in from the left along the logo's dotted route and lands as the "i" of "in" (`brand-plane.js`, MotionPathPlugin); its landing starts the navigation titles one by one; the hero's **Find Your Good Time** rises into its corner and unfurls as a leaf (2.2 s), and the hero's services follow it (2.65–4.25 s, below); the company statement is drawn in under the logo once the logo is whole (0.5 s); last, the header's **Plan My Day** leaf unfurls |
 | Duration | About 5.8 s on desktop, 4.8 s on tablets, 3.2 s on phones (no header leaf below 40em) |
 | Easing | `power2.out` for the arrivals; the leaf's `leafUnfurl`; the flight's own derived curve |
 | Stagger | The titles, one after another from the landing |
@@ -89,6 +89,18 @@ already in or above the view is shown whole. `main.js` has the same for `[data-r
 | Reduced motion | Nothing hidden, nothing moves; the logo is whole |
 | Cleanup owner | `hero.js` (the timeline completes once; resize or scroll mid-flight lands it) |
 | Performance | The renderer of §4 waits until the intro is done (or the first scroll), so no shader compiles under the flight |
+
+**The hero's services** (the owner's hero-services brief of 7 Nov 2026; `partials/hero-services.mjs`,
+`hero-services.css`): a segment of the same master timeline, not a timeline of its own. Once **Find Your Good Time**
+has risen (2.2 s), the sentence and the shade behind it rise together (2.65 s, 14 px, 0.65 s, `power2.out`); the lime
+brush under "tailored for you." draws from left to right in one stroke (3.1 s, 0.55 s, `power2.inOut`, a clip-path
+inset, as the company statement draws); then Private Tours, Airport Transfers, Adventure Add-ons and Custom Journeys
+settle in turn, each icon, title and line as one (3.35 s, 12 px, 0.55 s, 0.12 s apart). All in place by about 4.25 s on
+desktop, as the aircraft lands; the entrance keeps its length (5.8 s, 4.8 s, 3.2 s). Opacity and a small rise only,
+staged with opacity (never visibility), so the words stay in the accessibility tree; the shade waits on a CSS
+variable the timeline tweens. Where the block sits beneath the hero (phones, tablets, narrow or short windows) the same
+steps play, scaled with the rest. Reduced motion, `?nomotion` and a visitor already past the hero: everything at once.
+Nothing moves afterwards.
 
 **The phone gallery** (`phone-gallery.js`): one repeating swipe timeline (hold, push, flick, glide, settle; holds vary),
 the track's `xPercent` only; pauses off screen, when the tab is hidden, while a photograph is lifted and on its play or

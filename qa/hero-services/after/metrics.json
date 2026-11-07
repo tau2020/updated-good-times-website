@@ -1,0 +1,2822 @@
+{
+  "1920x1080": {
+    "label": "wide desktop",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "entranceSeconds": 5.82,
+      "cls": 0.0003,
+      "viewport": {
+        "w": 1920,
+        "h": 1080
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1920,
+        "h": 1048
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1920,
+        "h": 113
+      },
+      "cta": {
+        "x": 115.1875,
+        "y": 1001.09375,
+        "w": 311.796875,
+        "h": 56.796875
+      },
+      "phone": {
+        "x": 1664,
+        "y": 596.453125,
+        "w": 224,
+        "h": 461.4375
+      },
+      "services": {
+        "x": 115.1875,
+        "y": 420.75,
+        "w": 573.796875,
+        "h": 225.65625
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 115.1875,
+          "y": 420.75,
+          "w": 544,
+          "h": 72.78125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 115.1875,
+          "y": 511.953125,
+          "w": 143.4375,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 258.625,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 402.078125,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 545.53125,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 393,
+          "y": 668,
+          "w": 432,
+          "h": 300
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 705,
+          "y": 345.5,
+          "w": 300,
+          "h": 367.5
+        },
+        {
+          "name": "brunette",
+          "x": 990,
+          "y": 458,
+          "w": 270,
+          "h": 330
+        },
+        {
+          "name": "tall friend",
+          "x": 1170,
+          "y": 195.5,
+          "w": 247.5,
+          "h": 322.5
+        },
+        {
+          "name": "blonde friend",
+          "x": 1305,
+          "y": 405.5,
+          "w": 270,
+          "h": 375
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 7,
+          "contrastMedian": 10.2
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 10.2,
+          "contrastMedian": 15.4
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 10.5,
+          "contrastMedian": 15.1
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 9.5,
+          "contrastMedian": 12.7
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 9.7,
+          "contrastMedian": 10.9
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 13.7,
+          "contrastMedian": 16
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 15,
+          "contrastMedian": 17.5
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 15.9,
+          "contrastMedian": 17.8
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.1,
+          "contrastMedian": 18.1
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 7.9,
+          "contrastMedian": 11.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 13.2,
+          "contrastMedian": 17
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 12.6,
+          "contrastMedian": 16.7
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 11.1,
+          "contrastMedian": 14.8
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 10.4,
+          "contrastMedian": 14.2
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 15.3,
+          "contrastMedian": 17.7
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16,
+          "contrastMedian": 18.4
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 17.4,
+          "contrastMedian": 18.8
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 17.3,
+          "contrastMedian": 19
+        }
+      ]
+    },
+    "static": {
+      "state": "static",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0003,
+      "viewport": {
+        "w": 1920,
+        "h": 1080
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1920,
+        "h": 1048
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1920,
+        "h": 113
+      },
+      "cta": {
+        "x": 115.1875,
+        "y": 1001.09375,
+        "w": 311.796875,
+        "h": 56.796875
+      },
+      "phone": {
+        "x": 1664,
+        "y": 596.453125,
+        "w": 224,
+        "h": 461.4375
+      },
+      "services": {
+        "x": 115.1875,
+        "y": 420.75,
+        "w": 573.796875,
+        "h": 225.65625
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 115.1875,
+          "y": 420.75,
+          "w": 544,
+          "h": 72.78125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 115.1875,
+          "y": 511.953125,
+          "w": 143.4375,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 258.625,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 402.078125,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 545.53125,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 393,
+          "y": 668,
+          "w": 432,
+          "h": 300
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 705,
+          "y": 345.5,
+          "w": 300,
+          "h": 367.5
+        },
+        {
+          "name": "brunette",
+          "x": 990,
+          "y": 458,
+          "w": 270,
+          "h": 330
+        },
+        {
+          "name": "tall friend",
+          "x": 1170,
+          "y": 195.5,
+          "w": 247.5,
+          "h": 322.5
+        },
+        {
+          "name": "blonde friend",
+          "x": 1305,
+          "y": 405.5,
+          "w": 270,
+          "h": 375
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": []
+    },
+    "reduced": {
+      "state": "reduced",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0003,
+      "viewport": {
+        "w": 1920,
+        "h": 1080
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1920,
+        "h": 1048
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1920,
+        "h": 113
+      },
+      "cta": {
+        "x": 115.1875,
+        "y": 1001.09375,
+        "w": 311.796875,
+        "h": 56.796875
+      },
+      "phone": {
+        "x": 1664,
+        "y": 596.453125,
+        "w": 224,
+        "h": 461.4375
+      },
+      "services": {
+        "x": 115.1875,
+        "y": 420.75,
+        "w": 573.796875,
+        "h": 225.65625
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 115.1875,
+          "y": 420.75,
+          "w": 544,
+          "h": 72.78125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 115.1875,
+          "y": 511.953125,
+          "w": 143.4375,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 258.625,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 402.078125,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 545.53125,
+          "y": 511.953125,
+          "w": 143.453125,
+          "h": 134.453125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 393,
+          "y": 668,
+          "w": 432,
+          "h": 300
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 705,
+          "y": 345.5,
+          "w": 300,
+          "h": 367.5
+        },
+        {
+          "name": "brunette",
+          "x": 990,
+          "y": 458,
+          "w": 270,
+          "h": 330
+        },
+        {
+          "name": "tall friend",
+          "x": 1170,
+          "y": 195.5,
+          "w": 247.5,
+          "h": 322.5
+        },
+        {
+          "name": "blonde friend",
+          "x": 1305,
+          "y": 405.5,
+          "w": 270,
+          "h": 375
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": []
+    }
+  },
+  "1440x900": {
+    "label": "desktop",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "entranceSeconds": 5.82,
+      "cls": 0.0009,
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1440,
+        "h": 868
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1440,
+        "h": 113
+      },
+      "cta": {
+        "x": 86.390625,
+        "y": 827.3125,
+        "w": 298.3125,
+        "h": 54
+      },
+      "phone": {
+        "x": 1213.609375,
+        "y": 466.03125,
+        "w": 201.59375,
+        "h": 415.28125
+      },
+      "services": {
+        "x": 86.390625,
+        "y": 180.90625,
+        "w": 377.59375,
+        "h": 363.546875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 86.390625,
+          "y": 180.90625,
+          "w": 377.59375,
+          "h": 93.8125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 86.390625,
+          "y": 290.546875,
+          "w": 188.796875,
+          "h": 108.90625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 275.1875,
+          "y": 290.546875,
+          "w": 188.796875,
+          "h": 108.90625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 86.390625,
+          "y": 417.046875,
+          "w": 188.796875,
+          "h": 127.40625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 275.1875,
+          "y": 417.046875,
+          "w": 188.796875,
+          "h": 127.40625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 229.24222222222224,
+          "y": 562.4444444444445,
+          "w": 347.2,
+          "h": 241.1111111111111
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 479.99777777777774,
+          "y": 303.25,
+          "w": 241.1111111111111,
+          "h": 295.3611111111111
+        },
+        {
+          "name": "brunette",
+          "x": 709.0533333333333,
+          "y": 393.66666666666663,
+          "w": 217,
+          "h": 265.22222222222223
+        },
+        {
+          "name": "tall friend",
+          "x": 853.7199999999999,
+          "y": 182.69444444444443,
+          "w": 198.91666666666666,
+          "h": 259.19444444444446
+        },
+        {
+          "name": "blonde friend",
+          "x": 962.2199999999999,
+          "y": 351.47222222222223,
+          "w": 217,
+          "h": 301.38888888888886
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 5.5,
+          "contrastMedian": 9.4
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 9.8,
+          "contrastMedian": 13.2
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 9.7,
+          "contrastMedian": 13.1
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 11.5,
+          "contrastMedian": 13.5
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 9.9,
+          "contrastMedian": 13.1
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 9.8,
+          "contrastMedian": 11.5
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 9.9,
+          "contrastMedian": 12
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 15.1,
+          "contrastMedian": 17.4
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 15.9,
+          "contrastMedian": 18
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 6,
+          "contrastMedian": 10.6
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 12.1,
+          "contrastMedian": 15.4
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 11.1,
+          "contrastMedian": 15.1
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 13.4,
+          "contrastMedian": 15.9
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 10.9,
+          "contrastMedian": 14.9
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 11.3,
+          "contrastMedian": 14.4
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 11.2,
+          "contrastMedian": 15.2
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.7,
+          "contrastMedian": 18.5
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.9,
+          "contrastMedian": 18.8
+        }
+      ]
+    },
+    "static": {
+      "state": "static",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0029,
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1440,
+        "h": 868
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1440,
+        "h": 113
+      },
+      "cta": {
+        "x": 86.390625,
+        "y": 827.3125,
+        "w": 298.3125,
+        "h": 54
+      },
+      "phone": {
+        "x": 1213.609375,
+        "y": 466.03125,
+        "w": 201.59375,
+        "h": 415.28125
+      },
+      "services": {
+        "x": 86.390625,
+        "y": 180.90625,
+        "w": 377.59375,
+        "h": 363.546875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 86.390625,
+          "y": 180.90625,
+          "w": 377.59375,
+          "h": 93.8125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 86.390625,
+          "y": 290.546875,
+          "w": 188.796875,
+          "h": 108.90625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 275.1875,
+          "y": 290.546875,
+          "w": 188.796875,
+          "h": 108.90625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 86.390625,
+          "y": 417.046875,
+          "w": 188.796875,
+          "h": 127.40625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 275.1875,
+          "y": 417.046875,
+          "w": 188.796875,
+          "h": 127.40625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 229.24222222222224,
+          "y": 562.4444444444445,
+          "w": 347.2,
+          "h": 241.1111111111111
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 479.99777777777774,
+          "y": 303.25,
+          "w": 241.1111111111111,
+          "h": 295.3611111111111
+        },
+        {
+          "name": "brunette",
+          "x": 709.0533333333333,
+          "y": 393.66666666666663,
+          "w": 217,
+          "h": 265.22222222222223
+        },
+        {
+          "name": "tall friend",
+          "x": 853.7199999999999,
+          "y": 182.69444444444443,
+          "w": 198.91666666666666,
+          "h": 259.19444444444446
+        },
+        {
+          "name": "blonde friend",
+          "x": 962.2199999999999,
+          "y": 351.47222222222223,
+          "w": 217,
+          "h": 301.38888888888886
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": []
+    },
+    "reduced": {
+      "state": "reduced",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0029,
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1440,
+        "h": 868
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1440,
+        "h": 113
+      },
+      "cta": {
+        "x": 86.390625,
+        "y": 827.3125,
+        "w": 298.3125,
+        "h": 54
+      },
+      "phone": {
+        "x": 1213.609375,
+        "y": 466.03125,
+        "w": 201.59375,
+        "h": 415.28125
+      },
+      "services": {
+        "x": 86.390625,
+        "y": 180.90625,
+        "w": 377.59375,
+        "h": 363.546875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 86.390625,
+          "y": 180.90625,
+          "w": 377.59375,
+          "h": 93.8125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 86.390625,
+          "y": 290.546875,
+          "w": 188.796875,
+          "h": 108.90625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 275.1875,
+          "y": 290.546875,
+          "w": 188.796875,
+          "h": 108.90625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 86.390625,
+          "y": 417.046875,
+          "w": 188.796875,
+          "h": 127.40625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 275.1875,
+          "y": 417.046875,
+          "w": 188.796875,
+          "h": 127.40625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 229.24222222222224,
+          "y": 562.4444444444445,
+          "w": 347.2,
+          "h": 241.1111111111111
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 479.99777777777774,
+          "y": 303.25,
+          "w": 241.1111111111111,
+          "h": 295.3611111111111
+        },
+        {
+          "name": "brunette",
+          "x": 709.0533333333333,
+          "y": 393.66666666666663,
+          "w": 217,
+          "h": 265.22222222222223
+        },
+        {
+          "name": "tall friend",
+          "x": 853.7199999999999,
+          "y": 182.69444444444443,
+          "w": 198.91666666666666,
+          "h": 259.19444444444446
+        },
+        {
+          "name": "blonde friend",
+          "x": 962.2199999999999,
+          "y": 351.47222222222223,
+          "w": 217,
+          "h": 301.38888888888886
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": []
+    }
+  },
+  "1366x768": {
+    "label": "short laptop",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "entranceSeconds": 5.82,
+      "cls": 0.0008,
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1366,
+        "h": 736
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1366,
+        "h": 113
+      },
+      "cta": {
+        "x": 81.953125,
+        "y": 697.8125,
+        "w": 292.65625,
+        "h": 54
+      },
+      "phone": {
+        "x": 1151.078125,
+        "y": 357.875,
+        "w": 191.234375,
+        "h": 393.9375
+      },
+      "services": {
+        "x": 81.953125,
+        "y": 168.75,
+        "w": 403.609375,
+        "h": 293.171875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 81.953125,
+          "y": 168.75,
+          "w": 403.609375,
+          "h": 62.6875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 81.953125,
+          "y": 245.375,
+          "w": 201.796875,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 283.75,
+          "y": 245.375,
+          "w": 201.8125,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 81.953125,
+          "y": 361.390625,
+          "w": 201.796875,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 283.75,
+          "y": 361.390625,
+          "w": 201.8125,
+          "h": 100.53125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 279.603125,
+          "y": 477.28125,
+          "w": 307.34999999999997,
+          "h": 213.4375
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 501.578125,
+          "y": 247.8359375,
+          "w": 213.4375,
+          "h": 261.4609375
+        },
+        {
+          "name": "brunette",
+          "x": 704.34375,
+          "y": 327.875,
+          "w": 192.09375,
+          "h": 234.78125
+        },
+        {
+          "name": "tall friend",
+          "x": 832.40625,
+          "y": 141.1171875,
+          "w": 176.0859375,
+          "h": 229.4453125
+        },
+        {
+          "name": "blonde friend",
+          "x": 928.453125,
+          "y": 290.5234375,
+          "w": 192.09375,
+          "h": 266.796875
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": [],
+      "contrast": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 6.9,
+          "contrastMedian": 10
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 15.7,
+          "contrastMedian": 17
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 9.7,
+          "contrastMedian": 12.6
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 9.8,
+          "contrastMedian": 12.1
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 10,
+          "contrastMedian": 12.7
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 9.7,
+          "contrastMedian": 11.3
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 9.9,
+          "contrastMedian": 13.8
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 15.2,
+          "contrastMedian": 17.5
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 15.6,
+          "contrastMedian": 17.9
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 8,
+          "contrastMedian": 11.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.9,
+          "contrastMedian": 18.4
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 11,
+          "contrastMedian": 14.5
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 11.8,
+          "contrastMedian": 14.8
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 10.5,
+          "contrastMedian": 14.4
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 11.2,
+          "contrastMedian": 14.7
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 10.9,
+          "contrastMedian": 16
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 17,
+          "contrastMedian": 18.6
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 17,
+          "contrastMedian": 19
+        }
+      ]
+    },
+    "static": {
+      "state": "static",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0008,
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1366,
+        "h": 736
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1366,
+        "h": 113
+      },
+      "cta": {
+        "x": 81.953125,
+        "y": 697.8125,
+        "w": 292.65625,
+        "h": 54
+      },
+      "phone": {
+        "x": 1151.078125,
+        "y": 357.875,
+        "w": 191.234375,
+        "h": 393.9375
+      },
+      "services": {
+        "x": 81.953125,
+        "y": 168.75,
+        "w": 403.609375,
+        "h": 293.171875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 81.953125,
+          "y": 168.75,
+          "w": 403.609375,
+          "h": 62.6875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 81.953125,
+          "y": 245.375,
+          "w": 201.796875,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 283.75,
+          "y": 245.375,
+          "w": 201.8125,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 81.953125,
+          "y": 361.390625,
+          "w": 201.796875,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 283.75,
+          "y": 361.390625,
+          "w": 201.8125,
+          "h": 100.53125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 279.603125,
+          "y": 477.28125,
+          "w": 307.34999999999997,
+          "h": 213.4375
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 501.578125,
+          "y": 247.8359375,
+          "w": 213.4375,
+          "h": 261.4609375
+        },
+        {
+          "name": "brunette",
+          "x": 704.34375,
+          "y": 327.875,
+          "w": 192.09375,
+          "h": 234.78125
+        },
+        {
+          "name": "tall friend",
+          "x": 832.40625,
+          "y": 141.1171875,
+          "w": 176.0859375,
+          "h": 229.4453125
+        },
+        {
+          "name": "blonde friend",
+          "x": 928.453125,
+          "y": 290.5234375,
+          "w": 192.09375,
+          "h": 266.796875
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": []
+    },
+    "reduced": {
+      "state": "reduced",
+      "errors": [],
+      "failed": [],
+      "cls": 0.0009,
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 1366,
+        "h": 736
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 1366,
+        "h": 113
+      },
+      "cta": {
+        "x": 81.953125,
+        "y": 697.8125,
+        "w": 292.65625,
+        "h": 54
+      },
+      "phone": {
+        "x": 1151.078125,
+        "y": 357.875,
+        "w": 191.234375,
+        "h": 393.9375
+      },
+      "services": {
+        "x": 81.953125,
+        "y": 168.75,
+        "w": 403.609375,
+        "h": 293.171875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 81.953125,
+          "y": 168.75,
+          "w": 403.609375,
+          "h": 62.6875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 81.953125,
+          "y": 245.375,
+          "w": 201.796875,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 283.75,
+          "y": 245.375,
+          "w": 201.8125,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 81.953125,
+          "y": 361.390625,
+          "w": 201.796875,
+          "h": 100.53125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 283.75,
+          "y": 361.390625,
+          "w": 201.8125,
+          "h": 100.53125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 279.603125,
+          "y": 477.28125,
+          "w": 307.34999999999997,
+          "h": 213.4375
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 501.578125,
+          "y": 247.8359375,
+          "w": 213.4375,
+          "h": 261.4609375
+        },
+        {
+          "name": "brunette",
+          "x": 704.34375,
+          "y": 327.875,
+          "w": 192.09375,
+          "h": 234.78125
+        },
+        {
+          "name": "tall friend",
+          "x": 832.40625,
+          "y": 141.1171875,
+          "w": 176.0859375,
+          "h": 229.4453125
+        },
+        {
+          "name": "blonde friend",
+          "x": 928.453125,
+          "y": 290.5234375,
+          "w": 192.09375,
+          "h": 266.796875
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "over the photograph",
+      "clipped": []
+    }
+  },
+  "768x1024": {
+    "label": "tablet",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "entranceSeconds": 4.85,
+      "cls": 0.004,
+      "viewport": {
+        "w": 768,
+        "h": 1024
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 768,
+        "h": 992
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 768,
+        "h": 97
+      },
+      "cta": {
+        "x": 46.078125,
+        "y": 954.953125,
+        "w": 268.09375,
+        "h": 48
+      },
+      "phone": {
+        "x": 603.0625,
+        "y": 693.515625,
+        "w": 150.21875,
+        "h": 309.4375
+      },
+      "services": {
+        "x": 0,
+        "y": 1024,
+        "w": 768,
+        "h": 296.21875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 46.078125,
+          "y": 1053.5625,
+          "w": 544,
+          "h": 72.09375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 46.078125,
+          "y": 1144.53125,
+          "w": 168.953125,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 215.03125,
+          "y": 1144.53125,
+          "w": 168.96875,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 384,
+          "y": 1144.53125,
+          "w": 168.953125,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 552.953125,
+          "y": 1144.53125,
+          "w": 168.96875,
+          "h": 128.65625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 27.99999999999997,
+          "y": 539.6666666666667,
+          "w": 268.8,
+          "h": 186.66666666666666
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 222.13333333333333,
+          "y": 339,
+          "w": 186.66666666666666,
+          "h": 228.66666666666666
+        },
+        {
+          "name": "brunette",
+          "x": 399.46666666666664,
+          "y": 409,
+          "w": 168,
+          "h": 205.33333333333334
+        },
+        {
+          "name": "tall friend",
+          "x": 511.46666666666664,
+          "y": 245.66666666666669,
+          "w": 154,
+          "h": 200.66666666666666
+        },
+        {
+          "name": "blonde friend",
+          "x": 595.4666666666667,
+          "y": 376.33333333333337,
+          "w": 168,
+          "h": 233.33333333333334
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": [],
+      "contrast": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ]
+    },
+    "static": {
+      "state": "static",
+      "errors": [],
+      "failed": [],
+      "cls": 0.004,
+      "viewport": {
+        "w": 768,
+        "h": 1024
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 768,
+        "h": 992
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 768,
+        "h": 97
+      },
+      "cta": {
+        "x": 46.078125,
+        "y": 954.953125,
+        "w": 268.09375,
+        "h": 48
+      },
+      "phone": {
+        "x": 603.0625,
+        "y": 693.515625,
+        "w": 150.21875,
+        "h": 309.4375
+      },
+      "services": {
+        "x": 0,
+        "y": 1024,
+        "w": 768,
+        "h": 296.21875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 46.078125,
+          "y": 1053.5625,
+          "w": 544,
+          "h": 72.09375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 46.078125,
+          "y": 1144.53125,
+          "w": 168.953125,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 215.03125,
+          "y": 1144.53125,
+          "w": 168.96875,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 384,
+          "y": 1144.53125,
+          "w": 168.953125,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 552.953125,
+          "y": 1144.53125,
+          "w": 168.96875,
+          "h": 128.65625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 27.99999999999997,
+          "y": 539.6666666666667,
+          "w": 268.8,
+          "h": 186.66666666666666
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 222.13333333333333,
+          "y": 339,
+          "w": 186.66666666666666,
+          "h": 228.66666666666666
+        },
+        {
+          "name": "brunette",
+          "x": 399.46666666666664,
+          "y": 409,
+          "w": 168,
+          "h": 205.33333333333334
+        },
+        {
+          "name": "tall friend",
+          "x": 511.46666666666664,
+          "y": 245.66666666666669,
+          "w": 154,
+          "h": 200.66666666666666
+        },
+        {
+          "name": "blonde friend",
+          "x": 595.4666666666667,
+          "y": 376.33333333333337,
+          "w": 168,
+          "h": 233.33333333333334
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": []
+    },
+    "reduced": {
+      "state": "reduced",
+      "errors": [],
+      "failed": [],
+      "cls": 0.004,
+      "viewport": {
+        "w": 768,
+        "h": 1024
+      },
+      "hero": {
+        "x": 0,
+        "y": 32,
+        "w": 768,
+        "h": 992
+      },
+      "header": {
+        "x": 0,
+        "y": 32,
+        "w": 768,
+        "h": 97
+      },
+      "cta": {
+        "x": 46.078125,
+        "y": 954.953125,
+        "w": 268.09375,
+        "h": 48
+      },
+      "phone": {
+        "x": 603.0625,
+        "y": 693.515625,
+        "w": 150.21875,
+        "h": 309.4375
+      },
+      "services": {
+        "x": 0,
+        "y": 1024,
+        "w": 768,
+        "h": 296.21875
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 46.078125,
+          "y": 1053.5625,
+          "w": 544,
+          "h": 72.09375
+        },
+        {
+          "el": "hero-services__item",
+          "x": 46.078125,
+          "y": 1144.53125,
+          "w": 168.953125,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 215.03125,
+          "y": 1144.53125,
+          "w": 168.96875,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 384,
+          "y": 1144.53125,
+          "w": 168.953125,
+          "h": 128.65625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 552.953125,
+          "y": 1144.53125,
+          "w": 168.96875,
+          "h": 128.65625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 27.99999999999997,
+          "y": 539.6666666666667,
+          "w": 268.8,
+          "h": 186.66666666666666
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 222.13333333333333,
+          "y": 339,
+          "w": 186.66666666666666,
+          "h": 228.66666666666666
+        },
+        {
+          "name": "brunette",
+          "x": 399.46666666666664,
+          "y": 409,
+          "w": 168,
+          "h": 205.33333333333334
+        },
+        {
+          "name": "tall friend",
+          "x": 511.46666666666664,
+          "y": 245.66666666666669,
+          "w": 154,
+          "h": 200.66666666666666
+        },
+        {
+          "name": "blonde friend",
+          "x": 595.4666666666667,
+          "y": 376.33333333333337,
+          "w": 168,
+          "h": 233.33333333333334
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": []
+    }
+  },
+  "390x844": {
+    "label": "mobile",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "entranceSeconds": 3.22,
+      "cls": 0,
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "hero": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 390,
+        "h": 799
+      },
+      "header": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 390,
+        "h": 105.265625
+      },
+      "cta": {
+        "x": 23.390625,
+        "y": 775.375,
+        "w": 157.21875,
+        "h": 50.6875
+      },
+      "phone": {
+        "x": 196.609375,
+        "y": 456.53125,
+        "w": 179.390625,
+        "h": 369.53125
+      },
+      "services": {
+        "x": 0,
+        "y": 843.6875,
+        "w": 390,
+        "h": 407.15625
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 23.390625,
+          "y": 863.6875,
+          "w": 343.21875,
+          "h": 87.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 23.390625,
+          "y": 966.8125,
+          "w": 171.609375,
+          "h": 106.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 195,
+          "y": 966.8125,
+          "w": 171.609375,
+          "h": 106.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 23.390625,
+          "y": 1090.53125,
+          "w": 171.609375,
+          "h": 124.3125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 195,
+          "y": 1090.53125,
+          "w": 171.609375,
+          "h": 124.3125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 14.218750000000028,
+          "y": 358.49479166666663,
+          "w": 136.5,
+          "h": 94.79166666666666
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 112.80208333333336,
+          "y": 256.59375,
+          "w": 94.79166666666666,
+          "h": 116.11979166666666
+        },
+        {
+          "name": "brunette",
+          "x": 202.85416666666669,
+          "y": 292.140625,
+          "w": 85.3125,
+          "h": 104.27083333333333
+        },
+        {
+          "name": "tall friend",
+          "x": 259.7291666666667,
+          "y": 209.19791666666666,
+          "w": 78.203125,
+          "h": 101.90104166666666
+        },
+        {
+          "name": "blonde friend",
+          "x": 302.3854166666667,
+          "y": 275.5520833333333,
+          "w": 85.3125,
+          "h": 118.48958333333333
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": [],
+      "contrast": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ]
+    },
+    "static": {
+      "state": "static",
+      "errors": [],
+      "failed": [],
+      "cls": 0,
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "hero": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 390,
+        "h": 799
+      },
+      "header": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 390,
+        "h": 105.265625
+      },
+      "cta": {
+        "x": 23.390625,
+        "y": 775.375,
+        "w": 157.21875,
+        "h": 50.6875
+      },
+      "phone": {
+        "x": 196.609375,
+        "y": 456.53125,
+        "w": 179.390625,
+        "h": 369.53125
+      },
+      "services": {
+        "x": 0,
+        "y": 843.6875,
+        "w": 390,
+        "h": 407.15625
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 23.390625,
+          "y": 863.6875,
+          "w": 343.21875,
+          "h": 87.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 23.390625,
+          "y": 966.8125,
+          "w": 171.609375,
+          "h": 106.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 195,
+          "y": 966.8125,
+          "w": 171.609375,
+          "h": 106.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 23.390625,
+          "y": 1090.53125,
+          "w": 171.609375,
+          "h": 124.3125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 195,
+          "y": 1090.53125,
+          "w": 171.609375,
+          "h": 124.3125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 14.218750000000028,
+          "y": 358.49479166666663,
+          "w": 136.5,
+          "h": 94.79166666666666
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 112.80208333333336,
+          "y": 256.59375,
+          "w": 94.79166666666666,
+          "h": 116.11979166666666
+        },
+        {
+          "name": "brunette",
+          "x": 202.85416666666669,
+          "y": 292.140625,
+          "w": 85.3125,
+          "h": 104.27083333333333
+        },
+        {
+          "name": "tall friend",
+          "x": 259.7291666666667,
+          "y": 209.19791666666666,
+          "w": 78.203125,
+          "h": 101.90104166666666
+        },
+        {
+          "name": "blonde friend",
+          "x": 302.3854166666667,
+          "y": 275.5520833333333,
+          "w": 85.3125,
+          "h": 118.48958333333333
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": []
+    },
+    "reduced": {
+      "state": "reduced",
+      "errors": [],
+      "failed": [],
+      "cls": 0,
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "hero": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 390,
+        "h": 799
+      },
+      "header": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 390,
+        "h": 105.265625
+      },
+      "cta": {
+        "x": 23.390625,
+        "y": 775.375,
+        "w": 157.21875,
+        "h": 50.6875
+      },
+      "phone": {
+        "x": 196.609375,
+        "y": 456.53125,
+        "w": 179.390625,
+        "h": 369.53125
+      },
+      "services": {
+        "x": 0,
+        "y": 843.6875,
+        "w": 390,
+        "h": 407.15625
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 23.390625,
+          "y": 863.6875,
+          "w": 343.21875,
+          "h": 87.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 23.390625,
+          "y": 966.8125,
+          "w": 171.609375,
+          "h": 106.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 195,
+          "y": 966.8125,
+          "w": 171.609375,
+          "h": 106.125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 23.390625,
+          "y": 1090.53125,
+          "w": 171.609375,
+          "h": 124.3125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 195,
+          "y": 1090.53125,
+          "w": 171.609375,
+          "h": 124.3125
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 14.218750000000028,
+          "y": 358.49479166666663,
+          "w": 136.5,
+          "h": 94.79166666666666
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 112.80208333333336,
+          "y": 256.59375,
+          "w": 94.79166666666666,
+          "h": 116.11979166666666
+        },
+        {
+          "name": "brunette",
+          "x": 202.85416666666669,
+          "y": 292.140625,
+          "w": 85.3125,
+          "h": 104.27083333333333
+        },
+        {
+          "name": "tall friend",
+          "x": 259.7291666666667,
+          "y": 209.19791666666666,
+          "w": 78.203125,
+          "h": 101.90104166666666
+        },
+        {
+          "name": "blonde friend",
+          "x": 302.3854166666667,
+          "y": 275.5520833333333,
+          "w": 85.3125,
+          "h": 118.48958333333333
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": []
+    }
+  },
+  "360x740": {
+    "label": "small mobile",
+    "motion": {
+      "state": "motion",
+      "errors": [],
+      "failed": [],
+      "entranceSeconds": 3.22,
+      "cls": 0,
+      "viewport": {
+        "w": 360,
+        "h": 740
+      },
+      "hero": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 360,
+        "h": 695
+      },
+      "header": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 360,
+        "h": 96.96875
+      },
+      "cta": {
+        "x": 21.59375,
+        "y": 673.53125,
+        "w": 154.15625,
+        "h": 50.5
+      },
+      "phone": {
+        "x": 191.75,
+        "y": 406.28125,
+        "w": 154.25,
+        "h": 317.75
+      },
+      "services": {
+        "x": 0,
+        "y": 739.6875,
+        "w": 360,
+        "h": 405.78125
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 21.59375,
+          "y": 759.6875,
+          "w": 316.8125,
+          "h": 86.203125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 21.59375,
+          "y": 861.890625,
+          "w": 158.40625,
+          "h": 105.921875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 180,
+          "y": 861.890625,
+          "w": 158.40625,
+          "h": 105.921875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 21.59375,
+          "y": 985.40625,
+          "w": 158.40625,
+          "h": 124.0625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 180,
+          "y": 985.40625,
+          "w": 158.40625,
+          "h": 124.0625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 13.125000000000014,
+          "y": 334.15625,
+          "w": 126,
+          "h": 87.5
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 104.12500000000001,
+          "y": 240.09375,
+          "w": 87.5,
+          "h": 107.1875
+        },
+        {
+          "name": "brunette",
+          "x": 187.25,
+          "y": 272.90625,
+          "w": 78.75,
+          "h": 96.25
+        },
+        {
+          "name": "tall friend",
+          "x": 239.75,
+          "y": 196.34375,
+          "w": 72.1875,
+          "h": 94.0625
+        },
+        {
+          "name": "blonde friend",
+          "x": 279.125,
+          "y": 257.59375,
+          "w": 78.75,
+          "h": 109.375
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": [],
+      "contrast": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ],
+      "contrastWithHalo": [
+        {
+          "kind": "lead",
+          "text": "Private tours, airport transfers and aut",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Private Tours",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "City, township & cultural experiences",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Airport Transfers",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Reliable, safe & comfortable travel",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Adventure Add-ons",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Wine, wildlife, scenic & outdoor experie",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "title",
+          "text": "Custom Journeys",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        },
+        {
+          "kind": "text",
+          "text": "Personalised tours for individuals, fami",
+          "contrastP90": 16.3,
+          "contrastMedian": 16.3
+        }
+      ]
+    },
+    "static": {
+      "state": "static",
+      "errors": [],
+      "failed": [],
+      "cls": 0,
+      "viewport": {
+        "w": 360,
+        "h": 740
+      },
+      "hero": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 360,
+        "h": 695
+      },
+      "header": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 360,
+        "h": 96.96875
+      },
+      "cta": {
+        "x": 21.59375,
+        "y": 673.53125,
+        "w": 154.15625,
+        "h": 50.5
+      },
+      "phone": {
+        "x": 191.75,
+        "y": 406.28125,
+        "w": 154.25,
+        "h": 317.75
+      },
+      "services": {
+        "x": 0,
+        "y": 739.6875,
+        "w": 360,
+        "h": 405.78125
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 21.59375,
+          "y": 759.6875,
+          "w": 316.8125,
+          "h": 86.203125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 21.59375,
+          "y": 861.890625,
+          "w": 158.40625,
+          "h": 105.921875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 180,
+          "y": 861.890625,
+          "w": 158.40625,
+          "h": 105.921875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 21.59375,
+          "y": 985.40625,
+          "w": 158.40625,
+          "h": 124.0625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 180,
+          "y": 985.40625,
+          "w": 158.40625,
+          "h": 124.0625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 13.125000000000014,
+          "y": 334.15625,
+          "w": 126,
+          "h": 87.5
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 104.12500000000001,
+          "y": 240.09375,
+          "w": 87.5,
+          "h": 107.1875
+        },
+        {
+          "name": "brunette",
+          "x": 187.25,
+          "y": 272.90625,
+          "w": 78.75,
+          "h": 96.25
+        },
+        {
+          "name": "tall friend",
+          "x": 239.75,
+          "y": 196.34375,
+          "w": 72.1875,
+          "h": 94.0625
+        },
+        {
+          "name": "blonde friend",
+          "x": 279.125,
+          "y": 257.59375,
+          "w": 78.75,
+          "h": 109.375
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": []
+    },
+    "reduced": {
+      "state": "reduced",
+      "errors": [],
+      "failed": [],
+      "cls": 0,
+      "viewport": {
+        "w": 360,
+        "h": 740
+      },
+      "hero": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 360,
+        "h": 695
+      },
+      "header": {
+        "x": 0,
+        "y": 44.6875,
+        "w": 360,
+        "h": 96.96875
+      },
+      "cta": {
+        "x": 21.59375,
+        "y": 673.53125,
+        "w": 154.15625,
+        "h": 50.5
+      },
+      "phone": {
+        "x": 191.75,
+        "y": 406.28125,
+        "w": 154.25,
+        "h": 317.75
+      },
+      "services": {
+        "x": 0,
+        "y": 739.6875,
+        "w": 360,
+        "h": 405.78125
+      },
+      "parts": [
+        {
+          "el": "hero-services__lead",
+          "x": 21.59375,
+          "y": 759.6875,
+          "w": 316.8125,
+          "h": 86.203125
+        },
+        {
+          "el": "hero-services__item",
+          "x": 21.59375,
+          "y": 861.890625,
+          "w": 158.40625,
+          "h": 105.921875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 180,
+          "y": 861.890625,
+          "w": 158.40625,
+          "h": 105.921875
+        },
+        {
+          "el": "hero-services__item",
+          "x": 21.59375,
+          "y": 985.40625,
+          "w": 158.40625,
+          "h": 124.0625
+        },
+        {
+          "el": "hero-services__item",
+          "x": 180,
+          "y": 985.40625,
+          "w": 158.40625,
+          "h": 124.0625
+        }
+      ],
+      "faces": [
+        {
+          "name": "sleeping friend",
+          "x": 13.125000000000014,
+          "y": 334.15625,
+          "w": 126,
+          "h": 87.5
+        },
+        {
+          "name": "curly-haired friend",
+          "x": 104.12500000000001,
+          "y": 240.09375,
+          "w": 87.5,
+          "h": 107.1875
+        },
+        {
+          "name": "brunette",
+          "x": 187.25,
+          "y": 272.90625,
+          "w": 78.75,
+          "h": 96.25
+        },
+        {
+          "name": "tall friend",
+          "x": 239.75,
+          "y": 196.34375,
+          "w": 72.1875,
+          "h": 94.0625
+        },
+        {
+          "name": "blonde friend",
+          "x": 279.125,
+          "y": 257.59375,
+          "w": 78.75,
+          "h": 109.375
+        }
+      ],
+      "overflow": 0,
+      "collisions": [],
+      "placement": "beneath the hero",
+      "clipped": []
+    }
+  }
+}
