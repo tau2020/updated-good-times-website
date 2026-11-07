@@ -624,26 +624,7 @@ body {
 .header-cta {
   display: none;
 }
-/* From 1024 to 1279 px the bar is full: "Plan My Day" takes the compact navigation size of
-   design/button-design.md (a 44–48 px pill, a smaller coin and label), so it never leaves the bar */
-@media (min-width: 64em) and (max-width: 79.99em) {
-  .header-cta,
-  .has-overlay-header .header-cta {
-    --coin: 50px;
-    min-height: 46px;
-    padding-right: 1.1rem;
-    font-size: 1rem;
-  }
-}
-@media (min-width: 64em) and (max-width: 69.99em) {
-  .header-cta,
-  .has-overlay-header .header-cta {
-    --coin: 48px;
-    min-height: 44px;
-    padding-right: 0.95rem;
-    font-size: 0.9375rem;
-  }
-}
+/* (Its sizes in the bar, compact from 1024 to 1119 px, are the leaf's: buttons.css › .header-cta.leaf-btn) */
 @media (min-width: 40em) {
   .header-cta {
     display: inline-flex;

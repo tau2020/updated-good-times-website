@@ -1553,6 +1553,8 @@ test.describe('the button system', () => {
       await expect(cta).toHaveAttribute('href', /enquire\/$/);
       await expect(cta.locator('.leaf-btn__shape')).toHaveCount(1);
     } else {
+      // Below 40em the header has no Plan My Day (it is in the menu and the call bar): never a squeezed leaf in the bar
+      await expect(page.locator('.header-cta')).toBeHidden();
       await page.locator('[data-nav-toggle]').click();
       const drawer = page.locator('.drawer__footer .leaf-btn');
       await expect(drawer).toHaveText('Plan My Day');

@@ -71,6 +71,9 @@ test('the leaf in the stylesheet: at least 44 px tall at every size, white words
   assert.match(b, /@media \(forced-colors: active\)[\s\S]*?\.leaf-btn/);
   assert.match(b, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.leaf-btn/);
   assert.doesNotMatch(b, /\.leaf-btn[^{]*\{[^}]*outline:\s*(?:none|0)\s*;[^}]*\}(?![\s\S]*leaf-btn__ring)/, 'the outline is never removed without the ring');
+  // This sheet loads after styles.css, so .leaf-btn's display would show the header's leaf on phones: it must not
+  assert.match(b, /@media \(max-width: 39\.99em\) \{\s*\.header-cta\.leaf-btn \{\s*display: none;/);
+  assert.match(css('styles.css'), /\.header-cta \{\s*display: none;\s*\}/);
 });
 
 test('the primary calls to action: Find Your Good Time to the tours, Plan My Day in the header, Explore the Cape Peninsula Tour at the end of the footprints', () => {

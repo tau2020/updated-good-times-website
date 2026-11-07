@@ -671,6 +671,13 @@ a.leaf-btn:active,
   --leaf-pad-tip: 1.95em;
   font-size: 1rem;
 }
+/* Phones keep Plan My Day in the menu and the call bar: no leaf in the header below 40em (styles.css › .header-cta;
+   this sheet loads after it, so .leaf-btn's display would otherwise win) */
+@media (max-width: 39.99em) {
+  .header-cta.leaf-btn {
+    display: none;
+  }
+}
 @media (min-width: 64em) and (max-width: 69.99em) {
   .header-cta.leaf-btn,
   .has-overlay-header .header-cta.leaf-btn {
