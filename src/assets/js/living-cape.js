@@ -13,7 +13,10 @@
    with its chapter on 6 Nov 2026 (qa/surgical-change-report.md): its SVG layer, its scrubbed timeline, its ticker and
    its on-screen trigger went with it. Story photographs (D66, design.md §06) each have their own
    entrance: the collage of moments rises as one stagger, the guide's portrait opens from a mask, the two smaller
-   moments rise and drift, the services' photographs stay still. */
+   moments rise and drift. The four ways (tour discovery) open as editorial reveals, the airport way with its own
+   "arrival" doors and route; the invitation closes the page calmly with its own timeline and leaf; the footer lands
+   gently (design/motion-bible.md, one section a heading). The footer is the one thing outside the chapters this
+   file touches; still nothing in the hero or the header. */
 (function () {
   'use strict';
   var doc = document;
@@ -36,6 +39,7 @@
      photograph (D66, design.md §06). ---------- */
   var scenes = toArray('[data-scene]');
   scenes.forEach(function (s) {
+    if (s.hasAttribute('data-invite')) return; // the invitation has its own entrance (below); its drift is shared
     toArray('[data-scene-words]', s).forEach(function (words, b) {
       // Opacity, never visibility: the closing actions must stay reachable by keyboard before they are revealed
       gsap.from(words.children, {
@@ -161,6 +165,140 @@
     set();
     gsap.to(t, { v: 0, duration: 1.4, ease: 'power2.inOut', onUpdate: set, scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none reverse' } });
   })();
+
+  /* ---------- 04 · Tour discovery (design/motion-bible.md §6): editorial reveals, not the page's generic fade. Each
+     way's photograph opens from the side it sits on (the left column from the left, the right from the right, a beat
+     later; on phones the thumbnail opens upward) while its picture settles from depth (1.08); then its name, line,
+     facts and action follow in a short stagger, the action last. The airport way is "from arrival to adventure"
+     (§7): its photograph opens from the middle, like an arrivals hall's doors, then its route draws from the airport to
+     the stay, then its words. One timeline per card, played once as it comes into view. The card is a link
+     throughout (clip-path, opacity and transforms only: its target never moves), and focus inside it shows it whole.
+     The photograph's hover zoom stays the stylesheet's (on the img); the settle is GSAP's (on the picture). ---------- */
+  (function ways() {
+    var cards = toArray('[data-way]');
+    if (!cards.length) return;
+    gsap.matchMedia().add({ wide: '(min-width: 48em)', narrow: '(max-width: 47.99em)' }, function (ctx) {
+      var wide = ctx.conditions.wide;
+      cards.forEach(function (card, i) {
+        var photo = card.querySelector('[data-way-photo]');
+        var pic = photo && photo.querySelector('picture');
+        var route = card.querySelector('.lc-way__route');
+        var words = toArray('.lc-way__name, .lc-way__line, .lc-way__facts, .lc-way__go, .lc-way__extra', card);
+        var airport = card.getAttribute('data-service') === 'airport';
+        var round = ' round ' + (photo ? parseFloat(getComputedStyle(photo).borderTopLeftRadius) || 0 : 0) + 'px)';
+        var right = wide && i % 2 === 1;
+        var o = right ? 0.12 : 0;
+        var closed = airport ? 'inset(0% 50% 0% 50%' : !wide ? 'inset(100% 0% 0% 0%' : right ? 'inset(0% 0% 0% 100%' : 'inset(0% 100% 0% 0%';
+        var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+        if (photo) tl.fromTo(photo, { clipPath: closed + round }, { clipPath: 'inset(0% 0% 0% 0%' + round, duration: airport ? 1.15 : wide ? 1.0 : 0.7, ease: airport ? 'power3.inOut' : 'power3.out' }, o);
+        if (pic) tl.fromTo(pic, { scale: wide ? 1.08 : 1.04 }, { scale: 1, duration: wide ? 1.3 : 0.9, clearProps: 'transform' }, o);
+        var w = o + (wide ? 0.38 : 0.25);
+        if (route) {
+          var dots = route.querySelectorAll('circle');
+          tl.fromTo(dots[0], { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.3, ease: 'back.out(2)', clearProps: 'transform' }, o + 0.55)
+            .fromTo(route.querySelector('.lc-way__route-line'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.75, ease: 'power1.inOut', clearProps: 'strokeDashoffset' }, o + 0.65)
+            .fromTo(dots[1], { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.35, ease: 'back.out(2.2)', clearProps: 'transform' }, o + 1.3);
+          w = o + 1.05;
+        }
+        tl.fromTo(words, { opacity: 0, y: wide ? 18 : 10 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, clearProps: 'opacity,transform' }, w);
+        tl.eventCallback('onComplete', function () {
+          if (photo) gsap.set(photo, { clearProps: 'clipPath' });
+        });
+        card.__entrance = tl;
+        ST.create({ trigger: card, start: 'top 84%', once: true, onEnter: function () { tl.play(); } });
+      });
+    });
+    root.addEventListener('focusin', function (e) {
+      var card = e.target.closest && e.target.closest('[data-way]');
+      if (card && card.__entrance && card.__entrance.progress() < 1) card.__entrance.progress(1);
+    });
+  })();
+
+  /* ---------- 10 · The invitation (motion bible §13): the journey's calm close, the other end of "Look where your
+     footsteps led.". The photograph comes up out of the dusk (its layer from 0.3 to full over 1.5 s, the picture
+     settling from 1.08 over 2 s); the seal and the chapter mark; the headline's words rise and clear one after another
+     (SplitText words: a softer gesture than the Peninsula's line masks); the line; then Plan My Day unfurls (its leaf
+     is this scene's: data-leaf-owner="invite") and the transfer action appears beside it. Once, as it comes into
+     view: the invitation never hides again, and focus inside it shows it whole. The scene's drift (scrubbed, wide
+     screens) is shared with the other scenes: it moves the drift layer and the words block, never these. ---------- */
+  (function invite() {
+    var s = root.querySelector('[data-invite]');
+    if (!s) return;
+    var media = s.querySelector('.lc-scene__media');
+    var img = media && media.querySelector('img');
+    var head = s.querySelector('[data-scene-words]');
+    var seal = s.querySelector('.lc-invite-seal');
+    var mark = head && head.querySelector('.lc-mark');
+    var title = s.querySelector('.lc-statement');
+    var line = s.querySelector('.lc-scene__line');
+    var leaf = s.querySelector('[data-leaf-owner="invite"]');
+    var rest = toArray('.lc-scene__actions > *', s).filter(function (a) {
+      return a !== leaf;
+    });
+    var words = null;
+    if (title && window.SplitText) {
+      gsap.registerPlugin(window.SplitText);
+      words = window.SplitText.create(title, { type: 'words', wordsClass: 'lc-statement__word' }).words;
+    }
+    gsap.matchMedia().add({ wide: '(min-width: 48em)', narrow: '(max-width: 47.99em)' }, function (ctx) {
+      var f = ctx.conditions.wide ? 1 : 0.8;
+      var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+      if (media) tl.fromTo(media, { opacity: 0.3 }, { opacity: 1, duration: 1.5 * f, ease: 'power1.out', clearProps: 'opacity' }, 0);
+      if (img) tl.fromTo(img, { scale: 1.08 }, { scale: 1, duration: 2 * f, clearProps: 'transform' }, 0);
+      if (seal) tl.fromTo(seal, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 * f, clearProps: 'opacity,transform' }, 0.3 * f);
+      if (mark) tl.fromTo(mark, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 * f, clearProps: 'opacity,transform' }, 0.45 * f);
+      if (words && words.length) tl.fromTo(words, { opacity: 0, yPercent: 45 }, { opacity: 1, yPercent: 0, duration: 0.9 * f, ease: 'power3.out', stagger: 0.07 * f, clearProps: 'opacity,transform' }, 0.6 * f);
+      else if (title) tl.fromTo(title, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9 * f, clearProps: 'opacity,transform' }, 0.6 * f);
+      if (line) tl.fromTo(line, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 * f, clearProps: 'opacity,transform' }, 1.25 * f);
+      var at = 1.75 * f;
+      if (leaf) {
+        tl.fromTo(leaf, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', clearProps: 'opacity' }, at);
+        var unfurl = window.GTLeaf && window.GTLeaf.unfurl ? window.GTLeaf.unfurl(leaf) : null;
+        if (unfurl) tl.add(unfurl, at);
+      }
+      if (rest.length) tl.fromTo(rest, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'opacity,transform' }, at + 0.45);
+      s.__entrance = tl;
+      api.invite = tl;
+      ST.create({ trigger: s, start: 'top 62%', once: true, onEnter: function () { tl.play(); } });
+    });
+    s.addEventListener('focusin', function () {
+      if (s.__entrance && s.__entrance.progress() < 1) s.__entrance.progress(1);
+    });
+  })();
+
+  /* ---------- The footer (motion bible §15): a gentle landing after the journey, the calmest moment on the page. Its
+     logo comes up, the company statement after it, then the groups in a short stagger; once, as it comes into view.
+     Nothing pinned, nothing over the contact details, every link usable throughout (opacity and transforms only), and
+     focus inside it shows it whole. Its links' hover is the stylesheet's (a colour and underline fade). ---------- */
+  (function footer() {
+    var f = doc.querySelector('.site-footer');
+    if (!f) return;
+    var logo = f.querySelector('.brand-lockup--footer img');
+    var statement = f.querySelector('.brand-lockup--footer .brand-lockup__statement');
+    var groups = toArray('.footer-brand > :not(.brand-lockup), .footer-main > :not(.footer-brand)', f);
+    gsap.matchMedia().add('(min-width: 0em)', function () {
+      var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+      if (logo) tl.fromTo(logo, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.7, clearProps: 'opacity,transform' }, 0);
+      if (statement) tl.fromTo(statement, { opacity: 0 }, { opacity: 1, duration: 0.5, clearProps: 'opacity' }, 0.3);
+      if (groups.length) tl.fromTo(groups, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.07, clearProps: 'opacity,transform' }, 0.2);
+      f.__entrance = tl;
+      ST.create({ trigger: f, start: 'top 90%', once: true, onEnter: function () { tl.play(); } });
+    });
+    f.addEventListener('focusin', function () {
+      if (f.__entrance && f.__entrance.progress() < 1) f.__entrance.progress(1);
+    });
+  })();
+
+  // Nothing stays hidden (an interrupted scroll, a trigger that never fired): once the page has settled, an entrance
+  // that has not started for something already in or above the view is shown whole
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      toArray('[data-way], [data-invite]').concat(toArray('.site-footer', doc)).forEach(function (el) {
+        var tl = el.__entrance;
+        if (tl && tl.progress() === 0 && !tl.isActive() && el.getBoundingClientRect().top < window.innerHeight) tl.progress(1);
+      });
+    }, 2500);
+  });
 
   // Lazy images change heights as they load: measure again once everything is in
   window.addEventListener('load', function () {

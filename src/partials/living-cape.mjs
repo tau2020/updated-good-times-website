@@ -19,10 +19,10 @@ import { packages } from '../data/packages.mjs';
  * the solid white on-image pill, so it reads on any picture). No arrows; the old class names stay as hooks. The
  * compass medallion is kept for the flagship (coinButton in ui.mjs).
  */
-export function sunSeal({ href, label, tone = '', cls = '', attrs = '' }) {
+export function sunSeal({ href, label, tone = '', cls = '', attrs = '', owner = '' }) {
   // The home page's closing actions are the signature leaf (the brief of 6 Nov 2026), large; "Plan My Day" carries the
-  // signature's one description (ui.mjs)
-  return leafButton({ href, label, size: 'large', cls: ['lc-seal', tone && `lc-seal--${tone}`, cls].filter(Boolean).join(' '), attrs });
+  // signature's one description (ui.mjs). owner: the scene whose timeline plays its entrance (living-cape.js)
+  return leafButton({ href, label, size: 'large', cls: ['lc-seal', tone && `lc-seal--${tone}`, cls].filter(Boolean).join(' '), attrs, owner });
 }
 
 /** Travel Note: an editorial link, the tertiary action. */

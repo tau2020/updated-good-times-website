@@ -215,6 +215,10 @@ function scene({ id, cls, image, focus, focusTall, mark, title, line, action, cr
 </section>`;
 }
 
+/* The airport way's journey motif ("from arrival to adventure", design/motion-bible.md §6): a fine route from the
+   airport (an open point) to the stay (a closed one), drawn as the card arrives; decoration only */
+const ROUTE = `<svg class="lc-way__route" viewBox="0 0 160 14" aria-hidden="true" focusable="false"><circle class="lc-way__route-from" cx="6" cy="7" r="3.4"/><path class="lc-way__route-line" pathLength="1" d="M12 7C42 1.5 76 12.5 110 7S144 3.5 148 7"/><circle class="lc-way__route-to" cx="154" cy="7" r="3.4"/></svg>`;
+
 export const page = {
   path: 'index.html',
   nav: null,
@@ -365,10 +369,10 @@ ${scene({
     </div>
     <ul class="lc-ways__list" role="list">
       ${SERVICES.map(
-        (s, i) => `<li class="lc-way" data-service="${s.id}" data-reveal style="--reveal-i:${i % 2}">
-        <div class="lc-way__photo" style="--focus: ${s.focus}">${picture({ name: s.image, sizes: '(min-width: 64em) min(44vw, 40rem), (min-width: 48em) 46vw, 7rem' })}${licensedCredit(s.image)}</div>
+        (s) => `<li class="lc-way" data-service="${s.id}" data-way>
+        <div class="lc-way__photo" style="--focus: ${s.focus}" data-way-photo>${picture({ name: s.image, sizes: '(min-width: 64em) min(44vw, 40rem), (min-width: 48em) 46vw, 7rem' })}${licensedCredit(s.image)}</div>
         <div class="lc-way__body">
-          <h3 class="lc-way__name"><a href="${esc(s.href)}">${esc(s.name)}</a></h3>
+          ${s.id === 'airport' ? ROUTE : ''}<h3 class="lc-way__name"><a href="${esc(s.href)}">${esc(s.name)}</a></h3>
           <p class="lc-way__line">${esc(s.line)}</p>
           <ul class="lc-way__facts" role="list">${WAYS[s.id].map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
           <p class="lc-way__go"><span>${esc(s.action)}</span></p>
@@ -489,7 +493,7 @@ ${scene({
 
 ${storiesSection(site)}
 
-<section class="lc-scene lc-scene--invite lc-dark" aria-labelledby="invite-title" style="--focus: 50% 34%; --focus-tall: 42% 30%" data-scene>
+<section class="lc-scene lc-scene--invite lc-dark" aria-labelledby="invite-title" style="--focus: 50% 34%; --focus-tall: 42% 30%" data-scene data-invite>
   <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: 'camps-bay-twelve-apostles', alt: '', sizes: sceneSizes('camps-bay-twelve-apostles') })}</div></div>
   <div class="lc-scene__scrim" aria-hidden="true"></div>
   <div class="container lc-scene__inner">
@@ -501,7 +505,7 @@ ${storiesSection(site)}
     <div class="lc-scene__close" data-scene-words>
       <p class="lc-scene__line">Tell us what you’d love to see. We’ll help you make a day of it, and reply with availability and a personalised quote; nothing is booked or charged until we’ve confirmed it with you.</p>
       <div class="lc-scene__actions">
-        ${sunSeal({ href: 'enquire/?type=tour', label: 'Plan My Day', tone: 'light' })}
+        ${sunSeal({ href: 'enquire/?type=tour', label: 'Plan My Day', tone: 'light', owner: 'invite' })}
         ${quietOutline({ href: 'enquire/?type=transfer&transfer=airport-arrival', label: 'Arrange My Transfer', tone: 'light' })}
       </div>
     </div>

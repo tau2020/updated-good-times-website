@@ -2969,12 +2969,16 @@ body {
   gap: 0.55rem;
   min-height: 36px;
   color: var(--on-dark);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.22em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
+/* The underline fades in with the colour (a gentle landing, design/motion-bible.md §15); never motion-only */
 .footer-links a:hover,
 .footer-contact a:hover {
   color: var(--white);
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 .footer-contact {
   display: grid;
