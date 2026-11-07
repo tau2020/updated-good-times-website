@@ -97,8 +97,10 @@ rises with the shade behind the words (2.2 s, 16 px, 0.6 s) and the lime swash u
 right (2.4 s, 0.5 s, `power2.inOut`). Then the sentence rises (2.65 s, 14 px, 0.65 s, `power2.out`); the lime
 brush under "tailored for you." draws from left to right in one stroke (3.1 s, 0.55 s, `power2.inOut`, a clip-path
 inset, as the company statement draws); then Private Tours, Airport Transfers, Adventure Add-ons and Custom Journeys
-settle in turn, each icon, title and line as one (3.35 s, 12 px, 0.55 s, 0.12 s apart), and the two calls to action, Explore Our Tours and Our Experiences, rise together as the last service settles (3.75 s, 12 px, 0.55 s; staged with opacity only, so they are in the tab order throughout and a focused one shows at once). All in place by about 4.25 s on
-desktop, as the aircraft lands; the entrance keeps its length (5.8 s, 4.8 s, 3.2 s). Opacity and a small rise only,
+settle in turn, each icon, title and line as one (3.35 s, 12 px, 0.55 s, 0.12 s apart), and the two calls to
+action, Explore Our Tours and Our Experiences, rise together as the last service settles (3.75 s, 12 px, 0.55 s;
+staged with opacity only, so they are in the tab order throughout and a focused one shows at once). All in place by
+about 4.3 s on desktop, as the aircraft lands; the entrance keeps its length (5.8 s, 4.8 s, 3.2 s). Opacity and a small rise only,
 staged with opacity (never visibility), so the words stay in the accessibility tree; the shade waits on a CSS
 variable the timeline tweens. Where the block sits beneath the hero (phones, tablets, narrow or short windows) the same
 steps play, scaled with the rest. Reduced motion, `?nomotion` and a visitor already past the hero: everything at once.

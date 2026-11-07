@@ -216,7 +216,11 @@ async function shoot(browser, [w, h], state, out) {
   if (state === 'motion') {
     // The whole hero, and the block beneath it when it sits there
     const bottom = Math.ceil(Math.max(result.hero.y + result.hero.h, result.services ? result.services.y + result.services.h : 0));
+    // A full-page capture overrides the device metrics for the shot, which replays the Concierge toggle's own CSS
+    // entrance (living-cape-system.css, lc-concierge-in) mid-shot: it is held at the settled state the capture above shows
+    const hold = await page.addStyleTag({ content: '.gt-concierge__toggle { animation: none !important; }' });
     await page.screenshot({ path: join(out, `${w}x${h}-${state}-full-hero.jpg`), type: 'jpeg', quality: 70, fullPage: true, clip: { x: 0, y: 0, width: w, height: Math.max(h, bottom) } });
+    await hold.evaluate((el) => el.remove());
     // Then the contrast (last: it hides the words): the lines on screen first, then the rest with the block in view
     result.contrast = await contrast(browser, page);
     result.contrastWithHalo = await contrast(browser, page, { halo: true });
