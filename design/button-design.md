@@ -70,10 +70,10 @@ A 24 px leaf glyph with its midrib cut out and a short stem, drawn as a CSS mask
 
 It is a flourish, never an arrow: no control in the family carries an arrow or chevron.
 
-The signature **Make It Yours** keeps its compass medallion (the branded primary): its pill takes the primary's fill,
-edge and shadow, and the medallion's face moves to the leaf palette (cream → lime → green) with a `--green-deep` rim.
-The home hero's **Good Times start Here!** keeps its approved pill, size and sheen, with the same fill, edge and a
-lime-tinted border.
+The brand's primary calls to action (**Find Your Good Time**, **Plan My Day** and the others listed there) are no
+longer pills: since the brief of 6 Nov 2026 they are the signature leaf (`design/button-tokens.md`), which replaced the
+compass medallion and the hero's pill and reads the same palette. This sheet covers everything else: form
+submissions, wizard steps, secondary and tertiary actions, and small controls.
 
 ## 3. Variants
 

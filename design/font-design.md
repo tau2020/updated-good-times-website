@@ -12,7 +12,7 @@ directly, if a face is missing or not WOFF2, or if a licence is missing.
 
 | Role | Face | Character | Used for |
 |---|---|---|---|
-| Display | **Bricolage Grotesque** | Quirky, friendly, confident, a little unconventional. Its optical-size axis gives large sizes ink traps and personality and small sizes a sturdier, calmer cut | Section and chapter headlines, tour names and headings, large statements over photographs, key promotional lines, the big rating number, the hero's "Good Times start Here!", "Make It Yours" and the large (52 px) buttons, reviewer names on the cards |
+| Display | **Bricolage Grotesque** | Quirky, friendly, confident, a little unconventional. Its optical-size axis gives large sizes ink traps and personality and small sizes a sturdier, calmer cut | Section and chapter headlines, tour names and headings, large statements over photographs, key promotional lines, the big rating number, the hero's "Find Your Good Time", "Make It Yours" and the large leaves, reviewer names on the cards |
 | Body and interface | **DM Sans** | Clear, warm, open, very readable at 14–20 px | Paragraphs, navigation (bar, drawer, concierge), tour facts and metadata, booking details, forms, labels and validation messages, review summaries, captions and credits, the standard and compact buttons |
 | Accent (occasional) | **Caveat** | Hand-written, relaxed | Only short, non-critical notes, on the home page only: the hand-written place labels under the "moments" prints, the label under the owner's Cape Peninsula photograph and the credentials strip's "Good Times since 2014". (The tours page's route-collage labels were tried in Caveat and moved to the display face: 75 KB for four decorative labels was not worth it on a landing page.) |
 
@@ -122,8 +122,8 @@ Rules:
 1. **Bold but relaxed.** Headlines are sentence case, tightly set, never in capitals. Spaced capitals are kept for
    short eyebrows only; the chapter marks are now sentence case.
 2. **`<em>` in a heading is a colour turn, never a slant.** Bricolage Grotesque has no italic; `:is(h1, h2, h3, h4) em`
-   is `font-style: normal` and headings carry `font-synthesis: none`, so a browser never fakes one. The hero's "Here!"
-   keeps its lean as a drawn 9° skew of the word.
+   is `font-style: normal` and headings carry `font-synthesis: none`, so a browser never fakes one. The hero's "Good Time"
+   (in Find Your Good Time) keeps its lean as a drawn 9° skew of the words.
 3. **Line lengths.** Leads stop at 34–42 rem, body text at 36–42 em, review summaries at the card's width.
 4. **Wrapping.** Headings use `text-wrap: balance` and `overflow-wrap: break-word` (was `anywhere`, which could split a
    word mid-way on a narrow phone); paragraphs `text-wrap: pretty`.
