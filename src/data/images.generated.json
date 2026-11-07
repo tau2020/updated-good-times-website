@@ -121,6 +121,16 @@
     "width": 1000,
     "height": 800
   },
+  "airport-welcome-banner": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048
+  },
   "airport-welcome-sign": {
     "widths": [
       480,
@@ -1012,16 +1022,6 @@
     ],
     "width": 3120,
     "height": 2081
-  },
-  "transfer-driver-selfie": {
-    "widths": [
-      480,
-      800,
-      1200,
-      1600
-    ],
-    "width": 4032,
-    "height": 3024
   },
   "vineyard-couple": {
     "widths": [

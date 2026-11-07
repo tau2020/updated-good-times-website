@@ -76,7 +76,7 @@ export const SERVICES = [
     short: 'Meet and greet at CPT',
     href: 'transfers/#airport',
     action: 'Arrange My Transfer',
-    image: 'transfer-driver-selfie',
+    image: 'airport-welcome-banner',
     focus: '50% 42%',
     badge: 'plane',
   },

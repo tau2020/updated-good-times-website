@@ -14,6 +14,7 @@ import { tours } from '../src/data/tours.mjs';
 import { layout } from '../src/partials/layout.mjs';
 import { leafButton, leafShape, leafDefs, LEAF_PATH, LEAF_STEM, LEAF_VEIN, LEAF_VEINLETS, SIGNATURE_CTA, SIGNATURE_DESC_ID } from '../src/partials/ui.mjs';
 import { SAND_WORDS } from '../src/partials/sand-journey.mjs';
+import { SERVICES } from '../src/partials/living-cape.mjs';
 
 const dir = new URL('../src/pages/', import.meta.url);
 const pages = [];
@@ -27,8 +28,10 @@ const css = (f) => readFileSync(new URL(`../src/assets/css/${f}`, import.meta.ur
 /** Every leaf on a page: [opening tag attributes, label]. */
 const leaves = (html) => [...html.matchAll(/<a class="leaf-btn([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g)].map((m) => ({ cls: m[1], attrs: m[2], inner: m[3], label: (/<span class="leaf-btn__label">([\s\S]*?)<\/span>$/.exec(m[3]) || [])[1] }));
 const text = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-/** Where a photograph is shown: one entry per <img> of that slot, as page paths. */
-const shownOn = (name) => rendered.flatMap((p) => [...p.html.matchAll(new RegExp(`<img [^>]*src="(?:\\.\\./)*assets/img/${name}-\\d+\\.`, 'g'))].map(() => p.path));
+/** Where a photograph is shown in a page's own content (<main>; the concierge and the phone menu repeat the four
+    services' photographs on every page as navigation): one entry per <img> of that slot, as page paths. */
+const mainOf = (html) => html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+const shownOn = (name) => rendered.flatMap((p) => [...mainOf(p.html).matchAll(new RegExp(`<img [^>]*src="(?:\\.\\./)*assets/img/${name}-\\d+\\.`, 'g'))].map(() => p.path));
 
 test('the leaf: one link, its drawing behind its words, hidden from assistive technology and never focusable', () => {
   const a = leafButton({ href: 'tours/', label: 'View the Tours' });
@@ -118,8 +121,12 @@ test('the Cape Peninsula entrance: the owner’s words exactly, and its two plug
 test('the photograph corrections: the goats gone, the disliked transfer photograph nowhere, each corrected photograph in one place only', () => {
   assert.ok(!images.some((i) => /goat/i.test(i.name) || /goat/i.test(i.alt || '')), 'no goat photograph in the library');
   for (const { path, html } of rendered) assert.doesNotMatch(html, /goat/i, `${path}: no goats, no goat caption`);
-  assert.ok(!images.some((i) => i.name === 'airport-terminal-arrival'), 'the disliked airport photograph is out of the library');
-  for (const { path, html } of rendered) assert.doesNotMatch(html, /airport-terminal-arrival/, path);
+  // §2.3: the personal photographs the airport transfer showed are gone from the library and every page: the selfie on
+  // the home page's Airport Transfers way, and traveller 04 (tried for the transfers banner, retired)
+  for (const gone of ['transfer-driver-selfie', 'airport-terminal-arrival']) {
+    assert.ok(!images.some((i) => i.name === gone), `${gone} is out of the library`);
+    for (const { path, html } of rendered) assert.doesNotMatch(html, new RegExp(gone), `${path}: ${gone}`);
+  }
   const once = {
     'guide-selfie-peninsula': 'index.html', // §2.1: the goats' place on the home page (traveller 106)
     'private-guests-arms-raised': 'index.html', // §2.2: the interlude (two guests, arms raised, blue sea)
@@ -132,6 +139,10 @@ test('the photograph corrections: the goats gone, the disliked transfer photogra
     assert.ok(images.some((i) => i.name === name), `${name} is in the library`);
     assert.deepEqual(shownOn(name), [path], `${name}: shown once, on ${path}`);
   }
+  // §2.3: the airport service's own photograph (its way on the home page, the concierge, the phone menu and the enquiry
+  // form's first step) is the terminal's welcome banner (traveller 11), not a selfie; nowhere else in the content
+  assert.equal(SERVICES.find((x) => x.id === 'airport').image, 'airport-welcome-banner');
+  assert.deepEqual([...new Set(shownOn('airport-welcome-banner'))].sort(), ['design-system/index.html', 'enquire/index.html', 'index.html']);
   // §2.4: the transfers banner and the airport departure row are different photographs
   const transfers = rendered.find((p) => p.path === 'transfers/index.html').html;
   const imgIn = (html) => (/<img [^>]*src="(?:\.\.\/)*assets\/img\/([a-z0-9-]+?)-\d+\./.exec(html) || [])[1];
