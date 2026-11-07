@@ -338,7 +338,7 @@ test.describe('home hero', () => {
     expect(lockup.width, 'never narrower than the kit minimum').toBeGreaterThanOrEqual(180);
     expect(lockup.clipped).not.toContain('hidden');
     await expect(header.locator('.header-cta')).toHaveAttribute('href', /(^|\/)enquire\/$/);
-    await expect(header.locator('.header-cta .btn-coin__coin svg')).toHaveCount(1);
+    await expect(header.locator('.header-cta .leaf-btn__shape')).toHaveCount(1);
     await expect(header.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
     const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/['"]/g, '')));
     expect(fonts, 'Bricolage Grotesque (display) and DM Sans (body) loaded').toEqual(expect.arrayContaining(['Bricolage Grotesque', 'DM Sans']));
@@ -506,7 +506,8 @@ test.describe('home hero', () => {
     const startOf = (n) => plan.tweens.find((t) => t.targets.includes(n))?.at;
     expect(startOf('brand')).toBe(0);
     if (!isMobile) {
-      expect(startOf('bookNow')).toBeCloseTo(0.15, 2);
+      // Plan My Day, the navigation's leaf, unfolds last, as the statement settles (the brief of 6 Nov 2026)
+      expect(startOf('bookNow')).toBeCloseTo(0.15 + plan.handoverAt + 0.1, 2);
       const titles = plan.tweens.find((t) => t.targets[0]?.startsWith('title:')).targets;
       expect(titles).toEqual(['title:Tours', 'title:Transfers', 'title:Destinations', 'title:About', 'title:Contact']);
       // The brand aircraft (brand-plane.js) flies from 0.15 s; its landing starts the titles
@@ -516,20 +517,24 @@ test.describe('home hero', () => {
       expect(plan.tweens.some((t) => t.targets.some((n) => n.startsWith('title:') || n === 'bookNow')), 'hidden desktop titles and Book Now are left alone on phones').toBe(false);
     }
     expect(startOf('cta')).toBeCloseTo(2.2, 2);
-    expect(startOf('hero__cta-sheen')).toBeCloseTo(2.82, 2);
+    // The call to action is the signature leaf: it unfolds as it rises (a nested timeline), with no sheen any more
+    await expect(page.locator('.hero__cta-sheen')).toHaveCount(0);
+    await expect(page.locator('.hero__cta.leaf-btn .leaf-btn__shape')).toHaveCount(1);
     // The company statement under the logo (Addendum, 6 Nov 2026): drawn in once the logo entrance is complete, when the
     // aircraft hands the logo back whole, after its touchdown and settle; it is the entrance's last step
     expect(plan.handoverAt).toBeGreaterThan(plan.landsAt);
     expect(startOf('brand-lockup__statement')).toBeCloseTo(0.15 + plan.handoverAt, 2);
-    const last = Math.max(...plan.tweens.map((t) => t.at + t.duration));
-    expect(last, 'nothing after the statement').toBeCloseTo(0.15 + plan.handoverAt + 0.5, 2);
+    // After the statement only the navigation's leaf (desktop and tablets: phones show no header leaf)
+    const last = Math.max(...plan.tweens.filter((t) => !t.targets.includes('bookNow')).map((t) => t.at + t.duration));
+    expect(last, 'nothing after the statement but the navigation leaf').toBeCloseTo(0.15 + plan.handoverAt + 0.5, 2);
     expect(plan.tweens.some((t) => t.targets.some((n) => /phone-gallery|hero__poster|hero__video/.test(n))), 'the scene and the phone are not part of it').toBe(false);
     const seconds = plan.duration / plan.timeScale;
     // With the brand aircraft at the owner's slower pace (6 Nov 2026) the landing and the titles come at about 4.1–4.8 s,
-    // and the company statement (Addendum, 6 Nov 2026) adds its 0.5 s once the logo is whole
+    // the company statement (Addendum, 6 Nov 2026) adds its 0.5 s once the logo is whole, and the navigation's leaf unfolds
+    // last (desktop and tablets)
     if (isMobile) expect(seconds).toBeLessThanOrEqual(3.3);
     else expect(seconds).toBeGreaterThan(3.4);
-    expect(seconds).toBeLessThanOrEqual(5.4);
+    expect(seconds).toBeLessThanOrEqual(5.9);
     // Nothing invisible can take focus while its entrance is pending
     expect(await page.locator('.hero__cta').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
@@ -1535,21 +1540,21 @@ test.describe('the button system', () => {
     }
   });
 
-  test('Plan My Day is the signature enquiry action: the header and the concierge carry it with the compass medallion, the phone menu as the primary button', async ({ page, isMobile }) => {
+  test('Plan My Day is the signature enquiry action: the header, the concierge and the phone menu carry it as the leaf', async ({ page, isMobile }) => {
     await page.goto('/tours/?nomotion');
     if (!isMobile) {
       await expect(page.locator('.header-cta')).toHaveText('Plan My Day');
       await expect(page.locator('.header-cta')).toHaveAccessibleName('Plan My Day');
       await expect(page.locator('.header-cta')).toHaveAccessibleDescription(/Opens our enquiry form/);
-      await expect(page.locator('.header-cta .btn-coin__coin')).toHaveAttribute('aria-hidden', 'true');
+      await expect(page.locator('.header-cta .leaf-btn__shape')).toHaveAttribute('aria-hidden', 'true');
       await page.locator('[data-concierge-toggle]').click();
       const cta = page.locator('#concierge .gt-concierge-panel__cta');
       await expect(cta).toHaveText('Plan My Day');
       await expect(cta).toHaveAttribute('href', /enquire\/$/);
-      await expect(cta.locator('.btn-coin__coin')).toHaveCount(1);
+      await expect(cta.locator('.leaf-btn__shape')).toHaveCount(1);
     } else {
       await page.locator('[data-nav-toggle]').click();
-      const drawer = page.locator('.drawer__footer .gt-button--primary');
+      const drawer = page.locator('.drawer__footer .leaf-btn');
       await expect(drawer).toHaveText('Plan My Day');
       await expect(drawer).toHaveAttribute('href', /enquire\/$/);
     }
@@ -1560,18 +1565,25 @@ test.describe('the button system', () => {
     }
   });
 
-  test('every primary is the leaf-green pill with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
+  test('every primary is the leaf-green pill or the signature leaf, with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
     for (const path of ['/', '/tours/cape-winelands-private-tour/', '/contact/', '/destinations/', '/enquire/']) {
       await page.goto(`${path}?nomotion`);
       const primaries = await page.locator('.gt-button--primary:visible').evaluateAll((els) => els.map((e) => { const cs = getComputedStyle(e); return { text: e.textContent.trim(), fill: cs.backgroundColor, ink: cs.color, radius: parseFloat(cs.borderTopLeftRadius), h: e.getBoundingClientRect().height }; }));
-      expect(primaries.length, path).toBeGreaterThan(0);
+      const leaves = await page.locator('.leaf-btn:visible').evaluateAll((els) => els.map((e) => { const body = e.querySelector('.leaf-btn__body'); return { text: e.textContent.trim(), fill: body && getComputedStyle(body).fill, ink: getComputedStyle(e).color, h: e.getBoundingClientRect().height }; }));
+      expect(primaries.length + leaves.length, path).toBeGreaterThan(0);
       for (const b of primaries) {
         // --green-primary (#147D43), a pill (design/button-design.md)
         expect(b.fill, `${path}: ${b.text}`).toBe('rgb(20, 125, 67)');
         expect(b.ink, `${path}: ${b.text}`).toBe('rgb(255, 255, 255)');
         expect(b.radius, `${path}: ${b.text}`).toBeGreaterThanOrEqual(b.h / 2 - 1);
       }
-      const short = await page.locator('.gt-button:visible').evaluateAll((els) => els.filter((e) => e.getBoundingClientRect().height < 43.5).map((e) => e.textContent.trim()));
+      for (const b of leaves) {
+        // The signature leaf (design/button-tokens.md): the leaf gradient behind white words, on a 44 px target at least
+        expect(b.fill, `${path}: ${b.text}`).toMatch(/url\("?#gt-leaf-fill(-hover)?"?\)/);
+        expect(b.ink, `${path}: ${b.text}`).toBe('rgb(255, 255, 255)');
+        expect(b.h, `${path}: ${b.text}`).toBeGreaterThanOrEqual(43.5);
+      }
+      const short = await page.locator('.gt-button:visible, .leaf-btn:visible').evaluateAll((els) => els.filter((e) => e.getBoundingClientRect().height < 43.5).map((e) => e.textContent.trim()));
       expect(short, `${path}: 44 px targets`).toEqual([]);
     }
     await page.goto('/?nomotion');

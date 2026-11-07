@@ -1,4 +1,4 @@
-import { esc, icon, brandMark, button, coinButton, contactList, waHref, telHref, SIGNATURE_CTA, SIGNATURE_ATTRS, signatureDesc } from './ui.mjs';
+import { esc, icon, brandMark, button, coinButton, contactList, waHref, telHref, SIGNATURE_CTA, SIGNATURE_ATTRS, signatureDesc, leafDefs } from './ui.mjs';
 import { conciergeTrigger, conciergePanel, drawerServices } from './living-cape.mjs';
 import { aircraftDock, aircraftFlight, dockBox } from './aircraft.mjs';
 import { tours } from '../data/tours.mjs';
@@ -228,6 +228,7 @@ ${(page.styles || []).map((s) => `<link rel="stylesheet" href="${s}">`).join('\n
 </head>
 <body class="${bodyClass}">
 <a class="skip-link" href="#main">Skip to content</a>
+${leafDefs()}
 ${consentBanner()}
 ${signatureDesc()}
 ${site.preview ? `<div class="preview-bar" data-preview-bar role="note"><div class="container preview-bar__inner">${icon('info')}<span>Staging preview, not yet live.${site.enquiry.mode === 'live' ? ' Test booking requests are delivered to the configured inbox.' : ' Booking requests made here are not sent.'}</span>${flight ? '<button type="button" class="preview-bar__replay" data-intro-replay hidden>Replay the intro</button>' : ''}</div></div>` : ''}
@@ -247,7 +248,7 @@ ${site.preview ? `<div class="preview-bar" data-preview-bar role="note"><div cla
       </ul>
     </nav>
     ${conciergeTrigger()}
-    ${coinButton({ href: bookHref, cls: 'header-cta', attrs: 'data-intro' })}
+    ${coinButton({ href: bookHref, cls: 'header-cta', attrs: 'data-intro', owner: overlay ? 'intro' : '' })}
     <button class="nav-toggle" type="button" data-nav-toggle aria-controls="drawer" aria-expanded="false">
       <span class="visually-hidden">Menu</span>
       ${icon('menu')}${icon('close')}
@@ -338,6 +339,7 @@ ${bar}
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/consent.js" defer></script>
 <script src="assets/js/vendor/gsap.min.js" defer></script>
+<script src="assets/js/leaf.js" defer></script>
 <script src="assets/js/concierge.js" defer></script>
 ${scripts.map((s) => (typeof s === 'string' ? `<script src="${s}" defer></script>` : `<script type="module" src="${s.module}"></script>`)).join('\n')}
 </body>

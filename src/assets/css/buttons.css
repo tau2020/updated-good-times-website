@@ -427,3 +427,286 @@
     border-color: GrayText;
   }
 }
+
+/* ==========================================================================
+   The signature leaf (the owner's brief of 6 Nov 2026; design/button-tokens.md)
+   The brand's primary calls to action are leaf-shaped: Find Your Good Time, Plan My Day (the header, the concierge, the
+   phone menu and bar, the home page's closing seals), Explore the Cape Peninsula Tour and Arrange My Transfer. The leaf is
+   an inline SVG (ui.mjs › leafButton) laid behind the words: its body, a short stem, a midrib that is clear near the base
+   and the tip and faint under the words, side veins that open on hover, and a leaf-shaped focus ring. The link is the
+   target, a rectangle at least 44 px tall, so the leaf's narrow ends never cost a tap. Form buttons and small controls
+   keep the pill (.gt-button above). Motion is leaf.js (GSAP); here, only what holds without it.
+   ========================================================================== */
+:root {
+  --leaf-h: 52px;
+  --leaf-h-large: 58px;
+  --leaf-h-compact: 46px;
+  /* the tip is at the right and narrows sooner than the rounded base at the left, so the words sit a little left of centre
+     and never reach either narrow end */
+  --leaf-pad-base: 1.55em;
+  --leaf-pad-tip: 2.45em;
+  --leaf-shadow: drop-shadow(0 1px 1px rgb(16 91 53 / 0.18)) drop-shadow(0 6px 9px rgb(16 91 53 / 0.22));
+  --leaf-shadow-hover: drop-shadow(0 2px 2px rgb(16 91 53 / 0.18)) drop-shadow(0 10px 14px rgb(16 91 53 / 0.24));
+  --leaf-dur: 280ms;
+}
+.leaf-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.leaf-btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: var(--leaf-h);
+  padding: 0.35rem var(--leaf-pad-tip) 0.35rem var(--leaf-pad-base);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: 0.005em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.leaf-btn__shape {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: var(--leaf-shadow);
+  transition: filter var(--leaf-dur) var(--btn-ease);
+  pointer-events: none;
+}
+.leaf-btn__body {
+  fill: url(#gt-leaf-fill);
+  transition: fill var(--leaf-dur) var(--btn-ease);
+}
+.leaf-btn__stem {
+  fill: none;
+  stroke: #0f6236;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.leaf-btn__vein {
+  fill: none;
+  stroke: url(#gt-leaf-vein);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  vector-effect: non-scaling-stroke;
+}
+.leaf-btn__veinlets {
+  fill: none;
+  stroke: rgb(223 243 222 / 0.42);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+  transition: stroke-dashoffset 420ms var(--btn-ease);
+}
+/* The focus ring: the leaf's own outline a little larger, ink on light grounds and lime on dark ones */
+.leaf-btn__ring {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+  transform: scale(1.055, 1.2);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.leaf-btn:focus {
+  outline: none;
+}
+.leaf-btn:focus-visible .leaf-btn__ring {
+  stroke: var(--btn-focus);
+}
+.lc-dark .leaf-btn:focus-visible .leaf-btn__ring,
+.on-dark .leaf-btn:focus-visible .leaf-btn__ring,
+.hero .leaf-btn:focus-visible .leaf-btn__ring,
+.site-header--overlay:not(.is-condensed) .leaf-btn:focus-visible .leaf-btn__ring,
+.gt-concierge-panel .leaf-btn:focus-visible .leaf-btn__ring {
+  stroke: var(--btn-focus-on-dark);
+}
+.leaf-btn__label {
+  position: relative;
+  display: inline-block;
+}
+.leaf-btn:hover .leaf-btn__body,
+.leaf-btn:focus-visible .leaf-btn__body {
+  fill: url(#gt-leaf-fill-hover);
+}
+/* The words stay white in every state, wherever the leaf sits (link colours of the header, footer and prose never reach it) */
+a.leaf-btn,
+a.leaf-btn:hover,
+a.leaf-btn:focus,
+a.leaf-btn:focus-visible,
+a.leaf-btn:active,
+.site-header a.leaf-btn:hover,
+.site-header a.leaf-btn:focus-visible,
+.site-header--overlay:not(.is-condensed) a.leaf-btn:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+.leaf-btn:hover .leaf-btn__shape {
+  filter: var(--leaf-shadow-hover);
+}
+@media (hover: hover) {
+  .leaf-btn:hover .leaf-btn__veinlets {
+    stroke-dashoffset: 0;
+  }
+}
+.leaf-btn:active .leaf-btn__shape {
+  transform: scale(0.97, 0.94);
+}
+.leaf-btn[aria-disabled='true'],
+.leaf-btn.is-disabled {
+  pointer-events: none;
+  color: rgb(255 255 255 / 0.86);
+  cursor: not-allowed;
+}
+.leaf-btn[aria-disabled='true'] .leaf-btn__body,
+.leaf-btn.is-disabled .leaf-btn__body {
+  fill: #8fa99a;
+}
+.leaf-btn[aria-disabled='true'] .leaf-btn__shape,
+.leaf-btn.is-disabled .leaf-btn__shape {
+  filter: none;
+}
+/* Loading: the words stay, a small ring turns at the tip, the vein rests */
+.leaf-btn[aria-busy='true']::after {
+  content: '';
+  position: absolute;
+  right: 0.95em;
+  top: 50%;
+  width: 0.9em;
+  height: 0.9em;
+  margin-top: -0.45em;
+  border: 2px solid rgb(255 255 255 / 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: gt-button-turn 0.8s linear infinite;
+}
+/* Sizes */
+.leaf-btn--large {
+  min-height: var(--leaf-h-large);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+.leaf-btn--compact {
+  min-height: var(--leaf-h-compact);
+  --leaf-pad-base: 1.35em;
+  --leaf-pad-tip: 1.85em;
+  font-size: 0.9375rem;
+}
+.leaf-btn--block {
+  display: flex;
+  width: 100%;
+}
+/* Long labels on the narrowest screens wrap in balanced lines inside the leaf, which grows with them */
+@media (max-width: 23.99em) {
+  .leaf-btn {
+    white-space: normal;
+    text-wrap: balance;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .leaf-btn__shape,
+  .leaf-btn__body,
+  .leaf-btn__veinlets {
+    transition: none;
+  }
+  .leaf-btn:active .leaf-btn__shape {
+    transform: none;
+  }
+  .leaf-btn[aria-busy='true']::after {
+    animation: none;
+  }
+}
+@media (forced-colors: active) {
+  .leaf-btn {
+    border: 2px solid ButtonText;
+    border-radius: 999px;
+    color: ButtonText;
+  }
+  .leaf-btn__shape {
+    display: none;
+  }
+}
+
+/* Where the leaf sits */
+.leaf-btn.hero__cta {
+  overflow: visible;
+  min-height: clamp(54px, 2.2rem + 2vh, 68px);
+  padding: 0.5rem calc(var(--leaf-pad-tip) + 0.2em) 0.5rem calc(var(--leaf-pad-base) + 0.1em);
+  border: 0;
+  border-radius: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 0.82rem + 0.55vw, 1.375rem);
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  text-shadow: 0 1px 1px rgba(3, 40, 16, 0.35);
+  --leaf-shadow: drop-shadow(0 2px 2px rgb(4 30 16 / 0.3)) drop-shadow(0 10px 18px rgb(4 30 16 / 0.32));
+}
+.header-cta.leaf-btn {
+  min-height: 48px;
+  --leaf-pad-base: 1.45em;
+  --leaf-pad-tip: 1.95em;
+  font-size: 1rem;
+}
+@media (min-width: 64em) and (max-width: 69.99em) {
+  .header-cta.leaf-btn,
+  .has-overlay-header .header-cta.leaf-btn {
+    min-height: 46px;
+    font-size: 0.9375rem;
+    --leaf-pad-base: 1.3em;
+    --leaf-pad-tip: 1.9em;
+  }
+}
+.mobile-cta .leaf-btn {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  --leaf-pad-base: 1.2em;
+  --leaf-pad-tip: 1.9em;
+}
+.leaf-btn.sand-journey__cta {
+  min-height: var(--leaf-h);
+}
+/* The hero's leaf follows the hero's own sizing where the screen is short and wide (the call to action shares a narrow
+   corner) and where the picture is framed under the header (phones, portrait tablets): its words may wrap in two lines */
+@media (min-aspect-ratio: 13/10) and (max-height: 34em) {
+  .leaf-btn.hero__cta {
+    min-height: 44px;
+    font-size: 0.875rem;
+    white-space: normal;
+    text-wrap: balance;
+    --leaf-pad-base: 1.25em;
+    --leaf-pad-tip: 1.6em;
+  }
+}
+@media (max-aspect-ratio: 13/10) {
+  .leaf-btn.hero__cta {
+    min-height: 48px;
+    font-size: clamp(0.9375rem, 0.7rem + 1vw, 1.25rem);
+    white-space: normal;
+    text-wrap: balance;
+  }
+}

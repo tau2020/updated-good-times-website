@@ -19,7 +19,7 @@
  * AI-generated illustration the owner supplied (basis G in docs/RIGHTS_REGISTER.md), credited as such beside it. It
  * sits just below the fold, so it is fetched at low priority: it must never compete with the hero's poster.
  */
-import { esc, picture } from './ui.mjs';
+import { esc, picture, leafButton } from './ui.mjs';
 import { tours } from '../data/tours.mjs';
 import { creditFor } from '../data/images.mjs';
 
@@ -60,7 +60,7 @@ export function sandJourney() {
       </div>
       <div class="sand-journey__foot">
         <p class="sand-journey__line">${esc(w.line)}</p>
-        <a class="btn gt-button gt-button--primary sand-journey__cta" href="tours/${t.slug}/"><span>${esc(w.cta)}</span></a>
+        ${leafButton({ href: `tours/${t.slug}/`, label: w.cta, cls: 'sand-journey__cta', owner: 'sand' })}
       </div>
     </div>
     <p class="sand-journey__credit">${esc(creditFor(SAND_IMAGE))}</p>

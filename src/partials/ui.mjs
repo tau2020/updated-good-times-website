@@ -124,24 +124,14 @@ export function ratingRow({ rating, reviews, url = '', label = 'Tripadvisor revi
  */
 const VARIANT = { gold: 'primary', primary: 'primary', outline: 'secondary', secondary: 'secondary', ghost: 'secondary gt-button--on-dark', tertiary: 'tertiary', '': 'secondary' };
 export function button({ href, label, variant = '', icon: ic = '', cls = '', size = '', attrs = '' }) {
+  if (label === SIGNATURE_CTA) {
+    const block = /gt-button--block/.test(cls);
+    return leafButton({ href, label, size: [block && 'block', size].filter(Boolean).join(' '), cls: cls.replace(/\bgt-button--block\b/, '').trim(), attrs: attrs.replace(SIGNATURE_ATTRS, '').trim() });
+  }
   const v = VARIANT[variant] ?? 'secondary';
   const classes = ['btn', 'gt-button', ...v.split(' ').map((x) => (x.startsWith('gt-') ? x : `gt-button--${x}`)), size && `gt-button--${size}`, cls].filter(Boolean).join(' ');
   return `<a class="${classes}" href="${esc(href)}"${attrs ? ` ${attrs}` : ''}>${ic ? icon(ic) : ''}<span>${esc(label)}</span></a>`;
 }
-
-/**
- * Ornament for the Book Now coin (D49): an eight-petal rosette in a dotted ring,
- * fine strokes only, drawn in currentColor so the coin's gold sets its tone.
- */
-const COIN_ORNAMENT = (() => {
-  const petal = 'M24 24C20.9 20.6 20.7 14.6 24 10.2C27.3 14.6 27.1 20.6 24 24Z';
-  const petals = Array.from({ length: 8 }, (_, i) => `<path d="${petal}"${i ? ` transform="rotate(${i * 45} 24 24)"` : ''}/>`).join('');
-  const dots = Array.from({ length: 8 }, (_, i) => {
-    const a = ((i * 45 + 22.5) * Math.PI) / 180;
-    return `<circle cx="${(24 + 18.4 * Math.cos(a)).toFixed(2)}" cy="${(24 + 18.4 * Math.sin(a)).toFixed(2)}" r=".85" fill="currentColor" stroke="none"/>`;
-  }).join('');
-  return `<svg class="btn-coin__ornament" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="21.6" stroke-opacity=".5"/><circle cx="24" cy="24" r="15.4" stroke-dasharray="1 2.7" stroke-opacity=".8"/>${petals}${dots}<circle cx="24" cy="24" r="3.6" stroke-opacity=".9"/><circle cx="24" cy="24" r="1.3" fill="currentColor" stroke="none"/></svg>`;
-})();
 
 /**
  * The brand's signature call to action: "Plan My Day" (the owner's brief of 6 Nov 2026, which retires "Make It Yours", itself
@@ -155,10 +145,39 @@ export const signatureDesc = () =>
   `<p id="${SIGNATURE_DESC_ID}" hidden>Opens our enquiry form. We reply with availability and a personalised quote; nothing is booked until we confirm it with you.</p>`;
 export const SIGNATURE_ATTRS = `aria-describedby="${SIGNATURE_DESC_ID}"`;
 
+/**
+ * The signature leaf (the owner's brief of 6 Nov 2026; design/button-tokens.md): the brand's primary calls to action are
+ * leaf-shaped. One inline SVG per button draws the leaf (a rounded base with a short stem at the left, the tip at the right,
+ * the upper edge a little fuller than the lower), its midrib (clear near the base and the tip, faint under the words), two
+ * pairs of side veins that open on hover, and a leaf-shaped focus ring. The drawing stretches with the label
+ * (preserveAspectRatio none) while its lines keep their width (non-scaling strokes); the colours are gradients defined once
+ * per page (leafDefs, layout.mjs). The link itself is the target: a rectangle at least 44 px tall. Motion: leaf.js.
+ */
+export const LEAF_PATH = 'M7 34C7 14 40 4.5 112 4C172 3.6 214 14 237 31.5C214 48 172 60.4 112 60C42 59.6 7 53 7 34Z';
+export const LEAF_VEIN = 'M13 34C70 30.5 158 28.5 229 31.4';
+export const LEAF_VEINLETS = 'M203 30.4L216 24.2M209 30.8L221 37.2M24 33.2L35 26.6M30 33.1L41 39.6';
+export const LEAF_STEM = 'M7.5 36Q4 39.2 1.2 44';
+export const leafShape = () =>
+  `<svg class="leaf-btn__shape" viewBox="0 0 240 64" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="leaf-btn__ring" d="${LEAF_PATH}"/><path class="leaf-btn__body" d="${LEAF_PATH}"/><path class="leaf-btn__stem" d="${LEAF_STEM}"/><path class="leaf-btn__vein" d="${LEAF_VEIN}" pathLength="1"/><path class="leaf-btn__veinlets" d="${LEAF_VEINLETS}" pathLength="1"/></svg>`;
+/** The leaf's colours, once per page (an SVG with no size, never display:none, so every leaf can reference them). */
+export const leafDefs = () =>
+  `<svg class="leaf-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="gt-leaf-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#168447"/><stop offset=".5" stop-color="#147d43"/><stop offset="1" stop-color="#0f6236"/></linearGradient><linearGradient id="gt-leaf-fill-hover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#127a40"/><stop offset=".5" stop-color="#106638"/><stop offset="1" stop-color="#0b4f2c"/></linearGradient><linearGradient id="gt-leaf-vein" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#dff3de" stop-opacity=".78"/><stop offset=".3" stop-color="#dff3de" stop-opacity=".16"/><stop offset=".72" stop-color="#dff3de" stop-opacity=".16"/><stop offset="1" stop-color="#dff3de" stop-opacity=".82"/></linearGradient></defs></svg>`;
+/**
+ * A leaf button. `label` is the accessible name and the words (`html` may set them with emphasis); `size`: '' (48 px),
+ * 'large' (54 px), 'compact' (44 px) or 'block' (fills its column); `owner` names the timeline that plays its entrance
+ * (hero, intro, sand), otherwise leaf.js unfurls it as it scrolls into view. "Plan My Day" is the signature wherever it
+ * appears, so it carries the signature's one description.
+ */
+export function leafButton({ href, label, html = '', size = '', cls = '', attrs = '', owner = '' }) {
+  const extra = [label === SIGNATURE_CTA && SIGNATURE_ATTRS, attrs, owner && `data-leaf-owner="${owner}"`].filter(Boolean).join(' ');
+  const classes = ['leaf-btn', ...String(size).split(' ').filter(Boolean).map((x) => `leaf-btn--${x}`), cls].filter(Boolean).join(' ');
+  return `<a class="${classes}" href="${esc(href)}" data-leaf${extra ? ` ${extra}` : ''}>${leafShape()}<span class="leaf-btn__label">${html || esc(label)}</span></a>`;
+}
+
 /** The signature champagne-gold call to action: a rounded button with the ornamental coin on its left edge (header, concierge). */
-export function coinButton({ href, label = SIGNATURE_CTA, cls = '', attrs = '' }) {
-  const extra = [label === SIGNATURE_CTA && SIGNATURE_ATTRS, attrs].filter(Boolean).join(' ');
-  return `<a class="btn-coin${cls ? ` ${cls}` : ''}" href="${esc(href)}"${extra ? ` ${extra}` : ''}><span class="btn-coin__coin" aria-hidden="true">${COIN_ORNAMENT}</span><span class="btn-coin__label">${esc(label)}</span></a>`;
+export function coinButton({ href, label = SIGNATURE_CTA, cls = '', attrs = '', owner = '' }) {
+  // Since the brief of 6 Nov 2026 the header's and the concierge's signature is the leaf (the compass medallion retired)
+  return leafButton({ href, label, cls, attrs, owner });
 }
 
 /**

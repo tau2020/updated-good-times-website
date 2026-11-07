@@ -7,7 +7,7 @@
  * assets/css/living-cape-system.css, so nothing restyles the approved hero, the
  * header's default bar or its Book Now coin. Every href is a real route of this site.
  */
-import { esc, icon, picture, coinButton, artPanel, SIGNATURE_CTA, SIGNATURE_ATTRS } from './ui.mjs';
+import { esc, icon, picture, coinButton, artPanel, leafButton } from './ui.mjs';
 import { engraved } from './engraved.mjs';
 import { tours } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
@@ -20,9 +20,9 @@ import { packages } from '../data/packages.mjs';
  * compass medallion is kept for the flagship (coinButton in ui.mjs).
  */
 export function sunSeal({ href, label, tone = '', cls = '', attrs = '' }) {
-  // "Plan My Day" is the signature wherever it appears, so it carries the signature's one description (ui.mjs)
-  const extra = [label === SIGNATURE_CTA && SIGNATURE_ATTRS, attrs].filter(Boolean).join(' ');
-  return `<a class="gt-button gt-button--primary gt-button--large lc-seal${tone ? ` lc-seal--${tone}` : ''}${cls ? ` ${cls}` : ''}" href="${esc(href)}"${extra ? ` ${extra}` : ''}><span class="lc-seal__label">${esc(label)}</span></a>`;
+  // The home page's closing actions are the signature leaf (the brief of 6 Nov 2026), large; "Plan My Day" carries the
+  // signature's one description (ui.mjs)
+  return leafButton({ href, label, size: 'large', cls: ['lc-seal', tone && `lc-seal--${tone}`, cls].filter(Boolean).join(' '), attrs });
 }
 
 /** Travel Note: an editorial link, the tertiary action. */

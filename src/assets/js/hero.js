@@ -2,12 +2,14 @@
    A directed sequence over the already-visible café scene and its phone: the wordmark and Book Now arrive first,
    the logo's own little green airliner flies in from the left, follows the logo's dotted route and lands as the "i"
    of "in" (brand-plane.js), and its landing starts the navigation titles one by one; then the one call to action,
-   Find Your Good Time, rises into the bottom-left corner and a single sheen crosses it. Whole elements only,
+   Find Your Good Time, rises into the bottom-left corner and unfolds as a leaf. Whole elements only,
    opacity and small transforms (y, a touch of scale on the wordmark and the call to action), overlapping so it reads
    as one piece: about 4.8 s on desktop, 4.0 s on tablets and 2.9 s on phones (the aircraft at the owner's slower pace,
    6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s). Then, once the
    aircraft has handed the logo back whole, the company statement under it is drawn in from left to right, softly, in
-   0.5 s: the entrance's last step (Addendum, 6 Nov 2026), about 5.3 s on desktop, 4.4 s on tablets, 3.2 s on phones.
+   0.5 s (Addendum, 6 Nov 2026), and last the navigation's Plan My Day leaf unfolds from its stem (the brief of 6 Nov 2026):
+   about 5.8 s on desktop, 4.8 s on tablets, 3.2 s on phones (which show no header leaf). The hero's call to action is the
+   signature leaf too (leaf.js): it rises at 2.2 s and unfolds as it settles.
    The phone is not part of it: its first photograph is there from the first paint, and its gallery
    (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
    (html.cine from the inline gate) and GSAP has loaded; otherwise nothing is hidden or moved and the logo is whole.
@@ -42,7 +44,7 @@
   var bookNow = header && one('.header-cta', header);
   var titles = header ? list('.primary-nav a', header) : [];
   var cta = one('.hero__cta');
-  var sheen = cta && cta.querySelector('.hero__cta-sheen');
+  var leaf = window.GTLeaf && window.GTLeaf.unfurl ? window.GTLeaf.unfurl : function () { return null; };
 
   // The aircraft is measured before anything moves (the brand's own entrance shifts it by a few pixels)
   var plane = null;
@@ -61,17 +63,16 @@
     if (brand) gsap.set(brand, { y: 12, scale: 0.985, transformOrigin: 'left center' });
     // The clip reaches past the line's box so its soft shadow over the film is never cut while it draws in
     if (statement) gsap.set(statement, { y: 4, clipPath: 'inset(-1em 100% -1em -1em)' });
-    if (bookNow) gsap.set(bookNow, { y: 10 });
+    if (bookNow) gsap.set(bookNow, { y: 6 });
     if (titles.length) gsap.set(titles, { y: 8 });
-    if (cta) gsap.set(cta, { y: 16, scale: 0.96, transformOrigin: 'left bottom' });
+    if (cta) gsap.set(cta, { y: 14 });
     html.classList.add('intro-ready');
 
     var tl = gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: finish });
 
-    // Act I — the brand arrives (0.0–0.5 s with the aircraft, 0.0–1.2 s without), Book Now beside it
+    // Act I — the brand arrives (0.0–0.5 s with the aircraft, 0.0–1.2 s without)
     tl.addLabel('brand', 0);
     if (brand) tl.to(brand, { opacity: 1, y: 0, scale: 1, duration: plane ? 0.5 : 1.2 }, 'brand');
-    if (bookNow) tl.to(bookNow, { opacity: 1, y: 0, duration: 1 }, 'brand+=0.15');
 
     // The aircraft (0.15–4.8 s): in from the left, along the logo's route, landing as the "i" of "in"
     var landing = 0.7;
@@ -90,12 +91,21 @@
     tl.addLabel('statement', plane ? 0.15 + plane.handoverAt : 1.2);
     if (statement) tl.to(statement, { opacity: 1, y: 0, clipPath: 'inset(-1em 0% -1em -1em)', duration: 0.5, ease: 'power2.out', clearProps: 'transform,clipPath' }, 'statement');
 
-    // Act III — the call to action rises into its corner and settles, then one sheen crosses it (2.2–3.7 s)
+    // Act V — Plan My Day, the navigation's leaf, unfolds last, as the statement settles (the brief of 6 Nov 2026). It is
+    // in the tab order and takes a click throughout: only its opacity was held
+    tl.addLabel('bookNow', 'statement+=0.1');
+    if (bookNow) {
+      tl.to(bookNow, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', clearProps: 'transform' }, 'bookNow');
+      var navLeaf = leaf(bookNow);
+      if (navLeaf) tl.add(navLeaf, 'bookNow');
+    }
+
+    // Act III — the call to action, the signature leaf, rises into its corner and unfolds from its stem (2.2–3.2 s)
     tl.addLabel('cta', 2.2);
     if (cta) {
-      tl.to(cta, { autoAlpha: 1, y: 0, scale: 1, duration: 0.95, ease: 'back.out(1.5)', clearProps: 'transform' }, 'cta');
-      // x: 0 drops the stylesheet's resting offset that GSAP would otherwise read in and add (translateX(-160%))
-      if (sheen) tl.fromTo(sheen, { x: 0, xPercent: -160 }, { x: 0, xPercent: 330, duration: 0.85, ease: 'power2.inOut', clearProps: 'transform' }, 'cta+=0.62');
+      tl.to(cta, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' }, 'cta');
+      var ctaLeaf = leaf(cta);
+      if (ctaLeaf) tl.add(ctaLeaf, 'cta+=0.05');
     }
 
     // The same composition, quicker where the screen is smaller

@@ -1,4 +1,4 @@
-import { esc, picture, preloadFor, coverSizes, stars } from '../partials/ui.mjs';
+import { esc, picture, preloadFor, coverSizes, stars, leafButton } from '../partials/ui.mjs';
 import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox, focusOf } from '../partials/media.mjs';
@@ -253,7 +253,7 @@ export const page = {
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__content">
     <h1 class="visually-hidden" id="hero-title">Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014</h1>
-    <a class="btn-champagne hero__cta" href="tours/" data-intro><span class="hero__cta-label">Find Your <em>Good Time</em></span><span class="hero__cta-sheen" aria-hidden="true"></span></a>
+    ${leafButton({ href: 'tours/', label: 'Find Your Good Time', html: '<span class="hero__cta-label">Find Your <em>Good Time</em></span>', size: 'large', cls: 'hero__cta', attrs: 'data-intro', owner: 'hero' })}
   </div>
   <div class="hero__phone">
     ${heroPhoneGallery()}

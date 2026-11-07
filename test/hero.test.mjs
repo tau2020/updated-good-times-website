@@ -33,10 +33,13 @@ test('the hero: one h1 for search and screen readers, one call to action to the 
   const links = [...hero.matchAll(/<a class="([^"]*)" href="([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g)];
   assert.equal(links.length, 1, 'one link in the hero');
   const [, cls, href, attrs, words] = links[0];
-  assert.deepEqual([cls, href], ['btn-champagne hero__cta', 'tours/']);
+  // The signature leaf (the brief of 6 Nov 2026), played by the hero's entrance
+  assert.deepEqual([cls, href], ['leaf-btn leaf-btn--large hero__cta', 'tours/']);
   assert.match(attrs, /data-intro/, 'it takes part in the entrance');
+  assert.match(attrs, /data-leaf-owner="hero"/, 'the hero plays its unfolding');
   assert.equal(words.replace(/<[^>]+>/g, ''), 'Find Your Good Time');
-  assert.match(words, /<span class="hero__cta-sheen" aria-hidden="true"><\/span>/);
+  assert.match(words, /<svg class="leaf-btn__shape" viewBox="0 0 240 64" preserveAspectRatio="none" aria-hidden="true" focusable="false">/);
+  assert.doesNotMatch(words, /hero__cta-sheen/);
   assert.doesNotMatch(hero, /hero__lead|hero__link|hero__actions|Arrange My Transfer|Explore Tours/);
 });
 

@@ -33,14 +33,14 @@ test('the signature reads "Plan My Day" in the header, the concierge, the phone 
   for (const p of pages) {
     const html = layout(p, verified);
     const book = (p.enquireHref || 'enquire/').replace(/&amp;/g, '&');
-    const header = /<a class="btn-coin header-cta"([^>]*)>/.exec(html)?.[1] || '';
-    const concierge = /<a class="btn-coin gt-concierge-panel__cta"([^>]*)>/.exec(html)?.[1] || '';
-    const drawer = /<div class="drawer__footer">\s*<a class="[^"]*"([^>]*)><span>([^<]*)<\/span>/.exec(html) || [];
+    const header = /<a class="leaf-btn header-cta"([^>]*)>/.exec(html)?.[1] || '';
+    const concierge = /<a class="leaf-btn gt-concierge-panel__cta"([^>]*)>/.exec(html)?.[1] || '';
+    const drawer = /<div class="drawer__footer">\s*<a class="leaf-btn[^"]*"([^>]*)>[\s\S]*?<span class="leaf-btn__label">([^<]*)<\/span>/.exec(html) || [];
     assert.equal(hrefOf(header), book, `${p.path}: header`);
     assert.equal(hrefOf(concierge), book, `${p.path}: concierge`);
     assert.equal(hrefOf(drawer[1] || ''), book, `${p.path}: phone menu`);
     assert.equal(drawer[2], SIGNATURE_CTA, `${p.path}: phone menu label`);
-    assert.match(html, new RegExp(`<span class="btn-coin__label">${SIGNATURE_CTA}</span></a>`), `${p.path}: coin label`);
+    assert.match(html, new RegExp(`<span class="leaf-btn__label">${SIGNATURE_CTA}</span></a>`), `${p.path}: the leaf's label`);
     const footer = html.slice(html.indexOf('id="footer-company"'), html.indexOf('id="footer-legal"'));
     assert.equal(hrefOf(control(footer, SIGNATURE_CTA)[0] || ''), book, `${p.path}: footer`);
     if (p.path !== 'enquire/index.html') {
@@ -70,7 +70,7 @@ test('the signature never labels a form submission or a wizard step', () => {
 test('home: the hero, the four ways in, the closing actions and the concierge cards keep their routes and parameters', () => {
   const html = render('index.html');
   // The hero's one call to action (test/hero.test.mjs has the rest of the hero)
-  assert.deepEqual([...html.matchAll(/<a class="btn-champagne hero__cta" href="([^"]*)" data-intro>([\s\S]*?)<\/a>/g)].map((m) => [m[2].replace(/<[^>]+>/g, ''), m[1]]), [
+  assert.deepEqual([...html.matchAll(/<a class="leaf-btn leaf-btn--large hero__cta" href="([^"]*)" data-leaf data-intro data-leaf-owner="hero">([\s\S]*?)<\/a>/g)].map((m) => [m[2].replace(/<[^>]+>/g, ''), m[1]]), [
     ['Find Your Good Time', 'tours/'],
   ]);
   const ways = [...html.matchAll(/<h3 class="lc-way__name"><a href="([^"]*)">([^<]*)<\/a><\/h3>[\s\S]*?<p class="lc-way__go"><span>([^<]*)<\/span><\/p>/g)].map((m) => [m[2], m[3], m[1].replace(/&amp;/g, '&')]);

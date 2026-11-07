@@ -96,9 +96,11 @@ test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one p
   assert.match(b, /mask: var\(--btn-leaf\)/, 'the leaf is a mask: no markup carries it');
   assert.match(b, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?transform: none !important/);
   assert.match(b, /:focus-visible \{\s*outline: 3px solid var\(--btn-focus\);/);
-  // Nothing loops but the loading ring, which stops with reduced motion
-  assert.equal((b.match(/infinite/g) || []).length, 1);
+  // Nothing loops but the loading rings (the pill's and the leaf's), which stop with reduced motion
+  assert.equal((b.match(/infinite/g) || []).length, 2);
   assert.match(b, /\.gt-button\[aria-busy='true'\]::after \{[^}]*animation: gt-button-turn 0\.8s linear infinite;/);
+  assert.match(b, /\.leaf-btn\[aria-busy='true'\]::after \{[^}]*animation: gt-button-turn 0\.8s linear infinite;/);
+  assert.match(b, /@media \(prefers-reduced-motion: reduce\) \{[^@]*\.leaf-btn\[aria-busy='true'\]::after \{\s*animation: none;/);
   // The legacy and signature buttons read the same tokens
   const styles = read('src/assets/css/styles.css');
   for (const sel of ['btn-coin', 'btn-champagne']) {
