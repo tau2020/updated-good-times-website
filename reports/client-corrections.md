@@ -58,7 +58,9 @@ what was found, what was done, and what still needs the owner. Photographs, sour
 - **Done, in both**:
   - Transfers page banner: **traveller 12**, two travellers wheeling their cases through the arrivals hall towards the
     "Welcome to the Mother City" wall. Their backs are to the camera, so the page title sits over the hall, never over a
-    face (traveller 04 was tried and retired: the faces filled the banner).
+    face (traveller 04 was tried and retired: the faces filled the banner). Wide screens and phones each get a cut of
+    the original made for their banner's shape, showing exactly the same view with far fewer bytes
+    (`reports/performance-review.md`).
   - The airport service's photograph, everywhere it appears: **traveller 11**, the terminal's welcome banner under its
     glass roof. A clear "you have arrived" without anyone's face; it crops cleanly to the home card's 3:2 and the
     phone's square.
