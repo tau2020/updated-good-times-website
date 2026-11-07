@@ -1,5 +1,5 @@
 /**
- * The call-to-action map: "Make It Yours" is the signature on the global booking action only
+ * The call-to-action map: "Plan My Day" is the signature on the global booking action only
  * (header, Travel Concierge, phone menu, phone bar, footer), always leading to the page's own enquiry link (a tour's or a
  * package's prefilled one on its page); every other button names what it does and keeps its destination and parameters.
  */
@@ -28,7 +28,7 @@ const control = (html, label) => {
 };
 const hrefOf = (attrs) => (/href="([^"]*)"/.exec(attrs) || [])[1]?.replace(/&amp;/g, '&').replace(/^(\.\.\/)+/, '');
 
-test('the signature reads "Make It Yours" in the header, the concierge, the phone menu, the phone bar and the footer, each to the page’s booking link', () => {
+test('the signature reads "Plan My Day" in the header, the concierge, the phone menu, the phone bar and the footer, each to the page’s booking link', () => {
   const verified = { ...site, contact: { ...site.contact, whatsapp: { ...site.contact.whatsapp, verified: true } } };
   for (const p of pages) {
     const html = layout(p, verified);
@@ -71,12 +71,12 @@ test('home: the hero, the four ways in, the closing actions and the concierge ca
   const html = render('index.html');
   // The hero's one call to action (test/hero.test.mjs has the rest of the hero)
   assert.deepEqual([...html.matchAll(/<a class="btn-champagne hero__cta" href="([^"]*)" data-intro>([\s\S]*?)<\/a>/g)].map((m) => [m[2].replace(/<[^>]+>/g, ''), m[1]]), [
-    ['Good Times start Here!', 'tours/'],
+    ['Find Your Good Time', 'tours/'],
   ]);
   const ways = [...html.matchAll(/<h3 class="lc-way__name"><a href="([^"]*)">([^<]*)<\/a><\/h3>[\s\S]*?<p class="lc-way__go"><span>([^<]*)<\/span><\/p>/g)].map((m) => [m[2], m[3], m[1].replace(/&amp;/g, '&')]);
   assert.deepEqual(ways, [
     ['Private Tours', 'Explore Tours', 'tours/'],
-    ['Airport Transfers', 'Arrange a Transfer', 'transfers/#airport'],
+    ['Airport Transfers', 'Arrange My Transfer', 'transfers/#airport'],
     ['Adventure Activities', 'Add an Adventure', 'tours/#adventure'],
     ['Custom Journeys', 'Tailor Your Journey', 'enquire/?type=tour&tour=custom'],
   ]);
@@ -86,7 +86,7 @@ test('home: the hero, the four ways in, the closing actions and the concierge ca
   assert.match(html, /href="faq\/"><span class="lc-note__label">Questions first\? Read the FAQ<\/span>/);
   const invite = html.slice(html.indexOf('id="invite-title"'));
   assert.equal(hrefOf(control(invite, 'Plan My Day')[0]), 'enquire/?type=tour');
-  assert.equal(hrefOf(control(invite, 'Arrange a Transfer')[0]), 'enquire/?type=transfer&transfer=airport-arrival');
+  assert.equal(hrefOf(control(invite, 'Arrange My Transfer')[0]), 'enquire/?type=transfer&transfer=airport-arrival');
   // The concierge and the phone menu name each card by its action, to the same routes
   const cards = [...html.matchAll(/<p class="lc-invite__name"><a href="([^"]*)">([^<]*)<\/a><\/p>/g)].map((m) => [m[2], m[1].replace(/&amp;/g, '&')]);
   assert.deepEqual(cards, ways.map(([, action, href]) => [action, href]));
@@ -110,19 +110,20 @@ test('tours, packages and transfers: context-specific actions keep their prefill
   assert.equal(hrefOf(control(pkg, 'Explore Tours')[0]), 'tours/');
 
   const transfers = mainOf(render('transfers/index.html'));
-  assert.equal(hrefOf(control(transfers, 'Arrange a Transfer')[0]), 'enquire/?type=transfer&transfer=airport-arrival');
+  assert.equal(hrefOf(control(transfers, 'Arrange My Transfer')[0]), 'enquire/?type=transfer&transfer=airport-arrival');
   assert.equal(hrefOf(control(transfers, 'Airport departure')[0]), 'enquire/?type=transfer&transfer=airport-departure');
   assert.equal(hrefOf(control(transfers, 'Something else')[0]), 'enquire/?type=transfer&transfer=other');
   assert.doesNotMatch(transfers, /safari/i, 'no safari transfers');
-  assert.equal(hrefOf(control(transfers, 'Get a Quote')[0]), 'enquire/?type=transfer');
+  // The closing action, after what to have ready, opens the transfer form without a route
+  assert.equal(hrefOf(control(transfers.slice(transfers.indexOf('A transfer request is not a confirmed booking')), 'Arrange My Transfer')[0]), 'enquire/?type=transfer');
 });
 
 test('contact, about, destinations, reviews, FAQ and 404: each action says what it does and goes where it says', () => {
   const routes = {
-    'contact/index.html': [['Request Your Tour', 'enquire/?type=tour'], ['Arrange a Transfer', 'enquire/?type=transfer'], ['Read Our FAQ', 'faq/'], ['Read Reviews', 'reviews/']],
-    'about/index.html': [['Explore Tours', 'tours/'], ['Contact Us', 'contact/']],
-    'destinations/index.html': [['Tailor Your Journey', 'enquire/?type=tour&tour=custom'], ['Arrange a Transfer', 'enquire/?type=transfer&transfer=other']],
-    'reviews/index.html': [['Explore Tours', 'tours/'], ['Get a Quote', 'enquire/']],
+    'contact/index.html': [['Request Your Tour', 'enquire/?type=tour'], ['Arrange My Transfer', 'enquire/?type=transfer'], ['Read Our FAQ', 'faq/'], ['Read Reviews', 'reviews/']],
+    'about/index.html': [['Explore Tours', 'tours/'], ['Ask Us Anything', 'contact/']],
+    'destinations/index.html': [['Tailor Your Journey', 'enquire/?type=tour&tour=custom'], ['Arrange My Transfer', 'enquire/?type=transfer&transfer=other']],
+    'reviews/index.html': [['Explore Tours', 'tours/'], ['Plan My Day', 'enquire/']],
     'faq/index.html': [['Explore Tours', 'tours/']],
     '404.html': [['Go to the Home Page', './'], ['Explore Tours', 'tours/']],
   };

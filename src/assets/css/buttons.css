@@ -16,7 +16,7 @@
    The leaf: a small leaf after the words of the primary, secondary, outline and on-image pills (a CSS mask, so no
    markup carries it), lime on green, green on the pale ones. It turns a little under the pointer and is the only
    thing that moves besides a lift of 2 px. Not on compact controls, nor beside a meaningful icon (a car, a quote).
-   The signature Make It Yours keeps its compass medallion (.btn-coin, styles.css) and the hero's call to action its
+   The signature Plan My Day keeps its compass medallion (.btn-coin, styles.css) and the hero's call to action its
    pill (.btn-champagne): both read these tokens. No control in the family carries an arrow or chevron.
    Contrast (measured): white on --green-primary 5.2:1, on hover 7.0:1, pressed 8.2:1; --green-deep on
    --green-leaf-light 7.0:1; --green-primary on white 5.2:1; --green-deep on white 8.2:1.

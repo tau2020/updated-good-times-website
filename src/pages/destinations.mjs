@@ -49,7 +49,7 @@ ${quietMoment({
     <p class="lead">Ask for a custom private day or a transfer on another route, and we’ll let you know how we can help, with availability and a quote.</p>
     <div class="cta__actions">
       ${button({ href: 'enquire/?type=tour&tour=custom', label: 'Tailor Your Journey', variant: 'gold' })}
-      ${button({ href: 'enquire/?type=transfer&transfer=other', label: 'Arrange a Transfer', variant: 'ghost', icon: 'car' })}
+      ${button({ href: 'enquire/?type=transfer&transfer=other', label: 'Arrange My Transfer', variant: 'ghost', icon: 'car' })}
     </div>
   </div>
 </section>`,

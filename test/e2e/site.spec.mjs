@@ -307,7 +307,7 @@ test.describe('home hero', () => {
     await expect(page.locator('.hero h1')).toHaveClass('visually-hidden');
     const cta = page.locator('.hero a');
     await expect(cta).toHaveCount(1);
-    await expect(cta).toHaveText('Good Times start Here!');
+    await expect(cta).toHaveText('Find Your Good Time');
     await expect(cta).toHaveAttribute('href', /(^|\/)tours\/$/);
     await expect(cta).toBeVisible();
     await expect(page.locator('.hero__poster img')).toBeVisible();
@@ -324,7 +324,7 @@ test.describe('home hero', () => {
     await expect(page.locator('.hero .medallion, .hero .stars, .hero .rating')).toHaveCount(0);
     await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon')).toHaveCount(0);
     await expect(page.locator('.hero')).not.toContainText(/tripadvisor|extraordinary places|cape town, personally|tailored|find experiences/i);
-    // The header over the hero: the reversed logo from the approved logo pack, Make It Yours with its ornamental coin
+    // The header over the hero: the reversed logo from the approved logo pack, Plan My Day with its ornamental coin
     const header = page.locator('.site-header--overlay');
     await expect(header.locator('.brand__logo--gold')).toBeVisible();
     // The approved compact lockup (light over the photograph, dark once condensed), drawn at its own proportions, never clipped or squeezed
@@ -686,7 +686,7 @@ test.describe('home story: The Cape, A Living Story', () => {
       'Some days you wish could last a little longer.',
       'All the wonder. None of the worry.',
       'Good times, by the people who had them.',
-      'Your kind of Cape Town starts here.',
+      'Your Cape Town story starts here.',
     ]);
     // One h1 (the hero's); every chapter heading is an h2
     await expect(page.locator('h1')).toHaveCount(1);
@@ -698,7 +698,7 @@ test.describe('home story: The Cape, A Living Story', () => {
     await page.goto('/?nomotion');
     const ways = page.locator('.lc-way__name a');
     await expect(ways).toHaveText(['Private Tours', 'Airport Transfers', 'Adventure Activities', 'Custom Journeys']);
-    await expect(page.locator('.lc-way__go')).toHaveText(['Explore Tours', 'Arrange a Transfer', 'Add an Adventure', 'Tailor Your Journey']);
+    await expect(page.locator('.lc-way__go')).toHaveText(['Explore Tours', 'Arrange My Transfer', 'Add an Adventure', 'Tailor Your Journey']);
     await expect(page.locator('.lc-way__extra')).toHaveText('The Garden Route Tour');
     for (const [i, href] of [/(^|\/)tours\/$/, /(^|\/)transfers\/#airport$/, /(^|\/)tours\/#adventure$/, /(^|\/)enquire\/\?type=tour&tour=custom$/].entries()) await expect(ways.nth(i)).toHaveAttribute('href', href);
     await expect(page.locator('.lc-way__extra')).toHaveAttribute('href', /(^|\/)packages\/$/);
@@ -1191,11 +1191,11 @@ test.describe('media system (design.md)', () => {
 });
 
 test.describe('travel concierge', () => {
-  test('desktop: the trigger opens a sheet from the right: a modal dialog with photo cards, popular days, Make It Yours and the direct line; Escape, the close button and a click outside close it', async ({ page, isMobile }) => {
+  test('desktop: the trigger opens a sheet from the right: a modal dialog with photo cards, popular days, Plan My Day and the direct line; Escape, the close button and a click outside close it', async ({ page, isMobile }) => {
     test.skip(isMobile, 'the desktop sheet; phones use the menu');
     for (const path of ['/?nomotion', '/tours/?nomotion']) {
       await page.goto(path);
-      // The navigation: five titles beside the trigger and the Make It Yours coin
+      // The navigation: five titles beside the trigger and the Plan My Day coin
       await expect(page.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
       const toggle = page.locator('[data-concierge-toggle]');
       await expect(toggle).toBeVisible();
@@ -1219,13 +1219,13 @@ test.describe('travel concierge', () => {
       // Focus moves to the first service
       await expect(panel.locator('.lc-invite__name a').first()).toBeFocused();
       // Four photograph cards, each with its badge; the four most-booked days, each with its photograph; the way to all tours
-      await expect(panel.locator('.lc-invite__name a')).toHaveText(['Explore Tours', 'Arrange a Transfer', 'Add an Adventure', 'Tailor Your Journey']);
+      await expect(panel.locator('.lc-invite__name a')).toHaveText(['Explore Tours', 'Arrange My Transfer', 'Add an Adventure', 'Tailor Your Journey']);
       await expect(panel.locator('.lc-invite__photo img')).toHaveCount(4);
       await expect(panel.locator('.lc-invite__badge svg')).toHaveCount(4);
       await expect(panel.locator('.gt-concierge__day')).toHaveCount(4);
       await expect(panel.locator('.gt-concierge__thumb img')).toHaveCount(4);
       await expect(panel.locator('.gt-concierge__all')).toHaveText('View All Private Tours');
-      await expect(panel.locator('.gt-concierge-panel__cta')).toHaveText('Make It Yours');
+      await expect(panel.locator('.gt-concierge-panel__cta')).toHaveText('Plan My Day');
       // The direct line calls or writes, exactly; WhatsApp is not offered until the number is confirmed for it
       const reach = panel.locator('.gt-concierge-panel__reach a');
       expect(await reach.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['tel:+27723768432', 'mailto:hello@goodtimesincapetown.co.za']);
@@ -1288,7 +1288,7 @@ test.describe('travel concierge', () => {
     await page.locator('[data-nav-toggle]').click();
     const rows = page.locator('#drawer .gt-concierge-row');
     await expect(rows).toHaveCount(4);
-    await expect(rows.locator('.gt-concierge-row__name')).toHaveText(['Explore Tours', 'Arrange a Transfer', 'Add an Adventure', 'Tailor Your Journey']);
+    await expect(rows.locator('.gt-concierge-row__name')).toHaveText(['Explore Tours', 'Arrange My Transfer', 'Add an Adventure', 'Tailor Your Journey']);
     await expect(rows.locator('.gt-concierge-row__photo img')).toHaveCount(4);
     for (const box of await rows.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height))) expect(box).toBeGreaterThanOrEqual(44);
     await expect(page.locator('#drawer .drawer__nav a').first()).toHaveText(/Home/);
@@ -1501,7 +1501,7 @@ test.describe('header', () => {
     expect(await lockup.locator('.brand-lockup__statement').evaluate((el) => getComputedStyle(el).color)).toBe('rgb(69, 227, 117)');
   });
 
-  test('the header carries no contact links and Make It Yours never leaves the bar', async ({ page, isMobile }) => {
+  test('the header carries no contact links and Plan My Day never leaves the bar', async ({ page, isMobile }) => {
     test.skip(isMobile, 'desktop widths set explicitly');
     for (const [w, h] of [[1024, 768], [1280, 800], [1440, 900], [1600, 900], [1920, 1080]]) {
       await page.setViewportSize({ width: w, height: h });
@@ -1513,7 +1513,7 @@ test.describe('header', () => {
           return { barRight: bar.right, ctaRight: cta.right, links: document.querySelectorAll('.site-header a[href^="tel:"], .site-header a[href*="wa.me"]').length, overflow: document.documentElement.scrollWidth - innerWidth };
         });
         expect(r.overflow, `${path} at ${w}px`).toBe(0);
-        expect(r.ctaRight, `${path} at ${w}px: Make It Yours inside the bar`).toBeLessThanOrEqual(r.barRight + 1);
+        expect(r.ctaRight, `${path} at ${w}px: Plan My Day inside the bar`).toBeLessThanOrEqual(r.barRight + 1);
         expect(r.links, `${path} at ${w}px: no WhatsApp or call link in the header`).toBe(0);
       }
     }
@@ -1535,22 +1535,22 @@ test.describe('the button system', () => {
     }
   });
 
-  test('Make It Yours is the signature enquiry action: the header and the concierge carry it with the compass medallion, the phone menu as the primary button', async ({ page, isMobile }) => {
+  test('Plan My Day is the signature enquiry action: the header and the concierge carry it with the compass medallion, the phone menu as the primary button', async ({ page, isMobile }) => {
     await page.goto('/tours/?nomotion');
     if (!isMobile) {
-      await expect(page.locator('.header-cta')).toHaveText('Make It Yours');
-      await expect(page.locator('.header-cta')).toHaveAccessibleName('Make It Yours');
+      await expect(page.locator('.header-cta')).toHaveText('Plan My Day');
+      await expect(page.locator('.header-cta')).toHaveAccessibleName('Plan My Day');
       await expect(page.locator('.header-cta')).toHaveAccessibleDescription(/Opens our enquiry form/);
       await expect(page.locator('.header-cta .btn-coin__coin')).toHaveAttribute('aria-hidden', 'true');
       await page.locator('[data-concierge-toggle]').click();
       const cta = page.locator('#concierge .gt-concierge-panel__cta');
-      await expect(cta).toHaveText('Make It Yours');
+      await expect(cta).toHaveText('Plan My Day');
       await expect(cta).toHaveAttribute('href', /enquire\/$/);
       await expect(cta.locator('.btn-coin__coin')).toHaveCount(1);
     } else {
       await page.locator('[data-nav-toggle]').click();
       const drawer = page.locator('.drawer__footer .gt-button--primary');
-      await expect(drawer).toHaveText('Make It Yours');
+      await expect(drawer).toHaveText('Plan My Day');
       await expect(drawer).toHaveAttribute('href', /enquire\/$/);
     }
     // Nothing on the site still says Book Now or Start Planning

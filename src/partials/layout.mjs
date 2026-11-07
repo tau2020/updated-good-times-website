@@ -84,7 +84,7 @@ export function layout(page, site) {
 /**
  * Phones and tablets (below 64em): once a direct line is verified, every page gets a
  * bar with two equal buttons, WhatsApp (or Call, while WhatsApp is unconfirmed) and the
- * signature Make It Yours (tour and package pages keep their prefilled booking link). On the
+ * signature Plan My Day (tour and package pages keep their prefilled booking link). On the
  * booking page itself the second button calls instead of linking to the page you are on.
  */
 function contactBar(page, site) {

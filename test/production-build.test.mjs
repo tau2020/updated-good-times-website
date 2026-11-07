@@ -41,10 +41,10 @@ test('production values: Good Times’ own domain, indexable, enquiries still in
   assert.equal(v.SITE_ENV, 'production');
   assert.equal(v.ENQUIRY_MODE, 'preview', 'no live bookings until Good Times’ own database, sending domain and secrets are in place and approved');
   assert.equal(v.FROM_EMAIL, 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>');
-  // Notifications and replies would go to Good Times' primary address (pending its confirmation).
-  assert.equal(v.ENQUIRY_TEAM_EMAIL, 'hello@goodtimesincapetown.co.za');
-  assert.equal(v.REPLY_TO_EMAIL, 'hello@goodtimesincapetown.co.za');
-  assert.equal(v.ADMIN_EMAILS, 'hello@goodtimesincapetown.co.za');
+  // Notifications and replies go to the mailbox that receives mail today until Good Times confirms hello@ does (A4)
+  assert.equal(v.ENQUIRY_TEAM_EMAIL, 'info@goodtimesincapetown.co.za');
+  assert.equal(v.REPLY_TO_EMAIL, 'info@goodtimesincapetown.co.za');
+  assert.equal(v.ADMIN_EMAILS, 'info@goodtimesincapetown.co.za');
   assert.equal(v.EMAIL_PROVIDER, 'resend');
   for (const [name, env] of Object.entries(ENVIRONMENTS)) {
     for (const value of Object.values(env.vars)) assert.doesNotMatch(value, /japshuttlesandtours|shuttlejap|\banesu\b/i, name); // brand-guard-allow: proves no former operator's address remains

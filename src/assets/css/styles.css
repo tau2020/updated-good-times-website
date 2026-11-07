@@ -624,7 +624,7 @@ body {
 .primary-nav a[aria-current='page']::after {
   transform: scaleX(1);
 }
-/* Make It Yours: the leaf-green pill (buttons.css tokens) with the compass medallion overlapping its left edge. The
+/* Plan My Day: the leaf-green pill (buttons.css tokens) with the compass medallion overlapping its left edge. The
    medallion is the signature motif and stays; its face takes the leaf palette (lime to green) and its rosette turns
    an eighth under the pointer, once (design/button-design.md) */
 .btn-coin {
@@ -714,11 +714,11 @@ body {
     transform: none;
   }
 }
-/* Phones keep Make It Yours in the drawer; from 40em it sits in the header beside the menu button */
+/* Phones keep Plan My Day in the drawer; from 40em it sits in the header beside the menu button */
 .header-cta {
   display: none;
 }
-/* From 1024 to 1279 px the bar is full: "Make It Yours" takes the compact navigation size of
+/* From 1024 to 1279 px the bar is full: "Plan My Day" takes the compact navigation size of
    design/button-design.md (a 44–48 px pill, a smaller coin and label), so it never leaves the bar */
 @media (min-width: 64em) and (max-width: 79.99em) {
   .header-cta,
@@ -2495,7 +2495,7 @@ body {
   min-width: 0;
 }
 /* The narrowest phones (under 384 px): the two buttons share about 290 px, so their padding and words tighten a
-   little and "Make It Yours" stays whole beside WhatsApp */
+   little and "Plan My Day" stays whole beside WhatsApp */
 @media (max-width: 23.99em) {
   .mobile-cta .gt-button {
     gap: 0.4rem;

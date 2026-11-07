@@ -1,4 +1,4 @@
-import { esc, icon, breadcrumb, button, picture, preloadFor, stars } from '../partials/ui.mjs';
+import { esc, icon, breadcrumb, button, picture, preloadFor, stars, SIGNATURE_CTA, SIGNATURE_ATTRS } from '../partials/ui.mjs';
 import { reviewCard } from '../partials/cards.mjs';
 import { reviews, themes, pullQuote, reviewSource } from '../data/reviews.mjs';
 
@@ -81,7 +81,7 @@ export const page = {
 <section class="section cta" aria-labelledby="reviews-cta">
   <div class="container">
     <h2 id="reviews-cta">Plan a day guests write home about.</h2>
-    <div class="cta__actions">${button({ href: 'tours/', label: 'Explore Tours', variant: 'gold' })}${button({ href: 'enquire/', label: 'Get a Quote', variant: 'ghost' })}</div>
+    <div class="cta__actions">${button({ href: 'tours/', label: 'Explore Tours', variant: 'gold' })}${button({ href: 'enquire/', label: SIGNATURE_CTA, variant: 'ghost', attrs: SIGNATURE_ATTRS })}</div>
   </div>
 </section>`;
   },

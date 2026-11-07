@@ -111,7 +111,7 @@ export const page = {
     <p class="lead">Private tours and transfers from Cape Town, confirmed with you before anything is booked.</p>
     <div class="cta__actions">
       ${button({ href: 'tours/', label: 'Explore Tours', variant: 'gold' })}
-      ${button({ href: 'contact/', label: 'Contact Us', variant: 'ghost', icon: '' })}
+      ${button({ href: 'contact/', label: 'Ask Us Anything', variant: 'ghost', icon: '' })}
     </div>
   </div>
 </section>`,

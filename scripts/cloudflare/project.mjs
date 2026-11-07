@@ -51,20 +51,23 @@ export const DOMAIN = {
 };
 
 /**
- * Good Times' primary address on the domain: hello@, which replaced the published info@ on the owner's
- * instruction of 6 Nov 2026 (Addendum). stuart@, the additional public address, is a personal mailbox:
- * it is not routed here.
+ * Good Times' public address is hello@ (the owner's instruction of 6 Nov 2026): the site shows it, and the emails are
+ * sent from it. Where mail is delivered (new enquiries, customers' replies, the dashboard's sign-in links) stays the
+ * mailbox that receives mail today, info@, until Good Times confirms hello@ is set up to receive it: the brief of
+ * 6 Nov 2026 asks that form delivery never move to an unconfirmed mailbox (docs/APPROVAL_REGISTER.md › A4). stuart@, the
+ * additional public address, is a personal mailbox and is not routed here.
  */
+export const PUBLIC_ADDRESS = `hello@${DOMAIN.apex}`;
 export const MAILBOXES = {
-  hello: `hello@${DOMAIN.apex}`,
+  info: `info@${DOMAIN.apex}`,
 };
 
 /**
  * Where new enquiry notifications would go, and where customers' replies come
- * back: Good Times' primary address. Pending the owner's confirmation; it is
+ * back: the mailbox that receives mail today. Pending the owner's confirmation; it is
  * used only once an environment is live, and none is.
  */
-export const TEAM_INBOX = MAILBOXES.hello;
+export const TEAM_INBOX = MAILBOXES.info;
 
 export const SECRETS = ['DATABASE_URL', 'RESEND_API_KEY', 'ENQUIRY_SIGNING_SECRET'];
 
@@ -88,7 +91,7 @@ export const ENVIRONMENTS = {
       ENQUIRY_MODE: 'preview',
       ENQUIRY_SYSTEM_ENABLED: 'true',
       EMAIL_PROVIDER: 'resend',
-      FROM_EMAIL: `Good Times in Cape Town <${MAILBOXES.hello}>`,
+      FROM_EMAIL: `Good Times in Cape Town <${PUBLIC_ADDRESS}>`,
       ENQUIRY_TEAM_EMAIL: TEAM_INBOX,
       REPLY_TO_EMAIL: TEAM_INBOX,
       // Staff who may sign in to the bookings dashboard (/admin/), comma-separated.

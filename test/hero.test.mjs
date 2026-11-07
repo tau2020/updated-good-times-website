@@ -35,9 +35,9 @@ test('the hero: one h1 for search and screen readers, one call to action to the 
   const [, cls, href, attrs, words] = links[0];
   assert.deepEqual([cls, href], ['btn-champagne hero__cta', 'tours/']);
   assert.match(attrs, /data-intro/, 'it takes part in the entrance');
-  assert.equal(words.replace(/<[^>]+>/g, ''), 'Good Times start Here!');
+  assert.equal(words.replace(/<[^>]+>/g, ''), 'Find Your Good Time');
   assert.match(words, /<span class="hero__cta-sheen" aria-hidden="true"><\/span>/);
-  assert.doesNotMatch(hero, /hero__lead|hero__link|hero__actions|Arrange a Transfer|Explore Tours/);
+  assert.doesNotMatch(hero, /hero__lead|hero__link|hero__actions|Arrange My Transfer|Explore Tours/);
 });
 
 test('the scene: the held frame first (described, preloaded, high priority), then the film, decorative and started only by main.js', () => {

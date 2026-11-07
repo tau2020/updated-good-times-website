@@ -66,7 +66,7 @@ test('verified: no page’s header carries contact links; the number’s WhatsAp
   assert.match(footer, new RegExp(`<a class="contact-action" href="tel:\\${c.phone.e164}"><span class="brand-mark brand-mark--phone"`));
 });
 
-test('verified WhatsApp: every page gets a WhatsApp + Make It Yours bar; tour pages keep the prefilled link; the booking page calls instead', () => {
+test('verified WhatsApp: every page gets a WhatsApp + Plan My Day bar; tour pages keep the prefilled link; the booking page calls instead', () => {
   const s = variant({ preview: false, contact: set(all) });
   for (const p of pages) {
     const html = layout(p, s);
@@ -80,11 +80,11 @@ test('verified WhatsApp: every page gets a WhatsApp + Make It Yours bar; tour pa
       assert.match(bar, /href="tel:/, 'enquiry page: Call');
       assert.doesNotMatch(bar, /href="[^"]*enquire\//, 'enquiry page: no link to itself');
     } else if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled tour booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*><span>Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
     } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled package booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*><span>Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
     } else {
-      assert.match(bar, /href="[^"]*enquire\/"[^>]*><span>Make It Yours<\/span>/, `${p.path}: Make It Yours`);
+      assert.match(bar, /href="[^"]*enquire\/"[^>]*><span>Plan My Day<\/span>/, `${p.path}: Plan My Day`);
     }
   }
 });
@@ -147,7 +147,7 @@ test('verified: the mobile menu lists each number once, with WhatsApp opening in
   assert.match(drawer, new RegExp(`href="https://wa\\.me/${digits}" rel="noopener" target="_blank"`));
 });
 
-test('only the phone verified (Good Times today): every page gets a Call + Make It Yours bar, tour pages prefilled; the booking page a single Call; no WhatsApp anywhere', () => {
+test('only the phone verified (Good Times today): every page gets a Call + Plan My Day bar, tour pages prefilled; the booking page a single Call; no WhatsApp anywhere', () => {
   const s = variant({ preview: false, contact: set({ phone: { ...c.phone, verified: true } }) });
   for (const p of pages) {
     const html = layout(p, s);
@@ -163,11 +163,11 @@ test('only the phone verified (Good Times today): every page gets a Call + Make 
     } else {
       assert.equal((bar.match(/class="btn /g) || []).length, 2, `${p.path}: two buttons`);
       if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled tour booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*><span>Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
       } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*><span>Make It Yours<\/span>/, `${p.path}: prefilled package booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*><span>Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
       } else {
-        assert.match(bar, /><span>Make It Yours<\/span>/, `${p.path}: Make It Yours`);
+        assert.match(bar, /><span>Plan My Day<\/span>/, `${p.path}: Plan My Day`);
       }
     }
   }

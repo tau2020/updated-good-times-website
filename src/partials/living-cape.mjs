@@ -7,7 +7,7 @@
  * assets/css/living-cape-system.css, so nothing restyles the approved hero, the
  * header's default bar or its Book Now coin. Every href is a real route of this site.
  */
-import { esc, icon, picture, coinButton, artPanel } from './ui.mjs';
+import { esc, icon, picture, coinButton, artPanel, SIGNATURE_CTA, SIGNATURE_ATTRS } from './ui.mjs';
 import { engraved } from './engraved.mjs';
 import { tours } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
@@ -20,7 +20,9 @@ import { packages } from '../data/packages.mjs';
  * compass medallion is kept for the flagship (coinButton in ui.mjs).
  */
 export function sunSeal({ href, label, tone = '', cls = '', attrs = '' }) {
-  return `<a class="gt-button gt-button--primary gt-button--large lc-seal${tone ? ` lc-seal--${tone}` : ''}${cls ? ` ${cls}` : ''}" href="${esc(href)}"${attrs ? ` ${attrs}` : ''}><span class="lc-seal__label">${esc(label)}</span></a>`;
+  // "Plan My Day" is the signature wherever it appears, so it carries the signature's one description (ui.mjs)
+  const extra = [label === SIGNATURE_CTA && SIGNATURE_ATTRS, attrs].filter(Boolean).join(' ');
+  return `<a class="gt-button gt-button--primary gt-button--large lc-seal${tone ? ` lc-seal--${tone}` : ''}${cls ? ` ${cls}` : ''}" href="${esc(href)}"${extra ? ` ${extra}` : ''}><span class="lc-seal__label">${esc(label)}</span></a>`;
 }
 
 /** Travel Note: an editorial link, the tertiary action. */
@@ -73,7 +75,7 @@ export const SERVICES = [
     line: 'Met at Cape Town International with a name board and driven privately to your door.',
     short: 'Meet and greet at CPT',
     href: 'transfers/#airport',
-    action: 'Arrange a Transfer',
+    action: 'Arrange My Transfer',
     image: 'transfer-driver-selfie',
     focus: '50% 42%',
     badge: 'plane',
@@ -138,7 +140,7 @@ export function conciergeTrigger() {
 /**
  * The Travel Concierge panel: a sheet that slides in from the right over a dimmed page,
  * a modal dialog with its own close button. The four services as photograph cards; the popular private days with
- * their photographs; the invitation to plan with the signature Make It Yours (the compass medallion); the direct line;
+ * their photographs; the invitation to plan with the signature Plan My Day (the compass medallion); the direct line;
  * and Cape Point's cliffs fading into the corner. `reach` is the direct line (layout.mjs, verified only).
  */
 export function conciergePanel({ bookHref = 'enquire/', reach = '' } = {}) {

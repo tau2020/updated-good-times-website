@@ -253,7 +253,7 @@ export const page = {
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__content">
     <h1 class="visually-hidden" id="hero-title">Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014</h1>
-    <a class="btn-champagne hero__cta" href="tours/" data-intro><span class="hero__cta-label">Good Times start <em>Here!</em></span><span class="hero__cta-sheen" aria-hidden="true"></span></a>
+    <a class="btn-champagne hero__cta" href="tours/" data-intro><span class="hero__cta-label">Find Your <em>Good Time</em></span><span class="hero__cta-sheen" aria-hidden="true"></span></a>
   </div>
   <div class="hero__phone">
     ${heroPhoneGallery()}
@@ -349,7 +349,7 @@ ${scene({
     <div class="container lc-wild__beat" data-wild-beat>
       <div class="lc-wild__words">
         <p class="lc-scene__line">Fancy something with a little more adrenaline? Quad bikes on the dunes, a tandem skydive with the Cape below you, a cage dive with great white sharks off Gansbaai. Each runs with a safety briefing and depends on the weather and the season, so tell us your dates and we’ll help you work out what fits your Cape Town days.</p>
-        ${travelNote({ href: 'tours/#adventure', label: 'Explore adventure options', tone: 'light' })}
+        ${travelNote({ href: 'tours/#adventure', label: 'See the Adventures', tone: 'light' })}
       </div>
     </div>
   </div>
@@ -416,7 +416,7 @@ ${culinaryReveal({
       <h2 class="lc-title lc-title--compact" id="taste-title">Good views. <em>Better pours.</em></h2>
       ${tasteRule}
       <p class="lc-lead">Take the scenic route through the Cape Winelands, where mountain views, beautiful estates and long lunches are all part of the appeal: wine and cheese at Fairview, then La Motte, Franschhoek and Lanzerac. Tastings and lunch are optional and paid on the day, so you choose what to taste and where to eat.</p>
-      ${travelNote({ href: tourHref(WINELANDS), label: 'The Winelands day' })}`,
+      ${travelNote({ href: tourHref(WINELANDS), label: 'Explore the Winelands' })}`,
   // The wide table of five fills the large frame whole; the compact pour at Waterford fits the square inset, framed on
   // the guest and the host (the media audit: the inset cut the table's guests at both edges)
   main: { name: 'winelands-tasting-table', focus: '50% 50%' },
@@ -494,14 +494,14 @@ ${storiesSection(site)}
   <div class="container lc-scene__inner">
     <div class="lc-scene__words" data-scene-words>
       <span class="lc-invite-seal" aria-hidden="true">${engraved('sun-seal')}<svg class="lc-invite-seal__thread" viewBox="0 0 240 8" preserveAspectRatio="none" focusable="false"><path pathLength="1" data-thread d="M0 4C40 1 80 7 120 4S200 1 240 4"/></svg></span>
-      ${chapterMark(10, 'Your turn', 'lc-mark--light')}
-      <h2 class="lc-statement lc-statement--scene" id="invite-title">Your kind of Cape Town <span class="lc-statement__turn"><em>starts here.</em></span></h2>
+      ${chapterMark(10, 'Good Times start here', 'lc-mark--light')}
+      <h2 class="lc-statement lc-statement--scene" id="invite-title">Your Cape Town story <span class="lc-statement__turn"><em>starts here.</em></span></h2>
     </div>
     <div class="lc-scene__close" data-scene-words>
-      <p class="lc-scene__line">Tell us who’s coming, what you love and when you’ll be here. We’ll help shape a day worth looking forward to, and reply with availability and a personalised quote. Nothing is booked or charged until we’ve confirmed it with you.</p>
+      <p class="lc-scene__line">Tell us what you’d love to see. We’ll help you make a day of it, and reply with availability and a personalised quote; nothing is booked or charged until we’ve confirmed it with you.</p>
       <div class="lc-scene__actions">
         ${sunSeal({ href: 'enquire/?type=tour', label: 'Plan My Day', tone: 'light' })}
-        ${quietOutline({ href: 'enquire/?type=transfer&transfer=airport-arrival', label: 'Arrange a Transfer', tone: 'light' })}
+        ${quietOutline({ href: 'enquire/?type=transfer&transfer=airport-arrival', label: 'Arrange My Transfer', tone: 'light' })}
       </div>
     </div>
   </div>

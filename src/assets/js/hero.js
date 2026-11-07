@@ -2,7 +2,7 @@
    A directed sequence over the already-visible café scene and its phone: the wordmark and Book Now arrive first,
    the logo's own little green airliner flies in from the left, follows the logo's dotted route and lands as the "i"
    of "in" (brand-plane.js), and its landing starts the navigation titles one by one; then the one call to action,
-   Good Times start Here!, rises into the bottom-left corner and a single sheen crosses it. Whole elements only,
+   Find Your Good Time, rises into the bottom-left corner and a single sheen crosses it. Whole elements only,
    opacity and small transforms (y, a touch of scale on the wordmark and the call to action), overlapping so it reads
    as one piece: about 4.8 s on desktop, 4.0 s on tablets and 2.9 s on phones (the aircraft at the owner's slower pace,
    6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s). Then, once the

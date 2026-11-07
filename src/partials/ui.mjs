@@ -144,12 +144,12 @@ const COIN_ORNAMENT = (() => {
 })();
 
 /**
- * The brand's signature call to action (owner, 25 Oct 2026): "Make It Yours" replaces "Start Planning" on the global
- * booking action only (the header, the concierge, the phone menu and bar, the footer). Every other button names what it
- * does. Each signature link is described by one hidden line (layout.mjs) saying where it leads, since the words alone
+ * The brand's signature call to action: "Plan My Day" (the owner's brief of 6 Nov 2026, which retires "Make It Yours", itself
+ * the 25 Oct 2026 replacement of "Start Planning") on the global booking action only (the header, the concierge, the phone
+ * menu and bar, the footer). Every other button names what it does. Each signature link is described by one hidden line (layout.mjs) saying where it leads, since the words alone
  * don't; the visible label stays the accessible name.
  */
-export const SIGNATURE_CTA = 'Make It Yours';
+export const SIGNATURE_CTA = 'Plan My Day';
 export const SIGNATURE_DESC_ID = 'signature-cta-desc';
 export const signatureDesc = () =>
   `<p id="${SIGNATURE_DESC_ID}" hidden>Opens our enquiry form. We reply with availability and a personalised quote; nothing is booked until we confirm it with you.</p>`;

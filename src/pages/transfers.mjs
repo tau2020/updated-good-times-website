@@ -44,7 +44,7 @@ function serviceBlock(s, site, i) {
     <p class="small muted">Not included: ${esc(s.notIncluded.join(', ').toLowerCase())}. ${esc(s.cancellation)}</p>
     <div class="service-block__foot">
       ${price(s, site)}
-      ${button({ href: request, label: 'Arrange a Transfer', variant: 'gold' })}
+      ${button({ href: request, label: 'Arrange My Transfer', variant: 'gold' })}
     </div>
     ${tiers}
     ${i === 0 && site.prices.show && s.price ? `<div class="currency-area currency-area--inline">${currencyPicker({ id: 'currency-transfers' })}</div>` : ''}
@@ -128,7 +128,7 @@ export const page = {
       <li>${icon('luggage')} <span><strong>Luggage</strong>, including anything oversized such as golf bags or surfboards.</span></li>
     </ul>
     <p class="callout">${icon('info')}<span>A transfer request is not a confirmed booking: one of our team confirms it with you.</span></p>
-    <div class="center-x mt-6">${button({ href: 'enquire/?type=transfer', label: 'Get a Quote', variant: 'gold' })}</div>
+    <div class="center-x mt-6">${button({ href: 'enquire/?type=transfer', label: 'Arrange My Transfer', variant: 'gold' })}</div>
   </div>
 </section>`,
 };

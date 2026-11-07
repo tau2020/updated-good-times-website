@@ -30,7 +30,7 @@ export const page = {
       <p>We’ll confirm availability and your price by email, WhatsApp or phone before anything is booked.</p>
       <div class="cluster">
         ${button({ href: 'enquire/?type=tour', label: 'Request Your Tour', variant: 'gold' })}
-        ${button({ href: 'enquire/?type=transfer', label: 'Arrange a Transfer', variant: 'outline', icon: 'car' })}
+        ${button({ href: 'enquire/?type=transfer', label: 'Arrange My Transfer', variant: 'outline', icon: 'car' })}
       </div>
       <ul class="ticks" role="list">
         <li>${icon('check')} <span>Pick a tour, describe your own day, or choose a transfer</span></li>

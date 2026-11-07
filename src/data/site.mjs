@@ -48,7 +48,7 @@ export const site = {
   /**
    * Public contact channels. Rendered only when `verified` is true; an unverified
    * channel is simply not shown. A verified phone gives every page below 1024 px a bar
-   * with Call (WhatsApp, once confirmed) and Make It Yours; the number appears as
+   * with Call (WhatsApp, once confirmed) and Plan My Day; the number appears as
    * selectable text with its actions in the footer, the mobile menu, the Travel
    * Concierge, the contact page and the enquiry page; telephone and email in the JSON-LD.
    */
