@@ -43,6 +43,9 @@ what was found, what was done, and what still needs the owner. Photographs, sour
 - **Done**: it is the interlude's first backdrop, at its highest available quality (2880 × 2160), framed on the two
   women (on phones the words sit above them, over a soft scrim, so no word crosses a face). The Private Cape Town
   Experience's banner is now its own card photograph (a couple on the rocks at sunset), so the photograph is shown once.
+  That photograph is portrait, so the tour page shows it whole in the template's framed hero (the title beside it on a
+  dark ground, as the site does for portrait photographs) instead of a wide banner: a visible change on that page,
+  shown in `qa/surgical/brief-2026-11-06/compare/<width>/experience-tour-hero.jpg`.
 - **Needs the owner**: please confirm this is the photograph you meant. If you remember the interlude differently
   (for example on the old website), a screenshot or the file's name is enough for us to find it.
 
