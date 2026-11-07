@@ -1,0 +1,57 @@
+priority,url,action,new_target,handled_by,in_190_map,rationale
+Critical,/,Same URL,/,none,yes,Existing clicks or backlinks
+Critical,www.goodtimesincapetown.co.za/* (host),301 host redirect,"https://goodtimesincapetown.co.za/:path (same path, query kept)",Zone Redirect Rule at cutover (not _redirects),no,Backlinks and clicks on www
+Critical,/tour/airport-private-transfer/,301,/transfers/,_redirects: live (deployed 26 rules),yes,Existing clicks or backlinks
+Critical,/contact/,Same URL,/contact/,none,yes,Existing clicks or backlinks
+Critical,/services/,301,/tours/,GAP: add to _redirects,no,Existing clicks or backlinks
+Critical,/accounts/login/,301,/enquire/,GAP: add to _redirects,no,Existing clicks or backlinks
+High,/tour/shark-cage-diving/,301,/tours/shark-cage-diving/,_redirects: live (deployed 26 rules),yes,Commercial tour or booking intent with impressions
+High,/tour/cape-peninsula-private-tour/,301,/tours/cape-peninsula-private-tour/,_redirects: live (deployed 26 rules),no,Commercial tour or booking intent with impressions
+High,/tour/garden-route-private-tour/,301,/packages/garden-route-private-tour/,_redirects: live (deployed 26 rules),yes,Commercial tour or booking intent with impressions
+High,/tour/township-private-tour/,301,/tours/township-private-tour/,_redirects: live (deployed 26 rules),no,Commercial tour or booking intent with impressions
+High,/about/,Same URL,/about/,none,yes,Impressions; same URL kept
+High,/tour/cape-town-city-private-tour/,301,/tours/cape-town-city-private-tour/,_redirects: live (deployed 26 rules),no,Commercial tour or booking intent with impressions
+High,/tour/whale-watching-private-tour/,301,/tours/whale-watching-private-tour/,_redirects: live (deployed 26 rules),yes,Commercial tour or booking intent with impressions
+High,/tour/sky-diving/,301,/tours/sky-diving/,_redirects: live (deployed 26 rules),yes,Commercial tour or booking intent with impressions
+High,/tour/cape-agulhas-private-tour/,301,/tours/cape-agulhas-private-tour/,_redirects: live (deployed 26 rules),yes,Commercial tour or booking intent with impressions
+High,/bookings/,301,/enquire/,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/users/book/cape-town-city-private-tour/,301,/enquire/?type=tour&tour=cape-town-city-private-tour,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/tour/private-cape-town-experience/,301,/tours/private-cape-town-experience/,_redirects: live (deployed 26 rules),yes,Commercial tour or booking intent with impressions
+High,/tour/cape-town-city-tour/,301,/tours/cape-town-city-private-tour/,_redirects: proposed 70-rule file,yes,Commercial tour or booking intent with impressions
+High,/users/book/quad-biking/,301,/enquire/?type=tour&tour=quad-biking,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/users/book/shark-cage-diving/,301,/enquire/?type=tour&tour=shark-cage-diving,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/tour/quad-biking/,301,/tours/quad-biking/,_redirects: live (deployed 26 rules),yes,Commercial tour or booking intent with impressions
+High,/users/book/cape-peninsula-private-tour/,301,/enquire/?type=tour&tour=cape-peninsula-private-tour,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/tour/winelands-experience/,301,/tours/cape-winelands-private-tour/,_redirects: proposed 70-rule file,yes,Commercial tour or booking intent with impressions
+High,/tour/cape-winelands-private-tour/,301,/tours/cape-winelands-private-tour/,_redirects: live (deployed 26 rules),no,Commercial tour or booking intent with impressions
+High,/users/book/private-cape-town-experience/,301,/enquire/?type=tour&tour=private-cape-town-experience,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/users/book/whale-watching-private-tour/,301,/enquire/?type=tour&tour=whale-watching-private-tour,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/users/book/cape-winelands-private-tour/,301,/enquire/?type=tour&tour=cape-winelands-private-tour,GAP: add to _redirects,no,Commercial tour or booking intent with impressions
+High,/users/book/airport-private-transfer/,301,/enquire/?type=transfer,GAP: add to _redirects,no,Booking page for a current tour
+High,/users/book/cape-agulhas-private-tour/,301,/enquire/?type=tour&tour=cape-agulhas-private-tour,GAP: add to _redirects,no,Booking page for a current tour
+High,/users/book/garden-route-private-tour/,301,/enquire/?type=tour&tour=garden-route-private-tour,GAP: add to _redirects,no,Booking page for a current tour
+High,/users/book/sky-diving/,301,/enquire/?type=tour&tour=sky-diving,GAP: add to _redirects,no,Booking page for a current tour
+Medium,/gallery/,Keep URL,"/gallery/ (new page, item 4) else /tours/",Item 4,yes,"Informational, low impressions"
+Medium,/faq/,Same URL,/faq/,none,yes,"Informational page, same URL on new site"
+Medium,/privacy/,Same URL,/privacy/,none,yes,"Informational page, same URL on new site"
+Medium,/safety/,Keep URL,/safety/ (keep page) or /about/,Item 4,yes,"Informational page, same URL on new site"
+Medium,/terms/,Same URL,/terms/,none,yes,"Informational page, same URL on new site"
+Medium,/media/tours/gallery/Cape_Town_City_Private_Tour0.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/Cape_Town_City_Private_Tour7_2.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/peninsula_WsHDY45.png,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/Gardern_Route_5_1.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/Gardern_Route_3_1.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/Gardern_Route_4_1.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/Gardern_Route_1_2.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/36.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/38.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/gallery/wine_tasting.webp,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/shark-cage-diving.png,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/tours/citytour_L6J9iiN.png,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/gallery/33.png,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Medium,/media/gallery/19.png,"Retain if licensed: static copy at same path, else 404",same path (static asset) or 404,Item 3 decision,no,Historical tour photo from the pre-2026 site
+Low,/index.html,Platform 308 (index.html to /),/,Pages built-in,no,Duplicate of home; platform redirect
+Low,/accounts/signup/,301,/enquire/,GAP: add to _redirects,no,Account page; no equivalent; send to enquiry
+Low,"/static/images/* (17 theme files: slides, logos, favicons, accreditation)",404,404,none,no,Old theme assets; no search value
+Low,"/wp-*.php, /wp-content/uploads/*, /cdn-cgi/l/email-protection, /apple-app-site-association, /.well-known/apple-app-site-association, /favicon.ico",404 (favicon: 301 to /assets/brand/favicon.ico),404,favicon in 70-rule file,partly,System files
+Low,"WordPress archives, feeds, attachment pages, login (see 190-URL map)",As in 190-URL map,per map,70-rule file,yes,"Duplicate archives, obsolete system files"

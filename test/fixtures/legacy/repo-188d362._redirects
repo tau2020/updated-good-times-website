@@ -1,0 +1,27 @@
+# The current website's addresses → this site (src/data/redirects.mjs)
+/tour/garden-route-private-tour/ /packages/garden-route-private-tour/ 301
+/tour/garden-route-private-tour /packages/garden-route-private-tour/ 301
+/tour/airport-private-transfer/ /transfers/ 301
+/tour/airport-private-transfer /transfers/ 301
+/tour/cape-peninsula-private-tour/ /tours/cape-peninsula-private-tour/ 301
+/tour/cape-peninsula-private-tour /tours/cape-peninsula-private-tour/ 301
+/tour/cape-town-city-private-tour/ /tours/cape-town-city-private-tour/ 301
+/tour/cape-town-city-private-tour /tours/cape-town-city-private-tour/ 301
+/tour/cape-winelands-private-tour/ /tours/cape-winelands-private-tour/ 301
+/tour/cape-winelands-private-tour /tours/cape-winelands-private-tour/ 301
+/tour/township-private-tour/ /tours/township-private-tour/ 301
+/tour/township-private-tour /tours/township-private-tour/ 301
+/tour/private-cape-town-experience/ /tours/private-cape-town-experience/ 301
+/tour/private-cape-town-experience /tours/private-cape-town-experience/ 301
+/tour/whale-watching-private-tour/ /tours/whale-watching-private-tour/ 301
+/tour/whale-watching-private-tour /tours/whale-watching-private-tour/ 301
+/tour/cape-agulhas-private-tour/ /tours/cape-agulhas-private-tour/ 301
+/tour/cape-agulhas-private-tour /tours/cape-agulhas-private-tour/ 301
+/tour/shark-cage-diving/ /tours/shark-cage-diving/ 301
+/tour/shark-cage-diving /tours/shark-cage-diving/ 301
+/tour/quad-biking/ /tours/quad-biking/ 301
+/tour/quad-biking /tours/quad-biking/ 301
+/tour/sky-diving/ /tours/sky-diving/ 301
+/tour/sky-diving /tours/sky-diving/ 301
+/tour/ /tours/ 301
+/tour /tours/ 301

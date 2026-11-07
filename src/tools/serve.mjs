@@ -5,20 +5,22 @@
  *   node src/tools/serve.mjs            → http://127.0.0.1:8080
  *   PORT=3000 HOST=0.0.0.0 node src/tools/serve.mjs
  *
- * Serves ./site with gzip, caching, byte ranges for video, clean URLs and a
- * 404 page, and mounts the enquiry API (lib/http/app.mjs) on /api/*: the
- * same handlers Vercel runs from api/*.mjs. With ENQUIRY_MODE=preview (the
+ * Serves ./site with gzip, caching, byte ranges for video, clean URLs, a 404
+ * page and site/_redirects (applied as Pages applies them, before any file),
+ * and mounts the enquiry API (lib/http/app.mjs) on /api/*: the same handlers
+ * Vercel runs from api/*.mjs. With ENQUIRY_MODE=preview (the
  * default) the API refuses enquiries; set ENQUIRY_MODE=live plus a local
  * database and the file email provider in .env to exercise it end to end.
  */
 import http from 'node:http';
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, statSync, readFileSync } from 'node:fs';
 import { join, extname, normalize, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createGzip } from 'node:zlib';
 import { handle as enquiryApi, matches as isEnquiryApi } from '../../lib/http/app.mjs';
 import { toRequest, sendResponse } from '../../lib/http/node.mjs';
 import { loadDotEnv } from '../../lib/config.mjs';
+import { parseRedirects, matchRedirect, locationFor } from './pages-redirects.mjs';
 
 loadDotEnv(); // so the startup line and the API see ENQUIRY_MODE etc. from .env
 
@@ -66,6 +68,16 @@ function send(res, status, body, headers = {}) {
 
 function json(res, status, obj) {
   send(res, status, JSON.stringify(obj), { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+}
+
+/* ---------- _redirects, applied as Pages applies them (before any file; src/tools/pages-redirects.mjs) ---------- */
+let redirects = { rules: null, mtime: 0 };
+function redirectRules() {
+  const file = join(SITE, '_redirects');
+  if (!existsSync(file)) return null;
+  const { mtimeMs } = statSync(file);
+  if (!redirects.rules || redirects.mtime !== mtimeMs) redirects = { rules: parseRedirects(readFileSync(file, 'utf8')), mtime: mtimeMs };
+  return redirects.rules;
 }
 
 /* ---------- static files ---------- */
@@ -124,6 +136,14 @@ const server = http.createServer(async (req, res) => {
       return await sendResponse(res, await enquiryApi(toRequest(req, { origin }), { ip: req.socket.remoteAddress }));
     }
     if (path.startsWith('/api/')) return json(res, 404, { ok: false, error: 'Not found' });
+
+    // Like Pages: a redirect answers whatever the method, before any file.
+    const rules = redirectRules();
+    const hit = rules && matchRedirect(rules, path);
+    if (hit && hit.status !== 200) {
+      res.writeHead(hit.status, { ...SECURITY, Location: locationFor(hit, `http://${req.headers.host || `${HOST}:${PORT}`}${req.url}`), 'Cache-Control': 'no-store' });
+      return res.end();
+    }
     if (req.method !== 'GET' && req.method !== 'HEAD') return json(res, 405, { ok: false, error: 'Method not allowed' });
 
     const file = resolveStatic(path);

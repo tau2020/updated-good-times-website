@@ -5,6 +5,8 @@ export const page = {
   title: 'Page not found',
   description: 'The page you were looking for is not here. Explore Good Times in Cape Town’s private tours and airport transfers instead.',
   noindex: true,
+  // Served for any missing URL: no canonical (its own address, /404.html, redirects to /404; the audit's F5).
+  canonical: false,
   // Served for any missing URL, so relative links must resolve from the site root.
   base: '/',
   body: () => `
