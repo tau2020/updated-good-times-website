@@ -91,14 +91,18 @@ for (const [w, h] of sizes) {
   const moments = [0.15, 0.45, 0.85, 1.3, 1.75, plan.duration];
   const words = [];
   for (const t of moments) {
-    await page.evaluate((t) => window.__sandJourney.words.seek(t), t);
+    await page.evaluate((t) => {
+      window.__sandJourney.words.seek(t); // (braces: a timeline returned to Playwright would be serialised, whole)
+    }, t);
     await page.waitForTimeout(120);
     const f = join(RAW, `${tag}-words-${t.toFixed(2)}.png`);
     await page.screenshot({ path: f, timeout: 60_000 });
     words.push(f);
     log(tag, 'words', t.toFixed(2));
   }
-  await page.evaluate(() => window.__sandJourney.words.play());
+  await page.evaluate(() => {
+    window.__sandJourney.words.play();
+  });
   await strip(words, moments.map((t) => `t ${t.toFixed(2)} s`), join(OUT, `words-${tag}.jpg`), w > 1000 ? 0.34 : w > 700 ? 0.42 : 0.7);
   report[tag] = { scales, plan, errors };
   await ctx.close();
