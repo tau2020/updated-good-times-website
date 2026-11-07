@@ -359,8 +359,18 @@
     max-width: none;
     margin: 0 0 0.26em;
   }
+  /* Over the bright town, the headline brings its own soft glow: navy under the letters, fading to nothing well before
+     its edges (the corner shade is faint up here); "Good Times" carries a deeper rim than the small lines */
+  .hero-headline {
+    text-shadow: 0 0 2px rgb(3 16 32 / 0.65), 0 2px 4px rgb(3 16 32 / 0.6), 0 0 16px rgb(3 16 32 / 0.55), 0 0 34px rgb(3 16 32 / 0.4);
+  }
   .hero-headline::before {
-    content: none;
+    content: '';
+    position: absolute;
+    inset: -0.5em -1.3em -0.4em -1.5em;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgb(3 16 32 / 0.7), rgb(3 16 32 / 0.56) 46%, rgb(3 16 32 / 0.26) 77%, rgb(3 16 32 / 0));
+    pointer-events: none;
   }
   .hero-headline__line {
     display: block;
