@@ -117,7 +117,6 @@ export const images = [
   // text and caption no longer say "Winelands" and do not name Aquila until the owner confirms it (reports/client-corrections.md)
   { name: 'winelands-garden-lunch', src: `${U}winelands-garden-lunch.jpg`, origin: 'U', focus: '50% 46%', alt: 'Guests and their guide smiling around a garden lunch table under the trees' },
   { name: 'table-mountain-sparkling', src: `${T}table-mountain-sparkling.jpg`, origin: 'T', full: true, focus: '36% 40%', alt: 'A glass of sparkling wine in focus, Table Mountain across the bay behind' },
-  { name: 'fairview-goat-tower', src: `${S}fairview-goat-tower.jpg`, origin: 'S', focus: '50% 46%', alt: 'Goats resting in the arches of the goat tower at Fairview' },
   { name: 'mandela-statue-drakenstein', src: `${S}mandela-statue-drakenstein.jpg`, origin: 'S', focus: '50% 40%', alt: 'Two guests beside the bronze statue of Nelson Mandela with a raised fist outside Drakenstein Correctional Centre' },
 
   // The Overberg coast and adventures
