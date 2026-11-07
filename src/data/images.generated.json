@@ -92,6 +92,26 @@
     "width": 1728,
     "height": 1152
   },
+  "airport-meet-and-greet": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048
+  },
+  "airport-mother-city-welcome": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048
+  },
   "airport-pickup-area": {
     "widths": [
       480,
@@ -137,6 +157,17 @@
     ],
     "width": 2048,
     "height": 1152
+  },
+  "bokaap-pink-blue-houses": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "width": 4284,
+    "height": 5712
   },
   "bokaap-pink-wall": {
     "widths": [
@@ -886,6 +917,17 @@
     ],
     "width": 2048,
     "height": 1365
+  },
+  "peninsula-rocks-pair": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1536
+    ],
+    "width": 1536,
+    "height": 2048,
+    "ambient": true
   },
   "pergola-lunch-table": {
     "widths": [

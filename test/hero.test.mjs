@@ -63,8 +63,10 @@ test('the phone gallery: six real Good Times days in order, the first ready befo
   // The play/pause key appears only once the gallery actually moves (phone-gallery.js)
   assert.match(g, /<button class="phone-gallery__toggle" type="button" data-phone-toggle aria-label="Pause the photo gallery" hidden>/);
   const items = PHONE_GALLERY.items;
-  // Cape Town Memories (media audit, 6 Nov 2026): real photographs of Good Times days, none of them AI-generated or used elsewhere
-  assert.deepEqual(items.map((i) => i.id), ['chapmans-peak', 'bo-kaap', 'boulders', 'winelands', 'cape-point', 'peninsula-guide'], 'the gallery.json order');
+  // Cape Town Memories (media audit, 6 Nov 2026): real photographs of Good Times days, none of them AI-generated or used elsewhere.
+  // The last one changed on 6 Nov 2026: traveller 106 went to the home page's moments in place of the goats (the owner's
+  // brief, §2.1), so a Peninsula photograph used nowhere else took its place
+  assert.deepEqual(items.map((i) => i.id), ['chapmans-peak', 'bo-kaap', 'boulders', 'winelands', 'cape-point', 'peninsula-rocks'], 'the gallery.json order');
   for (const item of items) assert.notEqual(images.find((x) => x.name === item.image)?.origin, 'G', `${item.id}: a real photograph`);
   const slides = [...g.matchAll(/<div class="phone-gallery__slide"([^>]*)>([\s\S]*?)<\/figure>\s*<\/div>/g)];
   assert.equal(slides.length, items.length + 1, 'six photographs and the copy of the first');

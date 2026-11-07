@@ -21,7 +21,8 @@
  *       direction of 6 Nov 2026, the sand journey's destination after it (test/hero.test.mjs)
  *   O = a traveller's photograph from a Good Times tour that the owner approved for this site by name in the Drive
  *       library (its file name ends "-approved", or says where to use it: "use-for-…", "replace-…"; media audit,
- *       6 Nov 2026); the photographer's permission is the owner's to confirm (docs/APPROVAL_REGISTER.md)
+ *       6 Nov 2026), or that the owner's brief of 6 Nov 2026 names for a placement (reports/client-corrections.md);
+ *       the photographer's permission is the owner's to confirm (docs/APPROVAL_REGISTER.md)
  *   L = not a Good Times photograph: an openly licensed photograph (Wikimedia Commons), used only where Good Times has
  *       none (Cape Agulhas, skydiving, the adventure card), credited as its licence asks (`credit`, `license`, `source`)
  *       beside it where the layout has a caption and on the photo credits, and never presented as Good Times' guests
@@ -111,7 +112,10 @@ export const images = [
   { name: 'winelands-terrace', src: `${T}winelands-terrace.jpg`, origin: 'T', focus: '50% 12%', alt: 'Guests at a terrace table on a wine estate as a host presents a bottle' },
   { name: 'winelands-pergola-lunch', src: `${T}winelands-pergola-lunch.jpg`, origin: 'T', focus: '50% 54%', alt: 'Guests at a long table under a vine-shaded pergola on a Winelands estate' },
   { name: 'winelands-tasting-table', src: `${T}winelands-tasting-table.jpg`, origin: 'T', focus: '50% 50%', alt: 'Five guests around a wine tasting table with glasses and tasting notes' },
-  { name: 'winelands-garden-lunch', src: `${U}winelands-garden-lunch.jpg`, origin: 'U', focus: '50% 46%', alt: 'Guests and their guide smiling around a garden lunch table on a Winelands estate' },
+  // The About page's "Meet our team" photograph until 6 Nov 2026, restored there at the owner's request (brief of 6 Nov
+  // 2026, §2.5), which places it at Aquila Game Reserve. Nothing in the file or its history names the place, so the alt
+  // text and caption no longer say "Winelands" and do not name Aquila until the owner confirms it (reports/client-corrections.md)
+  { name: 'winelands-garden-lunch', src: `${U}winelands-garden-lunch.jpg`, origin: 'U', focus: '50% 46%', alt: 'Guests and their guide smiling around a garden lunch table under the trees' },
   { name: 'table-mountain-sparkling', src: `${T}table-mountain-sparkling.jpg`, origin: 'T', full: true, focus: '36% 40%', alt: 'A glass of sparkling wine in focus, Table Mountain across the bay behind' },
   { name: 'fairview-goat-tower', src: `${S}fairview-goat-tower.jpg`, origin: 'S', focus: '50% 46%', alt: 'Goats resting in the arches of the goat tower at Fairview' },
   { name: 'mandela-statue-drakenstein', src: `${S}mandela-statue-drakenstein.jpg`, origin: 'S', focus: '50% 40%', alt: 'Two guests beside the bronze statue of Nelson Mandela with a raised fist outside Drakenstein Correctional Centre' },
@@ -223,6 +227,15 @@ export const images = [
 
   // About: the owner (about-image.jpg, supplied and approved by the owner for the About page, 5 Nov 2026)
   { name: 'owner-portrait', src: 'about/about-image.jpg', origin: 'S', focus: '72% 45%', alt: 'The owner of Good Times in Cape Town raising a glass of white wine on a terrace, Table Mountain across the bay in the background' },
+  // The owner's brief of 6 Nov 2026 (reports/client-corrections.md, design/asset-manifest.md): the airport arrival it names
+  // (traveller 12) leads the transfers page, where its wide hall and its "Welcome to the Mother City" read at banner width
+  // with the words over the travellers' backs, never a face; the Airport Private Transfer shows a Good Times driver meeting
+  // a guest (traveller 13: the guest's name on the welcome sign blurred, as on the arrival row's sign); the Bo-Kaap street it
+  // names leads the City tour; and a library photograph takes the hero phone's last slide (traveller 106 now replaces the goats)
+  { name: 'airport-mother-city-welcome', src: `${D}Cape Town Private Airport Transfer - traveller 12.jpg`, origin: 'O', full: true, focus: '50% 32%', alt: 'Two travellers wheeling their suitcases through the arrivals hall at Cape Town International Airport, towards a stone wall that reads Welcome to the Mother City' },
+  { name: 'airport-meet-and-greet', src: `${D}Cape Town Private Airport Transfer - traveller 13-name-blurred.jpg`, origin: 'S', focus: '45% 40%', alt: 'A Good Times driver with a welcome sign giving a thumbs-up beside an arriving guest and his suitcases in the terminal at Cape Town International Airport' },
+  { name: 'bokaap-pink-blue-houses', src: `${D}Cape Town Private City Tour - traveller 10.jpg`, origin: 'O', full: true, focus: '50% 66%', alt: 'A guest at the white-railed steps of a bright pink house beside a blue one on a Bo-Kaap street' },
+  { name: 'peninsula-rocks-pair', src: `${D}Cape Peninsula Private Tour - traveller 050.jpg`, origin: 'S', ambient: true, focus: '50% 56%', alt: 'Two guests on the rocks above a turquoise sea on the Cape Peninsula, mountains across the water behind them' },
 
   // Not Good Times photographs (L): openly licensed, credited, used only where Good Times has none
   { name: 'agulhas-tip-marker', src: `${C}Southernmost_tip_of_Africa.JPG`, origin: 'L', full: true, focus: '50% 62%', credit: 'Photo: Shaomi72, CC BY-SA 3.0, via Wikimedia Commons', license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', source: 'https://commons.wikimedia.org/wiki/File:Southernmost_tip_of_Africa.JPG', alt: 'The stone marker at Cape Agulhas, the southernmost tip of Africa, a sign below it pointing to the Indian Ocean and the Atlantic Ocean' },

@@ -14,9 +14,10 @@ const crumbs = [{ label: 'Home', href: './' }, { label: 'About', href: 'about/' 
  * photograph and the Langa mural laid over its corner. They reveal in turn as they scroll into view
  * (culinary.js, the layered reveal); without motion they are simply in place.
  *
- * "Meet our team" shows the owner's own photograph (about-image.jpg, the owner's approved file, 6 Nov 2026), whole: its
- * frame has the photograph's own 3:2 proportions at every width, so nothing of the owner is cropped. Every photograph on this
- * page appears nowhere else on the site (audit/image-change-register.md).
+ * "Meet our team" shows again the photograph it showed until 6 Nov 2026, at the owner's request (brief of 6 Nov 2026, §2.5:
+ * the team photograph taken at Aquila Game Reserve): guests and their guide at lunch, whole in a frame of its own 5:4. The
+ * owner's portrait it replaced is now on the home page's people chapter. Every photograph on this page appears nowhere else
+ * on the site (design/asset-manifest.md).
  */
 const frame = (name, sizes, focus, ratio) =>
   `<div class="taste__frame" style="--focus: ${focusOf(name, focus)}${ratio ? `; --ratio: ${ratio}` : ''}" data-taste-frame>${picture({ name, sizes })}</div>`;
@@ -72,8 +73,8 @@ export const page = {
 <section class="section section--paper" aria-labelledby="people-title">
   <div class="container people">
     <figure class="people__photo" data-reveal>
-      <div class="media-frame" style="--ratio: 3 / 2; --focus: ${focusOf('owner-portrait')}">${picture({ name: 'owner-portrait', sizes: '(min-width: 64em) min(40vw, 34rem), 100vw' })}</div>
-      <figcaption>The owner of Good Times in Cape Town, across the bay from Table Mountain</figcaption>
+      <div class="media-frame" style="--ratio: 5 / 4; --focus: ${focusOf('winelands-garden-lunch')}">${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(40vw, 34rem), 100vw' })}</div>
+      <figcaption>Guests and their guide at lunch, on a day out with Good Times</figcaption>
     </figure>
     <div class="people__body" data-reveal style="--reveal-i:1">
       <p class="eyebrow">Meet our team</p>

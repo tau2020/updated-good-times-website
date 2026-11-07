@@ -7,6 +7,6 @@
     { "id": "boulders", "image": "boulders-penguin-selfie", "caption": "Boulders Beach", "tour": "cape-peninsula-private-tour" },
     { "id": "winelands", "image": "vineyard-couple", "caption": "The Winelands", "tour": "cape-winelands-private-tour" },
     { "id": "cape-point", "image": "cape-point-lighthouse-trio", "caption": "Cape Point", "tour": "cape-peninsula-private-tour" },
-    { "id": "peninsula-guide", "image": "guide-selfie-peninsula", "caption": "The Cape Peninsula", "tour": "cape-peninsula-private-tour" }
+    { "id": "peninsula-rocks", "image": "peninsula-rocks-pair", "caption": "The Cape Peninsula", "tour": "cape-peninsula-private-tour" }
   ]
 }

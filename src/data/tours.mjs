@@ -146,8 +146,9 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: CANCEL_DAY,
     price: { from: 4000, currency: 'ZAR', unit: 'per group', tiers: tiers(4000, 8000), note: 'Excludes museum entrance fees.' },
-    images: { hero: 'castle-cannon-couple', card: 'bokaap-street', gallery: ['heritage-building-guests', 'district-six-museum', 'castle-moat', 'bokaap-selfie', 'company-garden-squirrel'] },
-    heroFocus: '50% 36%',
+    images: { hero: 'bokaap-pink-blue-houses', card: 'bokaap-street', gallery: ['heritage-building-guests', 'district-six-museum', 'castle-moat', 'bokaap-selfie', 'company-garden-squirrel'] },
+    // The guest from head to hip on the wide band, whole on phones (the brief of 6 Nov 2026: no face or limb cut awkwardly)
+    heroFocus: '50% 66%',
     seo: {
       title: 'Cape Town City Private Tour: Castle, District Six & Bo-Kaap',
       description: 'A private guided Cape Town city tour: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup.',
@@ -267,8 +268,8 @@ export const tours = [
     accessibility: MOBILITY,
     cancellation: '',
     price: { from: 3500, currency: 'ZAR', unit: 'per group', tiers: [{ label: 'up to 10 guests', max: 10, amount: 3500 }], note: '' },
-    images: { hero: 'private-guests-arms-raised', card: 'coast-sunset-couple', gallery: ['beach-thrones', 'chapmans-peak-guide-selfie'] },
-    heroFocus: '62% 40%',
+    images: { hero: 'coast-sunset-couple', card: 'coast-sunset-couple', gallery: ['beach-thrones', 'chapmans-peak-guide-selfie'] },
+    heroFocus: '45% 58%',
     seo: {
       title: 'Private Cape Town Experience: a Tailored Day with Your Own Guide',
       description: 'A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to ten.',

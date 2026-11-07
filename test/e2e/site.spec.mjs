@@ -544,7 +544,7 @@ test.describe('home hero', () => {
   test('with reduced motion the scene stays a still, the gallery shows its first photograph and loads no other, and nothing is hidden', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const media = [];
-    const PHONE = /\/assets\/(video\/|img\/(chapmans-peak-couple|bokaap-street-pair|boulders-penguin-selfie|vineyard-couple|cape-point-lighthouse-trio|guide-selfie-peninsula)-)/;
+    const PHONE = /\/assets\/(video\/|img\/(chapmans-peak-couple|bokaap-street-pair|boulders-penguin-selfie|vineyard-couple|cape-point-lighthouse-trio|peninsula-rocks-pair)-)/;
     page.on('request', (r) => PHONE.test(r.url()) && media.push(r.url().split('/').pop()));
     await page.goto('/');
     await page.waitForTimeout(1_200);

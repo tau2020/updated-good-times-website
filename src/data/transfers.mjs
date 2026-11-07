@@ -29,7 +29,7 @@ export const services = [
     price: { from: 800, currency: 'ZAR', unit: 'per trip', tiers: [{ label: '1–4 guests', max: 4, amount: 800 }, { label: '5–8 guests', max: 8, amount: 1600 }], note: 'Prices per trip, not per person.' },
     // The airport arrival's welcome sign and the car boot are the request rows' own thumbnails (transfers page), so the
     // service shows three other photographs: a sharp 3105 px departures scene first (the 1000 px sign was soft at this size)
-    images: { hero: 'airport-departures-group', gallery: ['airport-guests-luggage', 'airport-departures-trolley'] },
+    images: { hero: 'airport-meet-and-greet', gallery: ['airport-guests-luggage', 'airport-departures-trolley'] },
     tripadvisor: { url: 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-d19930417-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html', rating: 5.0, reviews: 89, checked: '2026-11-05' },
     confirm: ['The official page says “Max 4” and also lists a rate for 5–8 guests: confirm the vehicles and group sizes offered.', 'Child seats are not mentioned on the official page: confirm whether they are available.'],
     source: SOURCE,

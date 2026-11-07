@@ -1,7 +1,7 @@
 import { esc, picture, preloadFor, coverSizes, stars } from '../partials/ui.mjs';
 import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
-import { destinationCarousel, photoExhibition, mediaLightbox } from '../partials/media.mjs';
+import { destinationCarousel, photoExhibition, mediaLightbox, focusOf } from '../partials/media.mjs';
 import { culinaryReveal, tasteRule } from '../partials/culinary.mjs';
 import { licensedCredit } from '../partials/cards.mjs';
 import { heroPhoneGallery } from '../partials/phone-gallery.mjs';
@@ -37,8 +37,9 @@ const MEMORY = { name: 'chapmans-lookout-travellers', place: 'Chapman’s Peak D
 const MOMENTS = [
   { key: 'a', name: 'muizenberg-huts-guests', focus: '50% 56%', caption: 'Muizenberg’s bathing huts', sizes: '(min-width: 64em) min(52vw, 46rem), 100vw', depth: 0 },
   { key: 'b', name: 'above-the-bay-selfie', focus: '36% 62%', caption: 'A selfie above the bay', sizes: '(min-width: 64em) min(26vw, 23rem), 60vw', depth: -1 },
-  // The library's only photograph of the goat tower, now whole in a frame of its own 4:3 (the 3:2 crop cut the arch and the ramp)
-  { key: 'c', name: 'fairview-goat-tower', focus: '50% 46%', ratio: '4 / 3', caption: 'The goat tower at Fairview, on a Winelands day', sizes: '(min-width: 64em) min(30vw, 27rem), 100vw', depth: 1 },
+  // The goats at Fairview left at the owner's request (brief of 6 Nov 2026, §2.1): the owner's own replacement, a guide and
+  // two guests at a Peninsula lookout ("replace-goats-on-home-page", traveller 106), whole in the same 4:3 frame
+  { key: 'c', name: 'guide-selfie-peninsula', focus: '50% 50%', ratio: '4 / 3', caption: 'With our guide, high above the Peninsula', sizes: '(min-width: 64em) min(30vw, 27rem), 100vw', depth: 1 },
   { key: 'd', name: 'cape-of-good-hope-sign', focus: '56% 58%', caption: 'At the Cape of Good Hope', sizes: '(min-width: 64em) min(22vw, 19rem), 48vw', depth: -1 },
 ];
 
@@ -303,7 +304,7 @@ ${scene({
     <div class="lc-moments__head">
       ${chapterMark(2, 'The bits between the big sights')}
       <h2 class="lc-title" id="moments-title">The big sights are great. <span class="lc-title__turn">The bits in between? <em>Even better.</em></span></h2>
-      <p class="lc-lead" data-reveal>Between the famous stops are the moments people keep: a row of beach huts, a selfie above the bay, the goats at Fairview, a sign at the edge of a continent. All of them photographed on our own days out.</p>
+      <p class="lc-lead" data-reveal>Between the famous stops are the moments people keep: a row of beach huts, a selfie above the bay, a thumbs-up from the guide on a mountain lookout, a sign at the edge of a continent. All of them photographed on our own days out.</p>
     </div>
     ${MOMENTS.map(
       (m) => `<figure class="lc-moments__item lc-moments__item--${m.key}" data-depth="${m.depth}" data-rise="moments">
@@ -329,7 +330,7 @@ ${scene({
 <section class="lc-wild lc-dark" aria-labelledby="wild-title" data-wild>
   <div class="lc-wild__panel lc-wild__panel--one" data-wild-panel>
     <figure class="lc-wild__media">
-      <div class="lc-wild__art" style="--focus: 34% 46%; --focus-tall: 30% 46%" data-wild-art>${picture({ name: 'cape-point-cliffs', sizes: wildSizes('cape-point-cliffs') })}</div>
+      <div class="lc-wild__art" style="--focus: 64% 46%; --focus-tall: 66% 52%" data-wild-art>${picture({ name: 'private-guests-arms-raised', sizes: wildSizes('private-guests-arms-raised') })}</div>
       <div class="lc-wild__scrim" aria-hidden="true"></div>
       <div class="lc-wild__shade" aria-hidden="true" data-wild-shade></div>
     </figure>
@@ -403,8 +404,8 @@ ${scene({
       <figcaption>A city day at the Castle of Good Hope</figcaption>
     </figure>
     <figure class="lc-people__pair lc-people__pair--b" data-depth="-1" data-rise="people">
-      <div class="lc-print-frame" style="--focus: 50% 46%; --ratio: 5 / 4">${picture({ name: 'winelands-garden-lunch', sizes: '(min-width: 64em) min(26vw, 23rem), 100vw' })}</div>
-      <figcaption>Lunch in a Winelands garden</figcaption>
+      <div class="lc-print-frame" style="--focus: ${focusOf('owner-portrait')}; --ratio: 3 / 2">${picture({ name: 'owner-portrait', sizes: '(min-width: 64em) min(26vw, 23rem), 100vw' })}</div>
+      <figcaption>The owner of Good Times, across the bay from Table Mountain</figcaption>
     </figure>
   </div>
 </section>

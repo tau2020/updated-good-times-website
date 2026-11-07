@@ -1092,6 +1092,14 @@
   .lc-wild__panel--two .lc-wild__words {
     width: 100%;
   }
+  /* The opening photograph (the two guests with their arms raised, 6 Nov 2026) has them at mid-height above the sea, so on
+     phones its words sit high in the sky, over a wash from the top, and never on them */
+  .lc-wild__panel--one .lc-wild__beat {
+    padding-top: 15svh;
+  }
+  .lc-wild__panel--one .lc-wild__scrim {
+    background: linear-gradient(180deg, rgba(1, 18, 20, 0.62) 0%, rgba(1, 18, 20, 0.34) 30%, rgba(1, 18, 20, 0) 48%);
+  }
 }
 
 /* 7. 05 · Your journey, your way: four photograph-led invitations (real Good Times photographs, the

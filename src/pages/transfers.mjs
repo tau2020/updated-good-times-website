@@ -1,3 +1,4 @@
+import { focusOf } from '../partials/media.mjs';
 import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
 import { rowCard } from '../partials/cards.mjs';
 import { services, types } from '../data/transfers.mjs';
@@ -49,7 +50,7 @@ function serviceBlock(s, site, i) {
     ${i === 0 && site.prices.show && s.price ? `<div class="currency-area currency-area--inline">${currencyPicker({ id: 'currency-transfers' })}</div>` : ''}
   </div>
   <div class="service-block__media" data-reveal style="--reveal-i:1">
-    ${media.map((m, j) => `<div class="media-frame"${j === 0 ? ' style="--focus: 48% 40%"' : ''}>${picture({ name: m, sizes: j === 0 ? '(min-width: 56em) 44vw, 92vw' : '(min-width: 56em) 22vw, 46vw' })}</div>`).join('\n    ')}
+    ${media.map((m, j) => `<div class="media-frame"${j === 0 ? ` style="--focus: ${focusOf(m)}"` : ''}>${picture({ name: m, sizes: j === 0 ? '(min-width: 56em) 44vw, 92vw' : '(min-width: 56em) 22vw, 46vw' })}</div>`).join('\n    ')}
   </div>
 </article>`;
 }
@@ -61,10 +62,10 @@ export const page = {
   description: 'Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R800 per trip for 1–4 guests.',
   priority: 0.9,
   breadcrumbs: crumbs,
-  preload: [preloadFor('airport-departures-wave')],
+  preload: [preloadFor('airport-mother-city-welcome')],
   body: ({ site }) => `
 <section class="banner" style="--focus: 40% 56%; --focus-mobile: 36% 56%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
-  <div class="banner__media">${picture({ name: 'airport-departures-wave', eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="banner__media">${picture({ name: 'airport-mother-city-welcome', eager: true, fetchpriority: 'high', alt: '' })}</div>
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbs)}
