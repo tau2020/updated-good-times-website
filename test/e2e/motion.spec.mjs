@@ -144,9 +144,9 @@ test.describe('the sand journey', () => {
       const t = window.__sandJourney.trigger;
       window.scrollTo({ top: t.end, behavior: 'instant' });
     });
-    await expect.poll(() => page.evaluate(() => window.__sandJourney.p), { timeout: 10_000 }).toBeGreaterThan(0.99);
+    await expect.poll(() => page.evaluate(() => window.__sandJourney.p), { timeout: 25_000 }).toBeGreaterThan(0.99);
     await expect(page.locator('.sand-journey__cta')).toBeVisible();
-    await expect.poll(() => wordsShown(page), { timeout: 5_000 }).toBe('1 1 1 1');
+    await expect.poll(() => wordsShown(page), { timeout: 8_000 }).toBe('1 1 1 1');
   });
 
   test('without motion it is the static scene: the photograph, the words and the link, one screen tall, no canvas', async ({ page }) => {
@@ -162,6 +162,9 @@ test.describe('the sand journey', () => {
     await expect(section.getByRole('heading', { level: 2, name: 'Look where your footsteps led.' })).toBeVisible();
     await expect(section.getByText('One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop.')).toBeVisible();
     expect(await wordsShown(page)).toBe('1 1 1 1');
+    // Nothing split, nothing scaled: the headline is its plain text, the photograph its own size
+    await expect(section.locator('.sand-journey__title-line-mask, .sand-journey__title-word')).toHaveCount(0);
+    expect(await section.locator('.sand-journey__beach img').evaluate((i) => getComputedStyle(i).transform)).toBe('none');
     // The one transition reduced motion keeps: the words fade in (opacity only) once the scene is in view
     await expect(section).toHaveClass(/\bis-seen\b/);
     await expect.poll(() => section.locator('.sand-journey__words').evaluate((w) => getComputedStyle(w).opacity)).toBe('1');
@@ -211,21 +214,30 @@ test.describe('the sand journey', () => {
     await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), Math.round(t[0] + 0.4 * (t[1] - t[0])));
     await page.waitForTimeout(700);
     expect(await wordsShown(page), 'the static scene meanwhile').toBe('1 1 1 1');
-    // Record the section's classes and the headline's transition from here on (the test browser draws slowly, so the
-    // 0.8 s cross-fade is read from the record rather than raced)
-    await page.evaluate(() => {
+    // Record the section's classes, and the words on every frame from here on (the test browser draws slowly, so the
+    // 0.7 s run back is read from the record rather than raced)
+    await page.evaluate((sel) => {
       const s = document.querySelector('[data-sand-journey]');
-      const w = s.querySelector('.sand-journey__title');
       window.__arrivals = [];
-      new MutationObserver(() => window.__arrivals.push([s.className, getComputedStyle(w).transitionDuration])).observe(s, { attributes: true, attributeFilter: ['class'] });
-    });
+      window.__frames = [];
+      new MutationObserver(() => window.__arrivals.push(s.className)).observe(s, { attributes: true, attributeFilter: ['class'] });
+      const tick = () => {
+        window.__frames.push([...s.querySelectorAll(sel)].map((el) => Number(getComputedStyle(el).opacity)));
+        if (window.__frames.length < 600) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, WORDS);
     release();
     await page.waitForFunction(() => window.__sandJourney.ready(), null, { timeout: 60_000 });
-    await expect.poll(() => page.evaluate(() => window.__arrivals.some(([c]) => /\bis-arriving\b/.test(c) && /\bis-ready\b/.test(c))), { timeout: 10_000 }).toBe(true);
-    const fade = await page.evaluate(() => window.__arrivals.find(([c]) => /\bis-arriving\b/.test(c))[1]);
-    expect(fade, 'the words fade over 0.7 s as the sand arrives').toMatch(/0\.7s/);
+    await expect.poll(() => page.evaluate(() => window.__arrivals.some((c) => /\bis-arriving\b/.test(c) && /\bis-ready\b/.test(c))), { timeout: 10_000 }).toBe(true);
+    // The words run back over 0.7 s (the entrance in reverse, sped up to fit), never vanishing in one frame
+    const run = await page.evaluate(() => ({ back: window.__sandJourney.words.reversed(), seconds: window.__sandJourney.words.duration() / Math.abs(window.__sandJourney.words.timeScale()) }));
+    expect(run.back).toBe(true);
+    expect(run.seconds).toBeCloseTo(0.7, 1);
     await expect(page.locator('[data-sand-journey]')).not.toHaveClass(/\bis-arriving\b/, { timeout: 5_000 });
     await expect.poll(() => wordsShown(page), { message: 'then the state for this p', timeout: 5_000 }).toBe('0 0 0 0');
+    const between = await page.evaluate(() => window.__frames.filter((f) => f.some((o) => o > 0.02 && o < 0.98)).length);
+    expect(between, 'frames with a word part way').toBeGreaterThan(0);
   });
 
   test('the words are reachable by keyboard and show at once when focused, whatever the sand is doing', async ({ page }) => {
@@ -237,8 +249,11 @@ test.describe('the sand journey', () => {
     await page.evaluate(() => window.__sandJourney.renderAt(0.3));
     const cta = page.locator('.sand-journey__cta');
     expect(await wordsShown(page)).toBe('0 0 0 0');
+    // Waiting, the words take no clicks (an invisible link must not catch one), but the link can still be focused
+    expect(await page.locator('.sand-journey__foot').evaluate((f) => getComputedStyle(f).pointerEvents)).toBe('none');
     await cta.focus();
     expect(await wordsShown(page)).toBe('1 1 1 1');
+    expect(await page.locator('.sand-journey__foot').evaluate((f) => getComputedStyle(f).pointerEvents)).toBe('auto');
   });
 
   test('the words appear one after another once the sand has cleared enough, never over the trail or the woman', async ({ page, isMobile }) => {
@@ -247,7 +262,7 @@ test.describe('the sand journey', () => {
     await page.goto('/?sand=lite');
     await page.evaluate(() => window.scrollTo({ top: 40, behavior: 'instant' }));
     await page.waitForFunction(() => window.__sandJourney.ready(), null, { timeout: 45_000 });
-    // The eyebrow first, the link last; none before p 0.84 (the sand is gone by about 0.80), all by 0.965
+    // None before p 0.84 (the sand is gone by about 0.80); from there a triggered entrance, in time, not scrubbed
     const at = async (p) => {
       await page.evaluate((p) => window.__sandJourney.renderAt(p), p);
       return (await wordsShown(page)).split(' ').map(Number);
@@ -255,14 +270,66 @@ test.describe('the sand journey', () => {
     expect(await at(0.83)).toEqual([0, 0, 0, 0]);
     const cover = await page.evaluate(() => window.__sandJourney.checksum(0.84).meanAlpha);
     expect(cover, 'the sand all but gone when the words begin').toBeLessThan(0.02);
-    const mid = await at(0.88);
-    expect(mid[0]).toBeGreaterThan(mid[3]);
-    expect(mid[0]).toBeGreaterThan(0);
-    expect(await at(0.99)).toEqual([1, 1, 1, 1]);
+    await at(0.9); // the entrance starts
+    // The plan (design/motion-bible.md §4): the eyebrow (0.4–0.6 s), the headline's words rising through line masks
+    // (SplitText; 0.9–1.3 s in all), the line (0.6–0.8 s) following the headline, then the leaf once the line is readable
+    const plan = await page.evaluate(() => {
+      const tl = window.__sandJourney.words;
+      const abs = (t) => {
+        let s = t.startTime();
+        for (let p = t.parent; p && p !== tl; p = p.parent) s += p.startTime();
+        return s;
+      };
+      const out = {};
+      for (const t of tl.getChildren(true, true, false)) {
+        const el = t.targets()[0];
+        if (!el || !el.closest) continue;
+        const key = ['eyebrow', 'title', 'line', 'cta'].find((k) => el.closest(`.sand-journey__${k}`));
+        if (!key) continue;
+        const a = abs(t);
+        const b = a + t.totalDuration();
+        out[key] = out[key] ? [Math.min(out[key][0], a), Math.max(out[key][1], b)] : [a, b];
+      }
+      return { out, masks: document.querySelectorAll('.sand-journey__title-line-mask').length, words: document.querySelectorAll('.sand-journey__title-word').length, label: document.querySelector('.sand-journey__title').getAttribute('aria-label') };
+    });
+    const { eyebrow, title, line, cta } = plan.out;
+    const f = isMobile ? 0.8 : 1;
+    expect(plan.words, 'the headline split into its five words').toBe(5);
+    expect(plan.masks).toBeGreaterThan(0);
+    expect(plan.label, 'one accessible name for the split headline').toBe('Look where your footsteps led.');
+    expect(eyebrow[0]).toBe(0);
+    expect(eyebrow[1] - eyebrow[0]).toBeGreaterThanOrEqual(0.4 * f - 0.001);
+    expect(eyebrow[1] - eyebrow[0]).toBeLessThanOrEqual(0.6);
+    expect(title[0]).toBeGreaterThan(eyebrow[0]);
+    expect(title[1] - title[0]).toBeGreaterThanOrEqual(0.9 * f);
+    expect(title[1] - title[0]).toBeLessThanOrEqual(1.3);
+    expect(line[0]).toBeGreaterThan(title[0]);
+    expect(line[1] - line[0]).toBeGreaterThanOrEqual(0.6 * f - 0.001);
+    expect(line[1] - line[0]).toBeLessThanOrEqual(0.8);
+    expect(cta[0], 'the leaf once the line is readable').toBeGreaterThan(line[0] + 0.4 * f);
+    // Half way: the eyebrow and the headline in, the line coming, the leaf still waiting
+    const mid = await page.evaluate((sel) => {
+      const tl = window.__sandJourney.words;
+      tl.pause();
+      tl.seek(tl.labels.line + 0.1);
+      const o = [...document.querySelectorAll(sel)].map((el) => Number(getComputedStyle(el).opacity));
+      tl.play();
+      return o;
+    }, WORDS);
+    expect(mid[0]).toBe(1);
+    expect(mid[1]).toBe(1);
+    expect(mid[2]).toBeGreaterThan(0);
+    expect(mid[2]).toBeLessThan(1);
+    expect(mid[3]).toBe(0);
+    await expect.poll(() => wordsShown(page), { timeout: 8_000 }).toBe('1 1 1 1');
+    // Scrolling back above p 0.80 runs it back
+    await at(0.78);
+    await expect.poll(() => wordsShown(page), { timeout: 8_000 }).toBe('0 0 0 0');
     // In the held stage at the end: no word box covers one of the image's prints or the woman (scene.js › PHOTO)
     const t = await page.evaluate(() => window.__sandJourney.trigger.end);
     await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), t);
-    await expect.poll(() => page.evaluate(() => window.__sandJourney.p), { timeout: 10_000 }).toBeGreaterThan(0.99);
+    await expect.poll(() => page.evaluate(() => window.__sandJourney.p), { timeout: 25_000 }).toBeGreaterThan(0.99);
+    await expect.poll(() => wordsShown(page), { timeout: 8_000 }).toBe('1 1 1 1'); // at rest, not mid-entrance
     const hits = await page.evaluate((sel) => {
       const { k, ox, oy } = window.__sandJourney.placement();
       const sr = document.querySelector('[data-sand-stage]').getBoundingClientRect();
@@ -281,5 +348,63 @@ test.describe('the sand journey', () => {
       return out;
     }, WORDS);
     expect(hits).toEqual([]);
+  });
+
+  test('the coast reveals itself: the scenery leans in over the last steps and settles back to its own framing, sand and photograph together', async ({ page, isMobile }) => {
+    test.setTimeout(60_000);
+    await motion(page);
+    await page.goto('/?sand=lite');
+    await page.evaluate(() => window.scrollTo({ top: 40, behavior: 'instant' }));
+    await page.waitForFunction(() => window.__sandJourney.ready(), null, { timeout: 45_000 });
+    const at = (p) =>
+      page.evaluate((p) => {
+        const api = window.__sandJourney;
+        api.renderAt(p);
+        const stage = document.querySelector('[data-sand-stage]');
+        const s = stage.getBoundingClientRect();
+        const box = (el) => {
+          // the layout box (offsets) plus its transform origin: the point on the stage it scales about
+          let x = 0;
+          let y = 0;
+          for (let n = el; n && n !== stage; n = n.offsetParent) {
+            x += n.offsetLeft;
+            y += n.offsetTop;
+          }
+          const [ox, oy] = getComputedStyle(el).transformOrigin.split(' ').map(parseFloat);
+          return [x + ox, y + oy];
+        };
+        const img = stage.querySelector('[data-sand-photo] img');
+        const sand = stage.querySelector('.sand-journey__sand');
+        const scale = (el) => {
+          const m = getComputedStyle(el).transform;
+          return m === 'none' ? 1 : new DOMMatrix(m).a;
+        };
+        return { reveal: api.reveal(), img: scale(img), sand: scale(sand), pivots: [box(img), box(sand)], stage: [s.width, s.height] };
+      }, p);
+    const amp = isMobile ? 0.015 : 0.04;
+    const walk = await at(0.3);
+    expect(walk.reveal.amp).toBeCloseTo(amp, 5);
+    expect([walk.img, walk.sand], 'nothing scaled through the walk').toEqual([1, 1]);
+    const lean = await at(0.6);
+    expect(lean.img, 'leaning in at the last step').toBeCloseTo(1 + amp, 3);
+    expect(lean.sand, 'the sand with it').toBeCloseTo(lean.img, 5);
+    // About the same point on the stage, so the trail stays on the photograph's prints
+    expect(Math.abs(lean.pivots[0][0] - lean.pivots[1][0])).toBeLessThan(1);
+    expect(Math.abs(lean.pivots[0][1] - lean.pivots[1][1])).toBeLessThan(1);
+    const settling = await at(0.75);
+    expect(settling.img).toBeLessThan(lean.img);
+    expect(settling.img).toBeGreaterThan(1);
+    const settled = await at(0.95);
+    expect([settled.img, settled.sand], 'its own framing once the sand is gone').toEqual([1, 1]);
+    // The trail is measured unscaled: the placement is the same mid-lean as at rest
+    const pl = await page.evaluate(() => {
+      const api = window.__sandJourney;
+      api.renderAt(0.6);
+      const a = api.placement();
+      api.renderAt(0.95);
+      const b = api.placement();
+      return [a, b];
+    });
+    expect(pl[0]).toEqual(pl[1]);
   });
 });

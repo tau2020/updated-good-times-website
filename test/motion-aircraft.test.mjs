@@ -78,16 +78,19 @@ test('only the home page carries the aircraft; every other page has the plain lo
       if (home) {
         assert.match(html, /<a class="brand" href="\.\/" aria-label="Good Times in Cape Town, home" data-intro style="--dock-x:/);
         assert.doesNotMatch(html, /is-awaiting-aircraft/, 'the logo is whole in the markup (no JavaScript, reduced motion)');
-        assert.match(html, /<script src="assets\/js\/vendor\/MotionPathPlugin\.min\.js" defer><\/script>\n<script src="assets\/js\/brand-plane\.js" defer><\/script>\n<script src="assets\/js\/hero\.js" defer>/);
+        assert.match(html, /<script src="assets\/js\/vendor\/MotionPathPlugin\.min\.js" defer><\/script>\n<script src="assets\/js\/vendor\/CustomEase\.min\.js" defer><\/script>\n<script src="assets\/js\/vendor\/SplitText\.min\.js" defer><\/script>\n<script src="assets\/js\/brand-plane\.js" defer><\/script>\n<script src="assets\/js\/hero\.js" defer>/);
         if (site.preview) assert.match(html, /<button type="button" class="preview-bar__replay" data-intro-replay hidden>Replay the intro<\/button>/);
       }
     }
   }
 });
 
-test('MotionPathPlugin is GSAP 3.15.0 with its licence header, the same release as the core', () => {
+test('MotionPathPlugin, CustomEase and SplitText are GSAP 3.15.0 with their licence headers, the same release as the core', () => {
   const v = (f) => readFileSync(new URL(`../src/assets/js/vendor/${f}`, import.meta.url), 'utf8').slice(0, 300);
-  assert.match(v('MotionPathPlugin.min.js'), /MotionPathPlugin 3\.15\.0[\s\S]*Subject to the terms at https:\/\/gsap\.com\/standard-license/);
+  for (const name of ['MotionPathPlugin', 'CustomEase', 'SplitText']) {
+    assert.match(v(`${name}.min.js`), new RegExp(`${name} 3\\.15\\.0[\\s\\S]*Subject to the terms at https://gsap\\.com/standard-license`), name);
+  }
   assert.match(v('gsap.min.js'), /GSAP 3\.15\.0/);
-  assert.match(readFileSync(new URL('../NOTICE.md', import.meta.url), 'utf8'), /MotionPathPlugin/);
+  const notice = readFileSync(new URL('../NOTICE.md', import.meta.url), 'utf8');
+  for (const name of ['MotionPathPlugin', 'CustomEase', 'SplitText']) assert.match(notice, new RegExp(name), name);
 });

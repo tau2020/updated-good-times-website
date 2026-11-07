@@ -232,10 +232,11 @@ export const page = {
   // The Living Cape chapters have their own sheet, loaded after styles.css and the system sheet, scoped to .living-cape.
   // The hero's phone gallery has its own sheet and script (HeroPhoneGallery, partials/phone-gallery.mjs).
   styles: ['assets/css/phone-gallery.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css'],
-  // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger and Flip (GSAP 3.15, self-hosted;
-  // the policy allows same-origin scripts only), the hero's entrance, its phone gallery, the guest stories carousel,
-  // the chapters and the media system: the destination carousel, the exhibition and its lightbox.
-  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/vendor/MotionPathPlugin.min.js', 'assets/js/brand-plane.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/reviews.js', 'assets/js/sand-journey.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
+  // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger, Flip and MotionPathPlugin, and
+  // CustomEase and SplitText for the Cape Peninsula entrance and the leaf's unfurl (GSAP 3.15, self-hosted; the policy
+  // allows same-origin scripts only), the hero's entrance, its phone gallery, the guest stories carousel, the chapters
+  // and the media system: the destination carousel, the exhibition and its lightbox.
+  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/vendor/MotionPathPlugin.min.js', 'assets/js/vendor/CustomEase.min.js', 'assets/js/vendor/SplitText.min.js', 'assets/js/brand-plane.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/reviews.js', 'assets/js/sand-journey.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
   /*
    * The hero, "the world has stopped, the memories haven't": five friends in a café above the Atlantic, Table Mountain
    * behind, held still in one moment of laughter (the film moves only the cloud and the sea, src/tools/build-video.sh).

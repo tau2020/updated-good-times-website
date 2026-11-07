@@ -13,7 +13,8 @@
  * The markup is the complete static scene: the poster, the words and the link to the existing Cape Peninsula tour page,
  * all in HTML. That is what a visitor sees with reduced motion, without JavaScript or WebGL, or if the renderer fails;
  * with motion the sand is a decorative canvas laid over the image by the script (aria-hidden, never takes a click), and
- * the words rise in, one after another, as the sand clears. On wide screens the headline sits in the sand above the
+ * once the sand has cleared the words enter one after another (the eyebrow, the headline's words rising through line
+ * masks, the line, then the leaf unfurling: "The Coast Reveals Itself", design/motion-bible.md §4). On wide screens the headline sits in the sand above the
  * trail (upper left) and the line and the link in the sand below it (lower left), so neither covers a footprint, the
  * woman or the sea; portrait screens put them under the image, phones on their side beside it (motion.css). The words are the owner's (6 Nov 2026); the image is an
  * AI-generated illustration the owner supplied (basis G in docs/RIGHTS_REGISTER.md), credited as such beside it. It
