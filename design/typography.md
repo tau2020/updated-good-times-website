@@ -114,18 +114,25 @@ photographs honestly. The motion follows the same temperament: confident at the 
 The owner's hero-services brief, after the "Cape Town Good Times Banner" reference, and the owner's choice of the same
 day: the headline **Good Times Start Here!** in place of the Find Your Good Time leaf. In the site's own three families
 (no new font):
+- **Where it sits.** On wide screens the headline, the sentence and the services sit together at the photograph's
+  bottom left, just above the two calls to action (the owner's request of 7 Nov 2026), on a soft shade rising from the
+  hero's corner. On phones and tablets the headline sits in the hero's foot and the rest follows beneath it on the navy.
+  The sizes below are set from the screen's height on wide screens, so the stack always fits under the header.
 - **The headline**: Caveat 700, the site's handwriting, tilted 1.5°: "Good Times" in white, "Start Here!" in leaf green
   (`--green-deep`) on a lime brush swash (`--green-lime-accent`, 6:1). An exception to Caveat's rule of "never anything
-  a visitor must not miss", at the owner's request and after the reference: it is large (32–76 px) and short, and the
-  page's h1 for search and screen readers is unchanged. One line on laptops (as wide as the faceless stretch allows),
-  two lines on tall wide screens (as in the reference), on phones and on short landscape screens.
+  a visitor must not miss", at the owner's request and after the reference: it is large (29–38 px on phones, 56 px on
+  a tablet, 46–80 px on wide screens) and short, and the page's h1 for search and screen readers is unchanged. Two
+  lines on wide screens, tablets and phones (as in the reference); one line in the strip under the sleeping friend's
+  chin on landscape tablets and the other landscape windows outside the wide layout.
 - **The sentence** ("Private tours, airport transfers and authentic Cape Town experiences tailored for you."): DM Sans
-  650, white, left-aligned, at most three lines on wide screens; 16–20 px over the photograph (by the screen's height),
-  17–21 px beneath the hero. Below the call to action in weight and size, never competing with it.
+  650, white, left-aligned, two or three lines; 17–26 px on wide screens, 18–22 px beneath the hero.
 - **The four titles**: Bricolage Grotesque 700 in its display cut (`font-variation-settings: 'opsz' 96`: the narrower,
-  livelier drawing gives the slightly condensed look of the reference without a condensed font), 14–17 px, one line
-  each (in a row of four they are held to 2.7% of the row's width).
-- **The four lines**: DM Sans 500, 12.5–14 px, centred and balanced under their titles.
-- Over the photograph, every line holds at least 5.4:1 against the brightest part of the town behind it, measured
-  without the words' own shadow (`qa/hero-services-shots.mjs`); beneath the hero, 16:1 on the navy.
+  livelier drawing gives the slightly condensed look of the reference without a condensed font), 14.5–21 px on wide
+  screens, 16–18 px beneath the hero, one line each in a row of four (held to 2.7% of the row's width).
+- **The four lines**: DM Sans 500, 13.5–18 px on wide screens, 14–15 px beneath the hero, centred and balanced under
+  their titles.
+- **The calls to action**: the site's large pills (Bricolage Grotesque 650), 17–21 px on wide screens; full width on
+  phones.
+- Over the photograph the words carry a tight dark rim and a soft glow as well as the corner shade; beneath the hero
+  they sit on the navy (12:1 and more). Contrast is measured on every deployment by `qa/hero-services-shots.mjs`.
 

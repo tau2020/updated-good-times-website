@@ -78,7 +78,7 @@ already in or above the view is shown whole. `main.js` has the same for `[data-r
 | Narrative purpose | Energy and identity: the brand arrives, the people stay frozen in their good time |
 | Trigger | Page load (once per load). The **Replay the intro** control in the preview bar replays it |
 | ScrollTrigger | None. Scrolling during the flight lands the aircraft at once |
-| Sequence | The wordmark and Book Now; the logo's green airliner flies in from the left along the logo's dotted route and lands as the "i" of "in" (`brand-plane.js`, MotionPathPlugin); its landing starts the navigation titles one by one; the hero's headline, **Good Times Start Here!**, rises (2.2 s) and its lime swash draws (2.4 s), and the hero's services follow it (2.65–4.25 s, below); the company statement is drawn in under the logo once the logo is whole (0.5 s); last, the header's **Plan My Day** leaf unfurls |
+| Sequence | The wordmark and Book Now; the logo's green airliner flies in from the left along the logo's dotted route and lands as the "i" of "in" (`brand-plane.js`, MotionPathPlugin); its landing starts the navigation titles one by one; the hero's headline, **Good Times Start Here!**, rises (2.2 s) and its lime swash draws (2.4 s), and the hero's services and its two calls to action follow it (2.65–4.3 s, below); the company statement is drawn in under the logo once the logo is whole (0.5 s); last, the header's **Plan My Day** leaf unfurls |
 | Duration | About 5.8 s on desktop, 4.8 s on tablets, 3.2 s on phones (no header leaf below 40em) |
 | Easing | `power2.out` for the arrivals; the leaf's `leafUnfurl`; the flight's own derived curve |
 | Stagger | The titles, one after another from the landing |
