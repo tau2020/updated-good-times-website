@@ -75,14 +75,15 @@ function measure(faces) {
     // only what the hero's frame actually shows
     .filter((f) => f.x + f.w > box.left && f.x < box.right && f.y + f.h > box.top + scrollY && f.y < box.bottom + scrollY);
   const services = document.querySelector('.hero-services');
-  const parts = services ? [...services.querySelectorAll('.hero-services__lead, .hero-services__item')].map((el) => ({ el: el.className.split(' ')[0], ...r(el) })) : [];
+  const parts = services ? [...services.querySelectorAll('.hero-headline, .hero-services__lead, .hero-services__item')].map((el) => ({ el: el.className.split(' ')[0], ...r(el) })).filter((p) => p.w) : [];
+  const headline = r(document.querySelector('.hero-headline'));
   const hero = document.querySelector('.hero');
   const header = document.querySelector('.site-header');
   const out = {
     viewport: { w: innerWidth, h: innerHeight },
     hero: r(hero),
     header: r(header),
-    cta: r(document.querySelector('.hero__cta')),
+    headline,
     phone: r(document.querySelector('.hero__phone')),
     services: r(services),
     parts,
@@ -95,10 +96,16 @@ function measure(faces) {
   out.placement = services ? (getComputedStyle(services).position === 'absolute' ? 'over the photograph' : 'beneath the hero') : 'none';
   if (out.placement === 'beneath the hero') {
     if (out.services.y < out.hero.y + out.hero.h - 1) out.collisions.push('the block overlaps the hero');
+    // The headline sits in the hero's foot, where the leaf was: clear of every face, the phone and the header
+    if (headline) {
+      for (const f of faceBoxes) if (hit(headline, f)) out.collisions.push(`the headline over the ${f.name}'s face`);
+      if (hit(headline, out.header)) out.collisions.push('the headline under the header');
+      if (hit(headline, out.phone)) out.collisions.push('the headline over the phone');
+      if (headline.y + headline.h > out.hero.y + out.hero.h + 1) out.collisions.push('the headline runs past the hero');
+    }
   } else for (const p of parts) {
     for (const f of faceBoxes) if (hit(p, f)) out.collisions.push(`${p.el} over the ${f.name}'s face`);
     if (hit(p, out.header)) out.collisions.push(`${p.el} under the header`);
-    if (hit(p, out.cta)) out.collisions.push(`${p.el} over the call to action`);
     if (hit(p, out.phone)) out.collisions.push(`${p.el} over the phone`);
   }
   if (out.placement === 'over the photograph' && out.services.y + out.services.h > out.hero.y + out.hero.h + 1) out.collisions.push('services run past the hero');
@@ -112,15 +119,21 @@ function measure(faces) {
  * `halo`, the words' own shadow stays (their glyphs transparent): the background as a reader sees it behind the
  * letters; without it, the conservative figure.
  */
-async function contrast(browser, page, { halo = false } = {}) {
-  const boxes = await page.evaluate(() =>
-    [...document.querySelectorAll('.hero-services__lead, .hero-services__title, .hero-services__text')].map((el) => {
-      const r = el.getBoundingClientRect();
-      return { kind: el.className.replace('hero-services__', ''), text: el.textContent.trim().slice(0, 40), x: r.left, y: r.top, w: r.width, h: r.height };
-    }),
+async function contrast(browser, page, { halo = false, skip = [] } = {}) {
+  const boxes = await page.evaluate(
+    (skip) => {
+      const top = document.querySelector('.site-header').getBoundingClientRect().bottom;
+      return [...document.querySelectorAll('.hero-headline__line:not(.hero-headline__mark), .hero-services__lead, .hero-services__title, .hero-services__text')]
+        .map((el, i) => {
+          const r = el.getBoundingClientRect();
+          return { i, kind: el.className.replace('hero-services__', ''), text: el.textContent.trim().slice(0, 40), x: r.left, y: r.top, w: r.width, h: r.height };
+        })
+        .filter((b) => !skip.includes(b.i) && b.w && b.y >= top && b.y + b.h <= innerHeight);
+    },
+    skip,
   );
   if (!boxes.length) return null;
-  const tag = await page.addStyleTag({ content: `.hero-services, .hero-services * { color: transparent !important;${halo ? '' : ' text-shadow: none !important;'} } .hero-services__icon, .hero-services__brush { visibility: hidden !important; } .hero-services__lead::after { opacity: 0 !important; }` });
+  const tag = await page.addStyleTag({ content: `.hero-services, .hero-services * { color: transparent !important;${halo ? '' : ' text-shadow: none !important;'} } .hero-services__icon, .hero-services__brush, .hero-headline__mark { visibility: hidden !important; } .hero-services__lead::after { opacity: 0 !important; }` });
   await page.waitForTimeout(100);
   const png = await page.screenshot({ type: 'png' });
   const dpr = await page.evaluate(() => devicePixelRatio);
@@ -150,7 +163,7 @@ async function contrast(browser, page, { halo = false } = {}) {
   );
   await probe.close();
   await tag.evaluate((el) => el.remove());
-  return result.map(({ kind, text, contrastP90, contrastMedian }) => ({ kind, text, contrastP90, contrastMedian }));
+  return result.map(({ i, kind, text, contrastP90, contrastMedian }) => ({ i, kind, text, contrastP90, contrastMedian }));
 }
 
 async function shoot(browser, [w, h], state, out) {
@@ -202,14 +215,23 @@ async function shoot(browser, [w, h], state, out) {
     // The whole hero, and the block beneath it when it sits there
     const bottom = Math.ceil(Math.max(result.hero.y + result.hero.h, result.services ? result.services.y + result.services.h : 0));
     await page.screenshot({ path: join(out, `${w}x${h}-${state}-full-hero.jpg`), type: 'jpeg', quality: 70, fullPage: true, clip: { x: 0, y: 0, width: w, height: Math.max(h, bottom) } });
-    // Then the contrast, with the words in view (last: it hides the words)
-    await page.evaluate(() => {
-      const el = document.querySelector('.hero-services');
-      if (el && el.getBoundingClientRect().bottom > innerHeight) el.scrollIntoView({ block: 'center', behavior: 'instant' });
-    });
-    await page.waitForTimeout(600);
+    // Then the contrast (last: it hides the words): the lines on screen first, then the rest with the block in view
     result.contrast = await contrast(browser, page);
     result.contrastWithHalo = await contrast(browser, page, { halo: true });
+    const seen = result.contrast.map((c) => c.i);
+    const below = await page.evaluate(() => {
+      const el = document.querySelector('.hero-services__list');
+      if (el && el.getBoundingClientRect().bottom > innerHeight) {
+        el.scrollIntoView({ block: 'center', behavior: 'instant' });
+        return true;
+      }
+      return false;
+    });
+    if (below) {
+      await page.waitForTimeout(600);
+      result.contrast.push(...(await contrast(browser, page, { skip: seen })));
+      result.contrastWithHalo.push(...(await contrast(browser, page, { halo: true, skip: seen })));
+    }
   }
   await ctx.close();
   return result;

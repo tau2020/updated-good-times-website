@@ -27,19 +27,17 @@ const home = render('index.html');
 const hero = home.slice(home.indexOf('<section class="hero"'), home.indexOf('<section class="sand-journey"'));
 const ai = [...images, ...generated].filter((i) => i.origin === 'G');
 
-test('the hero: one h1 for search and screen readers, one call to action to the tours, no paragraph or second action', () => {
+test('the hero: one h1 for search and screen readers, the headline Good Times Start Here! in place of the leaf, no link', () => {
   assert.equal((home.match(/<h1\b/g) || []).length, 1);
   assert.match(hero, /<h1 class="visually-hidden" id="hero-title">Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014<\/h1>/);
-  const links = [...hero.matchAll(/<a class="([^"]*)" href="([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g)];
-  assert.equal(links.length, 1, 'one link in the hero');
-  const [, cls, href, attrs, words] = links[0];
-  // The signature leaf (the brief of 6 Nov 2026), played by the hero's entrance
-  assert.deepEqual([cls, href], ['leaf-btn leaf-btn--large hero__cta', 'tours/']);
-  assert.match(attrs, /data-intro/, 'it takes part in the entrance');
-  assert.match(attrs, /data-leaf-owner="hero"/, 'the hero plays its unfolding');
-  assert.equal(words.replace(/<[^>]+>/g, ''), 'Find Your Good Time');
-  assert.match(words, /<svg class="leaf-btn__shape" viewBox="0 0 240 64" preserveAspectRatio="none" aria-hidden="true" focusable="false">/);
-  assert.doesNotMatch(words, /hero__cta-sheen/);
+  // The owner's choice of 7 Nov 2026: the headline instead of the Find Your Good Time leaf, so the hero has no link
+  assert.equal([...hero.matchAll(/<a\b/g)].length, 0, 'no link in the hero');
+  assert.doesNotMatch(home, /hero__cta|Find Your Good Time|data-leaf-owner="hero"/);
+  // The headline, once, with the hero's words (partials/hero-services.mjs), in the entrance
+  const headline = home.match(/<p class="hero-headline" data-intro>([\s\S]*?)<\/p>/);
+  assert.ok(headline, 'the headline');
+  assert.equal(headline[1].replace(/<svg[\s\S]*?<\/svg>/g, '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(), 'Good Times Start Here!');
+  assert.equal((home.match(/class="hero-headline"/g) || []).length, 1);
   assert.doesNotMatch(hero, /hero__lead|hero__link|hero__actions|Arrange My Transfer|Explore Tours/);
 });
 

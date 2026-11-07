@@ -100,9 +100,8 @@ statement (the logo's width ÷ 25, 10 to 13 px).
 ## 8. Type and the leaf
 
 The signature leaf's words are always white and never sit in its narrow ends (wider padding at the tip than the base).
-DM Sans 650 at 1 rem for the standard and header leaves; Bricolage Grotesque 700 for the large leaves; Bricolage 800,
-fluid from 17 to 22 px, for the hero's **Find Your Good Time**, whose "Good Time" leans as a drawn 9° skew, never a
-faux italic. Calls to action are written in title case, as the brief writes them ("Plan My Day").
+DM Sans 650 at 1 rem for the standard and header leaves; Bricolage Grotesque 700 for the large leaves. (The hero's
+**Find Your Good Time** leaf, Bricolage 800 with a drawn 9° lean, was removed on 7 Nov 2026: see §10.) Calls to action are written in title case, as the brief writes them ("Plan My Day").
 
 ## 9. One system
 
@@ -110,10 +109,16 @@ Bricolage's quirk carries the headlines and the large leaves; DM Sans keeps ever
 appears a handful of times as a hand-written note beside a photograph. Captions name places plainly and credit
 photographs honestly. The motion follows the same temperament: confident at the story's turns, quiet in between.
 
-## 10. The hero's services (7 Nov 2026)
+## 10. The hero's headline and services (7 Nov 2026)
 
-The owner's hero-services brief, after the "Cape Town Good Times Banner" reference, in the site's own two families
+The owner's hero-services brief, after the "Cape Town Good Times Banner" reference, and the owner's choice of the same
+day: the headline **Good Times Start Here!** in place of the Find Your Good Time leaf. In the site's own three families
 (no new font):
+- **The headline**: Caveat 700, the site's handwriting, tilted 1.5°: "Good Times" in white, "Start Here!" in leaf green
+  (`--green-deep`) on a lime brush swash (`--green-lime-accent`, 6:1). An exception to Caveat's rule of "never anything
+  a visitor must not miss", at the owner's request and after the reference: it is large (32–76 px) and short, and the
+  page's h1 for search and screen readers is unchanged. One line on laptops (as wide as the faceless stretch allows),
+  two lines on tall wide screens (as in the reference), on phones and on short landscape screens.
 - **The sentence** ("Private tours, airport transfers and authentic Cape Town experiences tailored for you."): DM Sans
   650, white, left-aligned, at most three lines on wide screens; 16–20 px over the photograph (by the screen's height),
   17–21 px beneath the hero. Below the call to action in weight and size, never competing with it.

@@ -1,25 +1,24 @@
 /* Good Times in Cape Town — home hero entrance (one GSAP master timeline, home page only)
    A directed sequence over the already-visible café scene and its phone: the wordmark and Book Now arrive first,
    the logo's own little green airliner flies in from the left, follows the logo's dotted route and lands as the "i"
-   of "in" (brand-plane.js), and its landing starts the navigation titles one by one; then the one call to action,
-   Find Your Good Time, rises into the bottom-left corner and unfolds as a leaf. Whole elements only,
-   opacity and small transforms (y, a touch of scale on the wordmark and the call to action), overlapping so it reads
-   as one piece: about 4.8 s on desktop, 4.0 s on tablets and 2.9 s on phones (the aircraft at the owner's slower pace,
-   6 Nov 2026: it lands at about 4.0 s on desktop; the call to action keeps its own moment, 2.2 s). Then, once the
-   aircraft has handed the logo back whole, the company statement under it is drawn in from left to right, softly, in
-   0.5 s (Addendum, 6 Nov 2026), and last the navigation's Plan My Day leaf unfolds from its stem (the brief of 6 Nov 2026):
-   about 5.8 s on desktop, 4.8 s on tablets, 3.2 s on phones (which show no header leaf). The hero's call to action is the
-   signature leaf too (leaf.js): it rises at 2.2 s and unfolds as it settles. As it settles, the hero's services
+   of "in" (brand-plane.js), and its landing starts the navigation titles one by one; then the headline, Good Times
+   Start Here!, rises at 2.2 s (the owner's choice of 7 Nov 2026, in place of the Find Your Good Time leaf) and the lime
+   swash under "Start Here!" draws from left to right. Whole elements only, opacity and small transforms (y, a touch of
+   scale on the wordmark), overlapping so it reads as one piece (the aircraft at the owner's slower pace, 6 Nov 2026:
+   it lands at about 4.0 s on desktop; the headline keeps its own moment, 2.2 s). Then, once the aircraft has handed
+   the logo back whole, the company statement under it is drawn in from left to right, softly, in 0.5 s (Addendum,
+   6 Nov 2026), and last the navigation's Plan My Day leaf unfolds from its stem (the brief of 6 Nov 2026): about 5.8 s
+   on desktop, 4.8 s on tablets, 3.2 s on phones (which show no header leaf). After the headline, the hero's services
    (HeroServices, the hero-services brief of 7 Nov 2026) follow it: the sentence rises, its lime brush draws under
    "tailored for you." from left to right, and the four services settle in turn, in place by about 4.25 s on desktop,
-   as the aircraft lands. They are staged with opacity only, so their words stay in the accessibility tree.
+   as the aircraft lands. The headline and the services are staged with opacity only, so their words stay in the
+   accessibility tree.
    The phone is not part of it: its first photograph is there from the first paint, and its gallery
    (phone-gallery.js) begins to swipe on its own. It runs once per load, only when motion is allowed
    (html.cine from the inline gate) and GSAP has loaded; otherwise nothing is hidden or moved and the logo is whole.
    styles.css keeps the holding state until the timeline takes over, with a timed fallback should this
    script never run. The header (wordmark, titles, Book Now) is staged with opacity only, so it stays in the
-   accessibility tree and in the tab order at every moment, and anything focused shows at once (styles.css);
-   the call to action is hidden with autoAlpha, so it cannot take focus while invisible. */
+   accessibility tree and in the tab order at every moment, and anything focused shows at once (styles.css). */
 (function () {
   'use strict';
   var html = document.documentElement;
@@ -46,9 +45,11 @@
   var statement = header && one('.brand-lockup__statement', header);
   var bookNow = header && one('.header-cta', header);
   var titles = header ? list('.primary-nav a', header) : [];
-  var cta = one('.hero__cta');
-  // The hero's services (partials/hero-services.mjs): over the photograph on wide screens, beneath the hero elsewhere
+  // The hero's words (partials/hero-services.mjs): the headline, then the services; over the photograph on wide
+  // screens, the headline bottom left and the services beneath the hero elsewhere
   var services = document.querySelector('[data-hero-services]');
+  var headline = services ? one('.hero-headline', services) : null;
+  var swash = headline ? headline.querySelector('.hero-headline__swash') : null;
   var lead = services ? one('.hero-services__lead', services) : null;
   var brush = services ? one('.hero-services__brush', services) : null;
   var items = services ? list('.hero-services__item', services) : [];
@@ -67,14 +68,15 @@
     // Starting states, written before the stylesheet's holding state is released
     var staged = [brand, statement, bookNow].concat(titles).filter(Boolean);
     gsap.set(staged, { opacity: 0 });
-    if (cta) gsap.set(cta, { autoAlpha: 0 });
     if (brand) gsap.set(brand, { y: 12, scale: 0.985, transformOrigin: 'left center' });
     // The clip reaches past the line's box so its soft shadow over the film is never cut while it draws in
     if (statement) gsap.set(statement, { y: 4, clipPath: 'inset(-1em 100% -1em -1em)' });
     if (bookNow) gsap.set(bookNow, { y: 6 });
     if (titles.length) gsap.set(titles, { y: 8 });
-    if (cta) gsap.set(cta, { y: 14 });
-    // The services: opacity and a few pixels of rise (never visibility), and the brush clipped to nothing from the right
+    // The headline and the services: opacity and a few pixels of rise (never visibility), the brushes clipped to nothing
+    // from the right
+    if (headline) gsap.set(headline, { opacity: 0, y: 16 });
+    if (swash) gsap.set(swash, { clipPath: 'inset(-20% 100% -20% -5%)' });
     if (lead) gsap.set(lead, { opacity: 0, y: 14 });
     if (services) gsap.set(services, { '--hs-veil': 0 }); // the shade behind the words (hero-services.css) waits for them
     if (items.length) gsap.set(items, { opacity: 0, y: 12 });
@@ -113,19 +115,17 @@
       if (navLeaf) tl.add(navLeaf, 'bookNow');
     }
 
-    // Act III — the call to action, the signature leaf, rises into its corner and unfolds from its stem (2.2–3.2 s)
-    tl.addLabel('cta', 2.2);
-    if (cta) {
-      tl.to(cta, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' }, 'cta');
-      var ctaLeaf = leaf(cta);
-      if (ctaLeaf) tl.add(ctaLeaf, 'cta+=0.05');
-    }
+    // Act III — the headline, Good Times Start Here!, rises into its place (2.2 s), the shade behind the words with it
+    // (wide screens); the lime swash under "Start Here!" draws in one quick stroke from left to right (2.4 s)
+    tl.addLabel('headline', 2.2);
+    if (headline) tl.to(headline, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' }, 'headline');
+    if (services) tl.to(services, { '--hs-veil': 1, duration: 0.65, ease: 'power1.out', clearProps: '--hs-veil' }, 'headline');
+    if (swash) tl.to(swash, { clipPath: 'inset(-20% 0% -20% -5%)', duration: 0.5, ease: 'power2.inOut', clearProps: 'clipPath' }, 'headline+=0.2');
 
-    // Act III·b — the hero's services, once the call to action has risen (2.65–4.25 s): the sentence rises; the brush
-    // draws under its last words, one quick stroke from left to right; then the four services settle in turn, each icon,
-    // title and line as one. Nothing keeps moving afterwards
-    tl.addLabel('services', 'cta+=0.45');
-    if (services) tl.to(services, { '--hs-veil': 1, duration: 0.65, ease: 'power1.out', clearProps: '--hs-veil' }, 'services');
+    // Act III·b — the hero's services, once the headline has risen (2.65–4.25 s): the sentence rises; the brush draws
+    // under its last words, one quick stroke from left to right; then the four services settle in turn, each icon, title
+    // and line as one. Nothing keeps moving afterwards
+    tl.addLabel('services', 'headline+=0.45');
     if (lead) tl.to(lead, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', clearProps: 'transform' }, 'services');
     if (brush) tl.to(brush, { clipPath: 'inset(-50% 0% -50% -5%)', duration: 0.55, ease: 'power2.inOut', clearProps: 'clipPath' }, 'services+=0.45');
     if (items.length) tl.to(items, { opacity: 1, y: 0, duration: 0.55, stagger: 0.12, ease: 'power2.out', clearProps: 'transform' }, 'services+=0.7');

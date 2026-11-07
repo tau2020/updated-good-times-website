@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
-import { HERO_LEAD, HERO_SERVICES, heroServices } from '../src/partials/hero-services.mjs';
+import { HERO_HEADLINE, HERO_LEAD, HERO_SERVICES, heroServices } from '../src/partials/hero-services.mjs';
 import { icon } from '../src/partials/ui.mjs';
 
 const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
@@ -34,6 +34,10 @@ test('the exact words of the brief: one sentence, four services', () => {
     ],
   );
   const block = heroServices();
+  // The headline first (the owner's choice of 7 Nov 2026): "Good Times" in white, "Start Here!" on its lime swash
+  assert.deepEqual(HERO_HEADLINE, { first: 'Good Times', mark: 'Start Here!' });
+  assert.ok(block.indexOf('class="hero-headline"') < block.indexOf('class="hero-services__lead"'), 'the headline heads the block');
+  assert.match(block, /<span class="hero-headline__line hero-headline__mark"><svg class="hero-headline__swash" [^>]*aria-hidden="true" focusable="false">[\s\S]*?<\/svg><span class="hero-headline__start">Start Here!<\/span><\/span>/);
   assert.equal(text(block.match(/<p class="hero-services__lead"[\s\S]*?<\/p>/)[0]), 'Private tours, airport transfers and authentic Cape Town experiences tailored for you.');
   // "tailored for you." carries the brush mark: decoration, hidden from assistive technology
   assert.match(block, /<span class="hero-services__mark">tailored for you\.<svg class="hero-services__brush" [^>]*aria-hidden="true" focusable="false"/);
@@ -59,7 +63,7 @@ test('on the home page: the block follows the hero section inside .hero-shell, a
   const hero = shell.slice(0, at);
   assert.match(hero, /<\/section>\s*$/, 'right after the hero section closes');
   assert.doesNotMatch(hero, /hero-services|tailored for you/, 'nothing added inside the hero section');
-  assert.equal((hero.match(/<a /g) || []).length, 1, 'the hero’s one call to action');
+  assert.equal((hero.match(/<a /g) || []).length, 0, 'no link in the hero: the leaf gave its place to the headline (7 Nov 2026)');
   assert.match(shell.slice(at), /<\/ul>\s*<\/div>\s*<\/div>\s*$/, 'the shell closes after the block');
   assert.equal((home.match(/Private tours, airport transfers and authentic Cape Town experiences/g) || []).length, 1, 'once');
 });
@@ -69,7 +73,7 @@ test('its sheet on the home page only; no new font, script or library', () => {
   for (const p of pages.filter((x) => x.path !== 'index.html')) assert.doesNotMatch(layout(p, site), /hero-services/, p.path);
   const css = read('src/assets/css/hero-services.css');
   assert.doesNotMatch(css, /@font-face|@import|url\(/, 'nothing loaded from the sheet');
-  for (const [, family] of css.matchAll(/font-family:\s*([^;]+);/g)) assert.match(family, /^var\(--font-(display|body)\)$/, family);
+  for (const [, family] of css.matchAll(/font-family:\s*([^;]+);/g)) assert.match(family, /^var\(--font-(display|body|accent)\)$/, family);
   for (const [, colour] of css.matchAll(/(?:^|[\s;{])(?:color|background|fill):\s*(#[0-9a-f]{3,8})\b/gi)) assert.fail(`a raw colour in place of a token: ${colour}`);
   const scripts = pages.find((p) => p.path === 'index.html').scripts;
   assert.deepEqual(scripts.filter((s) => /hero-services/.test(s)), [], 'its entrance lives in hero.js');
@@ -90,11 +94,15 @@ test('placed by the hero’s own crop: the focus by shape kept in step with styl
   assert.match(hs, /bottom: calc\(25% \+ 100 \* var\(--hs-s\)/, 'its foot above the sleeping friend’s hair (poster y 440)');
 });
 
-test('its entrance is a segment of the hero’s one timeline, after the call to action, in opacity and a small rise', () => {
+test('its entrance is the hero’s one timeline: the headline at the leaf’s old moment, then the services, in opacity and a small rise', () => {
   const js = read('src/assets/js/hero.js');
   assert.equal((js.match(/gsap\.timeline\(/g) || []).length, 1, 'one timeline');
   assert.doesNotMatch(js, /ScrollTrigger|matchMedia\(\s*\)|SplitText/, 'no trigger, no split');
-  assert.match(js, /tl\.addLabel\('services', 'cta\+=0\.45'\);/);
+  assert.match(js, /tl\.addLabel\('headline', 2\.2\);/, 'the headline takes the leaf’s moment');
+  assert.match(js, /tl\.addLabel\('services', 'headline\+=0\.45'\);/);
+  assert.match(js, /gsap\.set\(headline, \{ opacity: 0, y: 16 \}\)/);
+  assert.match(js, /tl\.to\(swash, \{ clipPath: 'inset\(-20% 0% -20% -5%\)', duration: 0\.5/);
+  assert.doesNotMatch(js, /hero__cta/, 'the leaf’s act is gone');
   assert.match(js, /gsap\.set\(lead, \{ opacity: 0, y: 14 \}\)/);
   assert.match(js, /gsap\.set\(items, \{ opacity: 0, y: 12 \}\)/);
   assert.doesNotMatch(js.slice(js.indexOf("var services ="), js.indexOf('window.__heroEntrance =')).replace(/if \(cta\)[^\n]*autoAlpha[^\n]*/g, ''), /autoAlpha: 0\b(?![\s\S]*cta)/, 'the services never hidden from assistive technology');

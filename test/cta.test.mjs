@@ -69,10 +69,10 @@ test('the signature never labels a form submission or a wizard step', () => {
 
 test('home: the hero, the four ways in, the closing actions and the concierge cards keep their routes and parameters', () => {
   const html = render('index.html');
-  // The hero's one call to action (test/hero.test.mjs has the rest of the hero)
-  assert.deepEqual([...html.matchAll(/<a class="leaf-btn leaf-btn--large hero__cta" href="([^"]*)" data-leaf data-intro data-leaf-owner="hero">([\s\S]*?)<\/a>/g)].map((m) => [m[2].replace(/<[^>]+>/g, ''), m[1]]), [
-    ['Find Your Good Time', 'tours/'],
-  ]);
+  // The hero has no call to action of its own any more: its headline, Good Times Start Here!, took the leaf's place (the
+  // owner's choice of 7 Nov 2026; test/hero.test.mjs and test/hero-services.test.mjs have the rest of the hero)
+  assert.doesNotMatch(html, /hero__cta|Find Your Good Time/);
+  assert.match(html, /<p class="hero-headline" data-intro>/);
   const ways = [...html.matchAll(/<h3 class="lc-way__name"><a href="([^"]*)">([^<]*)<\/a><\/h3>[\s\S]*?<p class="lc-way__go"><span>([^<]*)<\/span><\/p>/g)].map((m) => [m[2], m[3], m[1].replace(/&amp;/g, '&')]);
   assert.deepEqual(ways, [
     ['Private Tours', 'Explore Tours', 'tours/'],

@@ -55,7 +55,7 @@ const measure = (faces) => {
     const dy = Math.max(b.y0 - a.y1, a.y0 - b.y1, 0);
     return Math.round(Math.hypot(dx, dy));
   };
-  const cta = box(document.querySelector('.hero__cta'));
+  const cta = box(document.querySelector('.hero-headline'));
   const phone = box(document.querySelector('.phone-gallery'));
   const header = box(document.querySelector('.site-header'));
   const hero = box(document.querySelector('.hero'));
@@ -74,8 +74,8 @@ const measure = (faces) => {
   out.phoneInside = phone.x0 >= 0 && phone.x1 <= innerWidth + 0.5 && phone.y1 <= hero.y1 + 0.5;
   out.overflowX = document.documentElement.scrollWidth > document.documentElement.clientWidth;
   out.phoneWidth = Math.round(phone.x1 - phone.x0);
-  out.ctaText = document.querySelector('.hero__cta').textContent.trim();
-  out.ctaLines = Math.round((cta.y1 - cta.y0) / parseFloat(getComputedStyle(document.querySelector('.hero__cta')).lineHeight || 20)) > 1 ? 2 : 1;
+  out.headlineText = document.querySelector('.hero-headline').textContent.trim();
+  out.ctaLines = Math.round((cta.y1 - cta.y0) / parseFloat(getComputedStyle(document.querySelector('.hero-headline')).lineHeight || 20)) > 1 ? 2 : 1;
   return out;
 };
 

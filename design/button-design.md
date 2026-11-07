@@ -70,7 +70,7 @@ A 24 px leaf glyph with its midrib cut out and a short stem, drawn as a CSS mask
 
 It is a flourish, never an arrow: no control in the family carries an arrow or chevron.
 
-The brand's primary calls to action (**Find Your Good Time**, **Plan My Day** and the others listed there) are no
+The brand's primary calls to action (**Plan My Day** and the others listed there; the hero's Find Your Good Time was removed on 7 Nov 2026) are no
 longer pills: since the brief of 6 Nov 2026 they are the signature leaf (`design/button-tokens.md`), which replaced the
 compass medallion and the hero's pill and reads the same palette. This sheet covers everything else: form
 submissions, wizard steps, secondary and tertiary actions, and small controls.

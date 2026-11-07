@@ -1,4 +1,4 @@
-import { esc, picture, preloadFor, coverSizes, stars, leafButton } from '../partials/ui.mjs';
+import { esc, picture, preloadFor, coverSizes, stars } from '../partials/ui.mjs';
 import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox, focusOf } from '../partials/media.mjs';
@@ -247,12 +247,13 @@ export const page = {
   /*
    * The hero, "the world has stopped, the memories haven't": five friends in a café above the Atlantic, Table Mountain
    * behind, held still in one moment of laughter (the film moves only the cloud and the sea, src/tools/build-video.sh).
-   * Three independent layers: the scene (poster, then film), the one call to action bottom left (in the strip below the
-   * sleeping friend's face, never over it) and the phone bottom right, the only thing that keeps moving. The scene and
-   * the gallery are AI-generated illustrations supplied by the owner (docs/RIGHTS_REGISTER.md, G). The h1 names the
-   * business for search and screen readers; on screen the picture and the call to action say it.
-   * The services (partials/hero-services.mjs) follow the hero in the page: over the photograph's faceless left on wide
-   * screens, beneath the hero everywhere else; .hero-shell is their positioning frame and changes nothing else.
+   * Independent layers: the scene (poster, then film) and the phone bottom right, the only thing that keeps moving. The
+   * scene and the gallery are AI-generated illustrations supplied by the owner (docs/RIGHTS_REGISTER.md, G). The h1
+   * names the business for search and screen readers; on screen the headline says it.
+   * The headline, "Good Times Start Here!", and the services (partials/hero-services.mjs; the owner's choice of 7 Nov
+   * 2026, in place of the Find Your Good Time leaf) follow the hero in the page: over the photograph's faceless left on
+   * wide screens; elsewhere the headline sits bottom left (where the leaf was, below every face) and the services
+   * beneath the hero. .hero-shell is their positioning frame and changes nothing else.
    */
   body: ({ site }) => `
 <div class="hero-shell">
@@ -264,7 +265,6 @@ export const page = {
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__content">
     <h1 class="visually-hidden" id="hero-title">Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014</h1>
-    ${leafButton({ href: 'tours/', label: 'Find Your Good Time', html: '<span class="hero__cta-label">Find Your <em>Good Time</em></span>', size: 'large', cls: 'hero__cta', attrs: 'data-intro', owner: 'hero' })}
   </div>
   <div class="hero__phone">
     ${heroPhoneGallery()}

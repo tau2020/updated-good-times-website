@@ -146,7 +146,7 @@ await run('replay', 'desktop', async (page) => {
   await replay.click();
   await page.waitForFunction(() => window.__heroEntrance && window.__heroEntrance.isActive(), null, { timeout: 10_000 });
   await page.waitForFunction(() => window.__heroEntrance && !window.__heroEntrance.isActive() && window.__heroEntrance.progress() === 1, null, { timeout: 20_000 });
-  const whole = await page.evaluate(() => [!document.querySelector('.brand.is-awaiting-aircraft'), Number(getComputedStyle(document.querySelector('.hero__cta')).opacity), Number(getComputedStyle(document.querySelector('.site-header--overlay .brand-lockup__statement')).opacity)]);
+  const whole = await page.evaluate(() => [!document.querySelector('.brand.is-awaiting-aircraft'), Number(getComputedStyle(document.querySelector('.hero-headline')).opacity), Number(getComputedStyle(document.querySelector('.site-header--overlay .brand-lockup__statement')).opacity)]);
   if (!(whole[0] && whole[1] === 1 && whole[2] === 1)) throw new Error(`after the replay: logo whole ${whole[0]}, CTA ${whole[1]}, statement ${whole[2]}`);
   return { note: 'the intro replayed and ended whole' };
 });

@@ -789,11 +789,12 @@ body {
 /* 7. Home hero ----------------------------------------------------------------- */
 /* "The world has stopped, the memories haven't" (index.mjs). Layers, bottom to top: the café scene
    (.hero__media, the only clipped layer: the held frame, then the film, which moves only the cloud
-   and the sea), a light sky wash for the transparent header (.hero__scrim), the one call to action
-   bottom left (.hero__content) and the phone bottom right (.hero__phone; the component itself is
-   phone-gallery.css). The header (section 6) shares --hero-edge, so the wordmark and the call to
-   action align.
-   No face is ever covered. The call to action sits in the strip below the sleeping friend's chin
+   and the sea), a light sky wash for the transparent header (.hero__scrim), the h1 for search and
+   screen readers (.hero__content) and the phone bottom right (.hero__phone; the component itself is
+   phone-gallery.css). The headline "Good Times Start Here!" and the services are hero-services.css
+   (in place of the call to action, the owner's choice of 7 Nov 2026). The header (section 6) shares
+   --hero-edge, so the wordmark and the headline align.
+   No face is ever covered. The headline sits in the strip below the sleeping friend's chin
    (the lowest face, 89% down the frame), the phone right of the laughing blonde friend (her face
    ends 82% across). Landscape screens show the scene full bleed and steer the crop by aspect ratio
    so her face stays clear of the phone; screens narrower than 13:10 (phones, portrait tablets) frame
@@ -892,34 +893,6 @@ body {
   z-index: 1;
   width: var(--pw);
 }
-.hero__cta {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  min-height: clamp(44px, 1.7rem + 2vh, 62px);
-  padding: 0.5rem clamp(1.25rem, 0.75rem + 1.25vw, 2.15rem);
-  border-color: rgb(201 233 112 / 0.55);
-  border-radius: var(--btn-radius);
-  font-family: var(--font-display);
-  font-size: clamp(1.0625rem, 0.82rem + 0.55vw, 1.375rem);
-  font-weight: 800;
-  letter-spacing: -0.012em;
-  text-shadow: 0 1px 1px rgba(3, 40, 16, 0.35);
-}
-.hero__cta-label {
-  position: relative;
-  z-index: 1;
-}
-/* The playful turn: "Here!" leans forward. Bricolage Grotesque has no italic, so the lean is drawn (a 9° skew of the
-   word), never a browser's faux italic (font-synthesis: none) */
-.hero__cta-label em {
-  display: inline-block;
-  font-style: normal;
-  font-weight: 800;
-  font-synthesis: none;
-  padding-right: 0.06em;
-  transform: skewX(-9deg);
-}
 /* Short landscape screens (phones turned sideways): the frame fits the width and the faces fill its
    height, so the call to action moves left of the sleeping friend's face (he begins 20% across) */
 @media (min-aspect-ratio: 13/10) and (max-height: 34em) {
@@ -929,14 +902,6 @@ body {
   }
   .hero__content {
     max-width: calc(18.5vw - 1rem - 0.5rem);
-  }
-  .hero__cta {
-    min-height: 44px;
-    padding: 0.45rem 0.85rem;
-    font-size: 0.875rem;
-    white-space: normal;
-    text-wrap: balance;
-    text-align: center;
   }
 }
 /* Phones, portrait tablets and near-square windows: the whole group, framed at 8:7 (wider where the
@@ -976,14 +941,6 @@ body {
   }
   .hero__scrim {
     display: none;
-  }
-  .hero__cta {
-    min-height: 48px;
-    padding: 0.55rem 0.95rem;
-    font-size: clamp(0.9375rem, 0.7rem + 1vw, 1.25rem);
-    white-space: normal;
-    text-wrap: balance;
-    text-align: center;
   }
 }
 /* Entrance (home page with motion, assets/js/hero.js): the wordmark, the titles, Book Now and the

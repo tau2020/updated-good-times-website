@@ -15,7 +15,7 @@ system of `design/button-design.md`, which stays for forms, steps and small cont
 
 | Leaf (the brand's primary calls to action) | Pill (`.gt-button`, `design/button-design.md`) |
 |---|---|
-| **Find Your Good Time** (the hero) | Form submissions and wizard steps (Send my request, Next, Back) |
+| ~~Find Your Good Time~~ (the hero): removed on 7 Nov 2026 at the owner's request; the hero's headline, **Good Times Start Here!**, took its place (`hero-services.css`) | Form submissions and wizard steps (Send my request, Next, Back) |
 | **Plan My Day** (header, Travel Concierge, phone menu, phone bar, reviews page, the home page's closing seal) | Secondary actions beside a leaf (Arrange My Transfer over the closing photograph is the on-image pill) |
 | **Explore the Cape Peninsula Tour** (the end of the footprints) | Carousel and gallery controls, filters, Show more reviews |
 | **Get a Quote** (the home page's booking steps) | Tertiary links in sentences (travel notes) |
@@ -102,7 +102,7 @@ never move or shrink, so it stays clickable throughout, even mid-entrance. All t
 
 Who plays the entrance (`data-leaf-owner`):
 
-- `hero`: the hero's Find Your Good Time, at 2.25 s of the home intro, as it rises into its corner;
+- `hero`: no longer used (the hero's Find Your Good Time leaf was removed on 7 Nov 2026);
 - `intro`: the header's Plan My Day on the home page, last in the intro (after the company statement, about 4.9 s);
 - `sand`: Explore the Cape Peninsula Tour, after the scene's words are readable (`design/motion-bible.md` §4);
 - no owner: any other leaf that starts below the fold unfolds once as it comes into view (an IntersectionObserver with

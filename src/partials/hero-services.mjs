@@ -1,16 +1,21 @@
 /**
- * HeroServices: the home hero's services (the owner's hero-services brief of 7 Nov 2026, after the "Cape Town Good
- * Times Banner" reference). One sentence, its last words underlined by a hand-painted lime brush mark, and Good Times'
- * four services, each an icon in a warm-white circle, a title and a line. One data array, the site's own icon set,
- * tokens and fonts; nothing new to load but its stylesheet.
+ * HeroServices: the home hero's words (the owner's hero-services brief of 7 Nov 2026, after the "Cape Town Good Times
+ * Banner" reference). The headline, "Good Times Start Here!" (the owner's choice of 7 Nov 2026, in place of the Find
+ * Your Good Time leaf): "Good Times" in white, "Start Here!" in leaf green on a lime brush swash. One sentence, its
+ * last words underlined by a hand-painted lime brush mark. Good Times' four services, each an icon in a warm-white
+ * circle, a title and a line. One data array, the site's own icon set, tokens and fonts; nothing new to load but its
+ * stylesheet.
  *
- * Where it sits is hero-services.css: over the photograph on wide landscape screens, in the one stretch of it with no
- * face (left of the group, above the sleeping friend), and on every other screen immediately beneath the hero, on
- * the band's navy, so the approved one-screen hero above is never crowded. Its entrance is a segment of the hero's
- * own GSAP timeline (assets/js/hero.js): the sentence rises, the brush draws, the four services follow in turn.
- * Everything is in the page from the first paint (no layout shift); without motion it is simply there.
+ * Where it sits is hero-services.css: on wide landscape screens the whole stack is over the photograph, in the one
+ * stretch of it with no face (left of the group, above the sleeping friend); on every other screen the headline sits
+ * bottom left in the hero (where the leaf was, below every face) and the sentence and services immediately beneath
+ * the hero, on the band's navy. Its entrance is the hero's own GSAP timeline (assets/js/hero.js): the headline rises
+ * and its swash draws, the sentence rises, the brush draws, the four services follow in turn. Everything is in the
+ * page from the first paint (no layout shift); without motion it is simply there.
  */
 import { esc, icon } from './ui.mjs';
+
+export const HERO_HEADLINE = { first: 'Good Times', mark: 'Start Here!' };
 
 export const HERO_LEAD = {
   text: 'Private tours, airport transfers and authentic Cape Town experiences',
@@ -35,9 +40,26 @@ const BRUSH = `<svg class="hero-services__brush" viewBox="0 0 240 28" preserveAs
       <path d="M160 18.6C184 17.4 206 16.2 224 15.1C226.2 15 226.4 15.8 224.5 16.1C206 17.3 184 18.5 161 19.6Z"/>
     </svg>`;
 
+/**
+ * The swash behind "Start Here!": a broad loaded stroke, its ends ragged where the brush landed and lifted, two bristle
+ * gaps masked through its tail and two loose hairs past it. Decoration only; lime, the brand's accent.
+ */
+const SWASH = `<svg class="hero-headline__swash" viewBox="0 0 300 80" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs><mask id="hero-headline-dry" maskUnits="userSpaceOnUse" x="0" y="0" width="300" height="80"><rect width="300" height="80" fill="#fff"/><path d="M150 31C200 29 240 28 292 27" fill="none" stroke="#000" stroke-width="1.3"/><path d="M172 51C212 51 250 50 290 49" fill="none" stroke="#000" stroke-width="0.9"/></mask></defs>
+        <path mask="url(#hero-headline-dry)" d="M9 21C46 13 104 9 162 10C214 11 256 8 287 13C294 14 297 19 293 23C298 28 296 35 290 38C297 44 296 53 288 57C293 61 289 67 281 67C236 70 186 67 138 69C92 71 50 74 16 70C8 69 4 63 8 58C3 52 4 44 9 40C4 34 4 26 9 21Z"/>
+        <path d="M262 17C276 15 290 14 299 16C300 17 299 18 297 18C288 17 276 18 263 19Z"/>
+        <path d="M258 61C272 61 286 60 298 58C300 58 300 59 298 60C286 62 272 63 259 63Z"/>
+      </svg>`;
+
 export function heroServices() {
   return `<div class="hero-services" data-hero-services>
-  <p class="hero-services__lead" data-intro>${esc(HERO_LEAD.text)} <span class="hero-services__mark">${esc(HERO_LEAD.mark)}${BRUSH}</span></p>
+  <div class="hero-services__intro">
+    <p class="hero-headline" data-intro>
+      <span class="hero-headline__line">${esc(HERO_HEADLINE.first)}</span>
+      <span class="hero-headline__line hero-headline__mark">${SWASH}<span class="hero-headline__start">${esc(HERO_HEADLINE.mark)}</span></span>
+    </p>
+    <p class="hero-services__lead" data-intro>${esc(HERO_LEAD.text)} <span class="hero-services__mark">${esc(HERO_LEAD.mark)}${BRUSH}</span></p>
+  </div>
   <ul class="hero-services__list" role="list" aria-label="What we do">
     ${HERO_SERVICES.map(
       (s) => `<li class="hero-services__item" data-intro>

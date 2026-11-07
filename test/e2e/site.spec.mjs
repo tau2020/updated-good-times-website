@@ -301,30 +301,33 @@ test.describe('home hero', () => {
   // bottom right (index.mjs, styles.css › Home hero, HeroPhoneGallery). Face clearances at every size: qa/hero.mjs.
   const box = (loc) => loc.evaluate((el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, right: r.right, bottom: r.bottom }; });
 
-  test('shows the held café scene, one call to action bottom left and the phone bottom right: no paragraph, search panel, rating badge or second action', async ({ page }) => {
+  test('shows the held café scene, the headline Good Times Start Here! on the left and the phone bottom right: no call to action, search panel, rating badge or second action', async ({ page, isMobile }) => {
     await page.goto('/?nomotion');
     await expect(page.locator('.hero h1')).toHaveText('Good Times in Cape Town: private tours of Cape Town and the Western Cape with local guides, since 2014');
     await expect(page.locator('.hero h1')).toHaveClass('visually-hidden');
-    const cta = page.locator('.hero a');
-    await expect(cta).toHaveCount(1);
-    await expect(cta).toHaveText('Find Your Good Time');
-    await expect(cta).toHaveAttribute('href', /(^|\/)tours\/$/);
-    await expect(cta).toBeVisible();
+    // The owner's choice of 7 Nov 2026: the headline in place of the Find Your Good Time leaf, so no link in the hero
+    await expect(page.locator('.hero a, .hero__cta')).toHaveCount(0);
+    const headline = page.locator('.hero-headline');
+    await expect(headline).toHaveText(/^\s*Good Times\s+Start Here!\s*$/);
+    await expect(headline).toBeVisible();
     await expect(page.locator('.hero__poster img')).toBeVisible();
     await expect(page.locator('.hero__poster img')).toHaveAttribute('alt', /^Four friends laughing at a photo on a phone/);
     await expect(page.locator('.hero .phone-gallery')).toBeVisible();
-    // Bottom left and bottom right of the hero, apart from each other
-    const [hero, c, phone] = [await box(page.locator('.hero')), await box(cta), await box(page.locator('.phone-gallery'))];
-    expect(c.x + c.w / 2, 'call to action on the left').toBeLessThan(hero.x + hero.w / 2);
+    // The headline on the left of the hero (bottom left on a phone, where the leaf was; heading the services on a
+    // desktop), the phone bottom right, apart from each other
+    const [hero, c, phone] = [await box(page.locator('.hero')), await box(headline), await box(page.locator('.phone-gallery'))];
+    expect(c.x + c.w / 2, 'the headline on the left').toBeLessThan(hero.x + hero.w / 2);
     expect(phone.x + phone.w / 2, 'phone on the right').toBeGreaterThan(hero.x + hero.w / 2);
-    for (const b of [c, phone]) expect(hero.bottom - b.bottom, 'near the hero’s foot').toBeLessThan(40);
+    expect(hero.bottom - phone.bottom, 'the phone at the hero’s foot').toBeLessThan(40);
+    if (isMobile) expect(hero.bottom - c.bottom, 'the headline at the hero’s foot, where the leaf was').toBeLessThan(40);
+    expect(c.bottom, 'inside the hero').toBeLessThanOrEqual(hero.bottom + 1);
     expect(c.right, 'never under the phone').toBeLessThan(phone.x);
     expect(phone.right).toBeLessThanOrEqual(hero.right);
     await expect(page.locator('.hero p.hero__lead, .hero__link, .hero .search, .hero form, .hero [role="tablist"], .hero input, .hero .eyebrow, .hero .btn')).toHaveCount(0);
     await expect(page.locator('.hero .medallion, .hero .stars, .hero .rating')).toHaveCount(0);
-    // No icon or arrow in the hero; the one drawing is the call to action's own leaf (design/button-tokens.md)
-    await expect(page.locator('.hero svg:not(.phone-gallery svg):not(.leaf-btn__shape), .hero .icon')).toHaveCount(0);
-    await expect(cta.locator('svg.leaf-btn__shape[aria-hidden="true"]')).toHaveCount(1);
+    // No icon, arrow or leaf in the hero section; the headline's swash is decoration (aria-hidden)
+    await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon, .hero .leaf-btn')).toHaveCount(0);
+    await expect(headline.locator('svg.hero-headline__swash[aria-hidden="true"]')).toHaveCount(1);
     await expect(page.locator('.hero')).not.toContainText(/tripadvisor|extraordinary places|cape town, personally|tailored|find experiences/i);
     // The header over the hero: the reversed logo from the approved logo pack, Plan My Day with its ornamental coin
     const header = page.locator('.site-header--overlay');
@@ -344,8 +347,9 @@ test.describe('home hero', () => {
     await expect(header.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
     const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/['"]/g, '')));
     expect(fonts, 'Bricolage Grotesque (display) and DM Sans (body) loaded').toEqual(expect.arrayContaining(['Bricolage Grotesque', 'DM Sans']));
-    // “Here!” leans by a drawn skew, never a browser's faux italic
-    expect(await page.locator('.hero__cta-label em').evaluate((el) => [getComputedStyle(el).fontStyle, getComputedStyle(el).transform !== 'none'])).toEqual(['normal', true]);
+    // The headline in the site's handwriting, Caveat, at its boldest: "Start Here!" in leaf green on its lime swash
+    expect(await headline.evaluate((el) => [getComputedStyle(el).fontFamily.split(',')[0].replace(/['"]/g, ''), getComputedStyle(el).fontWeight])).toEqual(['Caveat', '700']);
+    expect(await page.locator('.hero-headline__start').evaluate((el) => getComputedStyle(el.parentElement).color)).toBe('rgb(16, 91, 53)');
   });
 
   test('with motion the film fades in over its own first frame, muted and looping, with no controls or play button', async ({ page }) => {
@@ -486,7 +490,7 @@ test.describe('home hero', () => {
     const boxes = (p) =>
       p.evaluate(() =>
         Object.fromEntries(
-          ['.site-header--overlay .brand', '.site-header--overlay .header-cta', '.hero__cta', '.phone-gallery'].map((sel) => {
+          ['.site-header--overlay .brand', '.site-header--overlay .header-cta', '.hero-headline', '.phone-gallery'].map((sel) => {
             const r = document.querySelector(sel).getBoundingClientRect();
             return [sel, [r.x, r.y, r.width, r.height].map((n) => Math.round(n))];
           }),
@@ -502,7 +506,7 @@ test.describe('home hero', () => {
     // One master timeline, acts in the directed order, timed for the screen
     const plan = await page.evaluate(() => {
       const tl = window.__heroEntrance;
-      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero__cta') ? 'cta' : (el.getAttribute('class') || '').split(' ')[0]);
+      const name = (el) => (el.classList.contains('brand') ? 'brand' : el.classList.contains('header-cta') ? 'bookNow' : el.closest('.primary-nav') ? `title:${el.textContent.trim()}` : el.classList.contains('hero-headline') ? 'headline' : (el.getAttribute('class') || '').split(' ')[0]);
       return { duration: tl.duration(), timeScale: tl.timeScale(), landsAt: window.__brandPlane && window.__brandPlane.landsAt, handoverAt: window.__brandPlane && window.__brandPlane.handoverAt, tweens: tl.getChildren(false, true, false).map((t) => ({ at: t.startTime(), duration: t.duration(), targets: t.targets().map(name) })) };
     });
     const startOf = (n) => plan.tweens.find((t) => t.targets.includes(n))?.at;
@@ -518,10 +522,10 @@ test.describe('home hero', () => {
     } else {
       expect(plan.tweens.some((t) => t.targets.some((n) => n.startsWith('title:') || n === 'bookNow')), 'hidden desktop titles and Book Now are left alone on phones').toBe(false);
     }
-    expect(startOf('cta')).toBeCloseTo(2.2, 2);
-    // The call to action is the signature leaf: it unfolds as it rises (a nested timeline), with no sheen any more
-    await expect(page.locator('.hero__cta-sheen')).toHaveCount(0);
-    await expect(page.locator('.hero__cta.leaf-btn .leaf-btn__shape')).toHaveCount(1);
+    // The headline takes the leaf's moment (the owner's choice of 7 Nov 2026): it rises at 2.2 s, its swash draws after
+    expect(startOf('headline')).toBeCloseTo(2.2, 2);
+    expect(startOf('hero-headline__swash')).toBeCloseTo(2.4, 2);
+    await expect(page.locator('.hero__cta, .hero__cta-sheen')).toHaveCount(0);
     // The company statement under the logo (Addendum, 6 Nov 2026): drawn in once the logo entrance is complete, when the
     // aircraft hands the logo back whole, after its touchdown and settle; it is the entrance's last step
     expect(plan.handoverAt).toBeGreaterThan(plan.landsAt);
@@ -537,8 +541,8 @@ test.describe('home hero', () => {
     if (isMobile) expect(seconds).toBeLessThanOrEqual(3.3);
     else expect(seconds).toBeGreaterThan(3.4);
     expect(seconds).toBeLessThanOrEqual(5.9);
-    // Nothing invisible can take focus while its entrance is pending
-    expect(await page.locator('.hero__cta').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
+    // The headline is staged with opacity only: its words stay in the accessibility tree while they wait
+    expect(await page.locator('.hero-headline').evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
     const states = await page.evaluate(() =>
       [...document.querySelectorAll('.hero [data-intro], .site-header--overlay [data-intro]')].map((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility]),
@@ -560,7 +564,8 @@ test.describe('home hero', () => {
     expect(await page.locator('.hero__video').evaluate((v) => v.currentSrc)).toBe('');
     await expect(page.locator('.hero__media')).not.toHaveClass(/\bis-playing\b/);
     await expect(page.locator('.hero h1')).toHaveCount(1);
-    expect(await page.locator('.hero__cta').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none']);
+    expect(await page.locator('.hero-headline').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none']);
+    expect(await page.locator('.hero-headline__swash').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
     // The statement under the logo is simply there: no reveal, no clip
     expect(await page.locator('.site-header .brand-lockup__statement').evaluate((el) => [getComputedStyle(el).opacity, getComputedStyle(el).visibility, getComputedStyle(el).clipPath, getComputedStyle(el).transform])).toEqual(['1', 'visible', 'none', 'none']);
     // No timeline is built under reduced motion (the gallery's lift still works: it simply does not fly)
@@ -572,7 +577,7 @@ test.describe('home hero', () => {
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/);
   });
 
-  test('the hero services (7 Nov 2026): the sentence, its brush and the four services; over the photograph’s faceless left on a desktop, beneath the hero on a phone; part of the entrance, after the call to action', async ({ page, isMobile }) => {
+  test('the hero’s words (7 Nov 2026): the headline, the sentence, its brush and the four services; over the photograph’s faceless left on a desktop, the headline in the hero and the rest beneath it on a phone; part of the entrance', async ({ page, isMobile }) => {
     await page.goto('/?nomotion');
     const block = page.locator('.hero-services');
     await expect(block).toHaveCount(1);
@@ -583,26 +588,32 @@ test.describe('home hero', () => {
     await expect(block.locator('.hero-services__text')).toHaveText(['City, township & cultural experiences', 'Reliable, safe & comfortable travel', 'Wine, wildlife, scenic & outdoor experiences', 'Personalised tours for individuals, families & groups']);
     for (const [i, name] of ['camera', 'van', 'mountain', 'group'].entries()) await expect(block.locator('.hero-services__item').nth(i).locator(`.hero-services__icon svg.icon--${name}`)).toBeVisible();
     await expect(page.getByRole('list', { name: 'What we do' })).toBeVisible();
-    // Nothing in it takes focus, and the hero keeps its one call to action
+    // The headline heads the block: Good Times Start Here!, the owner's choice of 7 Nov 2026
+    await expect(block.locator('.hero-headline')).toHaveText(/^\s*Good Times\s+Start Here!\s*$/);
+    // Nothing in it takes focus, and the hero has no link
     await expect(block.locator('a, button, [tabindex]')).toHaveCount(0);
-    await expect(page.locator('.hero a')).toHaveCount(1);
-    const [hero, b, cta, phone] = [await box(page.locator('.hero')), await box(block), await box(page.locator('.hero__cta')), await box(page.locator('.phone-gallery'))];
+    await expect(page.locator('.hero a')).toHaveCount(0);
+    const [hero, b, headline, phone] = [await box(page.locator('.hero')), await box(block), await box(block.locator('.hero-headline')), await box(page.locator('.phone-gallery'))];
     if (isMobile) {
-      // Beneath the hero, which keeps its one-screen composition
+      // The sentence and the services beneath the hero, which keeps its one-screen composition; the headline in the
+      // hero's foot, where the leaf was, beside the phone
       expect(await block.evaluate((el) => getComputedStyle(el).position)).not.toBe('absolute');
       expect(b.y).toBeGreaterThanOrEqual(hero.bottom - 1);
+      expect(headline.bottom).toBeLessThanOrEqual(hero.bottom);
+      expect(hero.bottom - headline.bottom).toBeLessThan(40);
+      expect(headline.right).toBeLessThan(phone.x);
     } else {
-      // Over the photograph's left, above the call to action and left of the phone, clear of the header
+      // Over the photograph's left, its headline first, left of the phone, clear of the header
       expect(await block.evaluate((el) => getComputedStyle(el).position)).toBe('absolute');
-      expect(b.bottom).toBeLessThan(cta.y);
+      expect(headline.y).toBeLessThan((await box(block.locator('.hero-services__lead'))).y);
       expect(b.right).toBeLessThan(phone.x);
       expect(b.right).toBeLessThan(hero.x + hero.w * 0.4);
-      expect(b.y).toBeGreaterThan((await box(page.locator('.site-header--overlay'))).bottom);
+      expect(Math.min(b.y, headline.y)).toBeGreaterThan((await box(page.locator('.site-header--overlay'))).bottom);
       // Four in a row needs 33rem; at 1440 × 900 the stretch with no face is narrower, so two by two
       const tops = await block.locator('.hero-services__item').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
       expect(new Set(tops).size).toBe(b.w >= 528 ? 1 : 2);
     }
-    // With motion: three steps of the hero's own timeline, after the call to action rises (2.2 s): the sentence (2.65 s),
+    // With motion: steps of the hero's own timeline: the headline (2.2 s) and its swash (2.4 s), the sentence (2.65 s),
     // the brush drawing from the left (3.1 s), the services in turn (3.35 s, 0.12 s apart); then everything settles
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.goto('/');
@@ -610,6 +621,8 @@ test.describe('home hero', () => {
       window.__heroEntrance.getChildren(false, true, false).map((t) => ({ at: Math.round(t.startTime() * 100) / 100, stagger: t.vars.stagger || 0, targets: t.targets().map((el) => (el.getAttribute('class') || '').split(' ')[0]) })),
     );
     const at = (cls) => plan.find((t) => t.targets.includes(cls));
+    expect(at('hero-headline').at).toBeCloseTo(2.2, 2);
+    expect(at('hero-headline__swash').at).toBeCloseTo(2.4, 2);
     expect(at('hero-services__lead').at).toBeCloseTo(2.65, 2);
     expect(at('hero-services__brush').at).toBeCloseTo(3.1, 2);
     expect(at('hero-services__item').at).toBeCloseTo(3.35, 2);
@@ -618,22 +631,16 @@ test.describe('home hero', () => {
     // Staged with opacity only, so the words stay in the accessibility tree while they wait
     expect(await block.locator('.hero-services__lead').evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
     await expect(page.locator('html')).toHaveClass(/\bintro-done\b/, { timeout: 12_000 });
-    for (const el of await block.locator('.hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => [getComputedStyle(n).opacity, getComputedStyle(n).transform])).toEqual(['1', 'none']);
+    for (const el of await block.locator('.hero-headline, .hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => [getComputedStyle(n).opacity, getComputedStyle(n).transform])).toEqual(['1', 'none']);
     expect(await block.locator('.hero-services__brush').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
+    expect(await block.locator('.hero-headline__swash').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
     const round = (r) => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, Math.round(v)]));
     expect(round(await box(block)), 'it settles exactly where the static hero draws it').toEqual(round(b));
     // Reduced motion: all of it at once
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    for (const el of await block.locator('.hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => getComputedStyle(n).opacity)).toBe('1');
+    for (const el of await block.locator('.hero-headline, .hero-services__lead, .hero-services__item').all()) expect(await el.evaluate((n) => getComputedStyle(n).opacity)).toBe('1');
     expect(await block.locator('.hero-services__brush').evaluate((el) => getComputedStyle(el).clipPath)).toBe('none');
-  });
-
-  test('the call to action leads to the tours catalogue', async ({ page }) => {
-    await page.goto('/?nomotion');
-    await page.locator('.hero__cta').click();
-    await expect(page).toHaveURL(/\/tours\/$/);
-    await expect(page.locator('h1')).toHaveText('Tours & Experiences');
   });
 
   test('a plan carried in the URL still reaches the tours page, which shows it and passes it on', async ({ page }) => {
@@ -726,11 +733,13 @@ test.describe('home story: The Cape, A Living Story', () => {
 
   test('tells one story in order below the hero: ten chapters and two interludes, each with its own heading', async ({ page }) => {
     await page.goto('/?nomotion');
-    // The hero is the first thing in <main>; the story is one scoped block beneath it
-    await expect(page.locator('main > :first-child')).toHaveClass(/^hero$/);
+    // The hero is the first thing in <main> (with its words, in .hero-shell, the hero's frame); the story is one scoped
+    // block beneath it
+    await expect(page.locator('main > :first-child')).toHaveClass(/^hero-shell$/);
+    expect(await page.locator('.hero-shell > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero', 'hero-services']);
     // Between them, the sand journey (partials/sand-journey.mjs; test/e2e/motion.spec.mjs)
     // then the credentials strip, where the removed water chapter was
-    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero', 'sand-journey', 'gt-credentials', 'living-cape']);
+    expect(await page.locator('main > *').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(['hero-shell', 'sand-journey', 'gt-credentials', 'living-cape']);
     expect(await page.locator('.living-cape > section').evaluateAll((els) => els.map((el) => el.className.split(' ')[0]))).toEqual(CHAPTERS);
     const heroBottom = await page.locator('.hero').evaluate((el) => el.getBoundingClientRect().bottom + scrollY);
     expect(await page.locator('.living-cape').evaluate((el) => el.getBoundingClientRect().top + scrollY)).toBeGreaterThanOrEqual(heroBottom - 1);

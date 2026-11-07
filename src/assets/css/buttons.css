@@ -16,7 +16,7 @@
    The leaf: a small leaf after the words of the primary, secondary, outline and on-image pills (a CSS mask, so no
    markup carries it), lime on green, green on the pale ones. It turns a little under the pointer and is the only
    thing that moves besides a lift of 2 px. Not on compact controls, nor beside a meaningful icon (a car, a quote).
-   The brand's primary calls to action (Find Your Good Time, Plan My Day and the others in design/button-tokens.md)
+   The brand's primary calls to action (Plan My Day and the others in design/button-tokens.md)
    are the signature leaf below, which reads these tokens too. No control in the family carries an arrow or chevron.
    Contrast (measured): white on --green-primary 5.2:1, on hover 7.0:1, pressed 8.2:1; --green-deep on
    --green-leaf-light 7.0:1; --green-primary on white 5.2:1; --green-deep on white 8.2:1.
@@ -430,7 +430,7 @@
 
 /* ==========================================================================
    The signature leaf (the owner's brief of 6 Nov 2026; design/button-tokens.md)
-   The brand's primary calls to action are leaf-shaped: Find Your Good Time, Plan My Day (the header, the concierge, the
+   The brand's primary calls to action are leaf-shaped: Plan My Day (the header, the concierge, the
    phone menu and bar, the home page's closing seals), Explore the Cape Peninsula Tour and Arrange My Transfer. The leaf is
    an inline SVG (ui.mjs › leafButton) laid behind the words: its body, a short stem, a midrib that is clear near the base
    and the tip and faint under the words, side veins that open on hover, and a leaf-shaped focus ring. The link is the
@@ -652,19 +652,6 @@ a.leaf-btn:active,
 }
 
 /* Where the leaf sits */
-.leaf-btn.hero__cta {
-  overflow: visible;
-  min-height: clamp(54px, 2.2rem + 2vh, 68px);
-  padding: 0.5rem calc(var(--leaf-pad-tip) + 0.2em) 0.5rem calc(var(--leaf-pad-base) + 0.1em);
-  border: 0;
-  border-radius: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.0625rem, 0.82rem + 0.55vw, 1.375rem);
-  font-weight: 800;
-  letter-spacing: -0.012em;
-  text-shadow: 0 1px 1px rgba(3, 40, 16, 0.35);
-  --leaf-shadow: drop-shadow(0 2px 2px rgb(4 30 16 / 0.3)) drop-shadow(0 10px 18px rgb(4 30 16 / 0.32));
-}
 .header-cta.leaf-btn {
   min-height: 48px;
   --leaf-pad-base: 1.45em;
@@ -697,23 +684,4 @@ a.leaf-btn:active,
 .leaf-btn.sand-journey__cta {
   min-height: var(--leaf-h);
 }
-/* The hero's leaf follows the hero's own sizing where the screen is short and wide (the call to action shares a narrow
-   corner) and where the picture is framed under the header (phones, portrait tablets): its words may wrap in two lines */
-@media (min-aspect-ratio: 13/10) and (max-height: 34em) {
-  .leaf-btn.hero__cta {
-    min-height: 44px;
-    font-size: 0.875rem;
-    white-space: normal;
-    text-wrap: balance;
-    --leaf-pad-base: 1.25em;
-    --leaf-pad-tip: 1.6em;
-  }
-}
-@media (max-aspect-ratio: 13/10) {
-  .leaf-btn.hero__cta {
-    min-height: 48px;
-    font-size: clamp(0.9375rem, 0.7rem + 1vw, 1.25rem);
-    white-space: normal;
-    text-wrap: balance;
-  }
-}
+

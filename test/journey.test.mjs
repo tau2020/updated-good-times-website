@@ -79,11 +79,12 @@ test('the leaf in the stylesheet: at least 44 px tall at every size, white words
   assert.match(css('styles.css'), /\.header-cta \{\s*display: none;\s*\}/);
 });
 
-test('the primary calls to action: Find Your Good Time to the tours, Plan My Day in the header, Explore the Cape Peninsula Tour at the end of the footprints', () => {
+test('the primary calls to action: Plan My Day in the header, Explore the Cape Peninsula Tour at the end of the footprints; the hero has its headline, not a leaf', () => {
   const all = leaves(home);
-  const hero = all.find((l) => /hero__cta/.test(l.cls));
-  assert.equal(text(hero.label), 'Find Your Good Time');
-  assert.match(hero.attrs, /href="tours\/"/);
+  // The owner's choice of 7 Nov 2026: the hero's Find Your Good Time leaf gave its place to the headline
+  assert.equal(all.find((l) => /hero__cta/.test(l.cls)), undefined);
+  assert.doesNotMatch(home, /Find Your Good Time/);
+  assert.match(home, /<p class="hero-headline" data-intro>/);
   assert.match(home, /Good Times Start Here/i, 'the slogan stays');
   for (const { path, html } of rendered) {
     const header = leaves(html).find((l) => /header-cta/.test(l.cls));
