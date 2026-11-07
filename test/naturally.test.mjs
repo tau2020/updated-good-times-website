@@ -121,9 +121,10 @@ test('the water chapter is gone: no markup, styles, script, timeline or test hoo
   assert.deepEqual([...story.matchAll(/<span class="lc-mark__num">(\d+)<\/span>/g)].map((m) => m[1]), ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']);
 });
 
-test('credentials: the company’s own statements; the CTGA mark is the association’s own file, shown in production only once verified', () => {
+test('credentials: the company’s own statements; the CTGA mark is the association’s own file, in every build now the membership is confirmed', () => {
   const ctga = site.credentials.ctga;
-  assert.equal(ctga.verified, false, 'not verified until the owner confirms the membership (APPROVAL_REGISTER T1)');
+  assert.equal(ctga.verified, true, 'confirmed by the owner on 7 Nov 2026 (APPROVAL_REGISTER T1)');
+  assert.equal(ctga.confirmed, '2026-11-07');
   const svg = read(`src/${ctga.logo}`);
   assert.match(svg, /<title>Cape Tourist Guides Association logo/);
   assert.doesNotMatch(svg, /<script|href=|<image|foreignObject/i);
@@ -132,16 +133,18 @@ test('credentials: the company’s own statements; the CTGA mark is the associat
     return html.slice(html.indexOf('<section class="gt-credentials"'), html.indexOf('<div class="living-cape"'));
   };
   const preview = strip({ ...site, preview: true, env: 'preview' });
-  assert.match(preview, /Local knowledge\. <em>Professional guiding\.<\/em>/);
-  for (const p of site.credentials.points) assert.match(preview, new RegExp(p.title));
-  assert.match(preview, new RegExp(`<img src="${ctga.logo}" alt="Cape Tourist Guides Association"`));
-  assert.match(preview, /Preview only: shown for review until the CTGA membership is confirmed/);
   const production = strip({ ...site, preview: false, env: 'production' });
-  assert.doesNotMatch(production, /ctga|Tourist Guides|Preview only/i, 'production leaves the unverified mark out');
-  assert.match(production, /Accredited local guides/);
-  const verified = strip({ ...site, preview: false, env: 'production', credentials: { ...site.credentials, ctga: { ...ctga, verified: true } } });
-  assert.match(verified, /Connected to the Cape’s professional guiding community\./);
-  assert.doesNotMatch(verified, /Preview only/);
+  for (const html of [preview, production]) {
+    assert.match(html, /Local knowledge\. <em>Professional guiding\.<\/em>/);
+    for (const p of site.credentials.points) assert.match(html, new RegExp(p.title));
+    assert.match(html, new RegExp(`<img src="${ctga.logo}" alt="Cape Tourist Guides Association"`));
+    assert.match(html, /Connected to the Cape’s professional guiding community\./);
+    assert.doesNotMatch(html, /Preview only|is-pending|gt-credentials__pending/, 'no review note once confirmed');
+  }
+  // Were it ever unconfirmed again: a preview build would show it marked "preview only", production would leave it out
+  const unconfirmed = { ...site.credentials, ctga: { ...ctga, verified: false } };
+  assert.match(strip({ ...site, preview: true, env: 'preview', credentials: unconfirmed }), /Preview only: shown for review until the CTGA membership is confirmed/);
+  assert.doesNotMatch(strip({ ...site, preview: false, env: 'production', credentials: unconfirmed }), /ctga|Tourist Guides|Preview only/i);
   // The association is never called an award, and the rating is not in the strip
   assert.doesNotMatch(preview, /award|winner|certified by/i);
   assert.doesNotMatch(preview, /Tripadvisor/);

@@ -107,7 +107,9 @@ test('booking links stay on the site; only the verified email addresses are publ
   assert.deepEqual(mailto, ['hello@goodtimesincapetown.co.za', 'stuart@goodtimesincapetown.co.za']);
   const tel = [...new Set([...contact.matchAll(/href="tel:([^"]+)"/g)].map((m) => m[1]))];
   assert.deepEqual(tel, ['+27723768432'], 'the published number');
-  assert.doesNotMatch(contact, /wa\.me/, 'no WhatsApp link until Good Times confirms the number takes WhatsApp');
+  // The same number takes WhatsApp (Good Times' confirmation of 7 Nov 2026): one link, to that number, nothing in its URL
+  const wa = [...new Set([...contact.matchAll(/href="(https:\/\/wa\.me\/[^"]*)"/g)].map((m) => m[1]))];
+  assert.deepEqual(wa, ['https://wa.me/27723768432'], 'the confirmed WhatsApp number');
   const pkg = read('packages/garden-route-private-tour/index.html');
   assert.match(pkg, /<form class="enquiry-card" action="\.\.\/\.\.\/enquire\/"/);
   assert.match(read('index.html'), /href="enquire\/\?type=transfer/);

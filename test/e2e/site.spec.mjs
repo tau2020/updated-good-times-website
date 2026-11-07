@@ -1327,11 +1327,11 @@ test.describe('travel concierge', () => {
       await expect(panel.locator('.gt-concierge__thumb img')).toHaveCount(4);
       await expect(panel.locator('.gt-concierge__all')).toHaveText('View All Private Tours');
       await expect(panel.locator('.gt-concierge-panel__cta')).toHaveText('Plan My Day');
-      // The direct line calls or writes, exactly; WhatsApp is not offered until the number is confirmed for it
+      // The direct line messages, calls or writes, exactly: WhatsApp first, since Good Times confirmed it (7 Nov 2026)
       const reach = panel.locator('.gt-concierge-panel__reach a');
-      expect(await reach.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['tel:+27723768432', 'mailto:hello@goodtimesincapetown.co.za']);
-      await expect(reach.locator('.gt-concierge-reach__name')).toHaveText(['Call Us', 'Email Us']);
-      await expect(panel.locator('a[href*="wa.me"]')).toHaveCount(0);
+      expect(await reach.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['https://wa.me/27723768432', 'tel:+27723768432', 'mailto:hello@goodtimesincapetown.co.za']);
+      await expect(reach.locator('.gt-concierge-reach__name')).toHaveText(['WhatsApp (opens in a new tab)', 'Call Us', 'Email Us']);
+      await expect(reach.first()).toHaveAttribute('target', '_blank');
       // Every other link in the sheet answers
       const hrefs = await panel.locator('a[href]:not(.gt-concierge-panel__reach a)').evaluateAll((as) => as.map((a) => a.href));
       expect(hrefs.length).toBe(10);
@@ -1776,7 +1776,7 @@ test.describe('content honesty', () => {
     }
   });
 
-  test('the published contact details are the confirmed ones and every link works: call, email and the office; no WhatsApp until it is confirmed; no pending notes', async ({ page }) => {
+  test('the published contact details are the confirmed ones and every link works: call, WhatsApp (confirmed 7 Nov 2026), email and the office; no pending notes', async ({ page }) => {
     await page.goto('/contact/?nomotion');
     const main = page.locator('main');
     await expect(main.locator('a[href="tel:+27723768432"]')).toHaveCount(1);
@@ -1785,16 +1785,19 @@ test.describe('content honesty', () => {
     expect(await main.locator('a[href^="mailto:"]').evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(['mailto:hello@goodtimesincapetown.co.za', 'mailto:stuart@goodtimesincapetown.co.za']);
     await expect(main.locator('.contact-list__label')).toContainText(['Email us', 'Email Stuart']);
     await expect(page.locator('a[href*="info@"]')).toHaveCount(0);
-    // The number is confirmed for calls only, so nothing offers WhatsApp on it yet
-    await expect(page.locator('a[href*="wa.me"], .brand-mark--whatsapp')).toHaveCount(0);
-    // Call sits under the number in its familiar colour; Tripadvisor is named plainly
+    // The number takes calls and WhatsApp (Good Times' confirmation of 7 Nov 2026): one entry, with both actions
+    await expect(main.locator('.contact-list__label').first()).toHaveText('Phone and WhatsApp');
+    await expect(main.locator('a[href="https://wa.me/27723768432"]')).toHaveCount(1);
+    await expect(page.locator('a[href*="wa.me"]:not([href="https://wa.me/27723768432"])')).toHaveCount(0);
+    // WhatsApp and Call sit under the number in their familiar colours; Tripadvisor is named plainly
+    await expect(main.locator('.contact-action .brand-mark--whatsapp')).toHaveCount(1);
     await expect(main.locator('.contact-action .brand-mark--phone')).toHaveCount(1);
     await expect(main.locator('.contact-links a[href*="tripadvisor"]')).toHaveText(/^\s*Tripadvisor\s*\(opens in a new tab\)\s*$/);
     await expect(main).toContainText('+27 72 376 8432');
     // The office, as published, with a link to the map
     await expect(main).toContainText('277 Main Road, Adelphi Centre');
     await expect(main.locator('a[href^="https://www.google.com/maps"], a[href^="https://maps.google"], a[href*="goo.gl/maps"]')).toHaveCount(1);
-    // The footer: the call link, and the social icons with their names
+    // The footer: the call link, and the social icons with their names, WhatsApp first
     const footer = page.locator('.site-footer');
     await expect(footer.locator('a[href="tel:+27723768432"]')).toHaveCount(1);
     // Each in its network's own colours
@@ -1802,11 +1805,12 @@ test.describe('content honesty', () => {
       as.map((a) => { const m = a.querySelector('.brand-mark'); return [a.getAttribute('aria-label'), m.className.match(/brand-mark--(\w+)/)[1], getComputedStyle(m).backgroundImage !== 'none' ? 'gradient' : getComputedStyle(m).backgroundColor]; }),
     );
     expect(social.map(([, n, bg]) => [n, bg])).toEqual([
+      ['whatsapp', 'rgb(37, 211, 102)'],
       ['instagram', 'gradient'],
       ['facebook', 'rgb(8, 102, 255)'],
       ['tripadvisor', 'rgb(52, 224, 161)'],
     ]);
-    for (const [label] of social) expect(label).toMatch(/^Good Times in Cape Town on .+ \(opens in a new tab\)$/);
+    for (const [label] of social) expect(label).toMatch(/^(Good Times in Cape Town on .+|Message Good Times in Cape Town on WhatsApp) \(opens in a new tab\)$/);
     for (const path of PAGES) {
       await page.goto(`${path}?nomotion`);
       await expect(page.locator('body'), path).not.toContainText(/awaiting (our |owner |Good Times )?confirmation|once Good Times confirms|Every booking request is confirmed by/i);

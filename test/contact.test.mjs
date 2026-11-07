@@ -2,7 +2,7 @@
  * Direct contact as rendered by the layout on every page: nothing appears
  * until a channel is verified in src/data/site.mjs; once it is, the mobile
  * contact bar, the footer, the concierge panel and the enquiry page show it.
- * Good Times publishes one number (for calls; WhatsApp is not yet confirmed);
+ * Good Times publishes one number, for calls and (confirmed on 7 Nov 2026) WhatsApp;
  * its primary address is hello@goodtimesincapetown.co.za, with
  * stuart@goodtimesincapetown.co.za as an additional one on the contact page.
  */
@@ -147,7 +147,7 @@ test('verified: the mobile menu lists each number once, with WhatsApp opening in
   assert.match(drawer, new RegExp(`href="https://wa\\.me/${digits}" rel="noopener" target="_blank"`));
 });
 
-test('only the phone verified (Good Times today): every page gets a Call + Plan My Day bar, tour pages prefilled; the booking page a single Call; no WhatsApp anywhere', () => {
+test('only the phone verified (Good Times until 7 Nov 2026): every page gets a Call + Plan My Day bar, tour pages prefilled; the booking page a single Call; no WhatsApp anywhere', () => {
   const s = variant({ preview: false, contact: set({ phone: { ...c.phone, verified: true } }) });
   for (const p of pages) {
     const html = layout(p, s);
@@ -176,22 +176,24 @@ test('only the phone verified (Good Times today): every page gets a Call + Plan 
   assert.match(footer, new RegExp(`href="tel:\\${c.phone.e164}"`));
 });
 
-test('the contacts: the published number for calls (5 Nov 2026), WhatsApp unconfirmed; hello@ the primary address and stuart@ the additional one (Good Times, 6 Nov 2026)', () => {
+test('the contacts: the published number for calls (5 Nov 2026) and WhatsApp (confirmed 7 Nov 2026); hello@ the primary address and stuart@ the additional one (Good Times, 6 Nov 2026)', () => {
   assert.equal(c.phone.e164, '+27723768432');
   assert.equal(c.phone.display, '+27 72 376 8432');
   assert.equal(c.phone.verified, true);
-  assert.equal(c.whatsapp.e164, c.phone.e164, 'the same number, if it takes WhatsApp');
-  assert.equal(c.whatsapp.verified, false, 'WhatsApp waits for Good Times to confirm it');
+  assert.equal(c.whatsapp.e164, c.phone.e164, 'the same number takes WhatsApp');
+  assert.equal(c.whatsapp.verified, true, 'Good Times confirmed it on 7 Nov 2026');
   assert.equal(c.email.address, 'hello@goodtimesincapetown.co.za');
   assert.equal(c.email.verified, true);
   assert.equal(c.emailGeneral.address, 'stuart@goodtimesincapetown.co.za');
   assert.equal(c.emailGeneral.verified, true);
-  // The site as configured, in production: the call and the primary address, and nothing unconfirmed.
+  // The site as configured, in production: the number once, as "Phone and WhatsApp", with its two actions, and the
+  // primary address
   const live = variant({ preview: false, contact: c });
   const footer = section(render('index.html', live), '<footer', '</footer>');
   assert.match(footer, /<span class="contact-list__label">Email<\/span>\s*<a class="contact-list__value" href="mailto:hello@goodtimesincapetown\.co\.za">/);
   assert.match(footer, new RegExp(`href="tel:\\${c.phone.e164}"`));
-  assert.doesNotMatch(footer, /wa\.me/);
+  assert.match(footer, /<span class="contact-list__label">Phone and WhatsApp<\/span>/);
+  assert.match(footer, new RegExp(`<a class="contact-action" href="https://wa\\.me/${digits}"`));
   // The former address is gone everywhere; the additional one is on the contact page only.
   for (const p of pages) {
     const html = layout(p, live);

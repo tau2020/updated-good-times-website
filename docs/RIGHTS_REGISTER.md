@@ -205,7 +205,7 @@ The rights log also excludes the Langa files with identifiable children (GT-A-03
 
 | Item | Source | Status |
 |---|---|---|
-| Cape Tourist Guides Association logo (`src/assets/img/credentials/ctga-logo.svg`) | The association's own vector logo, `tourguides.capetown/images/logo.svg`, read 6 Nov 2026, unaltered (SHA-256 `632f01f5a9558301b7339981df1f94b61f4e3ad2044c6e82c1be6a7ebe11d705`). CTGA offers its logo to associate members "to place on your website advertising that you only employ/promote legal/registered guides" | Shown in preview builds only, marked "Preview only", until the membership is confirmed (T1 in `docs/APPROVAL_REGISTER.md`). The owner's screenshot of the logo was not used (not attached to the brief, and a screenshot is not a brand file) |
+| Cape Tourist Guides Association logo (`src/assets/img/credentials/ctga-logo.svg`) | The association's own vector logo, `tourguides.capetown/images/logo.svg`, read 6 Nov 2026, unaltered (SHA-256 `632f01f5a9558301b7339981df1f94b61f4e3ad2044c6e82c1be6a7ebe11d705`). CTGA offers its logo to associate members "to place on your website advertising that you only employ/promote legal/registered guides" | Shown in every build since the owner confirmed the membership on 7 Nov 2026 (T1 in `docs/APPROVAL_REGISTER.md`); until then in preview builds only, marked "Preview only". The owner's screenshot of the logo was not used (not attached to the brief, and a screenshot is not a brand file) |
 
 ## Reviews and ratings
 

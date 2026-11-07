@@ -59,12 +59,13 @@ export const site = {
       source: `${OFFICIAL}: header, contact page and footer (tel:+27723768432); also the business's own flyer on Tripadvisor`,
       verified: true,
     },
-    // The official site publishes no WhatsApp link. Set verified: true once Good Times confirms the number takes WhatsApp.
+    // The same number takes WhatsApp: Good Times confirmed it on 7 Nov 2026 with a screenshot of the number's WhatsApp
+    // profile ("Stuart Tour Guide C…", +27 72 376 8432), asking for it in the contacts (docs/APPROVAL_REGISTER.md › C1).
     whatsapp: {
       e164: '+27723768432',
       display: '+27 72 376 8432',
-      source: 'Not yet confirmed: the official site lists this number for calls only',
-      verified: false,
+      source: 'Good Times’ confirmation of 7 Nov 2026: the number’s WhatsApp profile, shown by the owner',
+      verified: true,
     },
     // The primary address. hello@ replaces info@ (published on the official site on 5 Nov 2026) wherever the site
     // names an address: Good Times' instruction of 6 Nov 2026 (Addendum, docs/APPROVAL_REGISTER.md › C3).
@@ -139,11 +140,10 @@ export const site = {
      * association's own vector file, unaltered (tourguides.capetown/images/logo.svg, read 6 Nov 2026, SHA-256
      * 632f01f5…d705; assets/img/credentials/ctga-logo.svg). CTGA lets its associate members place the logo on their
      * websites "advertising that you only employ/promote legal/registered guides" (Becoming an Associate Member,
-     * read 6 Nov 2026). Good Times states it is "a registered associate" (above), but CTGA's own list of current
-     * associate members (tourguides.capetown/our-associates.html, read 6 Nov 2026) does not name it, so the
-     * membership is not independently verified: the logo and its line show only in preview builds, marked "preview
-     * only", until the owner confirms it (a current certificate or the listing) and `verified` is set:
-     * docs/APPROVAL_REGISTER.md › T1.
+     * read 6 Nov 2026). Good Times states it is "a registered associate" (above). CTGA's own list of current associate
+     * members (tourguides.capetown/our-associates.html, read 6 Nov 2026) did not name it, so the logo and its line
+     * first showed in preview builds only, marked "preview only"; the owner confirmed the membership on 7 Nov 2026, so
+     * they now show in every build, without the note: docs/APPROVAL_REGISTER.md › T1.
      */
     ctga: {
       name: 'Cape Tourist Guides Association',
@@ -151,9 +151,10 @@ export const site = {
       url: 'https://tourguides.capetown/',
       logo: 'assets/img/credentials/ctga-logo.svg',
       line: 'Connected to the Cape’s professional guiding community.',
-      source: 'tourguides.capetown: logo, Our Associates and Becoming an Associate Member, read 6 Nov 2026',
+      source: 'tourguides.capetown: logo, Our Associates and Becoming an Associate Member, read 6 Nov 2026; the membership confirmed by the owner on 7 Nov 2026',
       checked: '2026-11-06',
-      verified: false,
+      confirmed: '2026-11-07',
+      verified: true,
     },
   },
 
