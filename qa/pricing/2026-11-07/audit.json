@@ -1,0 +1,2904 @@
+{
+  "base": "https://2ae718d8.good-times-in-cape-town.pages.dev",
+  "before": "https://1ee29be7.good-times-in-cape-town.pages.dev",
+  "inventory": {
+    "desktop": {
+      "/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [
+          {
+            "amount": "R850",
+            "line": "From R850 per trip for 1–4 guests"
+          }
+        ],
+        "meta": [
+          "Private, guide-led tours of Cape Town since 2014: the Cape Peninsula and Cape Point, the city and Langa, the Winelands, whale watching, adventures, the Garden Route and airport transfers. Send a booking request for a quote.",
+          "Private, guide-led tours of Cape Town since 2014: the Cape Peninsula and Cape Point, the city and Langa, the Winelands, whale watching, adventures, the Garden Route and airport transfers. Send a booking request for a quote."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/about/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides.",
+          "Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/contact/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Contact Good Times in Cape Town by phone or email, visit our office in Sea Point, or send a booking request for a private tour or airport transfer.",
+          "Contact Good Times in Cape Town by phone or email, visit our office in Sea Point, or send a booking request for a private tour or airport transfer."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/design-system/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "The Living Cape design system for Good Times in Cape Town: engraved travel symbols, the button system in every state, and the scoped colour tokens.",
+          "The Living Cape design system for Good Times in Cape Town: engraved travel symbols, the button system in every state, and the scoped colour tokens."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/destinations/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Where Good Times’ private tours go: the Cape Peninsula, Cape Town and Langa, the Cape Winelands, the Overberg coast from Hermanus to Cape Agulhas, and the Garden Route.",
+          "Where Good Times’ private tours go: the Cape Peninsula, Cape Town and Langa, the Cape Winelands, the Overberg coast from Hermanus to Cape Agulhas, and the Garden Route."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/enquire/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Send Good Times in Cape Town a booking request for a private tour, an activity or an airport transfer. We reply to confirm availability and a quote; a request is not a confirmed booking.",
+          "Send Good Times in Cape Town a booking request for a private tour, an activity or an airport transfer. We reply to confirm availability and a quote; a request is not a confirmed booking."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/faq/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "How to book a Good Times private tour or transfer, group prices, payment, cancellations, where tours start, what to bring, the weather and accredited guides.",
+          "How to book a Good Times private tour or transfer, group prices, payment, cancellations, where tours start, what to bring, the weather and accredited guides."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/packages/": {
+        "pageSlug": null,
+        "money": [
+          {
+            "where": "card",
+            "slug": "garden-route-private-tour",
+            "amount": 8500,
+            "text": "R8,500",
+            "caption": "per day",
+            "line": "From R8,500per day"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "Private multi-day tours from Cape Town with Good Times: the Garden Route over three days or more, planned with you, with the route and price confirmed in your quote.",
+          "Private multi-day tours from Cape Town with Good Times: the Garden Route over three days or more, planned with you, with the route and price confirmed in your quote."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/packages/garden-route-private-tour/": {
+        "pageSlug": "garden-route-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "garden-route-private-tour",
+            "amount": 8500,
+            "text": "R8,500",
+            "caption": "Per day, for 1–4 guests. Groups of 5–8: please enquire.",
+            "line": "From R8,500"
+          },
+          {
+            "where": "card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A flexible private Garden Route tour from Cape Town over three days or more: Knysna, Wilderness, Oudtshoorn and the Tsitsikamma National Park, with your own guide and vehicle.",
+          "A flexible private Garden Route tour from Cape Town over three days or more: Knysna, Wilderness, Oudtshoorn and the Tsitsikamma National Park, with your own guide and vehicle."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Garden Route Private Tour",
+            "@type": "Offer",
+            "price": "8500",
+            "priceCurrency": "ZAR",
+            "description": "per day, 1–4 guests",
+            "url": "https://staging.good-times-in-cape-town.pages.dev/packages/garden-route-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/privacy/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "How Good Times in Cape Town handles the details you send through this website, in line with POPIA: what we collect, who helps us, your rights, and credits for the photography.",
+          "How Good Times in Cape Town handles the details you send through this website, in line with POPIA: what we collect, who helps us, your rights, and credits for the photography."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/reviews/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Good Times in Cape Town is rated 5.0 on Tripadvisor. Read short summaries of guests’ reviews, each linking to the full review.",
+          "Good Times in Cape Town is rated 5.0 on Tripadvisor. Read short summaries of guests’ reviews, each linking to the full review."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/terms/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "The Terms & Conditions for bookings with Good Times in Cape Town: bookings, pricing and payment in rand, cancellations and changes, conduct on tour, photography, liability and governing law.",
+          "The Terms & Conditions for bookings with Good Times in Cape Town: bookings, pricing and payment in rand, cancellations and changes, conduct on tour, photography, liability and governing law."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/": {
+        "pageSlug": null,
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "garden-route-private-tour",
+            "amount": 8500,
+            "text": "R8,500",
+            "caption": "per day",
+            "line": "From R8,500per day"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "10 private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving.",
+          "10 private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-agulhas-private-tour/": {
+        "pageSlug": "cape-agulhas-private-tour",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private day trip from Cape Town to Cape Agulhas, the southernmost tip of Africa: the lighthouse, the official southernmost point and a scenic drive.",
+          "A private day trip from Cape Town to Cape Agulhas, the southernmost tip of Africa: the lighthouse, the official southernmost point and a scenic drive."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-peninsula-private-tour/": {
+        "pageSlug": "cape-peninsula-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group of 1–4 guests. Excludes the Cape of Good Hope and Boulders Beach entrance fees, and lunch.",
+            "line": "From R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 12000,
+            "text": "R12,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R12,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A full-day private Cape Peninsula tour from Cape Town: Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the Boulders Beach penguins, with pickup from your accommodation.",
+          "A full-day private Cape Peninsula tour from Cape Town: Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the Boulders Beach penguins, with pickup from your accommodation."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Cape Peninsula Private Tour: Chapman’s Peak, Cape Point & the Penguins",
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-peninsula-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Cape Peninsula Private Tour: Chapman’s Peak, Cape Point & the Penguins",
+            "@type": "Offer",
+            "price": "12000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-peninsula-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-town-city-private-tour/": {
+        "pageSlug": "cape-town-city-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group of 1–4 guests. Excludes museum entrance fees.",
+            "line": "From R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-town-city-private-tour",
+            "amount": 9000,
+            "text": "R9,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R9,000"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private guided Cape Town city tour: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup.",
+          "A private guided Cape Town city tour: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Cape Town City Private Tour: History, Heritage & the Bo-Kaap",
+            "@type": "Offer",
+            "price": "4500",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-town-city-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Cape Town City Private Tour: History, Heritage & the Bo-Kaap",
+            "@type": "Offer",
+            "price": "9000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-town-city-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-winelands-private-tour/": {
+        "pageSlug": "cape-winelands-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group of 1–4 guests. Excludes tasting fees and lunch.",
+            "line": "From R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-winelands-private-tour",
+            "amount": 12000,
+            "text": "R12,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R12,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private Cape Winelands day from Cape Town: Fairview Wine & Cheese, La Motte, Franschhoek village and Lanzerac, with pickup from your accommodation.",
+          "A private Cape Winelands day from Cape Town: Fairview Wine & Cheese, La Motte, Franschhoek village and Lanzerac, with pickup from your accommodation."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl",
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-winelands-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl",
+            "@type": "Offer",
+            "price": "12000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-winelands-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/private-cape-town-experience/": {
+        "pageSlug": "private-cape-town-experience",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group of 1–20 guests",
+            "line": "From R6,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to 20.",
+          "A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to 20."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Private Cape Town Experience",
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "ZAR",
+            "description": "From R6,000 per group of 1–20 guests",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 6000,
+              "priceCurrency": "ZAR"
+            },
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 20,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/private-cape-town-experience/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 2
+      },
+      "/tours/quad-biking/": {
+        "pageSlug": "quad-biking",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A guided quad biking adventure on dunes or off-road trails near Cape Town, with a safety briefing, safety gear and bike rental included.",
+          "A guided quad biking adventure on dunes or off-road trails near Cape Town, with a safety briefing, safety gear and bike rental included."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/shark-cage-diving/": {
+        "pageSlug": "shark-cage-diving",
+        "money": [],
+        "written": [],
+        "meta": [
+          "Shark cage diving with great white sharks off Gansbaai: a boat trip, a safety briefing, full gear and a dive in a secure cage. Seasonal rates; transport from Cape Town as an add-on.",
+          "Shark cage diving with great white sharks off Gansbaai: a boat trip, a safety briefing, full gear and a dive in a secure cage. Seasonal rates; transport from Cape Town as an add-on."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/sky-diving/": {
+        "pageSlug": "sky-diving",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A tandem skydive near Cape Town with a qualified instructor, safety training and parachute gear included, and aerial views of the Cape on the way down.",
+          "A tandem skydive near Cape Town with a qualified instructor, safety training and parachute gear included, and aerial views of the Cape on the way down."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/township-private-tour/": {
+        "pageSlug": "township-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group of 1–4 guests",
+            "line": "From R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "township-private-tour",
+            "amount": 9000,
+            "text": "R9,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R9,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private half-day tour of Langa in Cape Town: the Guga S’Thebe Arts & Culture Centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting.",
+          "A private half-day tour of Langa in Cape Town: the Guga S’Thebe Arts & Culture Centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Township Private Tour: Langa, Its People and Its History",
+            "@type": "Offer",
+            "price": "4500",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/township-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Township Private Tour: Langa, Its People and Its History",
+            "@type": "Offer",
+            "price": "9000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/township-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/whale-watching-private-tour/": {
+        "pageSlug": "whale-watching-private-tour",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A seasonal private whale watching day from Cape Town to Hermanus or along the Cape coast, from land or by boat. Best from June to November.",
+          "A seasonal private whale watching day from Cape Town to Hermanus or along the Cape coast, from land or by boat. Best from June to November."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/transfers/": {
+        "pageSlug": "airport-private-transfer",
+        "money": [
+          {
+            "where": "transfer",
+            "slug": "airport-private-transfer",
+            "amount": 850,
+            "text": "R850",
+            "caption": "per trip, 1–4 guests",
+            "line": "From R850per trip, 1–4 guests"
+          },
+          {
+            "where": "transfer",
+            "slug": "airport-private-transfer",
+            "amount": 850,
+            "text": "R850",
+            "caption": "1–4 guests",
+            "line": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person."
+          },
+          {
+            "where": "transfer",
+            "slug": "airport-private-transfer",
+            "amount": 1700,
+            "text": "R1,700",
+            "caption": "5–8 guests",
+            "line": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person."
+          }
+        ],
+        "written": [],
+        "meta": [
+          "Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R850 per trip for 1–4 guests.",
+          "Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R850 per trip for 1–4 guests."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      }
+    },
+    "phone": {
+      "/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [
+          {
+            "amount": "R850",
+            "line": "From R850 per trip for 1–4 guests"
+          }
+        ],
+        "meta": [
+          "Private, guide-led tours of Cape Town since 2014: the Cape Peninsula and Cape Point, the city and Langa, the Winelands, whale watching, adventures, the Garden Route and airport transfers. Send a booking request for a quote.",
+          "Private, guide-led tours of Cape Town since 2014: the Cape Peninsula and Cape Point, the city and Langa, the Winelands, whale watching, adventures, the Garden Route and airport transfers. Send a booking request for a quote."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/about/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides.",
+          "Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/contact/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Contact Good Times in Cape Town by phone or email, visit our office in Sea Point, or send a booking request for a private tour or airport transfer.",
+          "Contact Good Times in Cape Town by phone or email, visit our office in Sea Point, or send a booking request for a private tour or airport transfer."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/design-system/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "The Living Cape design system for Good Times in Cape Town: engraved travel symbols, the button system in every state, and the scoped colour tokens.",
+          "The Living Cape design system for Good Times in Cape Town: engraved travel symbols, the button system in every state, and the scoped colour tokens."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/destinations/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Where Good Times’ private tours go: the Cape Peninsula, Cape Town and Langa, the Cape Winelands, the Overberg coast from Hermanus to Cape Agulhas, and the Garden Route.",
+          "Where Good Times’ private tours go: the Cape Peninsula, Cape Town and Langa, the Cape Winelands, the Overberg coast from Hermanus to Cape Agulhas, and the Garden Route."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/enquire/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Send Good Times in Cape Town a booking request for a private tour, an activity or an airport transfer. We reply to confirm availability and a quote; a request is not a confirmed booking.",
+          "Send Good Times in Cape Town a booking request for a private tour, an activity or an airport transfer. We reply to confirm availability and a quote; a request is not a confirmed booking."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/faq/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "How to book a Good Times private tour or transfer, group prices, payment, cancellations, where tours start, what to bring, the weather and accredited guides.",
+          "How to book a Good Times private tour or transfer, group prices, payment, cancellations, where tours start, what to bring, the weather and accredited guides."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/packages/": {
+        "pageSlug": null,
+        "money": [
+          {
+            "where": "card",
+            "slug": "garden-route-private-tour",
+            "amount": 8500,
+            "text": "R8,500",
+            "caption": "per day",
+            "line": "From R8,500per day"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "Private multi-day tours from Cape Town with Good Times: the Garden Route over three days or more, planned with you, with the route and price confirmed in your quote.",
+          "Private multi-day tours from Cape Town with Good Times: the Garden Route over three days or more, planned with you, with the route and price confirmed in your quote."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/packages/garden-route-private-tour/": {
+        "pageSlug": "garden-route-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "garden-route-private-tour",
+            "amount": 8500,
+            "text": "R8,500",
+            "caption": "Per day, for 1–4 guests. Groups of 5–8: please enquire.",
+            "line": "From R8,500"
+          },
+          {
+            "where": "card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A flexible private Garden Route tour from Cape Town over three days or more: Knysna, Wilderness, Oudtshoorn and the Tsitsikamma National Park, with your own guide and vehicle.",
+          "A flexible private Garden Route tour from Cape Town over three days or more: Knysna, Wilderness, Oudtshoorn and the Tsitsikamma National Park, with your own guide and vehicle."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Garden Route Private Tour",
+            "@type": "Offer",
+            "price": "8500",
+            "priceCurrency": "ZAR",
+            "description": "per day, 1–4 guests",
+            "url": "https://staging.good-times-in-cape-town.pages.dev/packages/garden-route-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/privacy/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "How Good Times in Cape Town handles the details you send through this website, in line with POPIA: what we collect, who helps us, your rights, and credits for the photography.",
+          "How Good Times in Cape Town handles the details you send through this website, in line with POPIA: what we collect, who helps us, your rights, and credits for the photography."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/reviews/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "Good Times in Cape Town is rated 5.0 on Tripadvisor. Read short summaries of guests’ reviews, each linking to the full review.",
+          "Good Times in Cape Town is rated 5.0 on Tripadvisor. Read short summaries of guests’ reviews, each linking to the full review."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/terms/": {
+        "pageSlug": null,
+        "money": [],
+        "written": [],
+        "meta": [
+          "The Terms & Conditions for bookings with Good Times in Cape Town: bookings, pricing and payment in rand, cancellations and changes, conduct on tour, photography, liability and governing law.",
+          "The Terms & Conditions for bookings with Good Times in Cape Town: bookings, pricing and payment in rand, cancellations and changes, conduct on tour, photography, liability and governing law."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/": {
+        "pageSlug": null,
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "garden-route-private-tour",
+            "amount": 8500,
+            "text": "R8,500",
+            "caption": "per day",
+            "line": "From R8,500per day"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "10 private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving.",
+          "10 private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-agulhas-private-tour/": {
+        "pageSlug": "cape-agulhas-private-tour",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private day trip from Cape Town to Cape Agulhas, the southernmost tip of Africa: the lighthouse, the official southernmost point and a scenic drive.",
+          "A private day trip from Cape Town to Cape Agulhas, the southernmost tip of Africa: the lighthouse, the official southernmost point and a scenic drive."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-peninsula-private-tour/": {
+        "pageSlug": "cape-peninsula-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group of 1–4 guests. Excludes the Cape of Good Hope and Boulders Beach entrance fees, and lunch.",
+            "line": "From R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 12000,
+            "text": "R12,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R12,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A full-day private Cape Peninsula tour from Cape Town: Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the Boulders Beach penguins, with pickup from your accommodation.",
+          "A full-day private Cape Peninsula tour from Cape Town: Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the Boulders Beach penguins, with pickup from your accommodation."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Cape Peninsula Private Tour: Chapman’s Peak, Cape Point & the Penguins",
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-peninsula-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Cape Peninsula Private Tour: Chapman’s Peak, Cape Point & the Penguins",
+            "@type": "Offer",
+            "price": "12000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-peninsula-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-town-city-private-tour/": {
+        "pageSlug": "cape-town-city-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group of 1–4 guests. Excludes museum entrance fees.",
+            "line": "From R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-town-city-private-tour",
+            "amount": 9000,
+            "text": "R9,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R9,000"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private guided Cape Town city tour: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup.",
+          "A private guided Cape Town city tour: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Cape Town City Private Tour: History, Heritage & the Bo-Kaap",
+            "@type": "Offer",
+            "price": "4500",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-town-city-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Cape Town City Private Tour: History, Heritage & the Bo-Kaap",
+            "@type": "Offer",
+            "price": "9000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-town-city-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/cape-winelands-private-tour/": {
+        "pageSlug": "cape-winelands-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group of 1–4 guests. Excludes tasting fees and lunch.",
+            "line": "From R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-winelands-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R6,000"
+          },
+          {
+            "where": "tier",
+            "slug": "cape-winelands-private-tour",
+            "amount": 12000,
+            "text": "R12,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R12,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private Cape Winelands day from Cape Town: Fairview Wine & Cheese, La Motte, Franschhoek village and Lanzerac, with pickup from your accommodation.",
+          "A private Cape Winelands day from Cape Town: Fairview Wine & Cheese, La Motte, Franschhoek village and Lanzerac, with pickup from your accommodation."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl",
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-winelands-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl",
+            "@type": "Offer",
+            "price": "12000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/cape-winelands-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/private-cape-town-experience/": {
+        "pageSlug": "private-cape-town-experience",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group of 1–20 guests",
+            "line": "From R6,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to 20.",
+          "A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to 20."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Private Cape Town Experience",
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "ZAR",
+            "description": "From R6,000 per group of 1–20 guests",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 6000,
+              "priceCurrency": "ZAR"
+            },
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 20,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/private-cape-town-experience/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 2
+      },
+      "/tours/quad-biking/": {
+        "pageSlug": "quad-biking",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A guided quad biking adventure on dunes or off-road trails near Cape Town, with a safety briefing, safety gear and bike rental included.",
+          "A guided quad biking adventure on dunes or off-road trails near Cape Town, with a safety briefing, safety gear and bike rental included."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/shark-cage-diving/": {
+        "pageSlug": "shark-cage-diving",
+        "money": [],
+        "written": [],
+        "meta": [
+          "Shark cage diving with great white sharks off Gansbaai: a boat trip, a safety briefing, full gear and a dive in a secure cage. Seasonal rates; transport from Cape Town as an add-on.",
+          "Shark cage diving with great white sharks off Gansbaai: a boat trip, a safety briefing, full gear and a dive in a secure cage. Seasonal rates; transport from Cape Town as an add-on."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/sky-diving/": {
+        "pageSlug": "sky-diving",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A tandem skydive near Cape Town with a qualified instructor, safety training and parachute gear included, and aerial views of the Cape on the way down.",
+          "A tandem skydive near Cape Town with a qualified instructor, safety training and parachute gear included, and aerial views of the Cape on the way down."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/township-private-tour/": {
+        "pageSlug": "township-private-tour",
+        "money": [
+          {
+            "where": "booking card",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group of 1–4 guests",
+            "line": "From R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "township-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "1–4 guests",
+            "line": "1–4 guests R4,500"
+          },
+          {
+            "where": "tier",
+            "slug": "township-private-tour",
+            "amount": 9000,
+            "text": "R9,000",
+            "caption": "5–8 guests",
+            "line": "5–8 guests R9,000"
+          },
+          {
+            "where": "card",
+            "slug": "cape-town-city-private-tour",
+            "amount": 4500,
+            "text": "R4,500",
+            "caption": "per group",
+            "line": "From R4,500per group"
+          },
+          {
+            "where": "card",
+            "slug": "private-cape-town-experience",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          },
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A private half-day tour of Langa in Cape Town: the Guga S’Thebe Arts & Culture Centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting.",
+          "A private half-day tour of Langa in Cape Town: the Guga S’Thebe Arts & Culture Centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting."
+        ],
+        "offers": [
+          {
+            "type": "TouristTrip",
+            "name": "Township Private Tour: Langa, Its People and Its History",
+            "@type": "Offer",
+            "price": "4500",
+            "priceCurrency": "ZAR",
+            "description": "per group of 1–4 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/township-private-tour/"
+          },
+          {
+            "type": "TouristTrip",
+            "name": "Township Private Tour: Langa, Its People and Its History",
+            "@type": "Offer",
+            "price": "9000",
+            "priceCurrency": "ZAR",
+            "description": "per group of 5–8 guests",
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 8,
+              "unitText": "guests"
+            },
+            "url": "https://staging.good-times-in-cape-town.pages.dev/tours/township-private-tour/"
+          }
+        ],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/tours/whale-watching-private-tour/": {
+        "pageSlug": "whale-watching-private-tour",
+        "money": [
+          {
+            "where": "card",
+            "slug": "cape-peninsula-private-tour",
+            "amount": 6000,
+            "text": "R6,000",
+            "caption": "per group",
+            "line": "From R6,000per group"
+          }
+        ],
+        "written": [],
+        "meta": [
+          "A seasonal private whale watching day from Cape Town to Hermanus or along the Cape coast, from land or by boat. Best from June to November.",
+          "A seasonal private whale watching day from Cape Town to Hermanus or along the Cape coast, from land or by boat. Best from June to November."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      },
+      "/transfers/": {
+        "pageSlug": "airport-private-transfer",
+        "money": [
+          {
+            "where": "transfer",
+            "slug": "airport-private-transfer",
+            "amount": 850,
+            "text": "R850",
+            "caption": "per trip, 1–4 guests",
+            "line": "From R850per trip, 1–4 guests"
+          },
+          {
+            "where": "transfer",
+            "slug": "airport-private-transfer",
+            "amount": 850,
+            "text": "R850",
+            "caption": "1–4 guests",
+            "line": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person."
+          },
+          {
+            "where": "transfer",
+            "slug": "airport-private-transfer",
+            "amount": 1700,
+            "text": "R1,700",
+            "caption": "5–8 guests",
+            "line": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person."
+          }
+        ],
+        "written": [],
+        "meta": [
+          "Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R850 per trip for 1–4 guests.",
+          "Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. From R850 per trip for 1–4 guests."
+        ],
+        "offers": [],
+        "perPerson": false,
+        "upToTen": false,
+        "upTo20": 0
+      }
+    }
+  },
+  "estimate": [
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 1,
+      "adults": 1,
+      "children": 0,
+      "shown": "R4,500 for your private group of 1 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 2,
+      "adults": 2,
+      "children": 0,
+      "shown": "R4,500 for your private group of 2 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 3,
+      "adults": 3,
+      "children": 0,
+      "shown": "R4,500 for your private group of 3 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 4,
+      "adults": 4,
+      "children": 0,
+      "shown": "R4,500 for your private group of 4 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 5,
+      "adults": 3,
+      "children": 2,
+      "shown": "R9,000 for your private group of 5 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 6,
+      "adults": 4,
+      "children": 2,
+      "shown": "R9,000 for your private group of 6 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 7,
+      "adults": 5,
+      "children": 2,
+      "shown": "R9,000 for your private group of 7 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 8,
+      "adults": 6,
+      "children": 2,
+      "shown": "R9,000 for your private group of 8 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "cape-town-city-private-tour",
+      "guests": 9,
+      "adults": 7,
+      "children": 2,
+      "shown": "Groups of more than 8: we’ll confirm your quote",
+      "ok": true,
+      "requestContinues": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 1,
+      "adults": 1,
+      "children": 0,
+      "shown": "R4,500 for your private group of 1 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 2,
+      "adults": 2,
+      "children": 0,
+      "shown": "R4,500 for your private group of 2 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 3,
+      "adults": 3,
+      "children": 0,
+      "shown": "R4,500 for your private group of 3 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 4,
+      "adults": 4,
+      "children": 0,
+      "shown": "R4,500 for your private group of 4 · the rate for 1–4 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 5,
+      "adults": 3,
+      "children": 2,
+      "shown": "R9,000 for your private group of 5 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 6,
+      "adults": 4,
+      "children": 2,
+      "shown": "R9,000 for your private group of 6 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 7,
+      "adults": 5,
+      "children": 2,
+      "shown": "R9,000 for your private group of 7 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 8,
+      "adults": 6,
+      "children": 2,
+      "shown": "R9,000 for your private group of 8 · the rate for 5–8 guests",
+      "ok": true
+    },
+    {
+      "slug": "township-private-tour",
+      "guests": 9,
+      "adults": 7,
+      "children": 2,
+      "shown": "Groups of more than 8: we’ll confirm your quote",
+      "ok": true,
+      "requestContinues": true
+    },
+    {
+      "slug": "private-cape-town-experience",
+      "guests": 1,
+      "adults": 1,
+      "children": 0,
+      "shown": "From R6,000 for your private group of 1 · the rate for 1–20 guests",
+      "ok": true
+    },
+    {
+      "slug": "private-cape-town-experience",
+      "guests": 2,
+      "adults": 2,
+      "children": 0,
+      "shown": "From R6,000 for your private group of 2 · the rate for 1–20 guests",
+      "ok": true
+    },
+    {
+      "slug": "private-cape-town-experience",
+      "guests": 10,
+      "adults": 8,
+      "children": 2,
+      "shown": "From R6,000 for your private group of 10 · the rate for 1–20 guests",
+      "ok": true
+    },
+    {
+      "slug": "private-cape-town-experience",
+      "guests": 19,
+      "adults": 17,
+      "children": 2,
+      "shown": "From R6,000 for your private group of 19 · the rate for 1–20 guests",
+      "ok": true
+    },
+    {
+      "slug": "private-cape-town-experience",
+      "guests": 20,
+      "adults": 18,
+      "children": 2,
+      "shown": "From R6,000 for your private group of 20 · the rate for 1–20 guests",
+      "ok": true
+    },
+    {
+      "slug": "private-cape-town-experience",
+      "guests": 21,
+      "adults": 19,
+      "children": 2,
+      "shown": "Groups of more than 20: we’ll confirm your quote",
+      "ok": true,
+      "requestContinues": true
+    }
+  ],
+  "phones": {
+    "320": {
+      "/tours/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R8,500per day",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/cape-town-city-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests. Excludes museum entrance fees.",
+            "cls": "price__note",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/township-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/private-cape-town-experience/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–20 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/transfers/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "Not included: flights, tips, extra stops not arranged in advance. Free cancellation up to ",
+            "cls": "small muted",
+            "lines": 4,
+            "issues": []
+          },
+          {
+            "text": "From R850per trip, 1–4 guests",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person.",
+            "cls": "small muted",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=cape-town-city-private-tour&adults=6": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "R9,000 for your private group of 6 · the rate for 5–8 guests",
+            "cls": "booking-total__text",
+            "lines": 3,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=private-cape-town-experience&adults=12": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000 for your private group of 12 · the rate for 1–20 guests",
+            "cls": "booking-total__text",
+            "lines": 3,
+            "issues": []
+          }
+        ],
+        "bar": null
+      }
+    },
+    "360": {
+      "/tours/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R8,500per day",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/cape-town-city-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests. Excludes museum entrance fees.",
+            "cls": "price__note",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/township-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/private-cape-town-experience/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–20 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/transfers/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "Not included: flights, tips, extra stops not arranged in advance. Free cancellation up to ",
+            "cls": "small muted",
+            "lines": 3,
+            "issues": []
+          },
+          {
+            "text": "From R850per trip, 1–4 guests",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person.",
+            "cls": "small muted",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=cape-town-city-private-tour&adults=6": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "R9,000 for your private group of 6 · the rate for 5–8 guests",
+            "cls": "booking-total__text",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=private-cape-town-experience&adults=12": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000 for your private group of 12 · the rate for 1–20 guests",
+            "cls": "booking-total__text",
+            "lines": 3,
+            "issues": []
+          }
+        ],
+        "bar": null
+      }
+    },
+    "390": {
+      "/tours/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R8,500per day",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/cape-town-city-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests. Excludes museum entrance fees.",
+            "cls": "price__note",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/township-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/private-cape-town-experience/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–20 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/transfers/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "Not included: flights, tips, extra stops not arranged in advance. Free cancellation up to ",
+            "cls": "small muted",
+            "lines": 3,
+            "issues": []
+          },
+          {
+            "text": "From R850per trip, 1–4 guests",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person.",
+            "cls": "small muted",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=cape-town-city-private-tour&adults=6": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "R9,000 for your private group of 6 · the rate for 5–8 guests",
+            "cls": "booking-total__text",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=private-cape-town-experience&adults=12": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000 for your private group of 12 · the rate for 1–20 guests",
+            "cls": "booking-total__text",
+            "lines": 3,
+            "issues": []
+          }
+        ],
+        "bar": null
+      }
+    },
+    "430": {
+      "/tours/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "Price on enquiry",
+            "cls": "price price--quote",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R8,500per day",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/cape-town-city-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests. Excludes museum entrance fees.",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/township-private-tour/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R4,500",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–4 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests R4,500",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "5–8 guests R9,000",
+            "cls": "",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/tours/private-cape-town-experience/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000",
+            "cls": "enquiry-card__amount",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "per group of 1–20 guests",
+            "cls": "price__note",
+            "lines": 1,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R4,500per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "From R6,000per group",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/transfers/": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "Not included: flights, tips, extra stops not arranged in advance. Free cancellation up to ",
+            "cls": "small muted",
+            "lines": 3,
+            "issues": []
+          },
+          {
+            "text": "From R850per trip, 1–4 guests",
+            "cls": "price",
+            "lines": 2,
+            "issues": []
+          },
+          {
+            "text": "1–4 guests: R850 · 5–8 guests: R1,700. Prices per trip, not per person.",
+            "cls": "small muted",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=cape-town-city-private-tour&adults=6": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "R9,000 for your private group of 6 · the rate for 5–8 guests",
+            "cls": "booking-total__text",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      },
+      "/enquire/?type=tour&tour=private-cape-town-experience&adults=12": {
+        "overflow": 0,
+        "items": [
+          {
+            "text": "From R6,000 for your private group of 12 · the rate for 1–20 guests",
+            "cls": "booking-total__text",
+            "lines": 2,
+            "issues": []
+          }
+        ],
+        "bar": null
+      }
+    }
+  },
+  "failures": [],
+  "transferForm": {
+    "shown": "We’ll confirm your quote",
+    "amounts": 0
+  }
+}
