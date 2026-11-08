@@ -2,7 +2,7 @@ import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, section
 import { tourCard, reviewCard, enquireTourHref, packageCard } from '../partials/cards.mjs';
 import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS, focusOf } from '../partials/media.mjs';
 import { diningDiptych } from '../partials/culinary.mjs';
-import { tours, categories, themes } from '../data/tours.mjs';
+import { tours, categories, themes, groupLine, operatorRun } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
 import { reviews } from '../data/reviews.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
@@ -16,6 +16,8 @@ const ITINERARY_NOTE = {
   listed: 'The stops as we list them. Every tour is private, so the route can be shaped around you; we confirm it with your quote.',
   'unconfirmed-order': 'The stops as we list them. The order is planned with you and confirmed with your quote.',
   'names-only': 'Places on this tour. Timings depend on the day and are confirmed with your quote.',
+  // An adventure activity runs as its operator runs it (the official pages: "operated by accredited third-party specialists")
+  activity: 'The activity as the operator runs it. Timings depend on the weather and the season, and are confirmed with your quote.',
 };
 
 /** Heroes narrower than this get the framed variant: the photo is never stretched. */
@@ -52,7 +54,7 @@ const OVERVIEW_HEADING = {
   'private-cape-town-experience': 'Your day, your way',
   'whale-watching-private-tour': 'Whales off the Cape coast, in season',
   'cape-agulhas-private-tour': 'To the very tip of Africa',
-  'shark-cage-diving': 'Face to face with great white sharks',
+  'shark-cage-diving': 'Out to sea, into the cage',
   'quad-biking': 'Dunes, trails and a little adrenaline',
   'sky-diving': 'The Cape from above',
 };
@@ -92,7 +94,6 @@ function listPage() {
     nav: 'tours/',
     title: 'Tours & Experiences: private tours in Cape Town',
     description: `${tours.length} private tours and activities from Cape Town: the Cape Peninsula, the city and Langa, the Winelands, whale watching, Cape Agulhas, shark cage diving, quad biking and skydiving.`,
-    priority: 0.9,
     breadcrumbs: crumbsList,
     preload: [preloadFor('cape-point-headland')],
     body: ({ site }) => `
@@ -163,7 +164,7 @@ function features(t) {
   const items = [
     { icon: 'clock', text: t.duration },
     t.times ? { icon: 'calendar', text: `Usually departs ${t.times.departure} and returns about ${t.times.return}` } : null,
-    { icon: 'users', text: 'Private: only your group' },
+    { icon: 'users', text: groupLine(t) },
     ...t.included.map((inc) => ({ icon: FEATURE_ICON.find(([re]) => re.test(inc))?.[1] || 'check', text: inc })),
   ].filter(Boolean);
   if (t.itinerary.length) items.push({ icon: 'route', text: `${t.itinerary.length} listed ${t.itinerary.length === 1 ? 'stop' : 'stops'}` });
@@ -207,7 +208,7 @@ function metaRow(t) {
   return `<div class="tour-title__meta">
       ${showRating(ta) ? ratingRow({ rating: ta.rating, reviews: ta.reviews, url: ta.url, large: true }) : ''}
       <span>${icon('clock')} ${esc(t.duration)}</span>
-      <span>${icon('users')} Private: only your group</span>
+      <span>${icon('users')} ${esc(groupLine(t))}</span>
       <span>${icon('pin')} ${esc(t.where)}</span>
     </div>`;
 }
@@ -226,7 +227,8 @@ function detailPage(t) {
   const href = enquireTourHref(t);
   const { h1, sub } = splitTitle(t);
   const crumbs = [...crumbsList, { label: t.shortTitle, href: `tours/${t.slug}/` }];
-  const catLine = `${categories.filter((c) => t.categories.includes(c.id)).map((c) => c.label).join(' · ')} · Private ${t.categories.includes('adventure') ? 'activity' : 'tour'}`;
+  // A tour says it is private; an activity's operator decides that (operatorRun in data/tours.mjs), so it says nothing
+  const catLine = [...categories.filter((c) => t.categories.includes(c.id)).map((c) => c.label), operatorRun(t) ? '' : 'Private tour'].filter(Boolean).join(' · ');
   const panels = [
     { id: 'overview', label: 'Overview' },
     t.itinerary.length ? { id: 'itinerary', label: 'Itinerary' } : null,
@@ -238,6 +240,8 @@ function detailPage(t) {
   const heroSize = t.images.hero ? imageSize(t.images.hero) : { width: 2121, height: 456 };
   // A licensed photograph (origin L: not Good Times') carries its credit on itself, as its licence asks
   const heroCredit = t.images.hero && imageByName(t.images.hero)?.origin === 'L' ? `<p class="tour-hero__credit">${esc(creditFor(t.images.hero))}</p>` : '';
+  // Both hero forms carry the photograph's own alt text (data/images.mjs): it is the page's main image of the day,
+  // with no text over it, not a backdrop (the list pages' banners behind their headings stay alt="")
 
   const hero = framed
     ? `<section class="tour-hero tour-hero--framed on-dark" data-mobile-cta-after>
@@ -262,7 +266,7 @@ function detailPage(t) {
   </div>
 </section>`
     : `<section class="tour-hero" data-mobile-cta-after style="--focus: ${esc(t.heroFocus || '50% 50%')}">
-  <div class="tour-hero__media">${picture({ name: t.images.hero, eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="tour-hero__media">${picture({ name: t.images.hero, eager: true, fetchpriority: 'high' })}</div>
   <div class="container banner__back"><a class="back-link" href="tours/">Back to all tours</a></div>
   ${heroCredit}
 </section>
@@ -281,7 +285,6 @@ function detailPage(t) {
     nav: 'tours/',
     title: t.seo.title,
     description: t.seo.description,
-    priority: 0.8,
     breadcrumbs: crumbs,
     preload: t.images.hero ? [preloadFor(t.images.hero, { sizes: framed ? '(min-width: 56em) 50vw, 100vw' : '100vw' })] : [],
     enquireHref: href,
@@ -292,6 +295,7 @@ function detailPage(t) {
       {
         '@type': 'TouristTrip',
         name: t.title,
+        url: `__SITE__/tours/${t.slug}/`,
         description: t.intro.join(' '),
         touristType: t.categories.includes('adventure') ? 'Adventure activity' : 'Private tour',
         provider: { '@id': `__SITE__/#organization` },
@@ -302,7 +306,7 @@ function detailPage(t) {
       },
     ],
     mobileCta: ({ site }) => `<div class="mobile-cta" data-mobile-cta>
-  <div class="mobile-cta__price">${t.price && site.prices.show ? `<strong>From ${moneyTag(t.price.from, t.price.currency)}</strong>${esc(priceBasis(t.price, { compact: true }))}` : `<strong>${esc(t.duration)}</strong>${t.categories.includes('adventure') ? 'Private activity' : 'Private tour'}`}</div>
+  <div class="mobile-cta__price">${t.price && site.prices.show ? `<strong>From ${moneyTag(t.price.from, t.price.currency)}</strong>${esc(priceBasis(t.price, { compact: true }))}` : `<strong>${esc(t.duration)}</strong>${operatorRun(t) ? 'Adventure activity' : 'Private tour'}`}</div>
   ${button({ href, label: 'Request a Quote', variant: 'gold', attrs: 'data-carry-plan' })}
 </div>`,
     body: ({ site }) => `
@@ -384,7 +388,8 @@ ${hero}
 
       <section class="tab-panel" id="panel-faqs" role="tabpanel" aria-labelledby="tab-faqs" tabindex="0">
         <h2 class="tab-panel__title">FAQs</h2>
-        <div class="cols-2">
+        ${t.faq?.length ? `<div class="cols-2">${t.faq.map((f) => `<div><h3>${esc(f.q)}</h3><p>${esc(f.a)}</p></div>`).join('')}</div>` : ''}
+        <div class="cols-2${t.faq?.length ? ' mt-5' : ''}">
           <div><h3>Pickup</h3><p>${esc(t.pickup)}</p></div>
           <div><h3>Accessibility and health</h3><p>${esc(t.accessibility)}</p></div>
         </div>

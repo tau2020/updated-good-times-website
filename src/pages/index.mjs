@@ -227,8 +227,6 @@ export const page = {
   title: 'Good Times in Cape Town',
   description:
     'Private, guide-led tours of Cape Town since 2014: the Cape Peninsula and Cape Point, the city and Langa, the Winelands, whale watching, adventures, the Garden Route and airport transfers. Send a booking request for a quote.',
-  priority: 1,
-  changefreq: 'weekly',
   overlayHeader: true,
   // The logo's airliner flies in and lands as the "i" of "in" (partials/aircraft.mjs, assets/js/brand-plane.js)
   brandFlight: true,
@@ -361,7 +359,7 @@ ${scene({
     </figure>
     <div class="container lc-wild__beat" data-wild-beat>
       <div class="lc-wild__words">
-        <p class="lc-scene__line">Fancy something with a little more adrenaline? Quad bikes on the dunes, a tandem skydive with the Cape below you, a cage dive with great white sharks off Gansbaai. Each runs with a safety briefing and depends on the weather and the season, so tell us your dates and we’ll help you work out what fits your Cape Town days.</p>
+        <p class="lc-scene__line">Fancy something with a little more adrenaline? Quad bikes on the dunes, a tandem skydive with the Cape below you, a shark cage dive off Gansbaai. Each runs with a safety briefing and depends on the weather and the season, so tell us your dates and we’ll help you work out what fits your Cape Town days.</p>
         ${travelNote({ href: 'tours/#adventure', label: 'See the Adventures', tone: 'light' })}
       </div>
     </div>

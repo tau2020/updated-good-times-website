@@ -7,7 +7,7 @@
  * group, and the booking card opens the booking request on the tour path with
  * the tour and the nights.
  */
-import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, sfield, travellersField, moneyTag, currencyPicker, priceBasis } from '../partials/ui.mjs';
+import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead, sfield, travellersField, moneyTag, currencyPicker, priceBasis, priceOffers } from '../partials/ui.mjs';
 import { packageCard, packageHref, enquirePackageHref, tourCard } from '../partials/cards.mjs';
 import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS } from '../partials/media.mjs';
 import { routeArt } from '../partials/route-art.mjs';
@@ -88,7 +88,6 @@ function listPage() {
     nav: 'tours/',
     title: 'Multi-day tours: private journeys from Cape Town',
     description: 'Private multi-day tours from Cape Town with Good Times: the Garden Route over three days or more, planned with you, with the route and price confirmed in your quote.',
-    priority: 0.8,
     breadcrumbs: crumbsList,
     preload: [preloadFor('hout-bay-from-chapmans')],
     body: ({ site }) => `
@@ -139,7 +138,7 @@ function detailPage(p) {
 
   const hero = p.images.hero
     ? `<section class="tour-hero" data-mobile-cta-after style="--focus: ${esc(p.heroFocus || '50% 45%')}">
-  <div class="tour-hero__media">${picture({ name: p.images.hero, eager: true, fetchpriority: 'high', alt: '' })}</div>
+  <div class="tour-hero__media">${picture({ name: p.images.hero, eager: true, fetchpriority: 'high' })}</div>
   <div class="container banner__back"><a class="back-link" href="packages/">Back to all multi-day tours</a></div>
 </section>
 
@@ -172,7 +171,6 @@ function detailPage(p) {
     nav: 'tours/',
     title: p.seo.title,
     description: p.seo.description,
-    priority: 0.8,
     breadcrumbs: crumbs,
     preload: p.images.hero ? [preloadFor(p.images.hero)] : [],
     enquireHref: href,
@@ -181,10 +179,12 @@ function detailPage(p) {
       {
         '@type': 'TouristTrip',
         name: p.title,
+        url: `__SITE__/packages/${p.slug}/`,
         description: p.intro.join(' '),
         touristType: 'Private multi-day tour',
         provider: { '@id': `__SITE__/#organization` },
-        ...(p.price ? { offers: { '@type': 'Offer', price: String(p.price.from), priceCurrency: p.price.currency, description: priceBasis(p.price), url: `__SITE__/packages/${p.slug}/` } } : {}),
+        // The same offer builder as the day tours: the group size it prices, and its basis (per day) in machine-readable form
+        ...(p.price ? { offers: priceOffers(p.price, `__SITE__/packages/${p.slug}/`) } : {}),
       },
     ],
     mobileCta: ({ site }) => `<div class="mobile-cta" data-mobile-cta>

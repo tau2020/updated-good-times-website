@@ -23,7 +23,6 @@ export const page = {
   path: 'safety/index.html',
   title: 'Safety & Trust: accredited local guides',
   description: 'How Good Times in Cape Town looks after you: accredited local guides, serviced and insured vehicles, first aid on every tour, a registered associate of the Cape Tourist Guides Association, and private tours only since 2014.',
-  priority: 0.6,
   breadcrumbs: crumbs,
   body: ({ site }) => {
     const c = site.credentials;

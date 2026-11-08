@@ -95,7 +95,6 @@ export const termsPage = {
   title: 'Terms & Conditions',
   description: 'The Terms & Conditions for bookings with Good Times in Cape Town: bookings, pricing and payment in rand, cancellations and changes, conduct on tour, photography, liability and governing law.',
   noindex: !site.legal.termsApproved,
-  priority: 0.3,
   breadcrumbs: crumbs,
   body: ({ site: s }) => {
     const { legal, contact } = s;

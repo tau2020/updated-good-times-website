@@ -28,7 +28,7 @@ export const packages = [
     card: 'Three days or more along South Africa’s Garden Route: Knysna, Wilderness, Oudtshoorn and the Tsitsikamma National Park, with your own guide.',
     intro: [
       'Explore South Africa’s Garden Route on a flexible private tour shaped around your group. From Cape Town the scenic drive heads east to the coastal towns of Knysna and Wilderness and inland to Oudtshoorn, before the Tsitsikamma National Park and the journey back.',
-      'You choose how many days to take, three or more, and what you most want to see. We confirm the route, the stops and the price with your quote.',
+      'You choose how many days to take, three or more, and what you most want to see. Departure from Cape Town and your return are flexible, by arrangement. We confirm the route, the stops and the price with your quote.',
     ],
     duration: '3+ days',
     nights: { min: 2, max: 13, suggested: 0 },
@@ -58,6 +58,7 @@ export const packages = [
     confirm: [
       'The rate is per day for 1–4 guests; groups of 5–8 are on enquiry.',
       'Accommodation is not included: confirm whether Good Times can arrange it.',
+      'The official page says departure and return are “flexible, by arrangement”: confirm whether the journey starts with pickup from the guests’ accommodation before the page says so.',
       'The Cango Caves photograph comes from Drive › Website Images: confirm its provenance.',
     ],
     source: SOURCE,

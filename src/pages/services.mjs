@@ -40,7 +40,7 @@ const SERVICES = [
   {
     ...byTitle['Adventure Add-ons'],
     id: 'adventure',
-    intro: 'Add a little adrenaline to your stay: a cage dive with great white sharks, a quad bike ride or a tandem skydive.',
+    intro: 'Add a little adrenaline to your stay: a shark cage dive off Gansbaai, a quad bike ride or a tandem skydive.',
     items: activities.map((t) => ({ href: `tours/${t.slug}/`, label: t.shortTitle })),
     actions: [{ href: 'tours/#adventure', label: 'Our Experiences' }],
   },
@@ -57,7 +57,6 @@ export const page = {
   path: 'services/index.html',
   title: 'Our services: tours, transfers and adventures',
   description: 'Everything Good Times in Cape Town offers in one place: private day tours, adventure activities, multi-day Garden Route journeys and airport transfers, each planned around your group.',
-  priority: 0.7,
   breadcrumbs: crumbs,
   schema: [
     {
