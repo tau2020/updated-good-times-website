@@ -168,7 +168,7 @@ function stepHead({ n, id, eyebrow, title, lead }) {
 }
 
 const nav = ({ back = true, next }) => `<div class="wizard-nav" data-requires-js>
-        ${back ? `<button type="button" class="btn gt-button gt-button--secondary gt-button--plain wizard-nav__back" data-back><span>Back</span></button>` : '<span></span>'}
+        ${back ? `<button type="button" class="btn gt-button gt-button--secondary wizard-nav__back" data-back><span>Back</span></button>` : '<span></span>'}
         <button type="button" class="btn gt-button gt-button--primary wizard-nav__next" data-next><span>${esc(next)}</span></button>
       </div>`;
 
@@ -406,7 +406,7 @@ function reviewStep(site) {
       ${preview ? `<p class="preview-note">${icon('info')}<span><strong>Preview build.</strong> Pressing send will not contact us; nothing leaves this page.</span></p>` : ''}
       <div class="notice notice--error submit-error" data-submit-error tabindex="-1" hidden>${icon('alert')}<p data-submit-error-text></p></div>
       <div class="wizard-nav">
-        <button type="button" class="btn gt-button gt-button--secondary gt-button--plain wizard-nav__back" data-back><span>Back</span></button>
+        <button type="button" class="btn gt-button gt-button--secondary wizard-nav__back" data-back><span>Back</span></button>
         <button type="submit" class="btn gt-button gt-button--primary wizard-nav__next wizard-submit" data-submit disabled><span class="spinner" aria-hidden="true"></span><span data-submit-label>Send Enquiry</span></button>
       </div>
     </div>`;

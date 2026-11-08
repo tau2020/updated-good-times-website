@@ -14,7 +14,7 @@ const SWATCHES = [
   ['--green-deep', '#105B35', 'Pressed, Soft Leaf words, the primary’s edge (white on it 8.2:1)'],
   ['--green-leaf-light', '#DFF3DE', 'Soft Leaf buttons, avatars, selected states'],
   ['--green-soft-background', '#EFF8F0', 'Soft leaf grounds: the Peninsula photograph, the reviews'],
-  ['--green-lime-accent', '#C9E970', 'Decoration only: the leaf on green, the focus ring on dark grounds'],
+  ['--green-lime-accent', '#C9E970', 'Decoration only: the focus ring on dark grounds'],
   ['--ink-primary', '#10241D', 'Headings and the focus ring on light grounds'],
   ['--surface-sand', '#F7F2EA', 'Warm sand: the credentials strip, tour chips'],
   // The Living Cape's own tokens, mapped onto the palette above
@@ -67,7 +67,7 @@ const body = () => `
       <h2 class="lc-specimen__h" id="ds-actions">The leaf-green button system (assets/css/buttons.css, design/button-design.md)</h2>
       <p class="lc-body">The flagship, with the compass medallion, for the header and the Travel Concierge:</p>
       <div class="lc-specimen__row">${coinButton({ href: 'enquire/' })}</div>
-      <p class="lc-body">Primary · Leaf Green: default, hover, pressed, keyboard focus, loading, disabled; prominent; compact (no leaf on compact controls).</p>
+      <p class="lc-body">Primary · Leaf Green: default, hover, pressed, keyboard focus, loading, disabled; prominent; compact.</p>
       <div class="lc-specimen__row">
         ${sunSeal({ href: 'enquire/', label: 'Get a Quote' })}
         ${sunSeal({ href: 'enquire/', label: 'Hover', cls: 'is-hover' })}
@@ -96,7 +96,7 @@ const body = () => `
         <button class="gt-button gt-button--utility gt-button--on-dark" type="button">Previous</button>
         <button class="gt-button gt-button--utility gt-button--on-dark" type="button">Next</button>
       </div>
-      <p class="lc-body">No control carries an arrow: the leaf after the words turns a little under the pointer, and the pill lifts 2 px. Tab through this page to see the focus ring: 3 px, offset 3 px, ink on light grounds and lime on deep ones and photographs (the white on-image pill, Arrange a Transfer above).</p>
+      <p class="lc-body">No control carries an arrow or a leaf: the pill lifts 2 px under the pointer. Tab through this page to see the focus ring: 3 px, offset 3 px, ink on light grounds and lime on deep ones and photographs (the white on-image pill, Arrange a Transfer above).</p>
     </div>
   </section>
 

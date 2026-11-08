@@ -1,8 +1,9 @@
 /* ==========================================================================
    Good Times in Cape Town — the review wall (src/partials/review-wall.mjs; the owner's request of 8 Nov 2026)
    The rating bar (each platform's own rating, its own "Write a review"), then the reviewers' own words as chat
-   messages (the owner's request of 8 Nov 2026: no photo heads, the names on top): a light bubble with a small tail at
-   its top corner, the reviewer's name heading it in one of six colours, the time at its foot. Four across where the
+   messages, short and clean (the owner's requests of 8 Nov 2026: no photo heads, the names on top, no product or
+   platform line): a light bubble with a small tail at its top corner, the reviewer's name heading it in one of six
+   colours, their rating and words, and at its foot Read more and the time. Four across where the
    wall is wide, two in a narrower column, one on phones (container queries, so a tour page's tab and the home page's
    chapter use the same rules), a few at a time with "Load more" (review-wall.js). Over a scenic band (the home page)
    the bubbles are white glass (voices.css).
@@ -186,10 +187,8 @@
 }
 .review-card__more {
   display: inline-flex;
-  align-self: flex-start;
   align-items: center;
   min-height: 2rem;
-  margin-top: -0.35rem;
   font-size: var(--text-small);
   font-weight: 600;
   color: var(--gold);
@@ -201,30 +200,13 @@
   color: var(--gold-hover);
   text-decoration-color: currentColor;
 }
-.review-card__about {
-  font-size: var(--text-xs);
-  line-height: 1.45;
-  color: var(--muted);
-}
-.review-card__about a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.5rem;
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-underline-offset: 3px;
-}
-.review-card__about a:hover {
-  color: var(--ink);
-}
 .review-card__foot {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem 0.75rem;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
   margin-top: auto;
-  padding-top: 0.25rem;
   font-size: var(--text-xs);
   color: var(--muted);
 }
@@ -233,26 +215,6 @@
   margin-left: auto;
   white-space: nowrap;
 }
-.review-card__platform {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: var(--text-xs);
-  color: var(--muted);
-}
-.review-card__mark {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  /* The platform's own mark, as the site draws it elsewhere (ui.mjs brandMark): Tripadvisor's owl on its green */
-  background: #34e0a1 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12.006 4.295c-2.67 0-5.338.784-7.645 2.353H0l1.963 2.135a5.997 5.997 0 0 0 4.04 10.43 5.976 5.976 0 0 0 4.075-1.6L12 19.705l1.922-2.09a5.972 5.972 0 0 0 4.072 1.598 6 6 0 0 0 6-5.998 5.982 5.982 0 0 0-1.957-4.432L24 6.648h-4.35a13.573 13.573 0 0 0-7.644-2.353zM12 6.255c1.531 0 3.063.303 4.504.903C13.943 8.138 12 10.43 12 13.1c0-2.671-1.942-4.962-4.504-5.942A11.72 11.72 0 0 1 12 6.256zM6.002 9.157a4.059 4.059 0 1 1 0 8.118 4.059 4.059 0 0 1 0-8.118zm11.992.002a4.057 4.057 0 1 1 .003 8.115 4.057 4.057 0 0 1-.003-8.115zm-11.992 1.93a2.128 2.128 0 0 0 0 4.256 2.128 2.128 0 0 0 0-4.256zm11.992 0a2.128 2.128 0 0 0 0 4.256 2.128 2.128 0 0 0 0-4.256z'/%3E%3C/svg%3E") center / 74% no-repeat;
-}
-.review-card__mark--google {
-  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23EA4335' d='M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z'/%3E%3Cpath fill='%234285F4' d='M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z'/%3E%3Cpath fill='%23FBBC05' d='M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z'/%3E%3Cpath fill='%2334A853' d='M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z'/%3E%3C/svg%3E") center / 58% no-repeat;
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-
 /* --- Load more and the link to the rest ----------------------------------------------------------------------- */
 .review-wall__actions {
   display: flex;

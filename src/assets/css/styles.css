@@ -4035,7 +4035,8 @@ select.sfield__control {
   line-height: 1.5;
   color: var(--text);
 }
-/* Each point opens with the button system's leaf */
+/* Each point opens with a small leaf: a decoration of the strip, not of a button (the buttons carry no leaf since the
+   owner's request of 8 Nov 2026), so its glyph is drawn here and nowhere in the button system */
 .gt-credentials__point::before {
   content: '';
   position: absolute;
@@ -4044,8 +4045,8 @@ select.sfield__control {
   width: 1.1rem;
   height: 1.1rem;
   background-color: var(--green-primary);
-  -webkit-mask: var(--btn-leaf) center / contain no-repeat;
-  mask: var(--btn-leaf) center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M4.2 19.8C3.6 11 9.6 4.4 19.9 4.1c.3 10.3-6.3 16.3-15.1 15.7Zm1.3-2.4c2.9-3.6 6.2-6.7 10-9.5-.5.9-1.1 1.6-1.8 2.4-2.4 2.6-5 5-8 7.4l-.2-.3Z'/%3E%3Cpath d='M1.8 22.2 4.6 19.4' stroke='%23000' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M4.2 19.8C3.6 11 9.6 4.4 19.9 4.1c.3 10.3-6.3 16.3-15.1 15.7Zm1.3-2.4c2.9-3.6 6.2-6.7 10-9.5-.5.9-1.1 1.6-1.8 2.4-2.4 2.6-5 5-8 7.4l-.2-.3Z'/%3E%3Cpath d='M1.8 22.2 4.6 19.4' stroke='%23000' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .gt-credentials__point strong {
   display: block;

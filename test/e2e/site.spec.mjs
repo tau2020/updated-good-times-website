@@ -716,7 +716,9 @@ test.describe('guest voices', () => {
     await expect(cards.first().locator('.review-card__name')).toHaveText(first.name);
     await expect(cards.first().locator('.review-card__more')).toHaveAttribute('href', first.url);
     await expect(cards.first().locator('.review-card__more')).toHaveAccessibleName(`Read more of ${first.name}’s review on Tripadvisor (opens in a new tab)`);
-    await expect(cards.first().locator('.review-card__platform')).toHaveText('Posted on Tripadvisor');
+    // Short and clean (the owner's request of 8 Nov 2026): no product or platform line on a card
+    await expect(section.locator('.review-card__platform, .review-card__about, .review-card__mark')).toHaveCount(0);
+    await expect(section.locator('.review-card').first()).not.toContainText(/Posted on|Private Tour/);
     // The date as "… ago" (the visitor's own clock), the date itself kept in the element
     await expect(cards.first().locator('time')).toHaveAttribute('datetime', first.date);
     await expect(cards.first().locator('time')).toHaveText(/^(today|yesterday|\d+ days ago|last week|\d+ weeks ago|last month|\d+ months ago|last year|\d+ years ago)$/);
@@ -734,8 +736,6 @@ test.describe('guest voices', () => {
     await expect(cards.nth(8).locator('.review-card__quote')).toHaveText(`“${guestReviews[8].title}”`);
     await expect(cards.nth(8).locator('time')).toHaveText(/ago$|^last (week|month|year)$|^(today|yesterday)$/);
     await expect(section.locator('[data-review-status]')).toHaveText('Showing 16 reviews.');
-    const tourLink = cards.nth(8).locator('.review-card__about a');
-    if (await tourLink.count()) expect(new URL(await tourLink.getAttribute('href')).pathname).toMatch(/^\/(tours\/[a-z-]+|transfers)\/$/);
     while (await more.isVisible()) await more.click();
     await expect(cards).toHaveCount(guestReviews.length);
     expect(new Set(await cards.locator('.review-card__more').evaluateAll((as) => as.map((a) => a.href))).size).toBe(guestReviews.length);
@@ -1662,6 +1662,46 @@ test.describe('the button system', () => {
       // No empty round containers left behind
       await expect(page.locator('.card__go, .row-card__go, .lc-invite__go, .lc-film__go, .service-choice__go, .gt-concierge-row__go, .lc-seal__arrow, .lc-note__arrow'), path).toHaveCount(0);
     }
+  });
+
+  test('no pill carries a leaf (the owner\'s request of 8 Nov 2026): nothing is drawn before or after its words, and they sit centred', async ({ page }) => {
+    let seen = 0;
+    for (const path of ['/', '/tours/', '/tours/cape-peninsula-private-tour/', '/transfers/', '/reviews/', '/contact/', '/faq/', '/enquire/']) {
+      await page.goto(`${path}?nomotion`);
+      const pills = await page.locator('.gt-button:visible').evaluateAll((els) =>
+        els.map((e) => {
+          const after = getComputedStyle(e, '::after');
+          const before = getComputedStyle(e, '::before');
+          const r = e.getBoundingClientRect();
+          // The content as one group (an icon, the words, a count beside them), as the pill's flex box centres it
+          const parts = [];
+          for (const n of e.childNodes) {
+            if (n.nodeType === 3 && n.textContent.trim()) {
+              const range = document.createRange();
+              range.selectNodeContents(n);
+              parts.push(range.getBoundingClientRect());
+            } else if (n.nodeType === 1 && !n.classList.contains('visually-hidden') && getComputedStyle(n).position !== 'absolute' && n.getBoundingClientRect().width) {
+              parts.push(n.getBoundingClientRect());
+            }
+          }
+          const left = Math.min(...parts.map((p) => p.left));
+          const right = Math.max(...parts.map((p) => p.right));
+          return {
+            text: e.textContent.trim().slice(0, 40),
+            drawn: [after.content, before.content].filter((c) => c && c !== 'none' && c !== 'normal'),
+            masks: [after.maskImage || after.webkitMaskImage, before.maskImage || before.webkitMaskImage].filter((m) => m && m !== 'none'),
+            offset: parts.length ? Math.abs((left + right) / 2 - (r.left + r.width / 2)) : 0,
+          };
+        }),
+      );
+      seen += pills.length;
+      for (const p of pills) {
+        expect(p.drawn, `${path}: "${p.text}" draws nothing beside its words`).toEqual([]);
+        expect(p.masks, `${path}: "${p.text}" has no leaf mask`).toEqual([]);
+        expect(p.offset, `${path}: "${p.text}" is centred`).toBeLessThanOrEqual(1);
+      }
+    }
+    expect(seen, 'pills were found to check').toBeGreaterThan(10);
   });
 
   test('Plan My Day is the signature enquiry action: the header, the concierge and the phone menu carry it as the leaf', async ({ page, isMobile }) => {

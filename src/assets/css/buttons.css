@@ -3,7 +3,7 @@
    Loaded after living-cape-system.css. One family of controls for the whole site, every
    colour, size and duration a token (tokens.css for the palette, :root below for the shape):
 
-     .gt-button--primary     Leaf Green: the green pill, white words, a lime leaf (the main action of a section)
+     .gt-button--primary     Leaf Green: the green pill, white words (the main action of a section)
      .gt-button--secondary   Soft Leaf: a pale-leaf pill, deep-green words, a clean border (View details, Discover more)
      .gt-button--outline     Fresh Air: transparent, a green line and green words (a quiet action on a light ground)
      .gt-button--on-image    On-image: a solid white pill over photographs, legible on any picture
@@ -13,11 +13,11 @@
      sizes: --compact (44 px), standard (48 px), --large (52 px); --block fills its column
      .gt-button--on-dark     the light-on-dark versions of secondary, tertiary and utility (ocean navy grounds)
 
-   The leaf: a small leaf after the words of the primary, secondary, outline and on-image pills (a CSS mask, so no
-   markup carries it), lime on green, green on the pale ones. It turns a little under the pointer and is the only
-   thing that moves besides a lift of 2 px. Not on compact controls, nor beside a meaningful icon (a car, a quote).
-   The brand's primary calls to action (Plan My Day and the others in design/button-tokens.md)
-   are the signature leaf below, which reads these tokens too. No control in the family carries an arrow or chevron.
+   No leaf on the pills (the owner's request of 8 Nov 2026): a pill carries its words alone, centred between equal
+   paddings, with an icon before them only where it means something (a car, WhatsApp); the only movement is a lift of
+   2 px. Nothing in this family draws a leaf, so none can reappear on a page that uses it. The brand's leaf-shaped calls
+   to action (Plan My Day and the others in design/button-tokens.md) are the signature leaf below, a component of their
+   own, which reads these tokens too. No control in the family carries an arrow or chevron.
    Contrast (measured): white on --green-primary 5.2:1, on hover 7.0:1, pressed 8.2:1; --green-deep on
    --green-leaf-light 7.0:1; --green-primary on white 5.2:1; --green-deep on white 8.2:1.
    ========================================================================== */
@@ -32,19 +32,16 @@
   /* Motion: one natural ease, a lift of at most 2 px, nothing loops */
   --btn-lift: -2px;
   --btn-dur: 200ms;
-  --btn-leaf-dur: 240ms;
   --btn-ease: cubic-bezier(0.22, 1, 0.36, 1);
   /* Focus: the ink ring on light grounds, the lime ring on dark grounds and photographs (both over 3:1) */
   --btn-focus: var(--ink-primary);
   --btn-focus-on-dark: var(--green-lime-accent);
-  /* Depth: a leaf's thickness at the foot of the pill, and a soft green-tinted shadow */
+  /* Depth: a slim edge at the foot of the pill, and a soft green-tinted shadow */
   --btn-edge: inset 0 -2px 0 rgb(16 91 53 / 0.55);
   --btn-shadow: 0 1px 1px rgb(16 91 53 / 0.16), 0 6px 14px -8px rgb(16 91 53 / 0.6);
   --btn-shadow-hover: 0 2px 3px rgb(16 91 53 / 0.14), 0 12px 22px -10px rgb(16 91 53 / 0.55);
   --btn-press: inset 0 2px 5px rgb(4 40 20 / 0.3);
   --btn-sheen: radial-gradient(120% 140% at 16% 0%, rgb(255 255 255 / 0.18) 0%, rgb(255 255 255 / 0) 52%);
-  /* The leaf, a 24 px glyph with its midrib cut out, used as a mask (the colour comes from the button) */
-  --btn-leaf: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M4.2 19.8C3.6 11 9.6 4.4 19.9 4.1c.3 10.3-6.3 16.3-15.1 15.7Zm1.3-2.4c2.9-3.6 6.2-6.7 10-9.5-.5.9-1.1 1.6-1.8 2.4-2.4 2.6-5 5-8 7.4l-.2-.3Z'/%3E%3Cpath d='M1.8 22.2 4.6 19.4' stroke='%23000' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
 
   /* The earlier system's names, still read by other sheets: the same values */
   --gt-ink: var(--ink-primary);
@@ -68,7 +65,6 @@
   --btn-bg: transparent;
   --btn-fg: var(--ink-primary);
   --btn-border: transparent;
-  --btn-leaf-color: currentColor;
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -118,36 +114,11 @@
   outline-color: var(--btn-focus-on-dark);
 }
 
-/* ---------- The leaf after the words ---------- */
-:is(.gt-button--primary, .gt-button--secondary, .gt-button--outline, .gt-button--on-image):not(.gt-button--compact, .gt-button--plain)::after {
-  content: '';
-  flex: none;
-  width: 1.05em;
-  height: 1.05em;
-  margin-right: -0.25em;
-  background-color: var(--btn-leaf-color);
-  -webkit-mask: var(--btn-leaf) center / contain no-repeat;
-  mask: var(--btn-leaf) center / contain no-repeat;
-  transform-origin: 18% 82%;
-  transition: transform var(--btn-leaf-dur) var(--btn-ease);
-}
-/* A meaningful icon says enough: no leaf beside it. `--plain` opts a control out where a trailing flourish could read
-   as a direction (the booking form's Back) */
-.gt-button:has(> .icon, > .gt-engraved-icon)::after {
-  content: none;
-}
-@media (hover: hover) {
-  .gt-button:hover:not(:disabled, [aria-disabled='true'], [aria-busy='true'])::after {
-    transform: rotate(-16deg) translateX(1px);
-  }
-}
-
 /* ---------- Primary · Leaf Green ---------- */
 .gt-button--primary {
   --btn-bg: var(--green-primary);
   --btn-fg: var(--surface-white);
   --btn-border: var(--green-deep);
-  --btn-leaf-color: var(--green-lime-accent);
   background-image: var(--btn-sheen);
   box-shadow: var(--btn-edge), var(--btn-shadow);
 }
@@ -164,7 +135,6 @@
   --btn-bg: var(--green-leaf-light);
   --btn-fg: var(--green-deep);
   --btn-border: var(--green-leaf-line);
-  --btn-leaf-color: var(--green-primary);
 }
 .gt-button--secondary:hover {
   --btn-bg: var(--green-leaf-hover);
@@ -176,7 +146,6 @@
   --btn-bg: rgb(255 255 255 / 0.07);
   --btn-fg: var(--surface-white);
   --btn-border: rgb(201 233 112 / 0.7);
-  --btn-leaf-color: var(--green-lime-accent);
 }
 .gt-button--secondary.gt-button--on-dark:hover {
   --btn-bg: rgb(255 255 255 / 0.14);
@@ -209,7 +178,6 @@
   --btn-bg: var(--surface-white);
   --btn-fg: var(--green-deep);
   --btn-border: rgb(255 255 255 / 0.92);
-  --btn-leaf-color: var(--green-primary);
   box-shadow: 0 10px 26px -12px rgb(0 0 0 / 0.6);
 }
 .gt-button--on-image:hover {
@@ -300,7 +268,7 @@
 }
 
 /* The narrowest phones (under 384 px): a long label wraps inside its pill in balanced lines rather than running past
-   the screen ("Explore the Cape Peninsula Tour" at 320 px); the leaf stays with the last word */
+   the screen ("Explore the Cape Peninsula Tour" at 320 px) */
 @media (max-width: 23.99em) {
   .gt-button:not(.gt-button--tertiary) {
     max-width: 100%;
@@ -334,7 +302,7 @@
 .gt-button--tertiary[aria-disabled='true'] {
   text-decoration-style: dashed;
 }
-/* Loading: the width holds, a quiet ring turns beside the label in the leaf's place, and a second press does nothing */
+/* Loading: the width holds, a quiet ring turns beside the label, and a second press does nothing */
 .gt-button[aria-busy='true'] {
   cursor: progress;
   pointer-events: none;
@@ -351,8 +319,6 @@
   border-right-color: transparent;
   border-radius: 50%;
   background: none;
-  -webkit-mask: none;
-  mask: none;
   animation: gt-button-turn 0.8s linear infinite;
 }
 /* A control that brings its own spinner (the booking form's Send Enquiry) keeps just that one */
@@ -381,9 +347,6 @@
   --btn-bg: var(--green-soft-background);
   --btn-fg: var(--green-deep);
 }
-.lc-specimen .gt-button.is-hover::after {
-  transform: rotate(-16deg) translateX(1px);
-}
 .lc-specimen .gt-button.is-pressed {
   box-shadow: var(--btn-press);
 }
@@ -393,13 +356,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gt-button,
-  .gt-button::after {
+  .gt-button {
     transition: none !important;
   }
   .gt-button:hover,
-  .gt-button:active,
-  .gt-button:hover::after {
+  .gt-button:active {
     transform: none !important;
   }
   .gt-button[aria-busy='true']::after {
@@ -414,9 +375,6 @@
   .gt-button {
     forced-color-adjust: auto;
     border: 1px solid ButtonText;
-  }
-  .gt-button::after {
-    background-color: ButtonText;
   }
   .gt-button:focus-visible {
     outline-color: Highlight;

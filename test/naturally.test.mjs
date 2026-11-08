@@ -74,7 +74,7 @@ test('type: Bricolage Grotesque, DM Sans and Caveat, self-hosted WOFF2 under the
   assert.match(styles, /font-synthesis: none;/);
 });
 
-test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one pill system with a leaf, a 2 px lift and reduced motion', () => {
+test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one pill system with no leaf on it (8 Nov 2026), a 2 px lift and reduced motion', () => {
   const tokens = read('src/assets/css/tokens.css');
   const want = { 'green-primary': '#147d43', 'green-deep': '#105b35', 'green-hover': '#106638', 'green-leaf-light': '#dff3de', 'green-soft-background': '#eff8f0', 'green-lime-accent': '#c9e970', 'ink-primary': '#10241d', 'surface-white': '#ffffff' };
   for (const [k, v] of Object.entries(want)) assert.equal(token(tokens, k), v, k);
@@ -94,7 +94,12 @@ test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one p
   assert.match(b, /--btn-lift: -2px;/);
   assert.match(b, /--btn-dur: 200ms;/);
   for (const v of ['primary', 'secondary', 'outline', 'on-image', 'tertiary', 'utility', 'danger']) assert.match(b, new RegExp(`\\.gt-button--${v} \\{`), v);
-  assert.match(b, /mask: var\(--btn-leaf\)/, 'the leaf is a mask: no markup carries it');
+  // No leaf on the pills (the owner's request of 8 Nov 2026): no leaf token, and nothing drawn after a pill's words but
+  // the loading ring; the credentials strip draws its own leaf bullets, outside the button system
+  assert.doesNotMatch(b, /--btn-leaf|gt-button--plain/, 'no leaf token or leaf opt-out in the button system');
+  const afters = b.match(/[^{}]*\.gt-button[^{}]*::(after|before)[^{]*\{/g) || [];
+  assert.ok(afters.length > 0 && afters.every((r) => /aria-busy/.test(r)), `only the loading ring is drawn on a pill: ${afters.filter((r) => !/aria-busy/.test(r)).join(' | ')}`);
+  assert.doesNotMatch(read('src/assets/css/styles.css'), /var\(--btn-leaf/, 'no sheet reads a button leaf');
   assert.match(b, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?transform: none !important/);
   assert.match(b, /:focus-visible \{\s*outline: 3px solid var\(--btn-focus\);/);
   // Nothing loops but the loading rings (the pill's and the leaf's), which stop with reduced motion

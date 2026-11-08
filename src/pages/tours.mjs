@@ -382,7 +382,7 @@ ${hero}
           ? `<section class="tab-panel" id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" tabindex="0">
         <h2 class="tab-panel__title">Reviews</h2>
         <p class="lead">What guests wrote about this day on Tripadvisor, in their own words: each card is the title a reviewer gave their review, and Read more opens the whole of it.</p>
-        <div class="mt-5">${reviewWall({ list: tourReviews, initial: 4, step: 8, label: `Reviews of the ${t.shortTitle}, newest first`, showProduct: false, all: t.tripadvisor ? { href: t.tripadvisor.url, label: `All ${t.tripadvisor.reviews} reviews of this tour on Tripadvisor`, external: true } : null })}</div>
+        <div class="mt-5">${reviewWall({ list: tourReviews, initial: 4, step: 8, label: `Reviews of the ${t.shortTitle}, newest first`, all: t.tripadvisor ? { href: t.tripadvisor.url, label: `All ${t.tripadvisor.reviews} reviews of this tour on Tripadvisor`, external: true } : null })}</div>
       </section>`
           : ''
       }

@@ -4,10 +4,10 @@
  *
  *   ratingBar(site)        each platform's own rating and number of reviews, linked to its listing, and its own
  *                          "Write a review"; the figures sit side by side and are never added together
- *   guestReviewCard(r)     one review, as a chat message (the owner's request of 8 Nov 2026: no photo heads, the
- *                          names on top): the reviewer's name heading the bubble, their own rating, the title they
- *                          gave their review (in quotation marks, word for word), "Read more" to the whole review on
- *                          the platform, the product they reviewed, and at the foot where it was posted and when
+ *   guestReviewCard(r)     one review, as a short, clean chat message (the owner's requests of 8 Nov 2026: no photo
+ *                          heads, the names on top, no product or platform line): the reviewer's name heading the
+ *                          bubble, their own rating, the title they gave their review (in quotation marks, word for
+ *                          word), and at the foot "Read more" to the whole review and, where a chat puts it, the time
  *   reviewWall({ list })   the cards, a few at a time: the rest wait in a <template> (carried by the page, drawn only
  *                          when asked for) and "Load more" adds them (src/assets/js/review-wall.js). A wall may instead
  *                          name a page to take the rest from (`moreFrom`: the home page carries eight cards and fetches
@@ -19,7 +19,6 @@
  * the date itself stays in the <time> element and its tooltip.
  */
 import { esc, stars, brandMark } from './ui.mjs';
-import { tourBySlug } from '../data/tours.mjs';
 
 export const REVIEW_WALL_ASSETS = Object.freeze({ styles: ['assets/css/review-wall.css'], scripts: ['assets/js/review-wall.js'] });
 
@@ -29,8 +28,6 @@ const EXTERNAL = 'target="_blank" rel="noopener noreferrer"';
 const TONES = 6;
 export const nameTone = (name) => [...String(name)].reduce((h, c) => (h * 31 + c.codePointAt(0)) >>> 0, 7) % TONES;
 const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-/** The platform's mark on a card: drawn by review-wall.css (one definition per page, not one per card) */
-const MARK = { Tripadvisor: 'tripadvisor', Google: 'google' };
 
 /** The platforms' own ratings, side by side: Tripadvisor's operator listing and, once verified, the Google profile. */
 export function ratingBar(site, { cls = '', attrs = '' } = {}) {
@@ -50,22 +47,16 @@ export function ratingBar(site, { cls = '', attrs = '' } = {}) {
   </ul>`;
 }
 
-/** One review card (a list item). `showProduct: false` on a tour's own page, where every card is about that tour. */
-export function guestReviewCard(r, { showProduct = true } = {}) {
-  const t = r.tour ? tourBySlug(r.tour) : null;
-  const href = t ? `tours/${t.slug}/` : r.service ? `transfers/#${esc(r.service)}` : '';
-  const product = showProduct ? (href ? `<a href="${href}">${esc(r.product)}</a>` : esc(r.product)) : '';
-  const about = [product, r.trip ? esc(r.trip) : ''].filter(Boolean).join(' · ');
-  // Kept lean: a page may carry eighty of these (the stars and the mark are drawn by the stylesheet)
+/** One review card (a list item): the name, the rating, the reviewer's words; Read more and the time at the foot. */
+export function guestReviewCard(r) {
+  // Kept lean: a page may carry eighty of these (the stars are drawn by the stylesheet)
   const rating = Math.max(1, Math.min(5, Math.round(r.rating)));
   return `<li class="review-card">
   <figure class="review-card__inner">
     <figcaption class="review-card__name review-card__name--${nameTone(r.name)}">${esc(r.name)}</figcaption>
     <p class="review-card__rating"><span class="review-card__stars" style="--n:${rating}" aria-hidden="true"></span><span class="visually-hidden">Rated ${rating} out of 5</span></p>
     <blockquote class="review-card__quote"><p>“${esc(r.title)}”</p></blockquote>
-    <a class="review-card__more" href="${esc(r.url)}" ${EXTERNAL}>Read more<span class="visually-hidden"> of ${esc(r.name)}’s review on ${esc(r.platform)} (opens in a new tab)</span></a>
-    ${about ? `<p class="review-card__about">${about}</p>` : ''}
-    <p class="review-card__foot"><span class="review-card__platform"><span class="review-card__mark review-card__mark--${MARK[r.platform] || 'tripadvisor'}" aria-hidden="true"></span>Posted on ${esc(r.platform)}</span><time class="review-card__date" datetime="${esc(r.date)}" data-review-date>${esc(shortDate(r.date))}</time></p>
+    <p class="review-card__foot"><a class="review-card__more" href="${esc(r.url)}" ${EXTERNAL}>Read more<span class="visually-hidden"> of ${esc(r.name)}’s review on ${esc(r.platform)} (opens in a new tab)</span></a><time class="review-card__date" datetime="${esc(r.date)}" data-review-date>${esc(shortDate(r.date))}</time></p>
   </figure>
 </li>`;
 }
@@ -75,8 +66,8 @@ export function guestReviewCard(r, { showProduct = true } = {}) {
  * rest taken from that page's own wall when first asked for. `all` is the link under the cards ({ href, label,
  * external }): the rest of the reviews for a visitor without the script, and every review for everyone.
  */
-export function reviewWall({ list, initial = 8, step = 8, label = 'Guest reviews', all = null, moreFrom = '', showProduct = true, cls = '', attrs = '' }) {
-  const card = (r) => guestReviewCard(r, { showProduct });
+export function reviewWall({ list, initial = 8, step = 8, label = 'Guest reviews', all = null, moreFrom = '', cls = '', attrs = '' }) {
+  const card = (r) => guestReviewCard(r);
   const first = list.slice(0, initial);
   const rest = list.slice(initial);
   const link = all ? `<a class="review-wall__all" href="${esc(all.href)}"${all.external ? ` ${EXTERNAL}` : ''}>${esc(all.label)}${all.external ? NEW_TAB : ''}</a>` : '';

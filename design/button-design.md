@@ -8,8 +8,8 @@ change to its markup or its function.
 Implemented in `src/assets/css/buttons.css` (the system and its shape tokens), `src/assets/css/tokens.css` (the
 colours), and, reading the same tokens, `.btn-coin` (Make It Yours) and `.btn-champagne` (the home hero's call to
 action) in `src/assets/css/styles.css`. The preview-only specimen page `/design-system/` shows every variant and state.
-`test/naturally.test.mjs` checks the tokens, the contrast of every pairing, the pill, the lift, the leaf and reduced
-motion; `test/e2e/site.spec.mjs` checks every visible primary's fill, words and pill shape, and every control's 44 px
+`test/naturally.test.mjs` checks the tokens, the contrast of every pairing, the pill, the lift, that no pill draws a leaf, and
+reduced motion; `test/e2e/site.spec.mjs` checks every visible primary's fill, words and pill shape, and every control's 44 px
 target, on five pages.
 
 ## 1. Colour tokens
@@ -21,7 +21,7 @@ target, on five pages.
 | `--green-hover` | `#106638` | Primary under the pointer (`--gold-hover` points here) |
 | `--green-leaf-light` | `#DFF3DE` | Soft Leaf fill; reviewer initials; selected states (`--forest-soft`) |
 | `--green-soft-background` | `#EFF8F0` | Fresh Air hover; the soft leaf grounds of the photo block and the reviews (`--gold-tint`) |
-| `--green-lime-accent` | `#C9E970` | Decoration only: the leaf on green, the focus ring on dark grounds and photographs, glows |
+| `--green-lime-accent` | `#C9E970` | Decoration only: the focus ring on dark grounds and photographs, glows |
 | `--ink-primary` | `#10241D` | Headings (`--ink`), tertiary words, the focus ring on light grounds |
 | `--surface-white` | `#FFFFFF` | Primary words; the on-image pill |
 | `--green-leaf-line` | `#B5DBB3` | Added: the Soft Leaf border, fine rules on pale-leaf surfaces |
@@ -52,23 +52,20 @@ target, on five pages.
 | `--btn-height-compact` | `44px` | `--compact` and utility controls: the minimum interaction target |
 | Header "Make It Yours" | 48 px (46 px at 1024–1279, 44 px at 1024–1119) | The brief's 44–48 px for navigation buttons |
 | Horizontal padding | 1.4 rem standard, 1.75 rem large, 1.05 rem compact | |
-| `--btn-gap` | `0.55rem` | Between words, icon and leaf |
+| `--btn-gap` | `0.55rem` | Between an icon and the words |
 
 Every button is at least 44 px tall (checked on the preview at 320–1440 px by the browser suite).
 
-### The leaf
+### No leaf on the pills (8 Nov 2026)
 
-A 24 px leaf glyph with its midrib cut out and a short stem, drawn as a CSS mask (`--btn-leaf`) on the button's
-`::after`, about 1.05 em, after the words:
+Until 8 Nov 2026 a small leaf glyph followed the words of the primary, secondary, outline and on-image pills (a CSS
+mask on `::after`, the token `--btn-leaf`). At the owner's request it is gone from every pill on every page, with its
+tokens (`--btn-leaf`, `--btn-leaf-color`, `--btn-leaf-dur`), its hover turn and its opt-out class (`--plain`): a pill
+now carries its words alone, centred between its equal paddings, and an icon before them only where the icon means
+something (a car, WhatsApp). Nothing in `buttons.css` draws a leaf, so none can reappear on a page that uses the
+system; the credentials strip keeps its own small leaf bullets, a decoration of the strip drawn in `styles.css`.
 
-- lime (`--green-lime-accent`) on the green primary; `--green-primary` on Soft Leaf, Fresh Air and the white on-image
-  pill;
-- **not** on compact controls, utility controls, tertiary links or danger buttons, and not beside a meaningful icon
-  (a phone, a quote mark): `:has(> .icon)` removes it;
-- no markup carries it, so hand-written buttons and helper-made ones are identical;
-- with forced colours it takes `ButtonText`.
-
-It is a flourish, never an arrow: no control in the family carries an arrow or chevron.
+No control in the family carries an arrow or chevron.
 
 The brand's primary calls to action (**Plan My Day** and the others listed there; the hero's Find Your Good Time was removed on 7 Nov 2026) are no
 longer pills: since the brief of 6 Nov 2026 they are the signature leaf (`design/button-tokens.md`), which replaced the
@@ -79,9 +76,9 @@ submissions, wizard steps, secondary and tertiary actions, and small controls.
 
 | Variant | Class | Look | For |
 |---|---|---|---|
-| **Primary · Leaf Green** | `.gt-button--primary` (helpers: `sunSeal()`, `button({ variant: 'gold' \| 'primary' })`) | `--green-primary` fill with a soft highlight (a radial sheen from the top left), a 2 px `--green-deep` edge at its foot (a leaf's thickness), a soft green-tinted shadow, white words, a lime leaf | Explore Tours, Plan My Day, Get a Quote, Make It Yours, Request a Quote |
-| **Secondary · Soft Leaf** | `.gt-button--secondary` (`quietOutline()`, `button({ variant: 'secondary' \| 'outline' })`) | `--green-leaf-light` fill, `--green-leaf-line` border, `--green-deep` words, a green leaf | View details, Plan a Peninsula Day, Read every review on Tripadvisor, Arrange a Transfer |
-| **Outline · Fresh Air** | `.gt-button--outline` | Transparent, a 1.5 px `--green-primary` line, green words and leaf | Secondary actions on light grounds: Show more reviews, Discover More |
+| **Primary · Leaf Green** | `.gt-button--primary` (helpers: `sunSeal()`, `button({ variant: 'gold' \| 'primary' })`) | `--green-primary` fill with a soft highlight (a radial sheen from the top left), a 2 px `--green-deep` edge at its foot (a leaf's thickness), a soft green-tinted shadow, white words | Explore Tours, Plan My Day, Get a Quote, Make It Yours, Request a Quote |
+| **Secondary · Soft Leaf** | `.gt-button--secondary` (`quietOutline()`, `button({ variant: 'secondary' \| 'outline' })`) | `--green-leaf-light` fill, `--green-leaf-line` border, `--green-deep` words | View details, Plan a Peninsula Day, Read every review on Tripadvisor, Arrange a Transfer |
+| **Outline · Fresh Air** | `.gt-button--outline` | Transparent, a 1.5 px `--green-primary` line, green words | Secondary actions on light grounds: Show more reviews, Discover More |
 | **On-image** | `.gt-button--on-image` (`quietOutline({ tone: 'light' })`) | A solid white pill, `--green-deep` words, a deep shadow: legible on any photograph | The secondary action beside a primary over a photograph (the closing scene's Arrange a Transfer) |
 | On dark grounds | `--secondary.gt-button--on-dark`, `--utility.gt-button--on-dark`, `--tertiary.gt-button--on-dark` | Glass pill (white 7%), lime line, white words | Ocean-navy panels (the gallery lightbox, the phone bar) |
 | Tertiary | `.gt-button--tertiary` (`travelNote()`) | Words over a 1.5 px green hairline | A link in a sentence's place: Follow the coast road, All destinations |
@@ -95,13 +92,13 @@ Sizes combine with any variant: `--compact` (44 px), standard (48 px), `--large`
 
 | State | Behaviour |
 |---|---|
-| Hover (pointer devices only, `@media (hover: hover)`) | Lifts **2 px** (`--btn-lift`); primary darkens to `--green-hover`, Soft Leaf to `--green-leaf-hover` with a green border, Fresh Air fills with `--green-soft-background`; the shadow grows; the leaf turns −16° about its stem. Make It Yours' rosette turns an eighth |
+| Hover (pointer devices only, `@media (hover: hover)`) | Lifts **2 px** (`--btn-lift`); primary darkens to `--green-hover`, Soft Leaf to `--green-leaf-hover` with a green border, Fresh Air fills with `--green-soft-background`; the shadow grows. Make It Yours' rosette turns an eighth |
 | Focus (`:focus-visible`) | A 3 px ring, 3 px off the pill: `--ink-primary` on light grounds, `--green-lime-accent` on dark grounds and photographs. The Living Cape's own ring (`--lc-focus`) now uses the same two colours |
 | Pressed (`:active`) | Back to the plane, a soft inset shadow; primary to `--green-deep` |
 | Disabled (`:disabled`, `aria-disabled="true"`) | Desaturated, a dashed edge, `not-allowed` cursor; still legible (never opacity alone) |
-| Loading (`aria-busy="true"`) | The width holds; a 16 px ring turns where the leaf was; a second press does nothing |
-| Timing | `--btn-dur` 200 ms (colours, shadow, lift), `--btn-leaf-dur` 240 ms (the leaf), one ease `cubic-bezier(0.22, 1, 0.36, 1)` |
-| Reduced motion | No transitions, no lift, no leaf turn; the loading ring stops and shows dotted |
+| Loading (`aria-busy="true"`) | The width holds; a 16 px ring turns beside the label; a second press does nothing |
+| Timing | `--btn-dur` 200 ms (colours, shadow, lift), one ease `cubic-bezier(0.22, 1, 0.36, 1)` |
+| Reduced motion | No transitions, no lift; the loading ring stops and shows dotted |
 
 Not used, by design: looping or idle animation (the loading ring is the only animation), glows, pulsing, magnetic or
 cursor-following effects (none exists on any device), scale-on-press bounce.
