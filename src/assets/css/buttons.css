@@ -42,7 +42,9 @@
   --btn-shadow: 0 1px 1px rgb(16 91 53 / 0.16), 0 6px 14px -8px rgb(16 91 53 / 0.6);
   --btn-shadow-hover: 0 2px 3px rgb(16 91 53 / 0.14), 0 12px 22px -10px rgb(16 91 53 / 0.55);
   --btn-press: inset 0 2px 5px rgb(4 40 20 / 0.3);
-  --btn-sheen: radial-gradient(120% 140% at 16% 0%, rgb(255 255 255 / 0.18) 0%, rgb(255 255 255 / 0) 52%);
+  /* The gleam from the top left: 12% white at its centre (18% until 8 Nov 2026, when the white words on the green pills
+     measured 4.5:1 where it is brightest; at 12% the lowest of every pill on the site is 4.7:1: qa/pill-contrast.mjs) */
+  --btn-sheen: radial-gradient(120% 140% at 16% 0%, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0) 52%);
 
   /* The earlier system's names, still read by other sheets: the same values */
   --gt-ink: var(--ink-primary);
