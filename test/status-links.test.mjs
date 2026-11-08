@@ -68,6 +68,7 @@ test('GET only shows a confirmation page (link scanners cannot change anything);
   assert.equal(await statusOf(row.id), 'NEW', 'GET never changes the status');
 
   const page = await (await handle(link(row.id, 'CONFIRMED'))).text();
+  assert.match(page, /<link rel="icon" href="\/assets\/brand\/favicon\.svg" type="image\/svg\+xml">/, 'the site\'s icon, not the browser\'s fallback');
   assert.match(page, new RegExp(`Mark ${row.reference_number} as “Confirmed”\\?`));
   assert.match(page, /<form method="post" action="\/api\/enquiries\/[0-9a-f-]{36}\/status">/);
   assert.match(page, /<input type="hidden" name="token" value="[A-Za-z0-9_.-]+">/);

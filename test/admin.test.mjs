@@ -51,7 +51,11 @@ test('the dashboard is behind sign-in, and its pages forbid scripts and indexing
   assert.match(page.headers.get('content-security-policy'), /default-src 'none'/);
   assert.doesNotMatch(page.headers.get('content-security-policy'), /script-src/);
   assert.match(page.headers.get('x-robots-tag'), /noindex/);
-  assert.match(await page.text(), /Email me a sign-in link/);
+  const signIn = await page.text();
+  assert.match(signIn, /Email me a sign-in link/);
+  // The site's own icons: without them a browser falls back to /favicon.ico and may show WordPress's cached "W"
+  assert.match(signIn, /<link rel="icon" href="\/assets\/brand\/favicon\.svg" type="image\/svg\+xml">/);
+  assert.match(signIn, /<link rel="icon" href="\/assets\/brand\/favicon\.ico" sizes="any">/);
 });
 
 test('sign-in: a staff address gets a link; anyone else gets the same answer and no email', async () => {
