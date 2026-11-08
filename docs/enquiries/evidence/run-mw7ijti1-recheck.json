@@ -1,0 +1,61 @@
+{
+ "base": "https://test.good-times-enquiry-test.pages.dev",
+ "run": "mw7ijti1 re-check",
+ "commit": "01715bb",
+ "at": "2026-11-08T07:36:00.000Z",
+ "references": {},
+ "results": [
+  {
+   "id": "A-ack-email",
+   "scenario": "A Private tour",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Resend copy of the email sent in run mw7ijti1)",
+   "expected": "Email B in Resend: to the customer, reply-to the team inbox, reference, summary, “This is not yet a confirmed booking.” in text and HTML; delivered (re-checked from Resend after the suite’s own check looked for different words; no new email)",
+   "actual": "Your Good Times tour enquiry GT-GPAK78: received, not yet confirmed · “This is not yet a confirmed booking.” in text and HTML · reply-to info@ · delivered",
+   "pass": true,
+   "evidence": {
+    "message": "01a1ba12…",
+    "reference": "GT-GPAK78"
+   },
+   "commit": "01715bb"
+  },
+  {
+   "id": "B-ack-email",
+   "scenario": "B Airport transfer",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Resend copy of the email sent in run mw7ijti1)",
+   "expected": "Email B in Resend: to the customer, reply-to the team inbox, reference, summary, “This is not yet a confirmed booking.” in text and HTML; delivered (re-checked from Resend after the suite’s own check looked for different words; no new email)",
+   "actual": "Your Good Times transfer request GT-Z8SV9Y: received, not yet confirmed · “This is not yet a confirmed booking.” in text and HTML · reply-to info@ · delivered",
+   "pass": true,
+   "evidence": {
+    "message": "01a1ba12…",
+    "reference": "GT-Z8SV9Y"
+   },
+   "commit": "01715bb"
+  },
+  {
+   "id": "C-ack-email",
+   "scenario": "C Garden Route",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Resend copy of the email sent in run mw7ijti1)",
+   "expected": "Email B in Resend: to the customer, reply-to the team inbox, reference, summary, “This is not yet a confirmed booking.” in text and HTML; delivered (re-checked from Resend after the suite’s own check looked for different words; no new email)",
+   "actual": "Your Good Times multi-day tour enquiry GT-HZP2TV: received, not yet confirmed · “This is not yet a confirmed booking.” in text and HTML · reply-to info@ · delivered",
+   "pass": true,
+   "evidence": {
+    "message": "01a1ba13…",
+    "reference": "GT-HZP2TV"
+   },
+   "commit": "01715bb"
+  },
+  {
+   "id": "X-ack-email",
+   "scenario": "Acceptance",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Resend copy of the email sent in run mw7ijti1)",
+   "expected": "Email B in Resend: to the customer, reply-to the team inbox, reference, summary, “This is not yet a confirmed booking.” in text and HTML; delivered (re-checked from Resend after the suite’s own check looked for different words; no new email)",
+   "actual": "Your Good Times tour enquiry GT-YP7NWP: received, not yet confirmed · “This is not yet a confirmed booking.” in text and HTML · reply-to info@ · delivered",
+   "pass": true,
+   "evidence": {
+    "message": "01a1ba14…",
+    "reference": "GT-YP7NWP"
+   },
+   "commit": "01715bb"
+  }
+ ]
+}

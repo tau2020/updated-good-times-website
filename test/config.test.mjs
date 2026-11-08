@@ -6,7 +6,7 @@
 import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 
-const KEYS = ['ENQUIRY_SYSTEM_ENABLED', 'ENQUIRY_MODE', 'DATABASE_URL', 'ENQUIRY_SIGNING_SECRET', 'FROM_EMAIL', 'ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'PUBLIC_SITE_URL', 'EMAIL_PROVIDER', 'RESEND_API_KEY', 'NODE_ENV', 'VERCEL_ENV', 'SITE_ENV', 'DATABASE_HTTP_ENDPOINT', 'RESEND_API_URL'];
+const KEYS = ['ENQUIRY_SYSTEM_ENABLED', 'ENQUIRY_MODE', 'DATABASE_URL', 'ENQUIRY_SIGNING_SECRET', 'FROM_EMAIL', 'ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'PUBLIC_SITE_URL', 'EMAIL_PROVIDER', 'RESEND_API_KEY', 'NODE_ENV', 'VERCEL_ENV', 'SITE_ENV', 'DATABASE_HTTP_ENDPOINT', 'RESEND_API_URL', 'EMAIL_TEST_RECIPIENTS', 'ENQUIRY_ACCESS_KEY'];
 // Stop lib/config.mjs from reading a developer's local .env during this test.
 process.env.VERCEL = '1';
 
@@ -165,6 +165,49 @@ test('a preview that really sends through Resend delivers only to Resend’s tes
   delete process.env.RESEND_API_URL;
   process.env.EMAIL_PROVIDER = 'file';
   assert.equal(config.email.previewSink, '');
+});
+
+test('a test deployment’s allowlist (EMAIL_TEST_RECIPIENTS): only the owned inboxes it names receive real mail; refused in production', async () => {
+  const { routed } = await import('../lib/email/send.mjs');
+  process.env.SITE_ENV = 'preview';
+  process.env.EMAIL_PROVIDER = 'resend';
+  process.env.EMAIL_TEST_RECIPIENTS = 'Info@GoodTimesInCapeTown.co.za, hello@goodtimesincapetown.co.za';
+  assert.deepEqual(config.email.testRecipients, ['info@goodtimesincapetown.co.za', 'hello@goodtimesincapetown.co.za']);
+  assert.equal(routed('info@goodtimesincapetown.co.za'), 'info@goodtimesincapetown.co.za', 'an allowlisted inbox receives real mail');
+  assert.equal(routed('INFO@goodtimesincapetown.co.za'), 'INFO@goodtimesincapetown.co.za', 'in any case');
+  assert.equal(routed('traveller@example.com'), 'delivered@resend.dev', 'every other address still goes to the test inbox');
+  assert.equal(routed('stuart@goodtimesincapetown.co.za'), 'delivered@resend.dev', 'even a Good Times address that is not listed');
+  resetConfig();
+  process.env.EMAIL_TEST_RECIPIENTS = 'not-an-address';
+  assert.throws(() => config.email, /EMAIL_TEST_RECIPIENTS: "not-an-address" is not a valid address/);
+  resetConfig();
+  liveProduction();
+  process.env.EMAIL_TEST_RECIPIENTS = 'info@goodtimesincapetown.co.za';
+  assert.throws(() => config.enabled, /EMAIL_TEST_RECIPIENTS is for test deployments and must not be set in production/);
+});
+
+test('a test deployment’s door (ENQUIRY_ACCESS_KEY): every request but health and currency needs the key, by header or cookie', async () => {
+  process.env.ENQUIRY_ACCESS_KEY = 'short';
+  assert.throws(() => config.enabled, /ENQUIRY_ACCESS_KEY must be at least 32 characters/);
+  resetConfig();
+  const KEY = 'k'.repeat(40);
+  process.env.ENQUIRY_ACCESS_KEY = KEY;
+  const call = (path, init = {}) => handle(new Request(`http://test.local${path}`, init));
+  const restricted = async (res) => res.status === 403 && (await res.json()).code === 'restricted';
+  assert.ok(await restricted(await call('/api/enquiries', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })), 'enquiries need the key');
+  assert.ok(await restricted(await call('/api/availability?month=2026-12')), 'availability needs the key');
+  assert.ok(await restricted(await call('/admin/')), 'the dashboard needs the key');
+  assert.ok(await restricted(await call('/api/enquiries', { method: 'POST', headers: { 'x-gt-access': `${KEY}x` }, body: '{}' })), 'a near miss is refused');
+  assert.equal((await call('/api/health')).status, 200, 'health answers anyone');
+  // With the key (header or cookie), the request reaches its handler: here the preview refusal, not the door.
+  const viaHeader = await call('/api/enquiries', { method: 'POST', headers: { 'content-type': 'application/json', 'x-gt-access': KEY }, body: '{}' });
+  assert.equal(viaHeader.status, 503);
+  assert.equal((await viaHeader.json()).code, 'preview');
+  const viaCookie = await call('/api/enquiries', { method: 'POST', headers: { 'content-type': 'application/json', cookie: `other=1; gt_access=${KEY}` }, body: '{}' });
+  assert.equal((await viaCookie.json()).code, 'preview');
+  resetConfig();
+  delete process.env.ENQUIRY_ACCESS_KEY;
+  assert.equal((await (await call('/api/enquiries', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })).json()).code, 'preview', 'without a key set, there is no door');
 });
 
 test('the API’s own responses carry HSTS like the static pages (site/_headers does not reach Functions)', async () => {

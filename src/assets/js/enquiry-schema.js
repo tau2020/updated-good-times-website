@@ -82,9 +82,9 @@ export function sastIso(date, time) {
 }
 
 /**
- * The booking rules: the one place to change them. The values below are working
- * defaults until Good Times confirms its own (docs/APPROVAL_REGISTER.md): how many
- * vehicles can be out at once, the notice needed and the transfer hours. The form uses them for
+ * The booking rules: the one place to change them. Approved by the owner on 8 Nov 2026
+ * (docs/APPROVAL_REGISTER.md, D9): how many vehicles can be out at once, the notice
+ * needed, the transfer hours and how long each transfer holds a vehicle. The form uses them for
  * the dates and times it offers; the API applies the same checks and, with
  * them, keeps every request within the vehicles available (lib/bookings/
  * availability.mjs). A single day's vehicle count can be changed, or the day

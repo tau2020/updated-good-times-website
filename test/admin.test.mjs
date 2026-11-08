@@ -222,3 +222,43 @@ test('unknown statuses and views are refused, not passed to the database', async
   assert.equal(r.status, 400);
   assert.equal((await req('/admin/?view=constructor', { cookie: s.cookie })).status, 200);
 });
+
+test('failed emails are visible: a count beside Retry, a mark on the booking, a warning when none was ever sent; superseded ones are not counted', async () => {
+  const s = session();
+  const { failedEmailSummary } = await import('../lib/email/send.mjs');
+  const start = await failedEmailSummary();
+  // A request whose two emails failed (the provider was down).
+  const failing = await booking({ ...validTour(), preferred_date: inDays(61), email: 'down@example.com', special_requests: 'x7' });
+  await query(`UPDATE email_log SET status = 'failed', error = 'Resend responded 401: API key is invalid' WHERE enquiry_id = $1`, [failing.id]);
+  // A request stored while the email log could not be written: no email row at all.
+  const silent = await handle(...post('/api/enquiries', { ...validTour(), preferred_date: inDays(62), email: 'silent@example.com', special_requests: 'x8' }, { headers: { 'idempotency-key': key() } }));
+  const silentRef = (await silent.json()).reference;
+  const silentRow = await one('SELECT id FROM enquiries WHERE reference_number = $1', [silentRef]);
+  await query('DELETE FROM email_log WHERE enquiry_id = $1', [silentRow.id]);
+  // A superseded confirmation (failed, attempts used up on purpose): never to be sent, so never counted.
+  await query(`INSERT INTO email_log (enquiry_id, template, recipient, status, attempts, error, payload) VALUES ($1, 'booking-confirmed', 'down@example.com', 'failed', 5, 'superseded: the booking is now CANCELLED', '{}')`, [failing.id]);
+
+  const sum = await failedEmailSummary();
+  assert.equal(sum.retryable - start.retryable, 2, 'the two failed emails');
+  assert.equal(sum.givenUp - start.givenUp, 0, 'the superseded one is not "gave up"');
+
+  const list = await (await req('/admin/?view=all', { cookie: s.cookie })).text();
+  assert.match(list, new RegExp(`${sum.retryable} emails? failed to send and will go again when you press Retry`));
+  const rowOf = (ref) => list.slice(list.indexOf(ref), list.indexOf('</tr>', list.indexOf(ref)));
+  assert.match(rowOf(failing.reference_number), /Email failed/);
+  assert.match(rowOf(silentRef), /No email sent/);
+  const detail = await (await req(`/admin/bookings/${silentRow.id}`, { cookie: s.cookie })).text();
+  assert.match(detail, /No email was sent for this request/);
+
+  // Gave up after five attempts (not superseded): said separately.
+  await query(`UPDATE email_log SET attempts = 5 WHERE enquiry_id = $1 AND template = 'enquiry-received'`, [failing.id]);
+  assert.equal((await failedEmailSummary()).givenUp - start.givenUp, 1);
+  assert.match(await (await req('/admin/?view=all', { cookie: s.cookie })).text(), /1 gave up after 5 attempts/);
+
+  // After a successful retry the count drops and the mark goes.
+  await query(`UPDATE email_log SET attempts = 1 WHERE enquiry_id = $1`, [failing.id]);
+  await query(`UPDATE email_log SET attempts = 5 WHERE enquiry_id = $1 AND template = 'booking-confirmed'`, [failing.id]);
+  await retryFailedEmails({ log: () => {} });
+  const after = await (await req('/admin/?view=all', { cookie: s.cookie })).text();
+  assert.doesNotMatch(after.slice(after.indexOf(failing.reference_number), after.indexOf('</tr>', after.indexOf(failing.reference_number))), /Email failed/);
+});
