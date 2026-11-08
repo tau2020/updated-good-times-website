@@ -301,8 +301,9 @@ test('not released: deploying the production branch is refused until the owner a
   assert.equal(project.ENVIRONMENTS.preview.vars.PUBLIC_SITE_URL, project.ENVIRONMENTS.preview.url);
 });
 
-test('no environment takes live enquiries yet, and the preview sends nothing anywhere', () => {
-  for (const env of ['production', 'preview']) assert.equal(project.ENVIRONMENTS[env].vars.ENQUIRY_MODE, 'preview', env);
+test('production takes live enquiries since the owner’s cutover instruction (8 Nov 2026); the preview sends nothing anywhere', () => {
+  assert.equal(project.ENVIRONMENTS.production.vars.ENQUIRY_MODE, 'live');
+  assert.equal(project.ENVIRONMENTS.preview.vars.ENQUIRY_MODE, 'preview');
   const preview = project.ENVIRONMENTS.preview.vars;
   for (const k of ['EMAIL_PROVIDER', 'FROM_EMAIL', 'ENQUIRY_TEAM_EMAIL', 'REPLY_TO_EMAIL', 'ADMIN_EMAILS', 'DATABASE_URL', 'WEB_ANALYTICS_TOKEN']) assert.equal(preview[k], undefined, `preview has no ${k}`);
   assert.equal(preview.SITE_ENV, 'preview', 'staging is kept out of search indexes');
@@ -348,7 +349,7 @@ test('an environment switched to ENQUIRY_MODE=live is refused while its secrets 
   await assert.rejects(exec(['pages', '--apply'], api, { cfg: live }), (e) => e instanceof Refusal && /production is set to ENQUIRY_MODE=live but its secrets RESEND_API_KEY, ENQUIRY_SIGNING_SECRET are missing/.test(e.message));
   assert.deepEqual(api.writes(), []);
   // The same for the preview: staging can only go live with secrets of its own.
-  const stagingLive = { ...project, ENVIRONMENTS: { ...project.ENVIRONMENTS, preview: { ...project.ENVIRONMENTS.preview, vars: { ...project.ENVIRONMENTS.preview.vars, ENQUIRY_MODE: 'live' } } } };
+  const stagingLive = { ...project, ENVIRONMENTS: { ...project.ENVIRONMENTS, production: { ...project.ENVIRONMENTS.production, vars: { ...project.ENVIRONMENTS.production.vars, ENQUIRY_MODE: 'preview' } }, preview: { ...project.ENVIRONMENTS.preview, vars: { ...project.ENVIRONMENTS.preview.vars, ENQUIRY_MODE: 'live' } } } };
   const fresh = mockApi();
   await assert.rejects(exec(['pages', '--apply'], fresh, { cfg: stagingLive }), /preview is set to ENQUIRY_MODE=live but its secrets DATABASE_URL, RESEND_API_KEY, ENQUIRY_SIGNING_SECRET are missing/);
   assert.deepEqual(fresh.writes(), []);
@@ -357,12 +358,15 @@ test('an environment switched to ENQUIRY_MODE=live is refused while its secrets 
 /* ---------- the domain: untouched until the owner approves the cutover ---------- */
 
 test('until the owner approves the cutover, domain and email --apply are refused before any call; resend has its own approval; without --apply they only read', async () => {
-  assert.equal(project.DOMAIN.approved, false);
+  // Approved by the owner's cutover instruction of 8 Nov 2026; the refusal is proven on a copy that is not
+  assert.equal(project.DOMAIN.approved, true);
+  assert.equal(project.DOMAIN.date, '2026-11-08');
+  const locked = { ...project, DOMAIN: { ...project.DOMAIN, approved: false } };
   assert.equal(project.SENDING_DOMAIN.approved, true, 'the sending domain was approved on its own (8 Nov 2026)');
   assert.equal(APEX, 'goodtimesincapetown.co.za');
   for (const argv of [['domain', '--apply'], ['email', '--forward-to', 'owner@example.com', '--apply']]) {
     const api = mockApi({ zones: [activeZone], projects: { [NAME]: { name: NAME, production_branch: 'main', deployment_configs: {} } } });
-    await assert.rejects(exec(argv, api, { env: { RESEND_API_KEY: 're_full_access' } }), (e) => e instanceof Refusal && new RegExp(`^${argv[0]} --apply changes goodtimesincapetown\\.co\\.za, which serves the current website: the owner has not approved the cutover`).test(e.message), argv.join(' '));
+    await assert.rejects(exec(argv, api, { cfg: locked, env: { RESEND_API_KEY: 're_full_access' } }), (e) => e instanceof Refusal && new RegExp(`^${argv[0]} --apply changes goodtimesincapetown\\.co\\.za, which serves the current website: the owner has not approved the cutover`).test(e.message), argv.join(' '));
     assert.deepEqual(api.calls, [], `${argv[0]}: not even a read`);
   }
   // Without its own approval, resend --apply is refused the same way, before any call.

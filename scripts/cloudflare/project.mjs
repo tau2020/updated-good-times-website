@@ -48,11 +48,15 @@ export const PROJECT = {
 export const RELEASE = { approved: true, date: '2026-11-07', by: 'tau2020 (repository owner)', scope: 'https://good-times-in-cape-town.pages.dev only; not the domain' };
 
 export const DOMAIN = {
-  // Good Times' existing domain, serving the current website. Its DNS zone is active in this Cloudflare account
-  // (setup.mjs check, 8 Nov 2026), but nothing may point it here before the owner approves the cutover (DOMAIN.approved).
+  // Good Times' domain. Its DNS zone is active in this Cloudflare account. The cutover was approved by the owner's
+  // instruction of 8 Nov 2026 (the production domain cutover brief): the apex canonical, www → apex 301 keeping the
+  // path and query, http → https; the old site at 129.232.204.50 is the rollback origin and keeps the mail
+  // (docs/releases/2026-11-08-production-cutover.md, docs/APPROVAL_REGISTER.md › A2).
   apex: 'goodtimesincapetown.co.za',
   www: 'www.goodtimesincapetown.co.za',
-  approved: false,
+  approved: true,
+  date: '2026-11-08',
+  by: 'the owner (production domain cutover instruction)',
 };
 
 /**
@@ -103,10 +107,11 @@ export const ENVIRONMENTS = {
       // The apex, with www redirected to it (setup.mjs › domain). The current website uses www: which host is
       // canonical after the cutover is the owner's decision (docs/APPROVAL_REGISTER.md).
       PUBLIC_SITE_URL: `https://${DOMAIN.apex}`,
-      // THE LIVE SWITCH. 'preview' makes the form say plainly that nothing is sent. It stays so until Good Times
-      // has its own database, sending domain and secrets, a controlled test has passed, and the owner approves;
-      // setup.mjs refuses 'live' while a secret is missing.
-      ENQUIRY_MODE: 'preview',
+      // THE LIVE SWITCH. 'preview' makes the form say plainly that nothing is sent. Live since the owner's cutover
+      // instruction of 8 Nov 2026, its gates met: Good Times' own database, sending domain and secrets, the test
+      // project's controlled test passed, the staff inbox's delivery confirmed by the owner (A8), the legal sign-off
+      // (B7). setup.mjs refuses 'live' while a secret is missing. Rollback: set it back to 'preview' first.
+      ENQUIRY_MODE: 'live',
       ENQUIRY_SYSTEM_ENABLED: 'true',
       EMAIL_PROVIDER: 'resend',
       FROM_EMAIL: `Good Times in Cape Town <${PUBLIC_ADDRESS}>`,

@@ -34,12 +34,12 @@ const files = (dir) => readdirSync(dir).flatMap((n) => (statSync(join(dir, n)).i
 const html = () => files(out).filter((f) => f.endsWith('.html'));
 const read = (p) => readFileSync(join(out, p), 'utf8');
 
-test('production values: Good Times’ own domain, indexable, enquiries still in preview; nothing deploys there before the owner approves', () => {
+test('production values: Good Times’ own domain, indexable, enquiries live since the owner’s cutover instruction; nothing deploys there before the owner approves', () => {
   const v = ENVIRONMENTS.production.vars;
   assert.equal(ORIGIN, 'https://goodtimesincapetown.co.za');
   assert.equal(v.PUBLIC_SITE_URL, ORIGIN);
   assert.equal(v.SITE_ENV, 'production');
-  assert.equal(v.ENQUIRY_MODE, 'preview', 'no live bookings until Good Times’ own database, sending domain and secrets are in place and approved');
+  assert.equal(v.ENQUIRY_MODE, 'live', 'live since 8 Nov 2026: Good Times’ own database, sending domain and secrets in place, the owner’s go-ahead given');
   assert.equal(v.FROM_EMAIL, 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>');
   // Notifications and replies go to the mailbox that receives mail today until Good Times confirms hello@ does (A4)
   assert.equal(v.ENQUIRY_TEAM_EMAIL, 'info@goodtimesincapetown.co.za');
@@ -50,10 +50,11 @@ test('production values: Good Times’ own domain, indexable, enquiries still in
     for (const value of Object.values(env.vars)) assert.doesNotMatch(value, /japshuttlesandtours|shuttlejap|\banesu\b/i, name); // brand-guard-allow: proves no former operator's address remains
   }
   // The release and the domain wait for the owner: a production deployment is refused, staging is not.
-  // The release (A1) is recorded for the project's own production address; the domain cutover (A2) is not
+  // The release (A1) is recorded for the project's own production address; the domain cutover (A2) by the owner's
+  // instruction of 8 Nov 2026
   assert.equal(RELEASE.approved, true);
   assert.match(RELEASE.scope, /not the domain/);
-  assert.equal(DOMAIN.approved, false);
+  assert.equal(DOMAIN.approved, true);
   assert.deepEqual(deployTarget(PROJECT.productionBranch), { environment: 'production', alias: PROJECT.productionBranch });
   assert.throws(() => deployTarget(PROJECT.productionBranch, { release: { approved: false } }), /owner has not approved/);
   assert.deepEqual(deployTarget('feature-x'), { environment: 'preview', alias: PROJECT.stagingBranch, url: `https://${PROJECT.stagingBranch}.${PROJECT.name}.pages.dev` });
