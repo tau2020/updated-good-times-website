@@ -876,10 +876,11 @@ test.describe('home story: The Cape, A Living Story', () => {
     // No artwork anywhere in the story: every image is a photograph
     await expect(page.locator('.living-cape img[src*="art-"]')).toHaveCount(0);
     // Photographs' captions name places, never people: not the founder, not a reviewer (guests' consent is the owner's to
-    // confirm). A review card's attribution (its figcaption) names its reviewer by design, so it is not a caption here.
+    // confirm). A review card's name (its figcaption, the chat message's sender) names its reviewer by design, so it is
+    // not a caption here.
     const { guestReviews } = await import('../../src/data/guest-reviews.mjs');
     const names = new RegExp(`\\b(${['Stuart', 'Matanhire', ...new Set(guestReviews.map((r) => r.name))].map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`);
-    const captions = await page.locator('.living-cape figcaption:not(.review-card__by), .lc-print__label').allInnerTexts();
+    const captions = await page.locator('.living-cape figcaption:not(.review-card__name), .lc-print__label').allInnerTexts();
     expect(captions.length).toBeGreaterThan(8);
     for (const c of captions) expect(c).not.toMatch(names);
     // The photographs withdrawn for showing children or possible minors are not used

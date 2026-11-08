@@ -31,13 +31,16 @@
   margin-inline: auto;
 }
 
-/* The rating bar and the cards: white glass, a little translucent (the owner's request of 8 Nov 2026), the scenic
-   tokens' own (tokens.css). The blur only where the sea is drawn behind them (wide screens, scenic.css); on phones and
-   tablets plain translucent white over the band's ground. Near-opaque where transparency is reduced. Styled here, not
-   with a class on each card, so the cards "Load more" brings from the reviews page are glass too. */
-.voices .rating-bar,
-.voices .review-card__inner {
+/* The rating bar and the review bubbles: white glass, a little translucent (the owner's request of 8 Nov 2026), the
+   scenic tokens' own (tokens.css; a bubble's tail takes the same --bubble colour). The blur only where the sea is drawn
+   behind them (wide screens, scenic.css); on phones and tablets plain translucent white over the band's ground.
+   Near-opaque where transparency is reduced. Styled here, not with a class on each card, so the cards "Load more"
+   brings from the reviews page are glass too. */
+.voices .rating-bar {
   background: var(--gt-scenic-card);
+}
+.voices .review-card__inner {
+  --bubble: var(--gt-scenic-card);
 }
 @media (min-width: 64em) {
   @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -51,8 +54,13 @@
 @media (prefers-reduced-transparency: reduce) {
   .voices .rating-bar,
   .voices .review-card__inner {
-    background: var(--gt-glass-fallback);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+  .voices .rating-bar {
+    background: var(--gt-glass-fallback);
+  }
+  .voices .review-card__inner {
+    --bubble: var(--gt-glass-fallback);
   }
 }

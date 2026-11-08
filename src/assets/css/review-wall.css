@@ -1,9 +1,11 @@
 /* ==========================================================================
    Good Times in Cape Town — the review wall (src/partials/review-wall.mjs; the owner's request of 8 Nov 2026)
-   The rating bar (each platform's own rating, its own "Write a review"), then the reviewers' own words on light
-   cards: four across where the wall is wide, two in a narrower column, one on phones (container queries, so a tour
-   page's tab and the home page's chapter use the same rules), a few at a time with "Load more" (review-wall.js).
-   Over a scenic band (the home page) the cards are white glass (scenic.css › .gt-scenic-glass).
+   The rating bar (each platform's own rating, its own "Write a review"), then the reviewers' own words as chat
+   messages (the owner's request of 8 Nov 2026: no photo heads, the names on top): a light bubble with a small tail at
+   its top corner, the reviewer's name heading it in one of six colours, the time at its foot. Four across where the
+   wall is wide, two in a narrower column, one on phones (container queries, so a tour page's tab and the home page's
+   chapter use the same rules), a few at a time with "Load more" (review-wall.js). Over a scenic band (the home page)
+   the bubbles are white glass (voices.css).
    ========================================================================== */
 
 /* --- The rating bar: one card, a platform per cell ------------------------------------------------------------- */
@@ -111,22 +113,57 @@
 .review-card {
   display: flex;
   min-width: 0;
-  border-radius: 18px;
+  border-radius: 0 18px 18px 18px;
 }
 .review-card:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
 }
 .review-card__inner {
+  --bubble: var(--ivory-soft);
+  position: relative;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 0.7rem;
-  width: 100%;
+  gap: 0.6rem;
+  min-width: 0;
+  /* The tail sits in this margin, inside the card's own cell */
+  margin: 0 0 0 8px;
+  padding: clamp(1rem, 0.85rem + 0.5vw, 1.3rem) clamp(1.05rem, 0.9rem + 0.5vw, 1.35rem);
+  border-radius: 0 18px 18px 18px;
+  background: var(--bubble);
+  box-shadow: 0 1px 1px rgb(16 36 29 / 0.07), 0 10px 24px -18px rgb(16 36 29 / 0.38);
+}
+/* The tail, at the top corner where the name is, in the bubble's own colour */
+.review-card__inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -8px;
+  width: 8px;
+  height: 13px;
+  background: var(--bubble);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='M8 0H2.3C.9 0 .2 1.6 1.1 2.7L8 13z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='M8 0H2.3C.9 0 .2 1.6 1.1 2.7L8 13z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+/* The reviewer's name, on top, as a chat names its sender: six dark colours, each 6:1 or more on the bubble. Two
+   classes, so a page's own caption style (the home story's figcaption) never restyles it */
+.review-card__inner > .review-card__name {
   margin: 0;
-  padding: clamp(1.1rem, 0.95rem + 0.5vw, 1.4rem);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--ivory-soft);
+  overflow-wrap: anywhere;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--name, var(--ink));
+}
+.review-card__name--0 { --name: #102e42; }
+.review-card__name--1 { --name: #105b35; }
+.review-card__name--2 { --name: #0f6672; }
+.review-card__name--3 { --name: #1d4f7a; }
+.review-card__name--4 { --name: #8a4b22; }
+.review-card__name--5 { --name: #6b3a63; }
+.review-card__rating {
+  margin-top: -0.25rem;
 }
 /* The reviewer's own rating: --n stars, drawn once here rather than as markup in every card */
 .review-card__stars {
@@ -181,62 +218,22 @@
 .review-card__about a:hover {
   color: var(--ink);
 }
-.review-card__by {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 0.6rem 0.75rem;
-  margin-top: auto;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--line);
-}
-.review-card__avatar {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  overflow: hidden;
-  border-radius: 50%;
-  background: var(--avatar, var(--forest));
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1;
-}
-/* Six tones from the palette, white initials on each at 5:1 or more */
-.review-card__avatar--0 { --avatar: #102e42; }
-.review-card__avatar--1 { --avatar: #105b35; }
-.review-card__avatar--2 { --avatar: #147d43; }
-.review-card__avatar--3 { --avatar: #0f6672; }
-.review-card__avatar--4 { --avatar: #8a4b22; }
-.review-card__avatar--5 { --avatar: #5b4a8a; }
-/* The reviewer's photo, where supplied, covers the initial (which stays beneath as the fallback) */
-.review-card__avatar img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.review-card__who {
+.review-card__foot {
   display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-.review-card__name {
-  overflow-wrap: anywhere;
-  font-size: var(--text-small);
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--ink);
-}
-.review-card__date {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  margin-top: auto;
+  padding-top: 0.25rem;
   font-size: var(--text-xs);
   color: var(--muted);
 }
+/* The time, at the foot's far end, where a chat puts it */
+.review-card__date {
+  margin-left: auto;
+  white-space: nowrap;
+}
 .review-card__platform {
-  grid-column: 1 / -1;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -294,9 +291,11 @@
 }
 
 @media (forced-colors: active) {
-  .rating-bar,
-  .review-card__inner {
+  .rating-bar {
     border-color: CanvasText;
+  }
+  .review-card__inner {
+    border: 1px solid CanvasText;
   }
   .review-card__stars {
     forced-color-adjust: none;

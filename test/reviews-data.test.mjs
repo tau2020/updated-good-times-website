@@ -1,21 +1,16 @@
 // The reviews in the reviewers' own words (the owner's direction of 8 Nov 2026: "use client original reviews, do not
 // summarise reviews"), from the owner's archive: each entry as the archive records it, linked to the review itself on
-// the listing of the product it names. Nothing is summarised or reworded. A reviewer's own profile photo appears only
-// once the owner has supplied its file (consent pending, docs/APPROVAL_REGISTER.md › R2).
+// the listing of the product it names. Nothing is summarised or reworded. Each review is drawn as a chat message: the
+// reviewer's name on top, no photo head (the owner's request of 8 Nov 2026).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import { guestReviews, reviewsOf, PRODUCTS, listingOf, REVIEW_ARCHIVE } from '../src/data/guest-reviews.mjs';
-import { reviewerPhoto, REVIEWER_FILE } from '../src/partials/reviewer-photo.mjs';
-import { avatarInitial, avatarTone } from '../src/partials/review-wall.mjs';
+import { guestReviewCard, nameTone } from '../src/partials/review-wall.mjs';
 import { tourBySlug } from '../src/data/tours.mjs';
 import { services } from '../src/data/transfers.mjs';
 import { site } from '../src/data/site.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
 
 test('every review is the archive’s own record: the reviewer’s title, name, date, rating, product and link; nothing summarised', () => {
   assert.equal(guestReviews.length, 81, 'every review the archive records');
@@ -58,22 +53,16 @@ test('a tour’s reviews are those of its own listing, and every listed tour wit
   assert.equal(reviewsOf({ tour: 'cape-peninsula-private-tour' }).length + reviewsOf({ tour: 'cape-winelands-private-tour' }).length + reviewsOf({ tour: 'township-private-tour' }).length + reviewsOf({ tour: 'cape-town-city-private-tour' }).length + reviewsOf({ service: 'airport' }).length + guestReviews.filter((r) => !r.tour && !r.service).length, guestReviews.length);
 });
 
-test('each reviewer has one photo file name, the same on every review of theirs, and a photo shows only once its file exists; the initial and tone are stable', () => {
-  const byName = new Map();
+test('a review is a chat message: the name on top in its own colour, then the rating and the words, the platform and the time at the foot; no photo head', () => {
   for (const r of guestReviews) {
-    assert.match(r.avatar, REVIEWER_FILE, `${r.name}: a plain lower-case file name`);
-    if (byName.has(r.name)) assert.equal(r.avatar, byName.get(r.name), `${r.name}: one photo for all their reviews`);
-    byName.set(r.name, r.avatar);
-    const supplied = existsSync(join(HERE, '..', 'src', 'assets', 'img', 'reviewers', r.avatar));
-    assert.equal(reviewerPhoto(r.avatar), supplied ? `assets/img/reviewers/${r.avatar}` : '', `${r.name}: never a broken image`);
-    assert.match(avatarInitial(r.name), /^[\p{Lu}\p{N}]$/u, `${r.name}: an initial`);
-    assert.equal(avatarTone(r.name), avatarTone(r.name));
-    assert.ok(avatarTone(r.name) >= 0 && avatarTone(r.name) < 6);
+    const html = guestReviewCard(r);
+    assert.equal(r.avatar, undefined, `${r.name}: no photo file`);
+    assert.doesNotMatch(html, /avatar|<img/, `${r.name}: no photo head and no initials`);
+    const tone = nameTone(r.name);
+    assert.ok(Number.isInteger(tone) && tone >= 0 && tone < 6 && tone === nameTone(r.name), `${r.name}: one colour, always the same`);
+    const order = ['<figcaption class="review-card__name', 'class="review-card__rating"', 'class="review-card__quote"', 'class="review-card__more"', 'class="review-card__foot"'].map((k) => html.indexOf(k));
+    assert.ok(order.every((i, n) => i > 0 && (n === 0 || i > order[n - 1])), `${r.name}: name, rating, words, Read more, foot`);
+    assert.ok(html.includes(`<figcaption class="review-card__name review-card__name--${tone}">`), r.name);
+    assert.match(html, /<p class="review-card__foot"><span class="review-card__platform">[\s\S]*Posted on Tripadvisor<\/span><time class="review-card__date" datetime="\d{4}-\d{2}-\d{2}" data-review-date>/, `${r.name}: the platform, then the time`);
   }
-  // The helper itself: a supplied file is used, a missing one or an unsafe name never is
-  assert.equal(reviewerPhoto('dave-f.jpg', { exists: () => true }), 'assets/img/reviewers/dave-f.jpg');
-  assert.equal(reviewerPhoto('dave-f.jpg', { exists: () => false }), '');
-  for (const bad of ['', undefined, '../x.jpg', 'Dave F.jpg', 'x.svg']) assert.equal(reviewerPhoto(bad, { exists: () => true }), '', String(bad));
-  assert.equal(avatarInitial('isaac b'), 'I');
-  assert.equal(avatarInitial('…'), '·');
 });
