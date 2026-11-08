@@ -29,10 +29,10 @@ const PATTERNS = [
  * the city tour at /tour/cape-town-city-tour/ (the slug came from Good Times' booking site; the hosting backup and
  * Search Console both record it), and the historical URL registry has to name that address to redirect it
  * (src/data/legacy-urls.mjs, site/_redirects, docs/seo/). Only that exact address is exempt, standing on its own (not
- * inside another URL or host) and ending there or at a slash: the slug anywhere else, or extended ("…-tour-with-…",
- * "…-tour.html"), still fails.
+ * inside another URL or host) and ending there, at a slash, or at the backtick of a Markdown code span: the slug
+ * anywhere else, or extended ("…-tour-with-…", "…-tour.html"), still fails.
  */
-const OWN_HISTORY = [/(?<![\w.:/-])\/tour\/cape-town-city-tour(?=\/|\s|$)/g];
+const OWN_HISTORY = [/(?<![\w.:/-])\/tour\/cape-town-city-tour(?=[/\s`]|$)/g];
 const SKIP = [/^licenses\//, /^package-lock\.json$/, /^src\/tools\/brand-guard\.mjs$/, /^test\/identity\.test\.mjs$/, /^src\/assets\/js\/vendor\//];
 const TEXT = new Set(['.mjs', '.js', '.json', '.md', '.html', '.css', '.sql', '.yml', '.yaml', '.toml', '.txt', '.svg', '.example', '.webmanifest', '.xml', '']);
 

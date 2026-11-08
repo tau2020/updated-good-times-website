@@ -48,8 +48,8 @@ export const PROJECT = {
 export const RELEASE = { approved: true, date: '2026-11-07', by: 'tau2020 (repository owner)', scope: 'https://good-times-in-cape-town.pages.dev only; not the domain' };
 
 export const DOMAIN = {
-  // Good Times' existing domain, serving the current website. It is not in this Cloudflare account, and
-  // nothing may point it here before the owner approves the cutover (DOMAIN.approved).
+  // Good Times' existing domain, serving the current website. Its DNS zone is active in this Cloudflare account
+  // (setup.mjs check, 8 Nov 2026), but nothing may point it here before the owner approves the cutover (DOMAIN.approved).
   apex: 'goodtimesincapetown.co.za',
   www: 'www.goodtimesincapetown.co.za',
   approved: false,

@@ -2,7 +2,7 @@
 
 8 Nov 2026 · branch `remediation/historical-seo-preservation` (from `main` at `188d362`).
 
-**Scope kept.** Nothing on the live domain, its DNS, the WordPress hosting or the Pages project was changed, and nothing was deployed: the work is in the repository and was tested on the Pages runtime locally (`wrangler pages dev`). Every request to a live system was a read: public DNS, GET requests to the deployed pages.dev sites, the old booking site's media store and the Internet Archive. **This stops before the domain cutover.**
+**Scope kept.** Nothing on the live domain, its DNS, the WordPress hosting or the Pages project's settings was changed. The work is in the repository, tested on the Pages runtime locally (`wrangler pages dev`) and, at the owner's instruction, on a preview deployment of its own (`seo-preview`); staging and production were not deployed. Every request to a live system was a read: public DNS, GET requests to the deployed pages.dev sites, the old booking site's media store and the Internet Archive. **This stops before the domain cutover.**
 
 ## Verdict
 
@@ -11,9 +11,9 @@
 | Historical URL inventory (Phase A) | **Done.** One registry of 140 entries covering 325 addresses, every input reconciled with its provenance, priority, action, destination and owner |
 | Source implementation (Phase B) | **Done.** `npm run build` generates `_redirects` from the registry every time (124 rules) and refuses an unsound file |
 | Historic media and pages (Phase C) | **Done in source**; six images and the two restored pages wait for owner decisions (H1, H3) |
-| Tests (Phase D) | **Done locally**: every check passes on the Pages runtime for both builds. **Not done on a deployed preview**: no Cloudflare token is provisioned in this environment, and none was asked for |
+| Tests (Phase D) | **Done**: every check passes on the Pages runtime locally for both builds, and on a deployed Cloudflare preview (420 of 420, smoke 27 of 27, browser 334 passed with none failing) |
 | Production dependencies (Phase E) | **Identified.** Two DNS fixes (SPF, CalDAV/CardDAV) and the live-enquiry prerequisites are open; a rollback procedure with the current values is below |
-| Domain cutover | **Not ready, and not attempted.** It needs the owner's approval (A2), a verified preview, the H5 DNS fixes and the cutover checks below |
+| Domain cutover | **Not ready, and not attempted.** It needs the owner's approval (A2), the H5 DNS fixes and the cutover checks below |
 
 ## 1. The inventory (Phase A)
 
@@ -99,7 +99,7 @@ The eight titles: the home page (63), the Garden Route tour (62), multi-day tour
 | Negative control: a production build judged as preview | Fails on the robots signals, as it should |
 | Post-deploy smoke suite on the Pages runtime, both builds (now with the restored pages and three earlier addresses) | Pass |
 | Browser: `test/e2e/legacy-booking.spec.mjs` (desktop and mobile) | 8 of 8 pass |
-| Browser: the full suite (Chromium, desktop and mobile) | 333 pass, 38 skipped (live-mode tests), **1 fails**: `test/e2e/motion.spec.mjs:73` (the aircraft's entrance when a visitor lands on `/#gallery`), which fails the same way on `main` at `188d362` (3 of 3 runs): it predates this work and is left for the motion layer's follow-up |
+| Browser: the full suite (Chromium, desktop and mobile), locally | 333 pass, 38 skipped (live-mode tests), **1 fails**: `test/e2e/motion.spec.mjs:73` (the aircraft's entrance when a visitor lands on `/#gallery`), which fails the same way on `main` at `188d362` (3 of 3 runs) and passes on the deployed preview: a local timing issue that predates this work |
 | `npm run check` (static QA) | 27 pages, no problems |
 | `npm run guard` (brand guard) | Clean (one exemption: the old address `/tour/cape-town-city-tour/`, Good Times' own WordPress URL, whose slug a template operator also used; the slug anywhere else still fails) |
 | Independent review of the diff (a separate agent, 8 Nov 2026) | Ten findings, all addressed before the push: the privacy test now holds its denylist as hashes, worded figures removed, the guard's exemption narrowed, loops reported with their address, preview builds without the sitemap rules, the mirror aligned with Pages' own matcher, refinements recorded, stronger topic and host checks |
@@ -108,18 +108,29 @@ The eight titles: the home page (63), the Garden Route tour (62), multi-day tour
 
 **noindex is kept where it belongs and proven absent where it must be.** On the preview build every final page carries `noindex` in both the header and the meta tag. The production build, served on a host that is not pages.dev, carries **no** `X-Robots-Tag` and `index,follow` on every indexable page: the same files on the domain would be indexed. Cloudflare's own pages.dev addresses stay `noindex` through host-scoped `_headers` rules (`https://:project.pages.dev/*` and `https://:version.:project.pages.dev/*`), which also answers the audit's B1. Nothing removed `noindex` globally.
 
-**Not run: a deployed preview.** No Cloudflare token is provisioned in this environment, and the brief rules out asking for one in chat. Once one exists (A5: a new token limited to Account › Cloudflare Pages: Edit, kept in a secret manager, for example the macOS Keychain, and loaded into the command's environment without being printed):
+**On a deployed Cloudflare preview (8 Nov 2026).** At the owner's instruction, with a token they supplied (kept in a private file for the run, never printed or committed, and deleted afterwards; rotate it, A5), this branch's commit `e9f91c4` was built with the preview environment's variables (`node scripts/cloudflare/build.mjs preview`) and deployed to a branch of its own, **https://seo-preview.good-times-in-cape-town.pages.dev** (deployment `0ac6e22d`, preview environment). Staging and production were left alone: production's latest deployment is still `1fe1f8ff` of 7 Nov.
+
+| Run against the deployed preview | Result |
+|---|---|
+| The historical URL suite (`node qa/legacy-urls.mjs … --env=preview`) | **420 of 420 checks pass** ([`docs/seo/preview-run.md`](preview-run.md), every address and every response) |
+| Post-deploy smoke suite | **27 of 27** (the restored pages and three earlier addresses included; `/api/health` answers `"enquiries":"preview"`) |
+| Browser: `test/e2e/legacy-booking.spec.mjs` | **8 of 8** (desktop, mobile) |
+| Browser: the full suite | **334 pass**, 38 skipped (live-mode tests), **none fail**: the motion test that fails locally (on `main` too) passes on the deployment |
+| Read-only `setup.mjs check` | The account and the Pages project confirmed; project settings as in `project.mjs` ("nothing to change"); the live-enquiry secrets absent in both environments, as expected (A4); the zone goodtimesincapetown.co.za **active in this account** |
+| robots | `X-Robots-Tag: noindex, nofollow` on the preview, meta `noindex,nofollow` on every page |
+
+To repeat the run on a later commit, with a token kept in a secret manager and loaded into the command's environment without being printed:
 
 ```bash
 git checkout remediation/historical-seo-preservation && npm ci && npm test
 node scripts/cloudflare/build.mjs preview
-npx wrangler pages deploy site --project-name good-times-in-cape-town --branch preview   # https://preview.good-times-in-cape-town.pages.dev, never production
-node qa/legacy-urls.mjs --base=https://preview.good-times-in-cape-town.pages.dev --env=preview --md=docs/seo/preview-run.md
-node scripts/cloudflare/smoke.mjs https://preview.good-times-in-cape-town.pages.dev --env preview
-E2E_BASE_URL=https://preview.good-times-in-cape-town.pages.dev npx playwright test test/e2e/legacy-booking.spec.mjs
+npx wrangler pages deploy site --project-name good-times-in-cape-town --branch seo-preview   # never main (production)
+node qa/legacy-urls.mjs --base=https://seo-preview.good-times-in-cape-town.pages.dev --env=preview --md=docs/seo/preview-run.md
+node scripts/cloudflare/smoke.mjs https://seo-preview.good-times-in-cape-town.pages.dev --env preview
+E2E_BASE_URL=https://seo-preview.good-times-in-cape-town.pages.dev npx playwright test
 ```
 
-The `preview` alias keeps the reviewed staging deployment as it is. As the deployed `/api/health` shows today, both pages.dev deployments answer `"enquiries":"preview"`, and production (pages.dev) still serves the 26 rules of 5 Nov (`/tour/winelands-experience/`, `/users/book/quad-biking/` and `/services/` answer 404 there).
+Production (pages.dev) and staging still serve the 26 rules of 5 Nov until they are next deployed (`/tour/winelands-experience/`, `/users/book/quad-biking/` and `/services/` answer 404 there).
 
 ## 5. Production dependencies (Phase E)
 
@@ -145,7 +156,7 @@ These are public answers anyone can query; the full zone export (with the DKIM k
 1. **SPF.** `+a` authorises the apex's own address. After the cutover the apex resolves to Cloudflare's shared Pages addresses, so `+a` would authorise those and no longer the mail server. The explicit `ip4:129.232.204.50` already covers the mail server: remove `+a`, giving `v=spf1 +mx +ip4:129.232.204.50 ~all`. Resend, when it comes (A4), uses its own `send.` subdomain for SPF and needs no change here.
 2. **CalDAV/CardDAV.** The four SRV records target the apex on ports 2079/2080 (cPanel's calendar and contacts service). After the cutover they would send calendar and contacts clients to Pages. Retarget them to hosts that stay on the mail server, DNS only: `_caldav`/`_caldavs` → `cpcalendars.goodtimesincapetown.co.za`, `_carddav`/`_carddavs` → `cpcontacts.goodtimesincapetown.co.za` (both already A 129.232.204.50), same ports, keeping the `path=/` TXT records; confirm with the host that their certificate covers those names.
 3. **Mail hostnames: no change needed.** `mail`, `imap`, `smtp` and `pop` are A records (the 29 Oct zone had them as CNAMEs to the apex, which the cutover would have broken).
-4. **The zone's account.** An apex custom domain on Pages needs the zone in the same Cloudflare account as the project ([Cloudflare Pages: custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)). The zone is on Cloudflare; which account holds it cannot be read without a token (`setup.mjs domain` refuses any other account). `setup.mjs domain` never overwrites the existing apex A record: the cutover replaces it through the Pages custom-domain flow, which records the old value.
+4. **The zone's account.** An apex custom domain on Pages needs the zone in the same Cloudflare account as the project ([Cloudflare Pages: custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)). **Met:** the zone is active in the Good Times account, the same account as the Pages project (`setup.mjs check`, read-only, 8 Nov 2026). The token used for the preview could not read DNS records, so the cutover needs a token with Zone › DNS: Edit for that step only. `setup.mjs domain` never overwrites the existing apex A record: the cutover replaces it through the Pages custom-domain flow, which records the old value.
 
 ### Live enquiries (A4), not required for the cutover
 
@@ -191,7 +202,8 @@ The audit's section 6 stands, with these changes: the gates now include the H5 D
 | 404 canonical fixed (F5) | H7: Search Console at the cutover |
 | Build-time validation; local server redirects | H8: the eight long titles |
 | 23 tests, the suite for any deployment, three smoke checks | H9: the Smart Pulse Africa script |
-| This report, the media decisions, the registers updated | A2 (cutover and canonical host), A4 (live enquiries), A5 (a least-privilege token), B1–B5 (legal) |
+| This report, the media decisions, the registers updated | A2 (cutover and canonical host), A4 (live enquiries), A5 (rotate the pasted tokens), B1–B5 (legal) |
+| The deployed preview verified (`seo-preview`, `0ac6e22d`): 420 of 420 | |
 
 ## Evidence
 
