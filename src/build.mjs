@@ -50,7 +50,7 @@ async function build() {
       const outPath = join(OUT, page.path);
       await mkdir(dirname(outPath), { recursive: true });
       await writeFile(outPath, html, 'utf8');
-      if (!page.noindex) urls.push({ loc: page.path, priority: page.priority ?? 0.6, changefreq: page.changefreq ?? 'monthly' });
+      if (!page.noindex) urls.push(page.path);
     }
   }
 
@@ -60,9 +60,12 @@ async function build() {
   if (site.preview) {
     await writeFile(join(OUT, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
   } else {
+    // <loc> only: Google ignores <changefreq> and <priority>, and no page has a last-modified date that can be derived
+    // reliably (a page is assembled from shared data files), so <lastmod> is left out rather than invented
+    // (docs/seo/GSC_AUDIT_IMPLEMENTATION.md › Sitemap).
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url><loc>${site.url}/${pretty(u.loc)}</loc><changefreq>${u.changefreq}</changefreq><priority>${u.priority}</priority></url>`).join('\n')}
+${urls.map((loc) => `  <url><loc>${site.url}/${pretty(loc)}</loc></url>`).join('\n')}
 </urlset>
 `;
     await writeFile(join(OUT, 'sitemap.xml'), sitemap, 'utf8');

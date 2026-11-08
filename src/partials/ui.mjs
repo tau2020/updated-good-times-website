@@ -335,17 +335,25 @@ export function priceBasis(p, { compact = false } = {}) {
 /**
  * A rate in structured data: one Offer per group tier (data/pricing.mjs), in rand, with the group sizes it prices
  * (eligibleQuantity) and its basis in words. A starting price ("From R6,000") says so: "From" in its description
- * and a minimum price (priceSpecification.minPrice). One tier is one Offer, as before; several are a list.
+ * and a minimum price (priceSpecification.minPrice). A rate per day (the Garden Route) says so in machine-readable
+ * form too: a unit price for one day (UnitPriceSpecification, referenceQuantity 1 DAY), so R8,500 is never read as
+ * the price of the whole journey. One tier is one Offer, as before; several are a list.
  */
 export function priceOffers(p, url) {
   let min = 1;
   const offers = p.tiers.map((t) => {
+    // One specification carries both facts: a starting price (minPrice) and, for a rate per day, the unit it prices
+    const spec = {
+      ...(p.unit === 'per day' ? { '@type': 'UnitPriceSpecification', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'DAY' } } : { '@type': 'PriceSpecification' }),
+      ...(t.startingFrom ? { minPrice: t.amount } : { price: t.amount }),
+      priceCurrency: p.currency,
+    };
     const offer = {
       '@type': 'Offer',
       price: String(t.amount),
       priceCurrency: p.currency,
       description: `${t.startingFrom ? `From ${money(t.amount, p.currency)} ` : ''}${tierBasis(p, t)}`,
-      ...(t.startingFrom ? { priceSpecification: { '@type': 'PriceSpecification', minPrice: t.amount, priceCurrency: p.currency } } : {}),
+      ...(t.startingFrom || p.unit === 'per day' ? { priceSpecification: spec } : {}),
       eligibleQuantity: { '@type': 'QuantitativeValue', minValue: min, maxValue: t.max, unitText: 'guests' },
       url,
     };

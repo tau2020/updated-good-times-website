@@ -10,7 +10,6 @@ export const page = {
   nav: 'destinations/',
   title: 'Destinations',
   description: 'Where Good Times’ private tours go: the Cape Peninsula, Cape Town and Langa, the Cape Winelands, the Overberg coast from Hermanus to Cape Agulhas, and the Garden Route.',
-  priority: 0.7,
   breadcrumbs: crumbs,
   // The Quiet Culinary Moment: one table between the places and the call to plan a day
   styles: ['assets/css/culinary.css'],

@@ -107,18 +107,19 @@ export const site = {
   },
 
   /**
-   * Verified listing facts. The rating and review count were read on the listing on 5 Nov 2026. Tripadvisor
-   * draws its rating breakdown in the browser only, so the breakdown is the one recorded for the 263 reviews
-   * indexed by Good Times' own research on 3 Nov 2026 (Drive › Tripadvisor Photo Collection › 09).
+   * Verified listing facts, read on the listing in a browser on 8 Nov 2026 (Tripadvisor draws its rating breakdown
+   * there only): 264 reviews at 5.0, 260 Excellent and 4 Good. The rating and the count are as read on 5 Nov 2026;
+   * the breakdown replaces the one recorded for 263 reviews on 3 Nov 2026. The home page's reviews and /reviews/ show
+   * the count with this date; the five product listings' counts were read the same day (tours.mjs, transfers.mjs).
    */
   tripadvisor: {
     url: 'https://www.tripadvisor.co.za/Attraction_Review-g312659-d19611200-Reviews-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html',
     rating: 5.0,
     reviewCount: 264,
-    checked: '2026-11-05',
-    distribution: { excellent: 259, good: 4, average: 0, poor: 0, terrible: 0 },
-    distributionTotal: 263,
-    distributionChecked: '2026-11-03',
+    checked: '2026-11-08',
+    distribution: { excellent: 260, good: 4, average: 0, poor: 0, terrible: 0 },
+    distributionTotal: 264,
+    distributionChecked: '2026-11-08',
   },
 
   /** Recognition the company states on its own About and Safety pages (read on 5 Nov 2026). */

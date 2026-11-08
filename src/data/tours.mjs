@@ -11,8 +11,8 @@
  *    the team, and this site sends a request, not a booking.
  *  - `price` is the rate in ZAR, per group, with its group tiers, read from pricing.mjs (the one place a rate is
  *    set; the owner's approved prices of 7 Nov 2026); `price: null` is "on enquiry", with the official note in `priceNote`.
- *  - `tripadvisor` holds the product's own listing figures, read on 5 Nov 2026; only the
- *    five tours the listing sells have one.
+ *  - `tripadvisor` holds the product's own listing figures, read on 5 Nov 2026 and read again, unchanged, on
+ *    8 Nov 2026 (`TA_CHECKED`); only the tours the listing sells have one (the transfer's is in transfers.mjs).
  *  - A tour with no Good Times photograph (`images.hero: null`) shows the approved
  *    logo artwork instead, never another place's photo. Since the media audit of
  *    6 Nov 2026 none does: Cape Agulhas and Sky Diving show openly licensed
@@ -28,6 +28,8 @@ import { priceFor, groupMax } from './pricing.mjs';
 const OFFICIAL = 'https://www.goodtimesincapetown.co.za/tour/';
 const TA = 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-';
 const CHECKED = '2026-11-05';
+/** When the Tripadvisor figures were last read on the listing (site.mjs `tripadvisor`). */
+const TA_CHECKED = '2026-11-08';
 const APPROVAL = 'published by Good Times on goodtimesincapetown.co.za; wording adapted for this site';
 const source = (slug) => ({ listing: `${OFFICIAL}${slug}/`, checked: CHECKED });
 /** The usual cancellation terms on the official tour pages. */
@@ -35,6 +37,9 @@ const CANCEL_DAY = 'Free cancellation up to 24 hours before the scheduled depart
 const CANCEL_ACTIVITY =
   'Free cancellation up to 24 hours before your scheduled activity. Adventure activities depend on the weather and the season: if the operator cancels for safety reasons, you are offered a full refund or a new date.';
 const MOBILITY = 'Tell us about any mobility needs when you book, so we can plan the day around them.';
+/** The owner's question for each adventure activity (groupLine below, and the site-wide wording in docs/seo/GSC_AUDIT_IMPLEMENTATION.md). */
+const PRIVATE_ACTIVITY =
+  'Whether the activity itself is private (only the guest’s group) or shared with the operator’s other guests: the official page says “Max 10 people” and that activities are “operated by accredited third-party specialists”, never “private”, so its page says “Run by an accredited specialist” instead of “Private: only your group”.';
 
 export const categories = [
   { id: 'peninsula', label: 'Cape Peninsula' },
@@ -57,6 +62,15 @@ export const themes = [
   { id: 'adventure', label: 'Adventure' },
 ];
 export const themeLabel = (id) => themes.find((t) => t.id === id)?.label || categories.find((c) => c.id === id)?.label || '';
+
+/**
+ * An adventure activity is run by its operator: its official page says "operated by accredited third-party specialists",
+ * with up to 10 people, and never calls it private. So its page, card and booking card do not either (the owner's
+ * answer is asked in each activity's `confirm`); a tour is private: only the guest's group.
+ */
+export const operatorRun = (t) => t.categories.includes('adventure');
+/** Who the day is for, as a tour's or an activity's page and booking card say it. */
+export const groupLine = (t) => (operatorRun(t) ? 'Run by an accredited specialist' : 'Private: only your group');
 
 export const tours = [
   {
@@ -102,7 +116,7 @@ export const tours = [
       title: 'Cape Peninsula Private Tour: Cape Point & Boulders Penguins',
       description: 'A full-day private Cape Peninsula tour from Cape Town: Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the Boulders Beach penguins, with pickup from your accommodation.',
     },
-    tripadvisor: { url: `${TA}d19714975-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 87, checked: CHECKED },
+    tripadvisor: { url: `${TA}d19714975-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 87, checked: TA_CHECKED },
     confirm: ['The official page says “Max 4 people” and also lists a rate for 5–8 guests: confirm the group sizes offered.'],
     source: source('cape-peninsula-private-tour'),
     approval: APPROVAL,
@@ -117,7 +131,7 @@ export const tours = [
     featured: true,
     card: 'Cape Town’s story told on its own streets: the Castle of Good Hope, District Six, Parliament, the Company’s Garden and the Bo-Kaap.',
     intro: [
-      'Experience Cape Town’s history, neighbourhoods and landmarks on a private guided day. Begin at the Castle of Good Hope, the 17th-century fortress, and City Hall, where Nelson Mandela spoke after his release, then visit the District Six Museum and drive through the former neighbourhood.',
+      'Explore central Cape Town on a private guided tour of the city’s history, heritage and neighbourhoods, with your own guide and vehicle. Begin at the Castle of Good Hope, the 17th-century fortress, and City Hall, where Nelson Mandela spoke after his release, then visit the District Six Museum and drive through the former neighbourhood.',
       'Continue past Parliament to the Company’s Garden, Cape Town’s oldest garden, browse the arts and crafts of Greenmarket Square and walk the colourful Cape Malay streets of the Bo-Kaap. The day also takes in the Noon Day Gun and the Afrogem jewellery studio.',
     ],
     highlights: ['The Castle of Good Hope', 'Cape Town City Hall', 'The District Six Museum', 'The Company’s Garden', 'Greenmarket Square', 'The Bo-Kaap'],
@@ -149,9 +163,9 @@ export const tours = [
     heroFocus: '50% 66%',
     seo: {
       title: 'Cape Town City Private Tour: Castle, District Six & Bo-Kaap',
-      description: 'A private guided Cape Town city tour: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup.',
+      description: 'A private guided tour of central Cape Town: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup.',
     },
-    tripadvisor: { url: `${TA}d19907537-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 16, checked: CHECKED },
+    tripadvisor: { url: `${TA}d19907537-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 16, checked: TA_CHECKED },
     confirm: [],
     source: source('cape-town-city-private-tour'),
     approval: APPROVAL,
@@ -195,7 +209,7 @@ export const tours = [
       title: 'Cape Winelands Private Tour: Stellenbosch & Franschhoek',
       description: 'A private Cape Winelands day from Cape Town: Fairview Wine & Cheese, La Motte, Franschhoek village and Lanzerac, with pickup from your accommodation.',
     },
-    tripadvisor: { url: `${TA}d19685038-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 39, checked: CHECKED },
+    tripadvisor: { url: `${TA}d19685038-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 39, checked: TA_CHECKED },
     confirm: ['The official page says “Max 4 people” and also lists a rate for 5–8 guests: confirm the group sizes offered.'],
     source: source('cape-winelands-private-tour'),
     approval: APPROVAL,
@@ -211,7 +225,7 @@ export const tours = [
     featured: true,
     card: 'A half day in Langa: the Guga S’Thebe arts centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting.',
     intro: [
-      'Gain a deeper understanding of South African history and culture on a private half day in Langa. The tour begins at the Guga S’Thebe Arts & Culture Centre, then continues on foot through the neighbourhood.',
+      'Gain a deeper understanding of South African history and culture on a private township tour in Cape Town: half a day in Langa with your own guide. The tour begins at the Guga S’Thebe Arts & Culture Centre, then continues on foot through the neighbourhood.',
       'Along the way you visit the museum and the gallery, see informal homes and the old beer hall, call in at a kindergarten and local businesses, join a drumming session and, if you would like to, taste traditional beer.',
     ],
     highlights: ['Guga S’Thebe Arts & Culture Centre', 'A walk through Langa', 'The museum, the gallery and the old beer hall', 'A drumming session', 'An optional traditional beer tasting'],
@@ -236,7 +250,7 @@ export const tours = [
       title: 'Township Private Tour: Langa, Cape Town',
       description: 'A private half-day tour of Langa in Cape Town: the Guga S’Thebe Arts & Culture Centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting.',
     },
-    tripadvisor: { url: `${TA}d20311065-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 22, checked: CHECKED },
+    tripadvisor: { url: `${TA}d20311065-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 22, checked: TA_CHECKED },
     confirm: ['Langa photographs showing children, or teenagers who may be under 18, are not used (the rights log’s four, and two withdrawn on 5 Nov 2026): parental consent would be needed.'],
     source: source('township-private-tour'),
     approval: APPROVAL,
@@ -329,7 +343,7 @@ export const tours = [
     featured: false,
     card: 'A private day trip to Cape Agulhas, the southernmost tip of Africa, with its lighthouse and a long scenic drive along the way.',
     intro: [
-      'Visit the southernmost tip of Africa on a private day full of history and coastal beauty. After pickup, a scenic drive takes you to Cape Agulhas.',
+      'Visit the southernmost tip of Africa on a private day trip from Cape Town, full of history and coastal beauty. After pickup from your accommodation, a scenic drive takes you to Cape Agulhas.',
       'There you see the Cape Agulhas Lighthouse and stand at the official southernmost tip of the continent, before the drive home to your accommodation.',
     ],
     highlights: ['The official southernmost tip of Africa', 'Cape Agulhas Lighthouse', 'A scenic drive along the way'],
@@ -362,26 +376,26 @@ export const tours = [
   },
   {
     slug: 'shark-cage-diving',
-    title: 'Shark Cage Diving: Great White Sharks off Gansbaai',
+    title: 'Shark Cage Diving: Out to Sea on the Overberg Coast',
     shortTitle: 'Shark Cage Diving',
     categories: ['coast', 'adventure'],
     themes: ['adventure', 'nature'],
     destination: 'overberg',
     featured: false,
-    card: 'A boat trip out of Gansbaai and a dive in a secure cage to see great white sharks up close, with a safety briefing and full gear.',
+    card: 'A boat trip out of Gansbaai and a dive in a secure cage, with a safety briefing and full gear, for a chance to see sharks up close.',
     intro: [
-      'Dive with great white sharks in a secure cage and see one of South Africa’s marine predators up close. After pickup you drive to Gansbaai, head out by boat to shark territory and, after a safety briefing, dive in the cage in full gear.',
-      'Rates are seasonal, so tell us your dates for a quote. Adventure activities depend on the weather and the season.',
+      'Go shark cage diving off Gansbaai, on the Overberg coast, where the activity begins: a boat takes you out to shark territory and, after a safety briefing, you get into a secure cage in full gear, hoping to see sharks up close. Sharks are wild animals, so no sighting can be promised.',
+      'The activity is run by an accredited specialist operator. Transport from Cape Town is not included as standard: add it when you book, and the drive there and back is arranged around your activity. Rates are seasonal and the activity depends on the weather and the season, so tell us your dates for a quote.',
     ],
-    highlights: ['A boat trip out of Gansbaai', 'A cage dive with great white sharks', 'A safety briefing and full gear'],
+    highlights: ['A boat trip out of Gansbaai', 'A dive in a secure cage', 'A safety briefing and full gear'],
+    // The activity's own stops. The official page also lists a pickup and the drive back, yet excludes transport
+    // "unless booked as an add-on": the add-on is stated in the opening and the pickup answer, never as a stop.
     itinerary: [
-      { stop: 'Pickup and a drive to Gansbaai', time: '' },
       { stop: 'A boat trip out to shark territory', time: '' },
       { stop: 'The cage dive, with a safety briefing and full gear', time: '' },
-      { stop: 'The drive back to Cape Town', time: '' },
     ],
     drivePast: [],
-    itineraryStatus: 'listed',
+    itineraryStatus: 'activity',
     duration: 'Flexible: seasonal availability',
     where: 'Gansbaai, on the Overberg coast',
     included: ['Boat ride', 'Cage dive', 'Gear rental', 'Safety briefing'],
@@ -395,10 +409,23 @@ export const tours = [
     heroFocus: '44% 52%',
     seo: {
       title: 'Shark Cage Diving in Gansbaai from Cape Town',
-      description: 'Shark cage diving with great white sharks off Gansbaai: a boat trip, a safety briefing, full gear and a dive in a secure cage. Seasonal rates; transport from Cape Town as an add-on.',
+      description: 'Shark cage diving off Gansbaai: a boat trip, a safety briefing, full gear and a dive in a secure cage. Seasonal rates; transport from Cape Town as an add-on.',
     },
     tripadvisor: null,
-    confirm: ['The dive operator is not named on the official page (the boat in Good Times’ photo is Marine Dynamics): confirm the operator to name.'],
+    // Visitors' questions this page can answer from the official page alone (Search Console audit, 8 Nov 2026). The
+    // FAQ panel's own blocks answer the rest: Pickup (transport from Cape Town), Booking, and Cancellation (the weather).
+    faq: [
+      { q: 'What is shark cage diving?', a: 'Diving in a secure cage in the sea, from a boat out in shark territory, for a chance to see sharks up close. A safety briefing and the gear come first.' },
+      { q: 'Where does it take place?', a: 'At sea off Gansbaai, where the boat trip starts.' },
+      { q: 'What equipment is provided?', a: 'Full gear for the dive: gear rental is included in the activity.' },
+      { q: 'Will we see sharks?', a: 'No one can promise it: sharks are wild animals and their movements cannot be predicted.' },
+      { q: 'Are there participation requirements?', a: 'Yes. The operator sets age, health and weight requirements, which we confirm with your quote, and everyone follows the safety briefing. Tell us about any medical conditions when you book.' },
+    ],
+    confirm: [
+      'The dive operator is not named on the official page (the boat in Good Times’ photo is Marine Dynamics): confirm the operator to name.',
+      'The operator’s age, health and weight requirements (the official page: “Participants must meet any age, health, or weight requirements set by the operator”), what the gear includes, and the launch point in Gansbaai: confirm them before the page states them.',
+      PRIVATE_ACTIVITY,
+    ],
     source: source('shark-cage-diving'),
     approval: APPROVAL,
   },
@@ -422,7 +449,7 @@ export const tours = [
       { stop: 'A guided ride on dunes or off-road trails', time: '' },
     ],
     drivePast: [],
-    itineraryStatus: 'listed',
+    itineraryStatus: 'activity',
     duration: 'Flexible',
     where: 'Dunes or off-road trails near Cape Town',
     included: ['Guide', 'Safety gear', 'Bike rental'],
@@ -439,7 +466,7 @@ export const tours = [
       description: 'A guided quad biking adventure on dunes or off-road trails near Cape Town, with a safety briefing, safety gear and bike rental included.',
     },
     tripadvisor: null,
-    confirm: ['The location is not named on the official page (“dunes or off-road trails”): confirm where rides take place.', 'The two quad biking photographs come from Drive › Website Images: confirm their provenance and the riders’ consent.'],
+    confirm: ['The location is not named on the official page (“dunes or off-road trails”): confirm where rides take place.', 'The two quad biking photographs come from Drive › Website Images: confirm their provenance and the riders’ consent.', PRIVATE_ACTIVITY],
     source: source('quad-biking'),
     approval: APPROVAL,
   },
@@ -463,7 +490,7 @@ export const tours = [
       { stop: 'Aerial views of Cape Town on the way down', time: '' },
     ],
     drivePast: [],
-    itineraryStatus: 'listed',
+    itineraryStatus: 'activity',
     duration: 'Flexible: weather dependent',
     where: 'A drop zone near Cape Town',
     included: ['Instructor', 'Parachute gear', 'Safety training'],
@@ -479,7 +506,7 @@ export const tours = [
       description: 'A tandem skydive near Cape Town with a qualified instructor, safety training and parachute gear included, and aerial views of the Cape on the way down.',
     },
     tripadvisor: null,
-    confirm: ['No Good Times skydiving photograph exists: the page shows an openly licensed (CC0) tandem skydive, not taken in Cape Town and credited as such; a photograph from the skydiving operator, or the owner\'s AI-generated image (blocked: no image generator here), would replace it.', 'The drop zone and operator are not named on the official page.'],
+    confirm: ['No Good Times skydiving photograph exists: the page shows an openly licensed (CC0) tandem skydive, not taken in Cape Town and credited as such; a photograph from the skydiving operator, or the owner\'s AI-generated image (blocked: no image generator here), would replace it.', 'The drop zone and operator are not named on the official page.', PRIVATE_ACTIVITY],
     source: source('sky-diving'),
     approval: APPROVAL,
   },

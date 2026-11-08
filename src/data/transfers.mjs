@@ -33,7 +33,7 @@ export const services = [
     // The airport arrival's welcome sign and the car boot are the request rows' own thumbnails (transfers page), so the
     // service shows three other photographs: a sharp 3105 px departures scene first (the 1000 px sign was soft at this size)
     images: { hero: 'airport-meet-and-greet', gallery: ['airport-guests-luggage', 'airport-departures-trolley'] },
-    tripadvisor: { url: 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-d19930417-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html', rating: 5.0, reviews: 89, checked: '2026-11-05' },
+    tripadvisor: { url: 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-d19930417-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html', rating: 5.0, reviews: 89, checked: '2026-11-08' },
     confirm: ['The rates for 1–4 and 5–8 guests were approved on 7 Nov 2026: confirm the vehicle used for a group of 5–8.', 'Child seats are not mentioned on the official page: confirm whether they are available.'],
     source: SOURCE,
     approval: 'published by Good Times on goodtimesincapetown.co.za; wording adapted for this site',

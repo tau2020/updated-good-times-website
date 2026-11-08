@@ -122,7 +122,7 @@ export const images = [
   // The Overberg coast and adventures
   { name: 'hermanus-whale-sculpture', src: `${W}hermanus-whale-sculpture.jpg`, origin: 'W', focus: '50% 50%', alt: 'A couple seated by the whale-tail sculpture on the clifftop in Hermanus' },
   { name: 'hermanus-frame', src: `${S}hermanus-frame.jpg`, origin: 'S', focus: '50% 58%', alt: 'A couple standing in the yellow Hermanus, South Africa photo frame' },
-  { name: 'marine-dynamics-boat', src: `${U}marine-dynamics-boat.jpg`, origin: 'U', full: true, focus: '44% 56%', alt: 'A Marine Dynamics shark cage diving boat with guests on deck, gulls circling overhead' },
+  { name: 'marine-dynamics-boat', src: `${U}marine-dynamics-boat.jpg`, origin: 'U', full: true, focus: '44% 56%', alt: 'A shark cage diving boat with guests on deck, gulls circling overhead' },
   { name: 'quad-bikes-dunes', src: `${S}quad-bikes-dunes.jpg`, origin: 'S', full: true, focus: '50% 60%', alt: 'Four riders standing on their quad bikes on white sand dunes, arms outstretched' },
   { name: 'quad-bikes-convoy', src: `${S}quad-bikes-convoy.jpg`, origin: 'S', focus: '52% 56%', alt: 'A group on red quad bikes lined up across white sand dunes' },
 
