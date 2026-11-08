@@ -37,6 +37,9 @@ npm run test:e2e          # browser tests (Playwright + axe), builds and serves 
 node scripts/cloudflare/smoke.mjs <url> --env preview|production [--domain]   # check a deployed site from outside
 node qa/legacy-urls.mjs --base=<url> --env=preview|production [--domain] [--md=<file>]   # every historical address of the domain against a running site (npm run seo:legacy)
 npm run seo:registry      # write docs/seo/HISTORICAL_URL_REGISTRY.md and the CSV from src/data/legacy-urls.mjs
+node qa/header-morph.mjs --base=<url> --out=<dir> [--video] [--interactions]   # the header at every scroll position: state, owners, frames
+node qa/header-contrast.mjs --base=<url>   # the glass header's words against what passes beneath them (WCAG AA)
+node scripts/erase-personal-data.mjs --retention [--apply]   # the retention periods: unconverted after a month, bookings five years after the trip
 node scripts/cloudflare/setup.mjs [check|pages|domain|email|resend] [--apply]  # the Cloudflare and Resend set-up (read-only by default)
 npm run qa:screens        # screenshot matrix → docs/qa/screens (server must be running on :8090)
 node qa/hero.mjs [--motion] [--video]   # the home hero at 18 sizes: screenshots, and proof nothing covers a face (server on :8090)
@@ -75,7 +78,10 @@ node qa/surgical-compare.mjs --before=<dir> --after=<dir> --out=qa/surgical/comp
 | Tours and activities (copy, times, inclusions, cancellation, group-tier prices, sources, points to confirm) | `src/data/tours.mjs` |
 | The multi-day Garden Route tour (copy, outline, days, rate, the points to confirm) | `src/data/packages.mjs` (the slug also in `PACKAGE_SLUGS`, `src/assets/js/enquiry-schema.js`) |
 | The airport transfer and its request types | `src/data/transfers.mjs` |
-| Reviews (Tripadvisor metadata and our own summaries; no reviewer's words are copied). Each review's `avatar` names its reviewer's profile photo, used once the file is in `src/assets/img/reviewers/` (square, 168 px or larger); until then the cards draw an illustrated avatar or initials | `src/data/reviews.mjs`, `src/partials/reviewer-photo.mjs` |
+| Reviews (Tripadvisor metadata and our own summaries for `/reviews/`; no reviewer's words are copied). Each review's `avatar` names its reviewer's profile photo, used once the file is in `src/assets/img/reviewers/` (square, 168 px or larger); until then the cards draw initials | `src/data/reviews.mjs`, `src/partials/reviewer-photo.mjs` |
+| The home page's guest voices: the three themes in our words, the testimonial registry (a guest's own words only when approved and permitted) and the proof (Tripadvisor's and Google's figures, each from one constant, `site.tripadvisor`, `site.google`) | `src/data/reputation.mjs`, `src/assets/css/voices.css`; `docs/enhancement/03-reputation.md` |
+| Scenic backdrops: the registry of the owner's supplied stock photographs, the placements, the component | `src/data/scenic.mjs`, `src/partials/scenic.mjs`, `src/assets/css/scenic.css`; renditions with `node src/tools/build-scenic.mjs` (originals in `media-src/scenic/`) |
+| Cancellation and payment terms (one source for the terms, every tour, package and transfer page and the FAQ) | `site.legal.cancellation`, `site.legal.payment` in `src/data/site.mjs`; `src/data/cancellation.mjs` |
 | FAQ (each answer with its source) | `src/data/faq.mjs` |
 | Image slots, alt text, focal points and origins | `src/data/images.mjs`, gallery captions in `src/data/photo-captions.mjs` |
 | The home hero: the scene, the one call to action, the phone gallery ("Cape Town Memories": order, captions, the tour each picture belongs to) | `src/pages/index.mjs`, `src/data/phone-gallery.json`; the component is `src/partials/phone-gallery.mjs`, `src/assets/css/phone-gallery.css`, `src/assets/js/phone-gallery.js`; where the faces are, `src/data/hero-scene.mjs` |
@@ -84,7 +90,7 @@ node qa/surgical-compare.mjs --before=<dir> --after=<dir> --out=qa/surgical/comp
 | Design tokens (the Good Times palette, the leaf-green action colours and the type scale) | `src/assets/css/tokens.css`; the rules in `design/font-design.md` and `design/button-design.md` |
 | Display currencies: base ZAR; the country → currency map and symbols (`currency-core.js`, shared with the API); the rate source (`lib/currency/rates.mjs`, `EXCHANGE_RATES_URL`, `off` shows ZAR everywhere) | `src/assets/js/currency-core.js` |
 | Buttons (the leaf-green pills: primary, secondary, outline, on-image, tertiary, utility, danger) and the `button()`/`coinButton()` helpers | `src/assets/css/buttons.css`, `src/partials/ui.mjs`, `design/button-design.md` |
-| Booking rules (vehicles, notice, pickup hours, holds) | `BOOKING_RULES`, `src/assets/js/enquiry-schema.js` (working defaults until Good Times confirms them) |
+| Booking rules (vehicles, 48 hours' notice, pickup hours, holds; approved by the owner on 8 Nov 2026) | `BOOKING_RULES`, `src/assets/js/enquiry-schema.js` |
 | The domain's earlier addresses (the booking site, WordPress, the old static sites): where each goes, why, on what evidence and who decides. The build writes `site/_redirects` from it (static rules first, then the dynamic ones) and refuses rules that would shadow a page, chain or point nowhere; the original images kept at their old addresses are in `src/legacy-media/`. `npm start` applies the same redirects | `src/data/legacy-urls.mjs` (raw lists in `legacy-inventory.mjs`); `docs/seo/` |
 
 Only verified facts are rendered. To publish the WhatsApp link, for example, set `verified: true` on `site.contact.whatsapp` once Good Times confirms the number.
@@ -185,6 +191,7 @@ The go-live evidence and the remaining approvals are in `docs/enquiries/GO_LIVE_
 ## Documentation
 
 - `docs/APPROVAL_REGISTER.md`: every decision and fact still waiting for the owner, and what each one unlocks
+- `docs/enhancement/`: the brief of 8 Nov 2026 (the glass header, the scenic backdrops, the guest voices and Tripadvisor proof, the legal reconciliation, the booking rules at 48 hours): the baseline, each part's report, the evidence, the QA and the critique
 - `docs/enquiries/GO_LIVE_READINESS.md`: the live enquiry pipeline (8 Nov 2026): Neon, Resend and Cloudflare as configured, the cloud test matrix with its evidence (`docs/enquiries/evidence/`), the security and reliability findings, how staff operate it, and what still blocks going live
 - `docs/seo/`: the historical URLs (Step 4B): the readiness report with the cutover dependencies and the rollback (`READINESS.md`), the registry's tables (`HISTORICAL_URL_REGISTRY.md`, `historical-url-registry.csv`), a copy of the production build's `_redirects` for review, and the decisions on the old site's images (`HISTORICAL_MEDIA.md`)
 - `docs/motion/`: the cinematic motion layer (brand aircraft, sand journey): discovery, validation, performance, critique, delivery, and the evidence in `docs/motion/qa/`

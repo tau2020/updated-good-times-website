@@ -20,13 +20,16 @@ import {
   FLIGHT_REQUIRED_TYPES,
   CONTACT_METHODS,
   earliestDate,
+  BOOKING_RULES,
 } from '../lib/enquiries/schema.mjs';
 import * as browserSchema from '../src/assets/js/enquiry-schema.js';
 import { TOUR_SLUGS as DATA_TOUR_SLUGS, tours } from '../src/data/tours.mjs';
 import { PACKAGE_SLUGS as DATA_PACKAGE_SLUGS, packages } from '../src/data/packages.mjs';
 import { TRANSFER_TYPES as DATA_TRANSFER_TYPES, types as dataTransferTypes } from '../src/data/transfers.mjs';
 
-// "Now" is pinned: Friday 16 October 2026, 10:00 in Cape Town (08:00 UTC).
+// "Now" is pinned: Friday 16 October 2026, 10:00 in Cape Town (08:00 UTC). With 48 hours' notice
+// (BOOKING_RULES.minNoticeHours) the first tour date is Sunday the 18th and the first pickup 10:00 that day;
+// the fixtures below sit well clear of that, three days ahead or more.
 const NOW = Date.parse('2026-10-16T10:00:00+02:00');
 const v = (input, opts = {}) => validateEnquiry(input, { now: NOW, ...opts });
 
@@ -55,7 +58,7 @@ const transfer = {
   transfer_type: 'airport-arrival',
   pickup_location: 'Cape Town International Airport (CPT)',
   destination: 'Camps Bay',
-  transfer_date: '2026-10-17',
+  transfer_date: '2026-10-19', // Monday: 76 hours 30 minutes after NOW
   transfer_time: '14:30',
   flight_number: 'ba59',
   adults: 2,
@@ -193,18 +196,43 @@ test('tour: a preferred date is required unless "my dates are flexible" is ticke
   assert.equal(v({ ...tour, flexible_dates: 'ignored' }).data.flexible_dates, '');
 });
 
-test('tour: the date cannot be in the past and needs 24 hours’ notice in Cape Town (SAST)', () => {
-  // It is 10:00 SAST on 16 October: the 17th is the first date with 24 hours' notice.
-  assert.match(v({ ...tour, preferred_date: '2026-10-16' }).errors.preferred_date, /24 hours’ notice/);
-  assert.equal(v({ ...tour, preferred_date: '2026-10-17' }).ok, true);
+test('tour: the date cannot be in the past and needs 48 hours’ notice in Cape Town (SAST)', () => {
+  assert.equal(BOOKING_RULES.minNoticeHours, 48, 'the owner’s rule of 8 Nov 2026');
+  // It is 10:00 SAST on Friday 16 October: Sunday the 18th is the first date with 48 hours' notice.
+  assert.equal(earliestDate(NOW), '2026-10-18');
+  assert.match(v({ ...tour, preferred_date: '2026-10-16' }).errors.preferred_date, /48 hours’ notice/);
+  assert.equal(v({ ...tour, preferred_date: '2026-10-17' }).errors.preferred_date, 'Tours need 48 hours’ notice. Choose 2026-10-18 or later.');
+  assert.equal(v({ ...tour, preferred_date: '2026-10-18' }).ok, true);
   assert.match(v({ ...tour, preferred_date: '2026-10-15' }).errors.preferred_date, /today or a later date/);
   assert.match(v({ ...tour, preferred_date: '2026-02-30' }).errors.preferred_date, /real date/);
   assert.match(v({ ...tour, preferred_date: '2031-01-01' }).errors.preferred_date, /next 3 years/);
-  // 23:30 UTC on the 16th is already 01:30 on the 17th in Cape Town, so the 18th is the first date.
-  const lateUtc = Date.parse('2026-10-16T23:30:00Z');
-  assert.equal(earliestDate(lateUtc), '2026-10-18');
-  assert.ok(validateEnquiry({ ...tour, preferred_date: '2026-10-17' }, { now: lateUtc }).errors.preferred_date);
-  assert.equal(validateEnquiry({ ...tour, preferred_date: '2026-10-18' }, { now: lateUtc }).ok, true);
+});
+
+test('tour: the first date offered is the Cape Town date 48 hours on, at 10:00, at 23:59, across Cape Town midnight and near UTC midnight', () => {
+  const at = (iso) => Date.parse(iso);
+  const dayBefore = (iso) => new Date(Date.parse(`${iso}T12:00:00Z`) - 864e5).toISOString().slice(0, 10);
+  const cases = [
+    // Friday the 16th in Cape Town, from its first to its last moment: Sunday the 18th, whatever time the tour then starts.
+    ['2026-10-16T00:00:00+02:00', '2026-10-18'],
+    ['2026-10-16T10:00:00+02:00', '2026-10-18'],
+    ['2026-10-16T23:59:00+02:00', '2026-10-18'],
+    ['2026-10-16T23:59:59.999+02:00', '2026-10-18'],
+    // A minute after 23:59 it is Saturday the 17th in Cape Town: Monday the 19th.
+    ['2026-10-17T00:00:00+02:00', '2026-10-19'],
+    // Near UTC midnight: 21:59 UTC is still the 16th in Cape Town, 22:00 UTC is already the 17th...
+    ['2026-10-16T21:59:00Z', '2026-10-18'],
+    ['2026-10-16T22:00:00Z', '2026-10-19'],
+    // ...so at 23:30 UTC on the 16th (01:30 on the 17th in Cape Town) the first date is the 19th, where the UTC date would say the 18th;
+    ['2026-10-16T23:30:00Z', '2026-10-19'],
+    // and UTC midnight itself is 02:00 in Cape Town.
+    ['2026-10-17T00:00:00Z', '2026-10-19'],
+  ];
+  for (const [iso, first] of cases) {
+    const now = at(iso);
+    assert.equal(earliestDate(now), first, iso);
+    assert.equal(validateEnquiry({ ...tour, preferred_date: first }, { now }).ok, true, `${iso}: ${first} is offered`);
+    assert.equal(validateEnquiry({ ...tour, preferred_date: dayBefore(first) }, { now }).errors.preferred_date, `Tours need 48 hours’ notice. Choose ${first} or later.`, `${iso}: the day before is not`);
+  }
 });
 
 test('tour: party size limits and pickup area', () => {
@@ -233,13 +261,30 @@ test('transfer: pickup, destination, date and time are required', () => {
   assert.equal(v({ ...transfer, transfer_time: '14:30:00' }).data.transfer_time, '14:30');
 });
 
-test('transfer: the pickup cannot be in the past, needs 24 hours’ notice and runs 04:00 to 23:00 (SAST)', () => {
+test('transfer: the pickup cannot be in the past, needs 48 hours’ notice and runs 04:00 to 23:00 (SAST)', () => {
+  const notice = 'Transfers need 48 hours’ notice. Choose a pickup at least 48 hours from now.';
   assert.match(v({ ...transfer, transfer_date: '2026-10-15' }).errors.transfer_date, /today or a later date/);
-  // It is 10:00 SAST on 16 October. 09:59 today has passed; 18:00 today is under 24 hours away.
+  // It is 10:00 SAST on 16 October. 09:59 today has passed; 18:00 today and any time tomorrow are under 48 hours away,
+  // and the date is the field to change.
   assert.match(v({ ...transfer, transfer_date: '2026-10-16', transfer_time: '09:59' }).errors.transfer_time, /already passed in Cape Town/);
-  assert.match(v({ ...transfer, transfer_date: '2026-10-16', transfer_time: '18:00' }).errors.transfer_date, /24 hours’ notice/);
-  assert.match(v({ ...transfer, transfer_date: '2026-10-17', transfer_time: '09:59' }).errors.transfer_time, /24 hours’ notice/);
-  assert.equal(v({ ...transfer, transfer_date: '2026-10-17', transfer_time: '10:00' }).ok, true);
+  assert.equal(v({ ...transfer, transfer_date: '2026-10-16', transfer_time: '18:00' }).errors.transfer_date, notice);
+  assert.equal(v({ ...transfer, transfer_date: '2026-10-17', transfer_time: '23:00' }).errors.transfer_date, notice);
+  // Exactly 48 hours ahead (10:00 on Sunday the 18th) is accepted; 47 hours 59 minutes is not, nor is a
+  // millisecond short, and then the time is the field to change.
+  assert.equal(v({ ...transfer, transfer_date: '2026-10-18', transfer_time: '10:00' }).ok, true);
+  assert.equal(v({ ...transfer, transfer_date: '2026-10-18', transfer_time: '09:59' }).errors.transfer_time, notice);
+  assert.equal(validateEnquiry({ ...transfer, transfer_date: '2026-10-18', transfer_time: '10:00' }, { now: NOW + 1 }).errors.transfer_time, notice);
+  assert.equal(validateEnquiry({ ...transfer, transfer_date: '2026-10-18', transfer_time: '10:01' }, { now: NOW + 1 }).ok, true);
+  // Late in the evening the first date offered can have no pickup left: at 23:30 SAST on the 16th the 18th is
+  // offered, but its last pickup, 23:00, is 47 hours 30 minutes away; 04:00 on the 19th is fine.
+  const lateSast = Date.parse('2026-10-16T23:30:00+02:00');
+  assert.equal(earliestDate(lateSast), '2026-10-18');
+  assert.equal(validateEnquiry({ ...transfer, transfer_date: '2026-10-18', transfer_time: '23:00' }, { now: lateSast }).errors.transfer_time, notice);
+  assert.equal(validateEnquiry({ ...transfer, transfer_date: '2026-10-19', transfer_time: '04:00' }, { now: lateSast }).ok, true);
+  // Near UTC midnight: 23:30 UTC on the 16th is 01:30 SAST on the 17th, so 48 hours on is 01:30 on the 19th.
+  const lateUtc = Date.parse('2026-10-16T23:30:00Z');
+  assert.equal(validateEnquiry({ ...transfer, transfer_date: '2026-10-18', transfer_time: '23:00' }, { now: lateUtc }).errors.transfer_date, notice);
+  assert.equal(validateEnquiry({ ...transfer, transfer_date: '2026-10-19', transfer_time: '04:00' }, { now: lateUtc }).ok, true);
   // 08:30 UTC is 10:30 SAST: a 10:00 pickup that day is already past even though 10:00 > 08:30.
   const r = validateEnquiry({ ...transfer, transfer_date: '2026-10-16', transfer_time: '10:00' }, { now: Date.parse('2026-10-16T08:30:00Z') });
   assert.ok(r.errors.transfer_time);
@@ -268,18 +313,19 @@ test('transfer: a flight number is required for airport arrivals only, and must 
 });
 
 test('transfer: an optional return leg needs a date and time after the outbound transfer', () => {
+  // The outbound pickup is 14:30 on Monday 19 October (the fixture).
   const base = { ...transfer, return_trip: true };
   const missing = v({ ...base, return_date: '', return_time: '' });
   assert.ok(missing.errors.return_date && missing.errors.return_time);
-  assert.match(v({ ...base, return_date: '2026-10-16', return_time: '18:00' }).errors.return_date, /after the outbound/);
-  assert.match(v({ ...base, return_date: '2026-10-17', return_time: '12:00' }).errors.return_time, /after the outbound/);
-  assert.match(v({ ...base, return_date: '2026-10-17', return_time: '14:30' }).errors.return_time, /after the outbound/);
-  const ok = v({ ...base, return_date: '2026-10-17', return_time: '20:00' });
+  assert.match(v({ ...base, return_date: '2026-10-18', return_time: '18:00' }).errors.return_date, /after the outbound/);
+  assert.match(v({ ...base, return_date: '2026-10-19', return_time: '12:00' }).errors.return_time, /after the outbound/);
+  assert.match(v({ ...base, return_date: '2026-10-19', return_time: '14:30' }).errors.return_time, /after the outbound/);
+  const ok = v({ ...base, return_date: '2026-10-19', return_time: '20:00' });
   assert.equal(ok.ok, true, JSON.stringify(ok.errors));
-  const ok2 = v({ ...base, return_date: '2026-10-24', return_time: '09:00' });
+  const ok2 = v({ ...base, return_date: '2026-10-26', return_time: '09:00' });
   assert.equal(ok2.ok, true);
   // Without the return tick, return fields are dropped.
-  const none = v({ ...transfer, return_trip: false, return_date: '2026-10-24', return_time: '09:00' });
+  const none = v({ ...transfer, return_trip: false, return_date: '2026-10-26', return_time: '09:00' });
   assert.equal(none.data.return_date, '');
   assert.equal(none.data.return_time, '');
 });

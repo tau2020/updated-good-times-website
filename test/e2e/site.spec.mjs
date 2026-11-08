@@ -678,85 +678,61 @@ test.describe('home hero', () => {
   });
 });
 
-test.describe('guest stories', () => {
-  // Chapter 09, "The people behind the good times" (the brief of 6 Nov 2026, §7): a light grid of review cards in place
-  // of the auto-advancing carousel. Several in view at once, nothing moving by itself, the rest a press away.
-  const cards = (page) => page.locator('.stories [data-story-card]');
-  const visible = (page) => page.locator('.stories [data-story-card]').evaluateAll((els) => els.filter((el) => el.offsetParent !== null).length);
-
-  test('shows real reviews as friendly cards on a soft leaf ground: initials, name, place, rating, tour, our labelled summary, the month and the link; the listing’s rating dated beside the heading', async ({ page }) => {
+test.describe('guest voices', () => {
+  // Chapter 09, "The people behind the good times" (the owner's brief of 8 Nov 2026, §§ C–D): the listing's proof beside
+  // the heading (no date), a feature postcard and two staggered notes (the three themes, in our words), a quiet ribbon
+  // with the Google profile's own figure. No review card, no carousel, nothing that moves by itself.
+  test('the proof, the three themes and the ribbon: linked, labelled, without a date, a reviewer or a quote', async ({ page }) => {
     await page.goto('/?nomotion');
-    const section = page.locator('section.stories#reviews');
+    const section = page.locator('section.voices#reviews');
     await expect(section).toHaveCount(1);
-    await expect(section.locator('.stories__eyebrow .lc-mark__num')).toHaveText('09');
-    await expect(section.locator('.stories__eyebrow .lc-mark__label')).toHaveText('The people behind the good times');
+    await expect(section.locator('.voices__eyebrow .lc-mark__num')).toHaveText('09');
+    await expect(section.locator('.voices__eyebrow .lc-mark__label')).toHaveText('The people behind the good times');
     await expect(section.locator('h2')).toHaveText('Good times, by the people who had them.');
-    expect(await section.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(239, 248, 240)');
-    // The listing's own rating and number of reviews, dated (the day both were read), linked
-    const rating = section.locator('.stories__rating');
-    await expect(rating).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
-    await expect(rating).toHaveAttribute('target', '_blank');
-    await expect(rating.locator('.stories__rating-label')).toHaveText('Rated 5.0 out of 5 on Tripadvisor');
-    await expect(rating.locator('.stories__rating-count')).toHaveText('Number of reviews on Tripadvisor: 264');
-    await expect(rating.locator('.stories__rating-date')).toContainText('As listed on 8 November 2026');
-    const { reviews } = await import('../../src/data/reviews.mjs');
-    await expect(cards(page)).toHaveCount(reviews.length);
-    // Open the collapsed grid first: a hidden card's link has no accessible name to check
-    const more = page.locator('[data-stories-more]');
-    if (await more.isVisible()) await more.click();
-    for (const r of reviews) {
-      const card = section.locator('[data-story-card]', { has: page.locator(`.story-card__source a[href="${r.url}"]`) });
-      await expect(card, r.author).toHaveCount(1);
-      await expect(card.locator('.story-card__name')).toHaveText(r.author);
-      if (r.origin) await expect(card.locator('.story-card__place')).toHaveText(r.origin);
-      // Initials, never a stand-in face; an approved photo would cover them (none is supplied yet)
-      await expect(card.locator('.story-card__initials')).toHaveAttribute('aria-hidden', 'true');
-      await expect(card.locator('.story-card__avatar img')).toHaveCount(0);
-      await expect(card.locator('.story-card__label')).toHaveText('The review in short, in our words');
-      await expect(card.locator('.story-card__quote--summary p').last()).toHaveText(r.summary);
-      if (r.rating) await expect(card.locator('.story-card__meta .visually-hidden')).toHaveText(`Rated ${r.rating} out of 5.`);
-      await expect(card.locator('.story-card__source a')).toHaveAttribute('rel', /\bnoopener\b/);
-      await expect(card.locator('.story-card__source a')).toHaveAccessibleName(`Read the full review by ${r.author} on Tripadvisor (opens in a new tab)`);
+    const proof = section.locator('.voices-proof');
+    await expect(proof.locator('.voices-proof__numeral')).toHaveText('5.0');
+    await expect(proof.locator('.voices-proof__fact').first()).toHaveText('5.0 out of 5 on Tripadvisor');
+    await expect(proof.locator('.voices-proof__fact--count')).toHaveText('264 traveller reviews');
+    await expect(proof).not.toContainText(/As of|As listed|November|2026/);
+    const cta = proof.locator('.voices-proof__cta');
+    await expect(cta).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
+    await expect(cta).toHaveAttribute('target', '_blank');
+    await expect(cta).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(cta).toHaveAccessibleName('Read our reviews on Tripadvisor (opens in a new tab)');
+    await expect(section.locator('.voices-postcard, .voices-note')).toHaveCount(3);
+    await expect(section.locator('.voices-label')).toHaveText(['In our words', 'In our words', 'In our words']);
+    await expect(section.locator('.voices__chapter blockquote, .voices__chapter .stars, [data-story-card], [data-stories-more]')).toHaveCount(0);
+    await expect(section.locator('.voices-postcard figcaption')).toHaveText('Waving goodbye at Cape Town International · A Good Times photograph');
+    const google = section.locator('.voices-ribbon__proof').first();
+    await expect(google).toHaveAttribute('href', 'https://maps.google.com/?cid=8412254069527472113');
+    await expect(google).toHaveAccessibleName('Google: 5.0 out of 5 from 10 reviews (opens in a new tab)');
+    await expect(section.locator('.voices-ribbon a')).toHaveCount(1); // the listing's link is the proof's own button: not repeated
+    // White glass cards: the scenic plane never sits under a card's words
+    for (const card of await section.locator('.voices-proof, .voices-postcard, .voices-note').all()) {
+      const bg = await card.evaluate((el) => getComputedStyle(el).backgroundColor);
+      expect(Number(bg.match(/rgba?\(([^)]+)\)/)[1].split(',')[3] ?? 1)).toBeGreaterThanOrEqual(0.85);
     }
-    // White, rounded cards; no giant quotation marks, no carousel controls, nothing that plays by itself
-    expect(await section.locator('.story-card__inner').first().evaluate((el) => [getComputedStyle(el).backgroundColor, parseFloat(getComputedStyle(el).borderTopLeftRadius) >= 20])).toEqual(['rgb(255, 255, 255)', true]);
-    await expect(section.locator('blockquote, [data-stories-prev], [data-stories-next], [data-stories-toggle], .is-clone')).toHaveCount(0);
-    await expect(section.locator('.stories__cta')).toHaveAttribute('href', /tripadvisor/);
   });
 
-  test('several reviews are in view at once and the rest open with a real button; without JavaScript every card shows', async ({ page, isMobile, browser }) => {
-    await page.goto('/?nomotion');
-    const more = page.locator('[data-stories-more]');
-    const { reviews } = await import('../../src/data/reviews.mjs');
-    const first = isMobile ? 3 : 6;
-    await expect.poll(() => visible(page)).toBe(first);
-    await expect(more).toBeVisible();
-    await expect(more).toHaveAttribute('aria-expanded', 'false');
-    await expect(more).toHaveAttribute('aria-controls', 'stories-grid');
-    await expect(more).toHaveText(`Show ${reviews.length - first} more reviews`);
-    await more.click();
-    await expect.poll(() => visible(page)).toBe(reviews.length);
-    await expect(more).toHaveAttribute('aria-expanded', 'true');
-    await expect(more).toHaveText('Show fewer reviews');
-    // Focus moves to the first review that was hidden, so a keyboard user lands on the new cards
-    expect(await page.evaluate(() => Boolean(document.activeElement && document.activeElement.closest('[data-story-card]')))).toBe(true);
-    await more.click();
-    await expect.poll(() => visible(page)).toBe(first);
-    // No script: the whole grid, and no button
-    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: page.viewportSize() || undefined });
-    const plain = await ctx.newPage();
-    await plain.goto('/?nomotion');
-    await expect.poll(() => visible(plain)).toBe(reviews.length);
-    await expect(plain.locator('[data-stories-more]')).toBeHidden();
-    await ctx.close();
+  test('with motion the cards rise once, by opacity and a few pixels, and a card reached by keyboard is never left faded', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'the reveal is the same at every width');
+    await page.goto('/');
+    await page.waitForFunction(() => document.documentElement.classList.contains('intro-done'), null, { timeout: 15000 });
+    const proof = page.locator('.voices-proof');
+    // Before it is reached: faded, still in the accessibility tree (opacity, never visibility)
+    expect(await proof.evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
+    await page.locator('.voices-proof__cta').focus();
+    await expect.poll(() => proof.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+    await page.locator('#reviews').scrollIntoViewIfNeeded();
+    await expect.poll(() => page.locator('.voices-note').last().evaluate((el) => Number(getComputedStyle(el).opacity))).toBe(1);
   });
 });
 
 test.describe('home story: The Cape, A Living Story', () => {
   // The taste composition (`taste`) is a second, unnumbered interlude between 07 and 08
   // The water chapter that followed the sand journey was removed on 6 Nov 2026 (qa/surgical-change-report.md); the
-  // owner's Cape Peninsula photograph (lc-memory) continues chapter 01, and the review grid is chapter 09
-  const CHAPTERS = ['lc-scene', 'lc-memory', 'lc-moments', 'lc-film', 'lc-wild', 'lc-ways', 'lc-people', 'taste', 'lc-gallery', 'lc-scene', 'lc-ease', 'stories', 'lc-scene'];
+  // owner's Cape Peninsula photograph (lc-memory) continues chapter 01, and the guest voices are chapter 09
+  const CHAPTERS = ['lc-scene', 'lc-memory', 'lc-moments', 'lc-film', 'lc-wild', 'lc-ways', 'lc-people', 'taste', 'lc-gallery', 'lc-scene', 'lc-ease', 'voices', 'lc-scene'];
 
   test('tells one story in order below the hero: ten chapters and two interludes, each with its own heading', async ({ page }) => {
     await page.goto('/?nomotion');
@@ -1425,7 +1401,7 @@ const photos = (page) =>
         const drawn = getComputedStyle(img).objectFit === 'cover' ? Math.max(r.width, (r.height * img.naturalWidth) / img.naturalHeight) : r.width;
         const source = [...img.closest('picture').querySelectorAll('source')].find((s) => !s.media || matchMedia(s.media).matches);
         const widths = (source?.srcset || '').split(',').map((s) => parseInt(s.trim().split(/\s+/)[1])).filter(Boolean);
-        return { file: img.currentSrc.split('/').pop(), hero: !!img.closest('.hero__media'), film: !!img.closest('[data-sand-photo]'), cssW: r.width, drawn, chosen: parseInt(/-(\d+)\.\w+$/.exec(img.currentSrc)?.[1] || '0'), max: Math.max(...widths) };
+        return { file: img.currentSrc.split('/').pop(), hero: !!img.closest('.hero__media'), film: !!img.closest('[data-sand-photo]'), scenic: !!img.closest('.gt-scenic'), cssW: r.width, drawn, chosen: parseInt(/-(\d+)\.\w+$/.exec(img.currentSrc)?.[1] || '0'), max: Math.max(...widths) };
       });
   });
 
@@ -1484,8 +1460,10 @@ test.describe('design remediation (stage 1)', () => {
       await page.goto(`${path}?nomotion`);
       // The home hero photograph is drawn full bleed on purpose. So is the sand journey's poster: it is the owner's film's
       // own first frame at the film's own size (1280 × 720, the largest the film has), and the film plays over it at
-      // the same size (audit/image-quality-report.md).
-      const over = (await photos(page)).filter((p) => !p.hero && !p.film && p.drawn > p.max + 1);
+      // the same size (audit/image-quality-report.md). A scenic backdrop (scenic.css, 8 Nov 2026) is a faint plane at 18%
+      // or less under a wash, soft by design: its files are chosen by the screen's width to keep them light, so a tall
+      // band may draw it larger than its largest file; it is not a photograph anyone reads.
+      const over = (await photos(page)).filter((p) => !p.hero && !p.film && !p.scenic && p.drawn > p.max + 1);
       expect(over.map((p) => `${p.file}: drawn ${Math.round(p.drawn)} px, largest ${p.max} px`), path).toEqual([]);
     }
   });
@@ -1691,12 +1669,10 @@ test.describe('the button system', () => {
     await page.goto('/?nomotion');
     await expect(page.locator('[data-film-prev]')).toContainText('Previous');
     await expect(page.locator('[data-film-next]')).toContainText('Next');
-    await expect(page.locator('[data-stories-more]')).toContainText(/Show \d+ more reviews/);
     await expect(page.locator('[data-lc-prev]')).toHaveText(/Previous/);
     await expect(page.locator('[data-lc-next]')).toHaveText(/Next/);
     // Each control's name begins with the words on it (WCAG 2.5.3)
     await expect(page.locator('[data-film-prev]')).toHaveAccessibleName('Previous destination');
-    await expect(page.locator('[data-stories-more]')).toHaveAccessibleName(/^Show \d+ more reviews$/);
   });
 
   test('from 320 px up no button’s words are clipped or pushed past the screen (the phone bar included)', async ({ page, isMobile }) => {
@@ -1755,9 +1731,10 @@ test.describe('content honesty', () => {
     for (const path of PAGES) {
       await page.goto(`${path}?nomotion`);
       let text = await page.locator('body').innerText();
-      // Good Times' own published cancellation rule ("Free cancellation up to 24 hours before …", from its official
-      // tour and transfer pages) is a policy, not a marketplace claim: only that rule itself is set aside, wherever stated.
-      text = text.replace(/free cancellation up to 24 hours before[^.;)]*/gi, '');
+      // Good Times' own cancellation rule ("Free cancellation up to 24 hours before …", 48 hours for the Garden Route: the
+      // owner's rule per kind of booking, 8 Nov 2026) is a policy, not a marketplace claim: only that rule itself is set
+      // aside, wherever stated.
+      text = text.replace(/free cancellation up to (24|48) hours before[^.;)]*/gi, '');
       // The terms say plainly that a request is not yet a booking: a disclaimer, not a promise
       if (path === '/terms/') text = text.replace('does not by itself guarantee a place on a tour', '');
       expect(text, path).not.toMatch(/lorem ipsum|24\/7|guarantee|insured|award-winning|#5 on Tripadvisor|1,200\+|Thousands of|10\+ years|100% locally|Free cancellation|Secure booking|Confirm & Pay/i);

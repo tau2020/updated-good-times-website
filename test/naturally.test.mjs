@@ -171,34 +171,50 @@ test('the owner’s Cape Peninsula photograph: the original file’s renditions,
   assert.match(lc, /\.lc-memory__frame img \{[^}]*object-fit: contain;/);
   // Captioned by place, credited, attached to no review and naming nobody
   const html = render('index.html');
-  const block = html.slice(html.indexOf('<section class="lc-memory"'), html.indexOf('</section>', html.indexOf('<section class="lc-memory"')));
+  const block = html.slice(html.indexOf('<section class="lc-memory'), html.indexOf('</section>', html.indexOf('<section class="lc-memory')));
   assert.match(block, /Chapman’s Peak Drive, above Hout Bay/);
   assert.match(block, /A guest’s photograph from a Good Times tour/);
   assert.doesNotMatch(block, new RegExp(reviews.map((r) => r.author.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')));
   assert.match(read('docs/RIGHTS_REGISTER.md'), new RegExp(`\\| ${name} \\|[^\\n]*In use`));
 });
 
-test('reviews: real names and ratings, initials until an approved photo exists, labelled summaries, no stand-in faces, no hard-coded count', () => {
+test('guest voices (8 Nov 2026): the listing’s proof without a date, three themes in our words, no reviewer, quote or star in them, Google apart', async () => {
+  const { THEMES, TESTIMONIALS, eligibleTestimonials, isEligible } = await import('../src/data/reputation.mjs');
   const html = render('index.html');
-  const sec = html.slice(html.indexOf('<section class="stories"'), html.indexOf('</section>', html.indexOf('<section class="stories"')));
-  const cards = sec.match(/<li class="story-card"/g) || [];
-  assert.equal(cards.length, reviews.length);
-  assert.doesNotMatch(sec, /assets\/img\/avatars\//, 'no illustrated stand-in faces');
-  assert.equal((sec.match(/class="story-card__initials" aria-hidden="true">/g) || []).length, reviews.length);
-  // No reviewer photo is approved and supplied yet (content/reviews-source-audit.md): none is shown
-  assert.doesNotMatch(sec, /assets\/img\/reviewers\//);
-  for (const r of reviews) {
-    assert.match(sec, new RegExp(`href="${r.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`), r.author);
-    assert.ok(!r.quote && !r.excerpt, `${r.author}: no verbatim text without the reviewer’s permission`);
-  }
-  assert.equal((sec.match(/The review in short, in our words/g) || []).length, reviews.length);
-  assert.doesNotMatch(sec, /in their words|“/, 'no claim that the words are the reviewers’');
-  // The listing's rating and its number of reviews (the owner's request of 8 Nov 2026), dated with the day both were read
-  assert.match(sec, new RegExp(`Rated ${site.tripadvisor.rating.toFixed(1)} out of 5 on Tripadvisor`));
-  assert.match(sec, new RegExp(`Number of reviews on <span>Tripadvisor: <strong>${site.tripadvisor.reviewCount}</strong></span>`));
-  assert.equal(site.tripadvisor.reviewCount, 264);
-  assert.match(sec, /As listed on 8 November 2026/);
-  // Several visible at once without JavaScript: the grid is collapsed only by the script
-  assert.doesNotMatch(sec, /class="stories__grid is-collapsed"/);
-  assert.match(sec, /data-stories-more hidden/);
+  const at = html.indexOf('<section class="voices');
+  const sec = html.slice(at, html.indexOf('</section>', at));
+  assert.ok(at > 0 && /id="reviews"/.test(sec), 'the chapter keeps the #reviews anchor');
+  assert.doesNotMatch(html, /class="stories|story-card|data-stories/, 'the old grid of review summaries is gone from the home page');
+  // The proof: Tripadvisor's rating and number of reviews from the one place they are kept, linked, and no date
+  const ta = site.tripadvisor;
+  const proof = sec.slice(sec.indexOf('<aside class="voices-proof'), sec.indexOf('</aside>'));
+  assert.match(proof, new RegExp(`<strong>${ta.rating.toFixed(1)}</strong> out of 5 on Tripadvisor`));
+  assert.match(proof, new RegExp(`<strong>${ta.reviewCount}</strong> traveller reviews`));
+  assert.equal(ta.reviewCount, 264);
+  assert.match(proof, /The reviews speak for themselves\./);
+  assert.doesNotMatch(proof, /As of|As listed|checked|20\d\d|November/i, 'no date beside the figures (the owner’s instruction)');
+  assert.match(proof, new RegExp(`<a class="btn gt-button gt-button--primary voices-proof__cta" href="${ta.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}" target="_blank" rel="noopener noreferrer"><span>Read our reviews</span><span class="visually-hidden"> on Tripadvisor</span><span class="visually-hidden"> \\(opens in a new tab\\)</span>`));
+  assert.doesNotMatch(sec, /tripadvisor[^"]*\.(svg|png)|owl/i, 'no Tripadvisor artwork redrawn or embedded');
+  // The themes: three, each labelled as our words, never a review: no reviewer's name, no star, no quotation
+  assert.equal(THEMES.length, 3);
+  for (const t of THEMES) assert.ok(sec.includes(t.text.replace(/’/g, '’')), t.id);
+  assert.equal((sec.match(/class="voices-label">In our words</g) || []).length, 3);
+  const cards = sec.slice(sec.indexOf('<div class="voices__chapter">'), sec.indexOf('<div class="voices-ribbon"'));
+  assert.doesNotMatch(cards, /class="stars|“|”|<blockquote/, 'no star or quotation in the themes');
+  for (const r of reviews) assert.doesNotMatch(sec, new RegExp(`\\b${r.author.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`), `no reviewer named: ${r.author}`);
+  // The postcard's photograph: a Good Times one, captioned as what it is, used nowhere else on the site
+  assert.match(cards, /airport-departures-wave-\d+\.(avif|webp)/);
+  assert.match(cards, /Waving goodbye at Cape Town International · A Good Times photograph/);
+  for (const p of pages.filter((x) => x.path !== 'index.html')) assert.doesNotMatch(layout(p, site), /airport-departures-wave-\d+/, `${p.path}: one photograph, one placement`);
+  // Google, apart: its own figure and link, never added to Tripadvisor's
+  assert.match(sec, /<a class="voices-ribbon__proof" href="https:\/\/maps\.google\.com\/\?cid=8412254069527472113" target="_blank" rel="noopener noreferrer">Google: 5\.0 out of 5 from 10 reviews/);
+  assert.match(sec, /href="https:\/\/maps\.google\.com\/\?cid=8412254069527472113"/);
+  assert.doesNotMatch(sec, new RegExp(`\\b${ta.reviewCount + site.google.reviewCount}\\b`), 'no total of unlike counts');
+  // The testimonial registry: none has a recorded permission, so none is shown; an approved, permitted one would be
+  assert.equal(TESTIMONIALS.length, reviews.length);
+  assert.deepEqual(eligibleTestimonials(), []);
+  const ok = { platform: 'Direct', source_url: 'https://example.com/r/1', permission_or_embed_method: 'written-permission', reviewer_display_name: 'A. Guest', date: '2026-10-01', rating: null, actual_verbatim_excerpt: 'A lovely day.', tour_tag: '', photo_asset_and_rights: null, approved: true };
+  assert.equal(isEligible(ok), true);
+  for (const broken of [{ ...ok, approved: false }, { ...ok, permission_or_embed_method: 'none recorded' }, { ...ok, actual_verbatim_excerpt: '' }, { ...ok, reviewer_display_name: '' }, { ...ok, source_url: 'http://x' }]) assert.equal(isEligible(broken), false);
+  assert.doesNotMatch(sec, /lorem ipsum|placeholder/i);
 });

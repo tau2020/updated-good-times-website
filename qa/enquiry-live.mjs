@@ -422,7 +422,7 @@ if (want('V')) {
     ['V3', 'invalid service choice', { ...tour('v3', date), enquiry_type: 'helicopter' }, 400, (r) => r.data?.errors?.enquiry_type],
     ['V4', 'malformed date', tour('v4', '2027-13-45'), 400, (r) => r.data?.errors?.preferred_date],
     ['V5', 'unsupported tour', tour('v5', date, { tour_slug: 'moon-landing-tour' }), 400, (r) => r.data?.errors?.tour_slug],
-    ['V6', 'date inside the 24 hours’ notice', tour('v6', new Date().toISOString().slice(0, 10)), 400, (r) => r.data?.errors?.preferred_date],
+    ['V6', 'date inside the 48 hours’ notice', tour('v6', new Date().toISOString().slice(0, 10)), 400, (r) => r.data?.errors?.preferred_date],
     ['V7', 'invalid JSON', '{"enquiry_type": "tour", ', 400, () => true],
     ['V8', 'oversized payload (40 KB)', tour('v8', date, { special_requests: 'x'.repeat(40_000) }), 413, () => true],
   ];
@@ -964,7 +964,7 @@ if (want('I')) {
     return { pass: codes.filter((c) => c === 201).length <= 1 && codes.every((c) => c === 201 || c === 409) && later.status === 201, actual: `pair ${codes.join(', ')}; three hours later ${later.status}` };
   });
   for (const d of [date, tdate]) await adminPost(BASE, '/admin/availability', { day: d, vehicles: '', note: '' }, staff);
-  record('I4', 'I Concurrency: business rules', 'vehicle numbers approved by Good Times', null, `not verifiable here: the default of ${2} vehicles a day, the 2-hour airport and 3-hour other transfer holds, and the 24 hours’ notice are the site’s assumptions (src/assets/js/enquiry-schema.js › BOOKING_RULES), not confirmed by Good Times: a business-approval blocker (D9)`);
+  record('I4', 'I Concurrency: business rules', 'vehicle numbers approved by Good Times', null, `not verifiable here: the default of ${2} vehicles a day, the 2-hour airport and 3-hour other transfer holds and the 48 hours’ notice are the owner’s approved booking rules of 8 Nov 2026 (D9; src/assets/js/enquiry-schema.js › BOOKING_RULES); this suite checks the code applies them, not the fleet itself`);
 }
 
 /* ---------- J: an Android-sized phone ---------- */

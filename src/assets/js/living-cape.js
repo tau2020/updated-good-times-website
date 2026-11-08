@@ -102,6 +102,15 @@
     gsap.from(els, { y: 28, autoAlpha: 0, duration: 0.7, ease: 'power2.out', stagger: 0.1, scrollTrigger: { trigger: els[0], start: 'top 85%', once: true } });
   });
 
+  /* ---------- 09 · Guest voices (the owner's brief of 8 Nov 2026, § D): the proof, the postcard, the two notes and the
+     ribbon rise once with a light drift (16 px) and opacity only (never visibility, so they stay in the accessibility tree
+     and the tab order; voices.css shows a focused one at once), at most 0.1 s apart. No pin, no scrub, no loop; without
+     motion (above) they are simply in place. ---------- */
+  var voices = toArray('[data-voice]');
+  if (voices.length) {
+    gsap.from(voices, { opacity: 0, y: 16, duration: 0.7, ease: 'power2.out', stagger: 0.1, scrollTrigger: { trigger: voices[0], start: 'top 85%', once: true } });
+  }
+
   /* ---------- Depth: in the asymmetric compositions, some prints travel a little faster or slower (desktop) ---------- */
   gsap.matchMedia().add('(min-width: 64em)', function () {
     toArray('[data-depth]').forEach(function (el) {

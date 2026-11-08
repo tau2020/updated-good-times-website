@@ -17,17 +17,25 @@ import { site } from '../data/site.mjs';
  */
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Terms & Conditions', href: 'terms/' }];
 
-/** What only Good Times can confirm. Each becomes part of the terms, and leaves this list, once confirmed. */
+/**
+ * What only Good Times can confirm. Each becomes part of the terms, and leaves this list, once confirmed. The release
+ * gate holds production while one is open (scripts/release-gate.mjs; docs/APPROVAL_REGISTER.md › B6).
+ */
 export const OPEN_POINTS = [
-  'the cancellation notice and any charges for each kind of booking (the tour pages list free cancellation up to 24 hours before departure)',
-  'payment methods, any deposit and when payment is due',
+  `when the deposit is due for a booking made less than ${site.legal.payment.depositDaysBefore} days before the excursion (requests are accepted with 48 hours’ notice, so a deposit ${site.legal.payment.depositDaysBefore} days before cannot always be paid)`,
 ];
 
 const list = (items) => items.join('; ');
+const { payment: PAY, cancellation: CANCEL } = site.legal;
+/** "bank transfer (EFT), card or cash" */
+const methods = (m) => (m.length > 1 ? `${m.slice(0, -1).join(', ')} or ${m[m.length - 1]}` : m[0] || '');
 
 /**
  * The text, as written. A clause is a paragraph with an optional bold label,
- * or a label over a list of points.
+ * or a label over a list of points. Good Times' published text (5 Nov 2026), with the owner's payment and
+ * cancellation terms of 8 Nov 2026 (the Legal details checklist, items 4 and 5: site.legal.payment and
+ * site.legal.cancellation) in sections 2 and 3. Section 2's last sentence is interim wording for the case the
+ * owner's rules leave open (OPEN_POINTS): it says only what the approved text said before, for that case alone.
  */
 export const TERMS = {
   intro:
@@ -44,14 +52,31 @@ export const TERMS = {
       id: 'pricing',
       title: '2. Pricing & payment',
       clauses: [
-        { text: 'Prices are quoted in South African Rand (ZAR) and are confirmed at the time of booking. Amounts shown in other currencies via the site’s currency selector are indicative conversions for reference only — the amount actually charged is always in ZAR. Payment terms will be confirmed with you when your booking is arranged.' },
+        { text: 'Prices are quoted in South African Rand (ZAR) and are confirmed at the time of booking. Amounts shown in other currencies via the site’s currency selector are indicative conversions for reference only — the amount actually charged is always in ZAR.' },
+        { text: `You can pay by ${methods(PAY.methods)}. A deposit of ${PAY.depositPercent}% of the price is due ${PAY.depositDaysBefore} days before your excursion, and the balance ${PAY.balance}.` },
+        { text: `For a booking made less than ${PAY.depositDaysBefore} days before the excursion, we tell you when the deposit is due when we confirm your booking.` },
       ],
     },
     {
       id: 'cancellations',
       title: '3. Cancellations & changes',
       clauses: [
-        { text: 'If you need to cancel or change a confirmed booking, contact us as soon as possible, directly by phone or email. How much notice is needed and whether any amount is refundable depends on the specific tour and how close to the departure date the change is requested; we’ll confirm the applicable terms with you when you book.' },
+        { text: 'If you need to cancel or change a confirmed booking, contact us as soon as possible, directly by phone or email. You can cancel without charge up to the notice below, counted back from the scheduled departure or pickup time in Cape Town.' },
+        {
+          label: 'Notice to cancel without charge',
+          items: [
+            `Day tours: ${CANCEL.dayTour} hours before departure`,
+            `Partner activities (shark cage diving, sky diving and quad biking): ${CANCEL.activity} hours before the activity`,
+            `Airport and other transfers: ${CANCEL.transfer} hours before pickup`,
+            `The Garden Route (multi-day): ${CANCEL.multiDay} hours before departure`,
+          ],
+        },
+        {
+          text:
+            CANCEL.lateCharge === CANCEL.noShowCharge
+              ? `If you cancel later than that, or do not arrive (a no-show), ${CANCEL.lateCharge}% of the price is charged.`
+              : `If you cancel later than that, ${CANCEL.lateCharge}% of the price is charged, and ${CANCEL.noShowCharge}% if you do not arrive (a no-show).`,
+        },
         { text: 'We reserve the right to cancel or reschedule a tour where weather, safety, or circumstances beyond our control make it necessary. In that case we’ll offer an alternative date or a full refund.' },
       ],
     },

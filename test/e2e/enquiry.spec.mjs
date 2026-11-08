@@ -12,6 +12,8 @@ import AxeBuilder from '@axe-core/playwright';
 
 const LIVE = process.env.E2E_ENQUIRY_MODE === 'live';
 const REF = /GT-[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}/;
+/** The Cape Town date `n` days from now. Tour dates from inDays(2) and transfer dates from inDays(3) meet the
+ * 48 hours' notice (BOOKING_RULES.minNoticeHours) at any time of day; the API's `earliest` is inDays(2). */
 const inDays = (n) => new Date(Date.now() + 2 * 3600e3 + n * 864e5).toISOString().slice(0, 10);
 const inDaysFrom = (iso, n) => new Date(Date.parse(`${iso}T12:00:00Z`) + n * 864e5).toISOString().slice(0, 10);
 /**
@@ -76,6 +78,10 @@ async function open(page, query = '') {
 async function axeClean(page) {
   // Let border/box-shadow transitions on freshly invalid fields finish, so contrast is measured at rest.
   await page.waitForTimeout(400);
+  // Measured from the top of the page: wherever the last step left the scroll, a control half under the sticky header
+  // reads to axe's target-size rule as overlapping the header's own links (a scroll-position artifact; since 8 Nov
+  // 2026 the anchor offset brings such controls into view under the header instead of above the screen)
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   const bad = results.violations.filter((v) => ['serious', 'critical'].includes(v.impact));
   expect(bad.map((v) => `${v.id}: ${v.help} (${v.nodes.length})`), JSON.stringify(bad.map((v) => v.nodes.map((n) => n.target)), null, 1)).toEqual([]);
@@ -742,7 +748,7 @@ test.describe('enquiry wizard (live build)', () => {
       (route) =>
         route.request().method() === 'POST'
           ? route.fulfill(json({ ok: true, available: false, field: 'preferred_date', error: FULL }))
-          : route.fulfill(json({ ok: true, month: full.slice(0, 7), earliest: inDays(1), full: [full], closed: [full] })),
+          : route.fulfill(json({ ok: true, month: full.slice(0, 7), earliest: inDays(2), full: [full], closed: [full] })),
     );
     await open(page, '?type=tour&tour=cape-town-city-private-tour');
     const t = step(page, 'details', 'tour');
@@ -766,7 +772,7 @@ test.describe('enquiry wizard (live build)', () => {
       async (route) => {
         await new Promise((ok) => setTimeout(ok, 600)); // answers after the keyboard has moved on
         const month = new URL(route.request().url()).searchParams.get('month');
-        await route.fulfill(json({ ok: true, month, earliest: inDays(1), full: [], closed: [] }));
+        await route.fulfill(json({ ok: true, month, earliest: inDays(2), full: [], closed: [] }));
       },
     );
     await open(page, '?type=tour&tour=cape-town-city-private-tour');

@@ -114,7 +114,9 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: calc(var(--header-h) + 1rem);
+  /* The header's measured height (main.js sets --header-live): on phones and tablets the header is taller than the
+     root's --header-h (its own height is set on body), so an anchor used to land under it */
+  scroll-padding-top: calc(var(--header-live, var(--header-h)) + 1rem);
   overflow-x: clip;
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -133,7 +135,9 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-body.drawer-open {
+/* The page stays put while the menu drawer is open. On the root, not on body: overflow on body made body a scroll
+   container, and the sticky header, now stuck to it, scrolled away with the page (main.js toggles the class on both) */
+html.drawer-open {
   overflow: hidden;
 }
 img,
@@ -482,10 +486,60 @@ h4 {
   background: var(--white);
   color: var(--ink);
   border-bottom: 1px solid var(--line);
-  transition: background-color var(--dur-slow) var(--ease-out), box-shadow var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out), color var(--dur-slow) var(--ease-out);
+  transition:
+    background-color var(--dur-glass) var(--ease-out),
+    box-shadow var(--dur-glass) var(--ease-out),
+    border-color var(--dur-glass) var(--ease-out),
+    color var(--dur-glass) var(--ease-out),
+    -webkit-backdrop-filter var(--dur-glass) var(--ease-out),
+    backdrop-filter var(--dur-glass) var(--ease-out);
 }
+/* Scrolled (main.js: the same class, the same threshold as before): the same header turns to white glass, so the page
+   moving beneath it shows through, softened. Paint only: no size, padding, position or type changes. The top of the
+   page keeps the header exactly as it was (white, or the home page's transparent overlay). */
 .site-header.is-condensed {
-  box-shadow: var(--shadow-s);
+  background-color: var(--gt-glass-fallback);
+  border-bottom-color: var(--gt-glass-line);
+  box-shadow: var(--gt-glass-shadow);
+}
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .site-header.is-condensed {
+    background-color: var(--gt-glass-surface);
+    -webkit-backdrop-filter: var(--gt-glass-filter);
+    backdrop-filter: var(--gt-glass-filter);
+  }
+}
+/* On the glass, the company statement takes the deep leaf green: the small words stay above 4.5:1 over the darkest band
+   that passes beneath (measured: qa/header-contrast.mjs); at the top of the page it keeps its own colour */
+.site-header.is-condensed .brand-lockup__statement {
+  color: var(--green-deep);
+}
+/* Solid again where glass would not help: low-memory or data-saving phones (main.js adds .is-lite), a reduced
+   transparency preference, and while the menu drawer (opaque white) hangs from it */
+.site-header.is-lite.is-condensed,
+.drawer-open .site-header {
+  background-color: var(--white);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .site-header.is-condensed {
+    background-color: var(--white);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .site-header.is-condensed {
+    background-color: Canvas;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 .header-bar {
   display: flex;
@@ -4286,13 +4340,4 @@ select.sfield__control {
 .footer-contact__office .icon {
   flex: none;
   margin-top: 0.15em;
-}
-/* A review shown as our summary (no verbatim text without the reviewer's permission): labelled as such, in DM Sans */
-.story-card__quote .story-card__label {
-  margin: 0 0 0.3rem;
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--green-primary);
 }

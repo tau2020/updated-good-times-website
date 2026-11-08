@@ -114,12 +114,37 @@ export const site = {
    */
   tripadvisor: {
     url: 'https://www.tripadvisor.co.za/Attraction_Review-g312659-d19611200-Reviews-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html',
+    // The one place the operator listing's figures live: every page reads them from here. Re-read (and this date
+    // changed) by the refresh check in docs/enhancement/03-reputation.md; the home page's panel shows no date (the
+    // owner's instruction of 8 Nov 2026). The product listings' own counts are separate (tours.mjs) and never added in.
     rating: 5.0,
     reviewCount: 264,
     checked: '2026-11-08',
+    checkedHow: 'The operator listing in a browser on 8 Nov 2026 (tripadvisor.com.sg): its JSON-LD aggregateRating 5.0 / 264 and "All reviews (264)"',
     distribution: { excellent: 260, good: 4, average: 0, poor: 0, terrible: 0 },
     distributionTotal: 264,
     distributionChecked: '2026-11-08',
+    /**
+     * Tripadvisor's Terms of Use and its 2025 brand guidelines ask for written permission to show its rating outside
+     * its own widgets (and a date beside it); its widget terms forbid showing ratings elsewhere once its widgets are
+     * used. Not requested yet: the release gate names it (docs/APPROVAL_REGISTER.md › R4).
+     */
+    permission: { status: 'not requested', verified: false },
+  },
+
+  /**
+   * The Google Business Profile, read on Google Maps itself (the place page, 8 Nov 2026): "Good Times In Cape Town",
+   * tour operator, 5.0 from 10 reviews. Shown in its own attributed line, never added to Tripadvisor's figures. The
+   * profile's address reads "Adeldhi Centre, … 8001": a spelling the owner can correct in the profile.
+   */
+  google: {
+    name: 'Good Times In Cape Town',
+    rating: 5.0,
+    reviewCount: 10,
+    url: 'https://maps.google.com/?cid=8412254069527472113',
+    checked: '2026-11-08',
+    checkedHow: 'The Google Maps place page in a browser on 8 Nov 2026 (place id 0x1dcc67e50d5c50db:0x74be54819684e7f1)',
+    verified: true,
   },
 
   /** Recognition the company states on its own About and Safety pages (read on 5 Nov 2026). */
@@ -179,11 +204,46 @@ export const site = {
    * `termsApproved`), the production deployment refuses to run (scripts/release-gate.mjs).
    */
   legal: {
-    entity: { name: '', registration: '', directors: '', verified: false },
-    // The office published on the official site; Good Times to confirm it is also the address for legal notices.
+    // The owner's completed "Legal details checklist" (8 Nov 2026, signed Stuart Matanhire), items 1–3. As Good Times
+    // gives them: the site shows them as the business's own details, never as a register's verification (a public
+    // registry check of the number is recorded in docs/enhancement/04-legal-reconciliation.md).
+    entity: { name: 'Good Times In Cape Town (Pty) Ltd', registration: '2022/878500/07', type: 'private company', directors: '', source: 'Legal details checklist, 8 Nov 2026, item 1', verified: true },
+    // The office published on the official site, and the address in the owner's approved texts of 8 Nov 2026. (Google's
+    // listing spells it "Adeldhi Centre … 8001"; the owner's documents and the official site say Adelphi Centre, 8005.)
     address: { text: '277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005', verified: true },
-    informationOfficer: { name: '', email: '', verified: false },
-    retention: { text: '', verified: false },
+    // POPIA's Information Officer, registered with the Information Regulator (checklist item 2). Privacy requests go to
+    // this address; hello@ stays the general address for everything else.
+    informationOfficer: { name: 'Stuart Matanhire', email: 'stuart@goodtimesincapetown.co.za', registered: true, source: 'Legal details checklist, 8 Nov 2026, item 2', verified: true },
+    // Checklist item 3. The periods, as the privacy notice states them; scripts/erase-personal-data.mjs --retention
+    // applies them (docs/enhancement/04-legal-reconciliation.md › Retention).
+    retention: {
+      unconvertedMonths: 1,
+      confirmedYears: 5,
+      text: 'If your request does not become a booking, we delete it one month after our last contact about it, or once the date you asked about has passed, whichever is later. If it does become a booking, we keep it for five years after your trip, the period for which South African law generally asks businesses to keep their financial records, and then delete it, unless the law requires us to keep it longer, for example for a tax query or a dispute.',
+      source: 'Legal details checklist, 8 Nov 2026, item 3',
+      verified: true,
+    },
+    /**
+     * The commercial terms the owner set in the checklist (items 4 and 5), rendered by the Terms & Conditions, the tour,
+     * package and transfer pages and the FAQ, so they say the same thing everywhere. Notice periods count back from the
+     * scheduled departure or pickup, Cape Town time.
+     */
+    cancellation: {
+      dayTour: 24,
+      multiDay: 48,
+      transfer: 24,
+      activity: 24,
+      lateCharge: 100,
+      noShowCharge: 100,
+      source: 'Legal details checklist, 8 Nov 2026, item 4 (a rule per type of booking)',
+    },
+    payment: {
+      methods: ['bank transfer (EFT)', 'card', 'cash'],
+      depositPercent: 50,
+      depositDaysBefore: 7,
+      balance: 'on the day',
+      source: 'Legal details checklist, 8 Nov 2026, item 5',
+    },
     // The day the approved texts took effect: the owner's approval (B1, B2). Change it if they should start at go-live.
     effective: '2026-11-08',
     // The texts are Good Times' own (goodtimesincapetown.co.za/terms and /privacy), adapted to how this website works.
@@ -193,8 +253,14 @@ export const site = {
     privacyApproved: true,
     termsApproved: true,
     // The version of the Terms & Conditions text on the site, recorded with every booking request that accepts them.
-    // Change it whenever the text changes (test/terms.test.mjs fails until you do).
-    termsVersion: '2026-11-05',
+    // Change it whenever the text changes (test/terms.test.mjs fails until you do). 2026-11-08: the owner's payment
+    // and per-booking cancellation terms (checklist items 4 and 5) and the registered company.
+    termsVersion: '2026-11-08',
+    /**
+     * Sign-off by a South African legal practitioner of the privacy notice and the terms as reconciled on 8 Nov 2026
+     * (the owner's brief asks for it before publication). Until it is recorded here, the release gate holds production.
+     */
+    counselReview: { by: '', date: '', verified: false },
     // Recorded 7 Nov 2026 by tau2020, the repository's owner, for the production deployment at
     // good-times-in-cape-town.pages.dev only (not the domain): these open items are accepted for that release and stay
     // open (docs/APPROVAL_REGISTER.md, A1 and B1–B5). Kept as given; the texts themselves were approved on 8 Nov 2026.

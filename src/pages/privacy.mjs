@@ -1,5 +1,11 @@
 import { esc, icon, breadcrumb } from '../partials/ui.mjs';
 import { images, generated, ORIGIN_NOTES as ORIGIN } from '../data/images.mjs';
+import { SCENES, PLACEMENTS } from '../data/scenic.mjs';
+
+/** The scenic backdrops in use (src/data/scenic.mjs): stock photographs, credited although their licences do not ask it */
+const backdrops = SCENES.filter((s) => PLACEMENTS.some((p) => p.scene === s.name));
+const backdropLine = (s) =>
+  `<li>${esc(s.subject)}, a faint background on the home page: photograph by ${esc(s.author)} on ${esc(s.platform)} (<a href="${esc(s.licenseUrl)}" rel="noopener">${esc(s.license)}</a>, <a href="${esc(s.source)}" rel="noopener">source</a>). ${esc(s.place)}.</li>`;
 
 /** One line of the photo list: what it shows, where it comes from, and for a licensed photograph its author, licence and source */
 const creditLine = (i) =>
@@ -49,8 +55,8 @@ export const page = {
     <ul>
       ${legal.entity.verified ? `<li>Registered name and number: ${esc(legal.entity.name)}${legal.entity.registration ? `, ${esc(legal.entity.registration)}` : ''}</li>` : ''}
       ${legal.address.verified ? `<li>Address: ${esc(legal.address.text)}</li>` : ''}
-      ${officer.verified ? `<li>Information Officer: ${esc(officer.name)}${officerMail ? `, ${officerMail}` : ''}</li>` : ''}
-      ${mail ? `<li>Email: ${mail}</li>` : ''}
+      ${officer.verified ? `<li>Information Officer, for anything about your personal information: ${esc(officer.name)}${officerMail ? `, ${officerMail}` : ''}</li>` : ''}
+      ${mail ? `<li>${officer.verified ? 'General enquiries' : 'Email'}: ${mail}</li>` : ''}
     </ul>
 
     <h2>What we collect</h2>
@@ -78,12 +84,12 @@ export const page = {
     <p>We share information only where it is needed to deliver your booking: for example with a guide preparing for your tour, with the operator of an activity you book, or with a payment processor handling a payment. A few companies also process your request on our behalf, to provide their service to us:</p>
     <ul>
       <li><strong>Cloudflare</strong> runs this website and its booking form, through data centres around the world, and, if you allow it, counts visits with Cloudflare Web Analytics.</li>
-      <li><strong>Neon</strong> stores booking requests in a database hosted by Amazon Web Services in Frankfurt, Germany.</li>
+      <li><strong>Neon</strong> stores booking requests in a database hosted by Amazon Web Services in Ohio, in the United States.</li>
       <li><strong>Resend</strong>, a company in the United States, sends the website’s emails through Amazon Web Services in Ireland.</li>
       <li><strong>Our email provider</strong> hosts the inbox where your request and our replies are kept.</li>
       <li><strong>WhatsApp</strong> (Meta) carries your messages if you choose to contact us or be answered there.</li>
     </ul>
-    <p>Your details may therefore leave South Africa. We send them only where answering your request depends on it, and share them with no one else unless the law requires it.</p>
+    <p>Your details are therefore stored outside South Africa, in the United States, and may pass through other countries on the way. We send them only where answering your request depends on it, and share them with no one else unless the law requires it.</p>
 
     <h2>How long we keep it</h2>
     <p>${legal.retention.verified ? esc(legal.retention.text) : 'We keep a request only as long as we need it to arrange your tour and to keep the records the law asks of us, and then erase it.'} You can ask us to erase it sooner, subject to any legal or record-keeping requirements.</p>
@@ -99,7 +105,7 @@ export const page = {
     <p>While you fill in the booking form, your answers are kept in your browser’s session storage, so a reload does not lose them. They are cleared when you close the tab or once your request is received. When you move on from the trip details, the form may ask our booking system whether your date and time are still free; it sends your answers for that check and nothing is kept. The currency prices are shown in, whether you chose it or it was picked for your country, and that day’s exchange rates are kept in session storage too, so every page shows the same currency until you close the tab. The rates are the European Central Bank’s, which our server fetches from Frankfurter without sending anything about you. Your answer to the visit statistics question is kept in your browser’s local storage, which stays after you close the tab, so that we do not ask on every page; clearing this website’s data in your browser removes it. This website sets no cookies and uses no advertising trackers.</p>
 
     <h2>Your rights</h2>
-    <p>Under POPIA you have the right to ask what personal information we hold about you, to ask us to correct inaccurate information, to ask us to delete your information, subject to any legal or record-keeping requirements, and to object to how your information is being used. You can also withdraw your agreement. We tell you in writing what we have done within 30 days, and none of this costs you anything.${mail ? ` Email ${mail}, quoting your booking reference if you have one.` : ''}</p>
+    <p>Under POPIA you have the right to ask what personal information we hold about you, to ask us to correct inaccurate information, to ask us to delete your information, subject to any legal or record-keeping requirements, and to object to how your information is being used. You can also withdraw your agreement. We tell you in writing what we have done within 30 days, and none of this costs you anything.${officer.verified && officerMail ? ` Email our Information Officer, ${esc(officer.name)}, at ${officerMail}, quoting your booking reference if you have one.` : mail ? ` Email ${mail}, quoting your booking reference if you have one.` : ''}</p>
     <p>You have the right to complain to us, and we would like to hear first if you are unhappy with how we handled your information. You can also complain to the <strong>Information Regulator</strong> of South Africa: POPIAComplaints@inforegulator.org.za, Woodmead North Office Park, 54 Maxwell Drive, Woodmead, Johannesburg 2191 (<a href="https://inforegulator.org.za/" rel="noopener" target="_blank">inforegulator.org.za<span class="visually-hidden"> (opens in a new tab)</span></a>). In the UK you can complain to the <strong>Information Commissioner’s Office</strong> (<a href="https://ico.org.uk/make-a-complaint/" rel="noopener" target="_blank">ico.org.uk<span class="visually-hidden"> (opens in a new tab)</span></a>), and in the EU to your country’s data protection authority.</p>
 
     <h2>Links to other sites</h2>
@@ -107,14 +113,15 @@ export const page = {
 
     <h2>Changes to this notice</h2>
     <p>If we change how we use your details, we will update this page and its date first.</p>
-    ${mail ? `<p>Questions about this notice or your data? Contact us at ${mail}.</p>` : ''}
+    ${officer.verified && officerMail ? `<p>Questions about this notice or your personal information? Contact our Information Officer at ${officerMail}${mail ? `; for anything else, ${mail}` : ''}.</p>` : mail ? `<p>Questions about this notice or your data? Contact us at ${mail}.</p>` : ''}
 
     <h2 id="credits">Photo credits</h2>
-    <p>Nearly every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing, and a few are guests’ own photographs from our tours that Good Times chose for this website. One is edited for privacy (a guest’s name on a welcome sign is blurred). Four are not ours: photographs of Cape Agulhas, a tandem skydive and shark cage diving off Gansbaai, used under their open licences from Wikimedia Commons where we have none of our own: each is credited below, and on the photograph itself wherever it is shown larger than a small thumbnail. Two pictures are not photographs: the café scene at the top of the home page is an AI-generated illustration of five friends, and the short film of the woman standing at the water’s edge after the footprints below it is AI-generated too; neither is a picture of our guests. The logo is Good Times’ own approved artwork.</p>
+    <p>Nearly every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing, and a few are guests’ own photographs from our tours that Good Times chose for this website. One is edited for privacy (a guest’s name on a welcome sign is blurred). Four are not ours: photographs of Cape Agulhas, a tandem skydive and shark cage diving off Gansbaai, used under their open licences from Wikimedia Commons where we have none of our own: each is credited below, and on the photograph itself wherever it is shown larger than a small thumbnail. Two pictures are not photographs: the café scene at the top of the home page is an AI-generated illustration of five friends, and the short film of the woman standing at the water’s edge after the footprints below it is AI-generated too; neither is a picture of our guests. ${backdrops.length ? `${backdrops.length === 3 ? 'Three' : backdrops.length} faint backgrounds on the home page (a sky, a sunset horizon and the sea) are stock photographs from Unsplash and Pexels, used as decoration under their licences: they were not taken on our tours, and none of them shows Cape Town. ` : ''}The logo is Good Times’ own approved artwork.</p>
     <details>
       <summary>Photo list and origins</summary>
       <ul class="small">
         ${[...images, ...generated].map(creditLine).join('\n        ')}
+        ${backdrops.map(backdropLine).join('\n        ')}
       </ul>
     </details>
     <p class="small muted">Fonts: Bricolage Grotesque, DM Sans and Caveat, used under the SIL Open Font Licence. The Cape Tourist Guides Association’s logo is the association’s own and is shown only as described on the home page.</p>

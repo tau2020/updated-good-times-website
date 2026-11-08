@@ -23,7 +23,9 @@ function approved() {
     effective: '2026-11-01',
     privacyApproved: true,
     termsApproved: true,
+    counselReview: { by: 'A. Practitioner (attorney)', date: '2026-11-02', verified: true },
   });
+  s.tripadvisor.permission = { status: 'granted', verified: true };
   return s;
 }
 
@@ -71,7 +73,9 @@ test('a draft says it is a draft; an unconfirmed fact is left out, never shown a
 test('the privacy notice names every processor the booking system uses, and promises no marketing', () => {
   const html = privacy.body({ site: approved() });
   // The inbox's provider is named generically until Good Times confirms it (docs/APPROVAL_REGISTER.md).
-  for (const name of ['Cloudflare', 'Neon', 'Resend', 'Our email provider', 'WhatsApp', 'Frankfurt', 'Ireland']) assert.match(html, new RegExp(name), name);
+  // Neon's database is in AWS us-east-2, Ohio (the Neon console, 8 Nov 2026): the approved text's "Frankfurt" was wrong
+  for (const name of ['Cloudflare', 'Neon', 'Resend', 'Our email provider', 'WhatsApp', 'Ohio, in the United States', 'Ireland']) assert.match(html, new RegExp(name), name);
+  assert.doesNotMatch(html, /Frankfurt, Germany/);
   assert.match(html, /never signs you up for promotional messages/);
   assert.match(html, /Information Regulator/);
   assert.match(html, /session storage/);
@@ -107,11 +111,12 @@ test('the script itself fails the job, and says why, while anything open is not 
 
 test('an owner’s override passes exactly the blockers it names; anything else still stops the release', () => {
   const s = structuredClone(site);
-  s.legal.releaseOverride = { date: '2026-10-26', by: 'test', accepted: ['site.legal.effective', 'site.legal.entity', 'site.legal.address', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS'] };
+  s.legal.releaseOverride = { date: '2026-10-26', by: 'test', accepted: ['site.legal.effective', 'site.legal.entity', 'site.legal.address', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS', 'site.legal.counselReview', 'site.tripadvisor.permission'] };
   Object.assign(s.legal, { privacyApproved: true, termsApproved: true, effective: '', retention: { text: '', verified: false } });
   const ok = releaseDecision(s);
   assert.equal(ok.clear, true, ok.remaining.join('; '));
-  assert.ok(ok.overridden.length >= 6);
+  // effective, retention, the open deposit point, the practitioner's sign-off and Tripadvisor's permission
+  assert.ok(ok.overridden.length >= 5, ok.overridden.join('; '));
   // A blocker the override does not name: an unapproved privacy notice.
   s.legal.privacyApproved = false;
   const stopped = releaseDecision(s);

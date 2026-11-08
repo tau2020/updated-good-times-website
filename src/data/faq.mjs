@@ -6,6 +6,9 @@
  * Each answer notes its `source`.
  */
 import { groupMax } from './pricing.mjs';
+import { site } from './site.mjs';
+
+const { payment: PAY, cancellation: CANCEL } = site.legal;
 
 const FAQ = 'goodtimesincapetown.co.za/faq/, read on 5 Nov 2026';
 
@@ -29,16 +32,16 @@ export const faqs = [
   {
     q: 'What payment methods do you accept?',
     a: [
-      'We accept card payments and EFT. Prices are quoted in South African rand (ZAR); the currency selector converts the displayed amount for reference only, and you are always charged in ZAR.',
+      `Bank transfer (EFT), card or cash. A ${PAY.depositPercent}% deposit is due ${PAY.depositDaysBefore} days before your excursion and the balance ${PAY.balance}; for a booking made less than ${PAY.depositDaysBefore} days ahead, we tell you when the deposit is due when we confirm it. Prices are quoted in South African rand (ZAR); the currency selector converts the displayed amount for reference only, and you are always charged in ZAR.`,
     ],
-    source: FAQ,
+    source: `${FAQ}; the payment terms from Good Times' Legal details checklist, 8 Nov 2026 (item 5)`,
   },
   {
     q: 'Can I cancel or reschedule my booking?',
     a: [
-      'Yes. Contact us directly by phone or email if your plans change. Our tour pages list free cancellation up to 24 hours before departure; the terms that apply to your booking are confirmed with you when you book, and our Terms & Conditions set out the full policy.',
+      `Yes. Contact us directly by phone or email if your plans change. Day tours, partner activities and transfers have free cancellation up to ${CANCEL.dayTour} hours before departure or pickup, and the Garden Route up to ${CANCEL.multiDay} hours before departure (Cape Town time). After that, and for no-shows, ${CANCEL.lateCharge}% of the price is charged. Our Terms & Conditions set out the full policy.`,
     ],
-    source: `${FAQ} (adapted: no My Bookings page on this site)`,
+    source: `${FAQ} (adapted: no My Bookings page on this site); the cancellation terms from Good Times' Legal details checklist, 8 Nov 2026 (item 4)`,
   },
   {
     q: 'Where do tours depart from?',

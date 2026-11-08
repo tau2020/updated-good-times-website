@@ -45,7 +45,10 @@ test('nothing verified: no contact links, header slot or contact bar on any page
   for (const preview of [true, false]) {
     const s = variant({ preview });
     for (const p of pages) {
-      const html = layout(p, s);
+      // The privacy notice names the Information Officer's address (site.legal, POPIA s.18; the owner's checklist of
+      // 8 Nov 2026), a legal fact rather than a contact channel: it stays whatever the channels' state
+      const io = site.legal.informationOfficer;
+      const html = p.path === 'privacy/index.html' && io.verified ? layout(p, s).replaceAll(`href="mailto:${io.email}"`, '') : layout(p, s);
       assert.doesNotMatch(html, /wa\.me|href="tel:|href="mailto:/, `${p.path} (${s.env})`);
       assert.doesNotMatch(html, /header-contact|data-contact-bar/, `${p.path} (${s.env})`);
       if (!preview) assert.doesNotMatch(html, /awaiting confirmation|class="pending"/, `${p.path} (production)`);
@@ -198,7 +201,10 @@ test('the contacts: the published number for calls (5 Nov 2026) and WhatsApp (co
   for (const p of pages) {
     const html = layout(p, live);
     assert.doesNotMatch(html, /info@/, `${p.path}: no info@ left`);
-    if (p.path !== 'contact/index.html') assert.doesNotMatch(html, /stuart@/, `${p.path}: the additional address belongs to the contact section`);
+    // stuart@ is the additional contact on the contact page (6 Nov 2026) and, since the owner's checklist of 8 Nov 2026,
+    // the Information Officer's address for privacy requests on the privacy notice; nowhere else
+    if (!['contact/index.html', 'privacy/index.html'].includes(p.path)) assert.doesNotMatch(html, /stuart@/, `${p.path}: the additional address belongs to the contact section`);
+    if (p.path === 'privacy/index.html') assert.ok([...html.matchAll(/stuart@[^"<]*/g)].every((m) => m.index > html.indexOf('Information Officer')), 'privacy: stuart@ only as the Information Officer’s address');
   }
   // The contact section: both addresses, each with its own label, the primary first.
   const direct = section(render('contact/index.html', live), '<h2>Phone, email and our office</h2>', '<h3>');

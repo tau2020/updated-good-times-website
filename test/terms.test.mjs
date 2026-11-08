@@ -52,7 +52,42 @@ const ADAPTATIONS = [
   ['keep guests safe (see our Safety & Trust page).', 'keep guests safe.'],
   ['info@goodtimesincapetown.co.za', 'hello@goodtimesincapetown.co.za'],
 ];
-const adapted = source.map((b) => ADAPTATIONS.reduce((t, [from, to]) => t.replace(from, to), b));
+const adaptedOnly = source.map((b) => ADAPTATIONS.reduce((t, [from, to]) => t.replace(from, to), b));
+
+/**
+ * The owner's terms of 8 Nov 2026 (the Legal details checklist, items 4 and 5: site.legal.payment and
+ * site.legal.cancellation), replacing the two published sentences that left payment and cancellation open. Each
+ * replaced block is named, and every block that replaces it is listed here word for word, so nothing else can change.
+ */
+const PAY = site.legal.payment;
+const CANCEL = site.legal.cancellation;
+const OWNER_8_NOV = [
+  [
+    'Prices are quoted in South African Rand (ZAR) and are confirmed at the time of booking. Amounts shown in other currencies via the site’s currency selector are indicative conversions for reference only — the amount actually charged is always in ZAR. Payment terms will be confirmed with you when your booking is arranged.',
+    [
+      'Prices are quoted in South African Rand (ZAR) and are confirmed at the time of booking. Amounts shown in other currencies via the site’s currency selector are indicative conversions for reference only — the amount actually charged is always in ZAR.',
+      `You can pay by bank transfer (EFT), card or cash. A deposit of ${PAY.depositPercent}% of the price is due ${PAY.depositDaysBefore} days before your excursion, and the balance on the day.`,
+      // Interim wording for the case the owner's rules leave open (OPEN_POINTS): the approved text's own answer
+      `For a booking made less than ${PAY.depositDaysBefore} days before the excursion, we tell you when the deposit is due when we confirm your booking.`,
+    ],
+  ],
+  [
+    'If you need to cancel or change a confirmed booking, contact us as soon as possible, directly by phone or email. How much notice is needed and whether any amount is refundable depends on the specific tour and how close to the departure date the change is requested; we’ll confirm the applicable terms with you when you book.',
+    [
+      'If you need to cancel or change a confirmed booking, contact us as soon as possible, directly by phone or email. You can cancel without charge up to the notice below, counted back from the scheduled departure or pickup time in Cape Town.',
+      'Notice to cancel without charge:',
+      `Day tours: ${CANCEL.dayTour} hours before departure`,
+      `Partner activities (shark cage diving, sky diving and quad biking): ${CANCEL.activity} hours before the activity`,
+      `Airport and other transfers: ${CANCEL.transfer} hours before pickup`,
+      `The Garden Route (multi-day): ${CANCEL.multiDay} hours before departure`,
+      `If you cancel later than that, or do not arrive (a no-show), ${CANCEL.lateCharge}% of the price is charged.`,
+    ],
+  ],
+];
+const adapted = adaptedOnly.flatMap((b) => {
+  const hit = OWNER_8_NOV.find(([from]) => from === b);
+  return hit ? hit[1] : [b];
+});
 
 /** What the page states from site data rather than from the text: the confirmed legal facts, after the introduction. */
 function factsBlock(x) {
@@ -87,12 +122,15 @@ const textBlocks = (x) => pageBlocks(x).filter((b) => b !== factsBlock(x));
 test('the page reproduces Good Times’ published Terms & Conditions block for block, with only the listed adaptations', () => {
   assert.equal(source.length, 19, 'the source parses into its 19 blocks');
   for (const [from] of ADAPTATIONS) assert.equal(source.filter((b) => b.includes(from)).length, 1, `the source says "${from}" once`);
+  for (const [from] of OWNER_8_NOV) assert.equal(adaptedOnly.filter((b) => b === from).length, 1, `the owner's terms replace one published block: "${from.slice(0, 40)}…"`);
+  assert.equal(CANCEL.lateCharge, CANCEL.noShowCharge, 'one charge for late cancellations and no-shows, as the owner set them (one sentence says both)');
   for (const x of [site, production, approvedTerms(production)]) {
     assert.deepEqual(pageBlocks(x), expected(x));
     assert.doesNotMatch(pageBlocks(x).join(' '), /My Bookings|Safety & Trust/, 'no link to a page this site does not have');
   }
-  // The only fact stated from site data today: the published office, after the introduction.
-  assert.equal(factsBlock(site), 'Address: 277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005.');
+  // The facts stated from site data, after the introduction: the registered company (the owner's checklist of 8 Nov
+  // 2026) and the published office.
+  assert.equal(factsBlock(site), 'Good Times in Cape Town is the trading name of Good Times In Cape Town (Pty) Ltd, registration number 2022/878500/07. Address: 277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005.');
 });
 
 test('until Good Times approves the text, the page says it is a draft and names what is still open; then it does not', () => {
@@ -128,21 +166,26 @@ test('all seven numbered sections, with anchors, in the published order', () => 
   assert.doesNotMatch(html, /<h3\b/, 'no heading level skipped');
 });
 
-test('every figure in the source, and no other, appears on the page', () => {
+test('every figure on the page is the published text’s or the owner’s own (8 Nov 2026), and no other', () => {
   const figures = (t) => [...t.matchAll(/\d+%?/g)].map((m) => m[0]);
   const text = textBlocks(production).join(' ');
-  assert.deepEqual(figures(text), figures(source.join(' ')));
+  assert.deepEqual(figures(text), figures(expected(production).filter((b) => b !== factsBlock(production)).join(' ')));
   for (const f of ['South African Rand (ZAR)', 'the amount actually charged is always in ZAR', 'an alternative date or a full refund', 'end a tour early, without refund', 'the laws of South Africa', 'the jurisdiction of the South African courts', 'hello@goodtimesincapetown.co.za', '+27 72 376 8432']) {
     assert.ok(text.includes(f), f);
   }
-  // No commercial term the published text does not give: no deposit, percentage or notice period is invented.
-  assert.doesNotMatch(text, /deposit|\d+%|\d+ (hours|days)/i);
+  // The commercial terms are exactly the owner's: the deposit and its timing, the payment methods, each notice period and
+  // the charge; nothing else is a percentage or a number of hours or days, and nothing is called non-refundable.
+  assert.deepEqual([...text.matchAll(/\d+%/g)].map((m) => m[0]), [`${PAY.depositPercent}%`, `${CANCEL.lateCharge}%`]);
+  assert.deepEqual([...text.matchAll(/\d+ (?:hours|days)/g)].map((m) => m[0]), [`${PAY.depositDaysBefore} days`, `${PAY.depositDaysBefore} days`, `${CANCEL.dayTour} hours`, `${CANCEL.activity} hours`, `${CANCEL.transfer} hours`, `${CANCEL.multiDay} hours`]);
+  assert.match(text, /bank transfer \(EFT\), card or cash/);
+  assert.doesNotMatch(text, /non-refundable|free cancellation within|immediately/i);
 });
 
 test('a change to the text needs a new version: the recorded version names exactly this text', () => {
   const hash = createHash('sha256').update(JSON.stringify(TERMS)).digest('hex').slice(0, 16);
   // When the text changes on purpose: set a new site.legal.termsVersion, then record its hash here.
-  const VERSIONS = { '2026-11-05': '9656def551858c88' };
+  // 2026-11-08: the owner's payment and per-booking cancellation terms (the Legal details checklist, items 4 and 5)
+  const VERSIONS = { '2026-11-05': '9656def551858c88', '2026-11-08': '9bb94ae9813b981f' };
   assert.equal(VERSIONS[site.legal.termsVersion], hash, `the text's hash is ${hash}`);
   assert.equal(termsAcceptance(), `Accepted the Terms & Conditions, version ${site.legal.termsVersion}`);
 });

@@ -397,7 +397,7 @@ ${hero}
           <div><h3>Booking</h3><p>Send a booking request and we’ll reply with availability and a quote. Every booking is confirmed by one of our team.</p></div>
           ${
             t.cancellation
-              ? `<div><h3>Cancellation</h3><p>${esc(t.cancellation)} The terms for your booking are confirmed with you when you book.</p></div>`
+              ? `<div><h3>Cancellation</h3><p>${esc(t.cancellation)} Notice counts back from the scheduled time, Cape Town time; how to cancel is in our <a href="terms/#cancellations">Terms &amp; Conditions</a>.</p></div>`
               : `<div><h3>Cancellation</h3><p>The cancellation terms for your day are confirmed with you when you book.</p></div>`
           }
         </div>

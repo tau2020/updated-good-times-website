@@ -10,6 +10,7 @@
  */
 
 import { priceFor } from './pricing.mjs';
+import { CANCELLATION } from './cancellation.mjs';
 
 const SOURCE = { listing: 'https://www.goodtimesincapetown.co.za/tour/airport-private-transfer/', checked: '2026-11-05' };
 
@@ -28,7 +29,7 @@ export const services = [
     included: ['Private vehicle and driver', 'Fuel'],
     notIncluded: ['Flights', 'Tips', 'Extra stops not arranged in advance'],
     accessibility: 'Tell us about any mobility needs or child seats you need when you request your transfer.',
-    cancellation: 'Free cancellation up to 24 hours before your scheduled pickup time.',
+    cancellation: CANCELLATION.transfer,
     price: priceFor('airport-private-transfer', 'Prices per trip, not per person.'),
     // The airport arrival's welcome sign and the car boot are the request rows' own thumbnails (transfers page), so the
     // service shows three other photographs: a sharp 3105 px departures scene first (the 1000 px sign was soft at this size)
