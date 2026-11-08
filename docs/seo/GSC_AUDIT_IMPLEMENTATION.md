@@ -178,13 +178,13 @@ Until then, leaving it out is accurate.
 
 **What the production sitemap contains.**
 
-- **Included:** every indexable canonical page once (24), on `https://goodtimesincapetown.co.za/`.
+- **Included:** every indexable canonical page once, on `https://goodtimesincapetown.co.za/`: 25 since this branch was merged with PR #5 on 8 Nov 2026, whose approval of the terms made `/terms/` indexable (24 on this branch alone).
 - **Excluded:**
   - preview hosts;
   - redirect sources;
   - 404s and retired files;
   - the admin and API routes;
-  - noindex pages: on this branch the 404 page, and `/terms/`, which stays noindex until its approval is released (PR #5 carries that record).
+  - noindex pages: the 404 page (and, until PR #5's approval of the terms was merged, `/terms/`).
 
 The test compares it with the set of indexable canonicals.
 
@@ -357,7 +357,7 @@ Every one has its enquiry action, and the browser suite runs the main journeys a
 | 6 | No unintended noindex | No `noindex` meta or `X-Robots-Tag` on the domain (the suite fails on it) |
 | 7 | Canonicals | Each priority page names its own `https://goodtimesincapetown.co.za/…` address (the table above) |
 | 8 | `/robots.txt` | Allows crawling and names the sitemap |
-| 9 | `/sitemap.xml` | 24 URLs, `<loc>` only, all on the domain |
+| 9 | `/sitemap.xml` | 25 URLs (every indexable page, `/terms/` included), `<loc>` only, all on the domain |
 | 10 | The historical suite against the domain | `node qa/legacy-urls.mjs --base=https://goodtimesincapetown.co.za --env=production --domain` |
 | 11 | Submit the sitemap | In the existing `sc-domain:goodtimesincapetown.co.za` property: Sitemaps, then `https://goodtimesincapetown.co.za/sitemap.xml` |
 | 12 | Inspect | URL Inspection: the home page, the four renamed tours, shark cage diving and transfers. The live test should be 200, indexable, with Google's canonical the user's |
