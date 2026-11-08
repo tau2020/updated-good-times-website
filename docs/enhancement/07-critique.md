@@ -46,3 +46,13 @@ The scenic system is the least convincing part: the supplied photographs are Eas
 generic sky, so the honest placements are atmospheric rather than scenic. With Cape photographs supplied (a ridgeline at
 dawn, the Atlantic from Sea Point, fynbos), the same component carries them at once: one record and one build command
 (`02-scenic.md` › Adding a placement).
+
+## After the critique: the owner's follow-up requests (8 Nov 2026)
+
+The reviews chapter the critique scored was replaced the same day at the owner's request: the review section of the
+owner's reference screenshots, in the reviewers' own words, with Tripadvisor beside Google (`03-reputation.md` › 3).
+The backdrops, which the critique found too faint in the memory band, are now about half as strong again and on four
+more pages, with the cards over them a little translucent (`02-scenic.md`). The independent cloud check of the first
+preview (`06-qa.md` › G8) measured the steps band's small green words at 3.6 to 4.5:1 over the dusk cloud at 390 px;
+over every plane the small secondary words now take their stronger tones, and every line measures AA
+(`qa/scenic-contrast.mjs`).

@@ -75,7 +75,7 @@ publication.
 `node scripts/release-gate.mjs` on this branch (the 7 Nov override still covers what it named):
 
 - no South African legal practitioner has signed off the privacy notice and the terms (`site.legal.counselReview`);
-- Tripadvisor's permission to show its rating and review count outside its widgets is not recorded
+- Tripadvisor's permission to show its rating, its review count and its reviewers' titles outside its widgets is not recorded
   (`site.tripadvisor.permission`, `03-reputation.md` › 2).
 
 The late-booking deposit point is listed too, and is accepted only under the owner's override of 7 Nov 2026, which named

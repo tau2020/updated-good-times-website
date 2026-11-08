@@ -3,6 +3,7 @@ import { esc, icon, button, leafButton, picture, preloadFor, breadcrumb, section
 import { rowCard } from '../partials/cards.mjs';
 import { services, types } from '../data/transfers.mjs';
 import { fromLine } from '../data/pricing.mjs';
+import { scenicLayer } from '../partials/scenic.mjs';
 
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Transfers', href: 'transfers/' }];
@@ -65,6 +66,8 @@ export const page = {
   // The banner is art-directed (images.mjs): a wide cut of traveller 12 from 48em, a taller one for phones; each
   // screen preloads only its own
   preload: [preloadFor('airport-mother-city-welcome', { media: '(min-width: 48em)' }), preloadFor('airport-mother-city-welcome-tall', { media: '(max-width: 47.99em)', sizes: '85vw' })],
+  // The last band's faint sky (scenic.css; src/data/scenic.mjs › transfers-how)
+  styles: ['assets/css/scenic.css'],
   body: ({ site }) => `
 <section class="banner" style="--focus: 40% 56%; --focus-mobile: 36% 56%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
   <div class="banner__media">${picture({ name: 'airport-mother-city-welcome', eager: true, fetchpriority: 'high', alt: '', portrait: { name: 'airport-mother-city-welcome-tall', media: '(max-width: 47.99em)', sizes: '85vw' } })}</div>
@@ -120,7 +123,8 @@ export const page = {
   </div>
 </section>
 
-<section class="section" aria-labelledby="transfer-how-title">
+<section class="section gt-scenic-host" aria-labelledby="transfer-how-title">
+  ${scenicLayer('transfers-how')}
   <div class="container container--narrow">
     ${sectionHead({ eyebrow: 'Requesting a transfer', title: 'What we need from you', id: 'transfer-how-title', center: true })}
     <ul class="ticks" role="list">

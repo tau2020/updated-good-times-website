@@ -42,10 +42,11 @@ export function releaseBlockers(site, { openTermsPoints = OPEN_POINTS } = {}) {
   // has signed them off.
   const review = legal.counselReview || {};
   if (!review.verified || !review.by || !/^\d{4}-\d{2}-\d{2}$/.test(review.date || '')) open.push('no South African legal practitioner has signed off the privacy notice and the terms (site.legal.counselReview)');
-  // The home page states Tripadvisor's rating and review count in its own design: Tripadvisor's terms ask for its
-  // written permission to show them outside its widgets (docs/enhancement/03-reputation.md).
+  // The site states Tripadvisor's rating and review count in its own design, and shows its reviewers' own titles for
+  // their reviews (the owner's direction of 8 Nov 2026): Tripadvisor's terms ask for its written permission to show
+  // them outside its widgets (docs/enhancement/03-reputation.md).
   const ta = site.tripadvisor || {};
-  if (ta.reviewCount && !ta.permission?.verified) open.push('Tripadvisor’s permission to show its rating and review count outside its widgets is not recorded (site.tripadvisor.permission)');
+  if (ta.reviewCount && !ta.permission?.verified) open.push('Tripadvisor’s permission to show its rating, its review count and its reviewers’ titles outside its widgets is not recorded (site.tripadvisor.permission)');
   return open;
 }
 

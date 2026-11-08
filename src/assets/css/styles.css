@@ -161,7 +161,8 @@ picture img {
 .banner__media > picture,
 .hero__media > picture,
 .photo-band > picture,
-.tour-hero__media > picture {
+.tour-hero__media > picture,
+.reviews-photo__media > picture {
   display: block;
   height: 100%;
 }
@@ -3061,6 +3062,15 @@ body {
   background: #34e0a1;
   color: #000;
 }
+/* Google's G keeps its own four colours, on white with a hairline (BRAND_ART in ui.mjs) */
+.brand-mark--google {
+  --glyph: 56%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.brand-mark--google svg {
+  fill: initial;
+}
 .social a:hover .brand-mark,
 .social a:focus-visible .brand-mark {
   transform: translateY(-2px);
@@ -3796,8 +3806,18 @@ select.input {
 .contact-links .brand-mark {
   --mark: 32px;
 }
+/* The reviews page's title band over its photograph: ink, as on every other page title (white words on the washed
+   photograph measured about 1.3:1), and the small words in their stronger tones, the lead and the breadcrumb in the
+   body ink and the eyebrow in deep green (the regular tones measured 2.8–4.1:1 over the cliff; qa/scenic-contrast.mjs
+   --band=/reviews/@.reviews-photo, 8 Nov 2026) */
 .reviews-photo--page h1 {
-  color: var(--white);
+  color: var(--ink);
+}
+.reviews-photo--page :is(.breadcrumb ol, .lead) {
+  color: var(--text);
+}
+.reviews-photo--page .eyebrow {
+  color: var(--green-deep);
 }
 .meta-inline {
   display: inline-flex;

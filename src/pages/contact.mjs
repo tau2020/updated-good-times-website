@@ -1,4 +1,5 @@
 import { esc, icon, brandMark, button, leafButton, breadcrumb, sectionHead, contactList } from '../partials/ui.mjs';
+import { scenicLayer } from '../partials/scenic.mjs';
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Contact', href: 'contact/' }];
 
@@ -8,11 +9,14 @@ export const page = {
   title: 'Contact Good Times in Cape Town',
   description: 'Contact Good Times in Cape Town by phone or email, visit our office in Sea Point, or send a booking request for a private tour or airport transfer.',
   breadcrumbs: crumbs,
+  // The title band's faint sky (scenic.css; src/data/scenic.mjs › contact-head)
+  styles: ['assets/css/scenic.css'],
   body: ({ site }) => {
     // The contact section also lists the additional address (Stuart's, 6 Nov 2026) after the primary one
     const direct = contactList(site, { additional: true });
     return `
-<section class="page-head">
+<section class="page-head gt-scenic-host">
+  ${scenicLayer('contact-head')}
   <div class="container">
     ${breadcrumb(crumbs)}
     <p class="eyebrow">Contact</p>

@@ -117,7 +117,7 @@ test('the release gate names what the approval did not settle: the unconfirmed f
   assert.equal(d.clear, false);
   assert.deepEqual(d.remaining, [
     'no South African legal practitioner has signed off the privacy notice and the terms (site.legal.counselReview)',
-    'Tripadvisor’s permission to show its rating and review count outside its widgets is not recorded (site.tripadvisor.permission)',
+    'Tripadvisor’s permission to show its rating, its review count and its reviewers’ titles outside its widgets is not recorded (site.tripadvisor.permission)',
   ]);
   assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } }).clear, false, 'the domain still needs every open point');
 });

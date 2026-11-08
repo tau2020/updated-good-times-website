@@ -9,6 +9,16 @@
     "height": 1757,
     "ratio": 0.371
   },
+  "scene-blue-sky": {
+    "widths": [
+      800,
+      1280,
+      1920
+    ],
+    "width": 3840,
+    "height": 771,
+    "ratio": 0.201
+  },
   "scene-breaking-wave": {
     "widths": [
       480,
@@ -18,6 +28,26 @@
     "width": 3072,
     "height": 4080,
     "ratio": 1.328
+  },
+  "scene-cloud-bank": {
+    "widths": [
+      720,
+      1200,
+      1720
+    ],
+    "width": 1728,
+    "height": 1597,
+    "ratio": 0.924
+  },
+  "scene-sunlit-cloud": {
+    "widths": [
+      800,
+      1280,
+      1920
+    ],
+    "width": 2366,
+    "height": 799,
+    "ratio": 0.338
   },
   "scene-sunset-horizon": {
     "widths": [

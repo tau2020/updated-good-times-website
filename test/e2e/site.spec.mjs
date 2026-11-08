@@ -679,52 +679,96 @@ test.describe('home hero', () => {
 });
 
 test.describe('guest voices', () => {
-  // Chapter 09, "The people behind the good times" (the owner's brief of 8 Nov 2026, §§ C–D): the listing's proof beside
-  // the heading (no date), a feature postcard and two staggered notes (the three themes, in our words), a quiet ribbon
-  // with the Google profile's own figure. No review card, no carousel, nothing that moves by itself.
-  test('the proof, the three themes and the ribbon: linked, labelled, without a date, a reviewer or a quote', async ({ page }) => {
+  // Chapter 09, "The people behind the good times" (the owner's request of 8 Nov 2026): each platform's own rating with
+  // its own "Write a review", then the reviewers' own words from the owner's archive, newest first, eight at a time with
+  // "Load more". No summary, no theme in our words, no carousel, nothing that moves by itself.
+  test('the rating bar and the reviewers’ own words: linked, dated, a few at a time, Load more adds the rest', async ({ page }) => {
+    const { guestReviews } = await import('../../src/data/guest-reviews.mjs');
     await page.goto('/?nomotion');
     const section = page.locator('section.voices#reviews');
     await expect(section).toHaveCount(1);
     await expect(section.locator('.voices__eyebrow .lc-mark__num')).toHaveText('09');
     await expect(section.locator('.voices__eyebrow .lc-mark__label')).toHaveText('The people behind the good times');
     await expect(section.locator('h2')).toHaveText('Good times, by the people who had them.');
-    const proof = section.locator('.voices-proof');
-    await expect(proof.locator('.voices-proof__numeral')).toHaveText('5.0');
-    await expect(proof.locator('.voices-proof__fact').first()).toHaveText('5.0 out of 5 on Tripadvisor');
-    await expect(proof.locator('.voices-proof__fact--count')).toHaveText('264 traveller reviews');
-    await expect(proof).not.toContainText(/As of|As listed|November|2026/);
-    const cta = proof.locator('.voices-proof__cta');
-    await expect(cta).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
-    await expect(cta).toHaveAttribute('target', '_blank');
-    await expect(cta).toHaveAttribute('rel', 'noopener noreferrer');
-    await expect(cta).toHaveAccessibleName('Read our reviews on Tripadvisor (opens in a new tab)');
-    await expect(section.locator('.voices-postcard, .voices-note')).toHaveCount(3);
-    await expect(section.locator('.voices-label')).toHaveText(['In our words', 'In our words', 'In our words']);
-    await expect(section.locator('.voices__chapter blockquote, .voices__chapter .stars, [data-story-card], [data-stories-more]')).toHaveCount(0);
-    await expect(section.locator('.voices-postcard figcaption')).toHaveText('Waving goodbye at Cape Town International · A Good Times photograph');
-    const google = section.locator('.voices-ribbon__proof').first();
-    await expect(google).toHaveAttribute('href', 'https://maps.google.com/?cid=8412254069527472113');
-    await expect(google).toHaveAccessibleName('Google: 5.0 out of 5 from 10 reviews (opens in a new tab)');
-    await expect(section.locator('.voices-ribbon a')).toHaveCount(1); // the listing's link is the proof's own button: not repeated
-    // White glass cards: the scenic plane never sits under a card's words
-    for (const card of await section.locator('.voices-proof, .voices-postcard, .voices-note').all()) {
-      const bg = await card.evaluate((el) => getComputedStyle(el).backgroundColor);
-      expect(Number(bg.match(/rgba?\(([^)]+)\)/)[1].split(',')[3] ?? 1)).toBeGreaterThanOrEqual(0.85);
+    // The bar: each platform's own figure and review form, never added together, no date
+    const bar = section.locator('.rating-bar');
+    await expect(bar.locator('.rating-bar__name')).toHaveText(['Tripadvisor rating', 'Google rating']);
+    await expect(bar.locator('.rating-bar__value')).toHaveText(['5.0', '5.0']);
+    await expect(bar.locator('.rating-bar__count').first()).toHaveAccessibleName('264 reviews on Tripadvisor (opens in a new tab)');
+    await expect(bar.locator('.rating-bar__count').last()).toHaveAccessibleName('10 reviews on Google (opens in a new tab)');
+    await expect(bar.locator('.rating-bar__count').first()).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
+    await expect(bar.locator('.rating-bar__count').last()).toHaveAttribute('href', 'https://maps.google.com/?cid=8412254069527472113');
+    const write = bar.locator('.rating-bar__write');
+    await expect(write).toHaveCount(2);
+    await expect(write.first()).toHaveAttribute('href', /tripadvisor\.co\.za\/UserReviewEdit-g312659-d19611200-/);
+    await expect(write.last()).toHaveAttribute('href', /search\.google\.com\/local\/writereview\?placeid=ChIJ/);
+    await expect(write.first()).toHaveAccessibleName('Write a review on Tripadvisor (opens in a new tab)');
+    for (const a of await bar.locator('a').all()) {
+      await expect(a).toHaveAttribute('target', '_blank');
+      await expect(a).toHaveAttribute('rel', 'noopener noreferrer');
     }
+    await expect(bar).not.toContainText(/As of|As listed|November|2026|274/);
+    // The cards: the newest eight, each the reviewer's own title in quotation marks, linked to the whole review
+    const cards = section.locator('.review-card');
+    await expect(cards).toHaveCount(8);
+    const first = guestReviews[0];
+    await expect(cards.first().locator('.review-card__quote')).toHaveText(`“${first.title}”`);
+    await expect(cards.first().locator('.review-card__name')).toHaveText(first.name);
+    await expect(cards.first().locator('.review-card__more')).toHaveAttribute('href', first.url);
+    await expect(cards.first().locator('.review-card__more')).toHaveAccessibleName(`Read more of ${first.name}’s review on Tripadvisor (opens in a new tab)`);
+    await expect(cards.first().locator('.review-card__platform')).toHaveText('Posted on Tripadvisor');
+    // The date as "… ago" (the visitor's own clock), the date itself kept in the element
+    await expect(cards.first().locator('time')).toHaveAttribute('datetime', first.date);
+    await expect(cards.first().locator('time')).toHaveText(/^(today|yesterday|\d+ days ago|last week|\d+ weeks ago|last month|\d+ months ago|last year|\d+ years ago)$/);
+    await expect(section).not.toContainText(/In our words|Review summary|summed up/);
+    // Load more: the rest comes from the reviews page on the first press; eight more each time, focus on the first of
+    // them, a status line, links resolved for this page; the button leaves once every card is in
+    const more = section.locator('[data-review-more]');
+    await expect(more).toBeVisible();
+    await expect(more).toHaveAccessibleName('Load more reviews');
+    const fetched = page.waitForResponse((r) => new URL(r.url()).pathname === '/reviews/');
+    await more.click();
+    expect((await fetched).status()).toBe(200);
+    await expect(cards).toHaveCount(16);
+    await expect(cards.nth(8)).toBeFocused();
+    await expect(cards.nth(8).locator('.review-card__quote')).toHaveText(`“${guestReviews[8].title}”`);
+    await expect(cards.nth(8).locator('time')).toHaveText(/ago$|^last (week|month|year)$|^(today|yesterday)$/);
+    await expect(section.locator('[data-review-status]')).toHaveText('Showing 16 reviews.');
+    const tourLink = cards.nth(8).locator('.review-card__about a');
+    if (await tourLink.count()) expect(new URL(await tourLink.getAttribute('href')).pathname).toMatch(/^\/(tours\/[a-z-]+|transfers)\/$/);
+    while (await more.isVisible()) await more.click();
+    await expect(cards).toHaveCount(guestReviews.length);
+    expect(new Set(await cards.locator('.review-card__more').evaluateAll((as) => as.map((a) => a.href))).size).toBe(guestReviews.length);
+    await expect(section.locator('.review-wall__all')).toHaveAttribute('href', 'reviews/');
   });
 
-  test('with motion the cards rise once, by opacity and a few pixels, and a card reached by keyboard is never left faded', async ({ page, isMobile }) => {
+  test('the reviews page: every review in the archive, twelve at a time, with the platforms’ own ratings', async ({ page }) => {
+    const { guestReviews } = await import('../../src/data/guest-reviews.mjs');
+    await page.goto('/reviews/?nomotion');
+    await expect(page.locator('.rating-bar__platform')).toHaveCount(2);
+    const cards = page.locator('.review-wall .review-card');
+    await expect(cards).toHaveCount(12);
+    await expect(page.locator('.review-wall__all')).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
+    const more = page.locator('[data-review-more]');
+    await more.click();
+    await expect(cards).toHaveCount(24);
+    await expect(cards.nth(12)).toBeFocused();
+    while (await more.isVisible()) await more.click();
+    await expect(cards).toHaveCount(guestReviews.length);
+    await expect(page.locator('main')).not.toContainText(/Review summary|summed up/);
+  });
+
+  test('with motion the head, the bar and the wall rise once, by opacity and a few pixels, and nothing reached by keyboard is left faded', async ({ page, isMobile }) => {
     test.skip(isMobile, 'the reveal is the same at every width');
     await page.goto('/');
     await page.waitForFunction(() => document.documentElement.classList.contains('intro-done'), null, { timeout: 15000 });
-    const proof = page.locator('.voices-proof');
+    const bar = page.locator('.voices .rating-bar');
     // Before it is reached: faded, still in the accessibility tree (opacity, never visibility)
-    expect(await proof.evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
-    await page.locator('.voices-proof__cta').focus();
-    await expect.poll(() => proof.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+    expect(await bar.evaluate((el) => getComputedStyle(el).visibility)).toBe('visible');
+    await page.locator('.voices .rating-bar__write').first().focus();
+    await expect.poll(() => bar.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
     await page.locator('#reviews').scrollIntoViewIfNeeded();
-    await expect.poll(() => page.locator('.voices-note').last().evaluate((el) => Number(getComputedStyle(el).opacity))).toBe(1);
+    await expect.poll(() => page.locator('.voices .review-wall').evaluate((el) => Number(getComputedStyle(el).opacity))).toBe(1);
   });
 });
 
@@ -831,10 +875,11 @@ test.describe('home story: The Cape, A Living Story', () => {
     expect(await page.locator('.lc-wild__panel--two').evaluate((el) => parseFloat(getComputedStyle(el).marginTop))).toBeLessThan(0);
     // No artwork anywhere in the story: every image is a photograph
     await expect(page.locator('.living-cape img[src*="art-"]')).toHaveCount(0);
-    // Captions name places, never people: not the founder, not a reviewer (guests' consent is the owner's to confirm)
-    const { reviews } = await import('../../src/data/reviews.mjs');
-    const names = new RegExp(`\\b(${['Stuart', 'Matanhire', ...new Set(reviews.map((r) => r.author))].map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`);
-    const captions = await page.locator('.living-cape figcaption, .lc-print__label').allInnerTexts();
+    // Photographs' captions name places, never people: not the founder, not a reviewer (guests' consent is the owner's to
+    // confirm). A review card's attribution (its figcaption) names its reviewer by design, so it is not a caption here.
+    const { guestReviews } = await import('../../src/data/guest-reviews.mjs');
+    const names = new RegExp(`\\b(${['Stuart', 'Matanhire', ...new Set(guestReviews.map((r) => r.name))].map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`);
+    const captions = await page.locator('.living-cape figcaption:not(.review-card__by), .lc-print__label').allInnerTexts();
     expect(captions.length).toBeGreaterThan(8);
     for (const c of captions) expect(c).not.toMatch(names);
     // The photographs withdrawn for showing children or possible minors are not used

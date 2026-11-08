@@ -4,8 +4,13 @@ import { SCENES, PLACEMENTS } from '../data/scenic.mjs';
 
 /** The scenic backdrops in use (src/data/scenic.mjs): stock photographs, credited although their licences do not ask it */
 const backdrops = SCENES.filter((s) => PLACEMENTS.some((p) => p.scene === s.name));
+const PAGE_NAMES = { 'index.html': 'the home page', 'about/index.html': 'About', 'contact/index.html': 'Contact', 'destinations/index.html': 'Destinations', 'transfers/index.html': 'Transfers' };
+/** "the home page", "About and Contact", "the home page, About and Transfers" */
+const listOf = (xs) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+const shownOn = (s) => listOf([...new Set(PLACEMENTS.filter((p) => p.scene === s.name).map((p) => PAGE_NAMES[p.page] || p.page))]);
+const backdropPages = listOf([...new Set(PLACEMENTS.map((p) => PAGE_NAMES[p.page] || p.page))]);
 const backdropLine = (s) =>
-  `<li>${esc(s.subject)}, a faint background on the home page: photograph by ${esc(s.author)} on ${esc(s.platform)} (<a href="${esc(s.licenseUrl)}" rel="noopener">${esc(s.license)}</a>, <a href="${esc(s.source)}" rel="noopener">source</a>). ${esc(s.place)}.</li>`;
+  `<li>${esc(s.subject)}, a faint background on ${esc(shownOn(s))}: photograph by ${esc(s.author)} on ${esc(s.platform)} (<a href="${esc(s.licenseUrl)}" rel="noopener">${esc(s.license)}</a>, <a href="${esc(s.source)}" rel="noopener">source</a>). ${esc(s.place)}.</li>`;
 
 /** One line of the photo list: what it shows, where it comes from, and for a licensed photograph its author, licence and source */
 const creditLine = (i) =>
@@ -116,7 +121,7 @@ export const page = {
     ${officer.verified && officerMail ? `<p>Questions about this notice or your personal information? Contact our Information Officer at ${officerMail}${mail ? `; for anything else, ${mail}` : ''}.</p>` : mail ? `<p>Questions about this notice or your data? Contact us at ${mail}.</p>` : ''}
 
     <h2 id="credits">Photo credits</h2>
-    <p>Nearly every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing, and a few are guests’ own photographs from our tours that Good Times chose for this website. One is edited for privacy (a guest’s name on a welcome sign is blurred). Four are not ours: photographs of Cape Agulhas, a tandem skydive and shark cage diving off Gansbaai, used under their open licences from Wikimedia Commons where we have none of our own: each is credited below, and on the photograph itself wherever it is shown larger than a small thumbnail. Two pictures are not photographs: the café scene at the top of the home page is an AI-generated illustration of five friends, and the short film of the woman standing at the water’s edge after the footprints below it is AI-generated too; neither is a picture of our guests. ${backdrops.length ? `${backdrops.length === 3 ? 'Three' : backdrops.length} faint backgrounds on the home page (a sky, a sunset horizon and the sea) are stock photographs from Unsplash and Pexels, used as decoration under their licences: they were not taken on our tours, and none of them shows Cape Town. ` : ''}The logo is Good Times’ own approved artwork.</p>
+    <p>Nearly every photograph on this website is Good Times’ own: taken on our tours, published on our own website or uploaded to our own Tripadvisor listing, and a few are guests’ own photographs from our tours that Good Times chose for this website. One is edited for privacy (a guest’s name on a welcome sign is blurred). Four are not ours: photographs of Cape Agulhas, a tandem skydive and shark cage diving off Gansbaai, used under their open licences from Wikimedia Commons where we have none of our own: each is credited below, and on the photograph itself wherever it is shown larger than a small thumbnail. Two pictures are not photographs: the café scene at the top of the home page is an AI-generated illustration of five friends, and the short film of the woman standing at the water’s edge after the footprints below it is AI-generated too; neither is a picture of our guests. ${backdrops.length ? `The faint backgrounds behind a few bands of words (on ${esc(backdropPages)}: skies, a dusk cloud and the sea) are stock photographs from Unsplash and Pexels, used as decoration under their licences: they were not taken on our tours, and none of them shows Cape Town. ` : ''}The logo is Good Times’ own approved artwork.</p>
     <details>
       <summary>Photo list and origins</summary>
       <ul class="small">

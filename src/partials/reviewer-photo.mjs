@@ -1,10 +1,9 @@
 /**
  * A reviewer's profile photo: their own Tripadvisor picture, shown on the review cards at the owner's request
  * (5 Nov 2026). Each is a file supplied by the owner in src/assets/img/reviewers/ (square, 168 px or larger),
- * named by the review's `avatar` in src/data/reviews.mjs. A photo is used only once its file is in the
- * repository, never as a broken image; until then the card keeps the reviewer's initials (the reviews page)
- * or an illustrated avatar (the home page). The reviewers' own consent is not recorded:
- * docs/APPROVAL_REGISTER.md › R2.
+ * named by the review's `avatar` in src/data/guest-reviews.mjs. A photo is used only once its file is in the
+ * repository, never as a broken image; until then the card keeps the reviewer's initial
+ * (src/partials/review-wall.mjs). The reviewers' own consent is not recorded: docs/APPROVAL_REGISTER.md › R2.
  */
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';

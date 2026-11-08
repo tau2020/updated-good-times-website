@@ -1,6 +1,7 @@
 import { icon, button, breadcrumb } from '../partials/ui.mjs';
 import { destinationCard } from '../partials/cards.mjs';
 import { quietMoment } from '../partials/culinary.mjs';
+import { scenicLayer } from '../partials/scenic.mjs';
 import { destinations } from '../data/tours.mjs';
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Destinations', href: 'destinations/' }];
@@ -12,10 +13,12 @@ export const page = {
   description: 'Where Good Times’ private tours go: the Cape Peninsula, Cape Town and Langa, the Cape Winelands, the Overberg coast from Hermanus to Cape Agulhas, and the Garden Route.',
   breadcrumbs: crumbs,
   // The Quiet Culinary Moment: one table between the places and the call to plan a day
-  styles: ['assets/css/culinary.css'],
+  // The title band's faint sky (scenic.css; src/data/scenic.mjs › destinations-head)
+  styles: ['assets/css/culinary.css', 'assets/css/scenic.css'],
   scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/culinary.js'],
   body: () => `
-<section class="page-head">
+<section class="page-head gt-scenic-host">
+  ${scenicLayer('destinations-head')}
   <div class="container">
     ${breadcrumb(crumbs)}
     <p class="eyebrow">Where we go</p>

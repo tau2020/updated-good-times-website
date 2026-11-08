@@ -1,4 +1,4 @@
-import { esc, picture, preloadFor, coverSizes, stars } from '../partials/ui.mjs';
+import { esc, picture, preloadFor, coverSizes } from '../partials/ui.mjs';
 import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox, focusOf } from '../partials/media.mjs';
@@ -11,7 +11,8 @@ import { imageByName, creditFor } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
 import { fromLine } from '../data/pricing.mjs';
-import { THEMES, proof, eligibleTestimonials } from '../data/reputation.mjs';
+import { guestReviews } from '../data/guest-reviews.mjs';
+import { ratingBar, reviewWall, REVIEW_WALL_ASSETS } from '../partials/review-wall.mjs';
 import { scenicLayer } from '../partials/scenic.mjs';
 import { credentialsStrip } from '../partials/credentials.mjs';
 
@@ -98,86 +99,28 @@ const GALLERY = [
 ];
 
 /**
- * 09 · Guest voices (the owner's brief of 8 Nov 2026, §§ C–E; docs/enhancement/03-reputation.md): one social-proof
- * chapter in three registers. The listing's proof beside the heading (Tripadvisor's rating and number of reviews, from
- * the one place they are kept, site.tripadvisor; no date; linked to the listing), then a feature postcard and two
- * staggered notes: the three things reviewers write about most, in our own words (data/reputation.mjs THEMES, labelled
- * as such, never as reviews: no names, stars or quotation marks), and last a quiet ribbon with the Google profile's own
- * figure, kept apart. A guest's own words appear only from the testimonial registry, approved and permitted
- * (eligibleTestimonials, none today). The postcard's photograph is a Good Times one, shown whole and captioned as what
- * it is; nobody in it is presented as a reviewer. The sea behind the chapter's edge is a scenic plane (scenic.mjs).
+ * 09 · Guest voices (the owner's request of 8 Nov 2026, in place of the editorial chapter of the brief's § D;
+ * docs/enhancement/03-reputation.md): the review section of the owner's reference screenshots, with Tripadvisor beside
+ * Google. The chapter's words; each platform's own rating with its own "Write a review" (ratingBar, the figures from
+ * site.tripadvisor and site.google, never added together); then the reviewers' own words, newest first, eight at a
+ * time (reviewWall over src/data/guest-reviews.mjs, the owner's archive: each card the title the reviewer gave their
+ * review, linked to the whole review). The home page draws the newest eight; "Load more" takes the rest from the
+ * reviews page, so this page stays light (under 200 KB). The sea at the chapter's edge is a scenic plane (scenic.mjs);
+ * the bar and the cards are white glass over it (voices.css). living-cape.js rises the head, the bar and the wall once
+ * as they arrive.
  */
-const VOICE_ICONS = { stories: 'cape-route', flexible: 'cape-compass' };
-const external = '<svg class="voices-ext" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13.6 4.4h6v6M19.6 4.4L11 13"/><path d="M17.4 13.6v4.9a1.1 1.1 0 0 1-1.1 1.1H5.5a1.1 1.1 0 0 1-1.1-1.1V7.7a1.1 1.1 0 0 1 1.1-1.1h4.9"/></svg>';
-const NEW_TAB = '<span class="visually-hidden"> (opens in a new tab)</span>';
-
+const HOME_REVIEWS = 8;
 function voicesSection(site) {
-  const { tripadvisor: ta, google } = proof();
-  const [feature, ...notes] = THEMES;
-  const listing = esc(ta.url);
-  const quotes = eligibleTestimonials();
   return `<section class="voices gt-scenic-host" id="reviews" aria-labelledby="voices-title">
   ${scenicLayer('voices')}
   <div class="container voices__inner">
-    <div class="voices__head">
-      <div class="voices__intro">
-        ${chapterMark(9, 'The people behind the good times', 'voices__eyebrow')}
-        <h2 class="lc-title voices__title" id="voices-title">Good times, <em>by the people who had them.</em></h2>
-        <p class="lc-lead voices__lead">Don’t just take our word for it. Travellers have written hundreds of reviews of their days with us; these are the three things they mention most, in our own words, and every review is a tap away.</p>
-      </div>
-      <aside class="voices-proof gt-scenic-glass" aria-labelledby="voices-proof-title" data-voice>
-        <div class="voices-proof__score">
-          <p class="voices-proof__platform">Tripadvisor</p>
-          <p class="voices-proof__numeral" aria-hidden="true">${ta.rating.toFixed(1)}</p>
-          ${stars()}
-        </div>
-        <div class="voices-proof__story">
-          <h3 class="voices-proof__title" id="voices-proof-title">The reviews speak for themselves.</h3>
-          <p class="voices-proof__fact"><strong>${ta.rating.toFixed(1)}</strong> out of 5 on Tripadvisor</p>
-          <p class="voices-proof__fact voices-proof__fact--count"><strong>${ta.reviewCount}</strong> traveller reviews</p>
-          <a class="btn gt-button gt-button--primary voices-proof__cta" href="${listing}" target="_blank" rel="noopener noreferrer"><span>Read our reviews</span><span class="visually-hidden"> on Tripadvisor</span>${NEW_TAB}</a>
-        </div>
-      </aside>
-    </div>
-    <div class="voices__chapter">
-      <article class="voices-postcard gt-scenic-glass" aria-labelledby="voice-${feature.id}" data-voice>
-        <div class="voices-postcard__inner">
-        <figure class="voices-postcard__photo">
-          <div class="voices-postcard__frame">${picture({ name: 'airport-departures-wave', sizes: '(min-width: 64em) min(30vw, 27rem), (min-width: 48em) 46vw, 92vw' })}</div>
-          <figcaption>Waving goodbye at Cape Town International · A Good Times photograph</figcaption>
-        </figure>
-        <div class="voices-postcard__words">
-          <span class="voices-postcard__stamp" aria-hidden="true">${engraved('sun-seal')}</span>
-          <p class="voices-label">In our words</p>
-          <h3 class="voices-postcard__title" id="voice-${feature.id}">${esc(feature.title)}</h3>
-          <p class="voices-postcard__text">${esc(feature.text)}</p>
-        </div>
-        </div>
-      </article>
-      <div class="voices__notes">
-        ${notes
-          .map(
-            (t, i) => `<article class="voices-note voices-note--${i ? 'b' : 'a'} gt-scenic-glass" aria-labelledby="voice-${t.id}" data-voice>
-          <span class="voices-note__mark" aria-hidden="true">${engraved(VOICE_ICONS[t.id] || 'sun-seal')}</span>
-          <p class="voices-label">In our words</p>
-          <h3 class="voices-note__title" id="voice-${t.id}">${esc(t.title)}</h3>
-          <p class="voices-note__text">${esc(t.text)}</p>
-        </article>`,
-          )
-          .join('\n        ')}
-      </div>
-    </div>
-    ${
-      quotes.length
-        ? `<ul class="voices__quotes" role="list">${quotes
-            .map((q) => `<li><figure class="voices-quote gt-scenic-glass" data-voice><blockquote cite="${esc(q.source_url)}"><p>“${esc(q.actual_verbatim_excerpt)}”</p></blockquote><figcaption>${esc(q.reviewer_display_name)} · <a href="${esc(q.source_url)}" target="_blank" rel="noopener noreferrer">on ${esc(q.platform)}<span class="visually-hidden">, written ${esc(q.date)}</span>${NEW_TAB}</a></figcaption></figure></li>`)
-            .join('')}</ul>`
-        : ''
-    }
-    <div class="voices-ribbon" data-voice>
-      ${google ? `<a class="voices-ribbon__proof" href="${esc(google.url)}" target="_blank" rel="noopener noreferrer">Google: ${google.rating.toFixed(1)} out of 5 from ${google.reviewCount} reviews${NEW_TAB}${external}</a>` : ''}
-      <p class="voices-ribbon__note">The three themes are our own summary of what reviewers write most often, not their words. The ratings are each platform’s own, never added together.</p>
-    </div>
+    <header class="voices__head" data-voice>
+      ${chapterMark(9, 'The people behind the good times', 'voices__eyebrow')}
+      <h2 class="lc-title voices__title" id="voices-title">Good times, <em>by the people who had them.</em></h2>
+      <p class="lc-lead voices__lead">Don’t just take our word for it. These are travellers’ own reviews of their days with us, newest first: each card shows the title they gave their review, and Read more opens the whole of it.</p>
+    </header>
+    ${ratingBar(site, { attrs: 'data-voice' })}
+    ${reviewWall({ list: guestReviews.slice(0, HOME_REVIEWS), initial: HOME_REVIEWS, step: 8, moreFrom: 'reviews/', label: 'Reviews from Tripadvisor, newest first', all: { href: 'reviews/', label: `See all ${guestReviews.length} reviews` }, attrs: 'data-voice' })}
   </div>
 </section>`;
 }
@@ -228,13 +171,13 @@ export const page = {
   // The Living Cape chapters have their own sheet, loaded after styles.css and the system sheet, scoped to .living-cape.
   // The hero's phone gallery has its own sheet and script (HeroPhoneGallery, partials/phone-gallery.mjs), and so do its
   // services (HeroServices, partials/hero-services.mjs; their entrance is part of hero.js).
-  styles: ['assets/css/phone-gallery.css', 'assets/css/hero-services.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css', 'assets/css/scenic.css', 'assets/css/voices.css'],
+  styles: ['assets/css/phone-gallery.css', 'assets/css/hero-services.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css', ...REVIEW_WALL_ASSETS.styles, 'assets/css/scenic.css', 'assets/css/voices.css'],
   // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger, Flip and MotionPathPlugin, and
   // CustomEase and SplitText for the Cape Peninsula entrance and the leaf's unfurl (GSAP 3.15, self-hosted; the policy
   // allows same-origin scripts only), the hero's entrance, its phone gallery, the chapters (the guest voices' reveal
   // among them, living-cape.js)
   // and the media system: the destination carousel, the exhibition and its lightbox.
-  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/vendor/MotionPathPlugin.min.js', 'assets/js/vendor/CustomEase.min.js', 'assets/js/vendor/SplitText.min.js', 'assets/js/brand-plane.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/sand-journey.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
+  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/vendor/MotionPathPlugin.min.js', 'assets/js/vendor/CustomEase.min.js', 'assets/js/vendor/SplitText.min.js', 'assets/js/brand-plane.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/sand-journey.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js', ...REVIEW_WALL_ASSETS.scripts],
   /*
    * The hero, "the world has stopped, the memories haven't": five friends in a café above the Atlantic, Table Mountain
    * behind, held still in one moment of laughter (the film moves only the cloud and the sea, src/tools/build-video.sh).

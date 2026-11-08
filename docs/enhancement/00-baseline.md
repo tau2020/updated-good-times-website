@@ -8,14 +8,16 @@ Every figure here was read on 8 Nov 2026.
 
 | | Deployment | Commit | What it serves |
 |---|---|---|---|
-| Staging (`--branch staging`), the brief's "live visual target" | `f8ca738d`, 7 Nov 2026 | `289273f` | The site as reviewed on 7 Nov: no `/services/` or `/safety/` (404), the terms marked "Draft", the reviews dated "As listed on 5 November 2026" |
+| Staging (`--branch staging`), the brief's "live visual target" | `de716d83`, 7 Nov 2026 11:48 UTC | `bb4d74b` | The site as reviewed on 7 Nov: no `/services/` or `/safety/` (404), the terms marked "Draft", the reviews dated "As listed on 5 November 2026" |
 | Production, `good-times-in-cape-town.pages.dev` | `b9f742d0`, 8 Nov 2026 | `main` `45e972f` | Everything since: the historical URLs (#4), the live enquiry pipeline in preview mode (#5), the Search Console fixes and the 264 count (#6) |
 
-Fingerprinted from outside (the pages' own text and status codes), since no Cloudflare token is provisioned in this
-environment to read the deployment list. Staging is 20 commits behind `main`. The header, its stylesheet and `main.js` are
-identical in both (`git diff 289273f main` touches only the footer's links and the canonical tag in `layout.mjs`), so the
-header was measured on staging, as the brief asks, and the work starts from `main` `45e972f` (branch
-`enhancement/glass-scenic-reputation-legal`), not from the stale preview.
+Fingerprinted first from outside (the pages' own text and status codes), then confirmed from the project's deployment
+list once a token was supplied for the preview deployment: staging's latest deployment is `de716d83` from `bb4d74b`
+(7 Nov 2026), 18 commits behind `main` (the approval register's M6 names the earlier staging deployment of that morning,
+`f8ca738d` from `289273f`). The header, its stylesheet and `main.js` are identical in both (`git diff bb4d74b main`
+touches only the footer's links and the canonical tag in `layout.mjs`), so the header was measured on staging, as the
+brief asks, and the work starts from `main` `45e972f` (branch `enhancement/glass-scenic-reputation-legal`), not from the
+stale preview.
 
 Build: the zero-dependency generator (`src/build.mjs`), preview flavour 27 pages; Pages project `good-times-in-cape-town`
 (`scripts/cloudflare/project.mjs`). Pages Functions serve `/api/*`, `/admin/*` and the video byte ranges.

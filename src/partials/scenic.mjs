@@ -18,10 +18,11 @@ const generated = existsSync(GENERATED) ? JSON.parse(readFileSync(GENERATED, 'ut
 
 /**
  * What each variant's image is drawn at, for the browser's choice of file. On phones the side accent spans the screen,
- * but at its presence (18% or less, washed) a file half that width looks the same and weighs half as much.
+ * but at its presence (27% or less, washed) a file half that width looks the same and weighs half as much.
  */
 const SIZES = {
   copy: '100vw',
+  head: '100vw',
   bleed: '100vw',
   side: '(min-width: 64em) 44vw, 50vw',
 };

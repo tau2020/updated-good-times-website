@@ -1,8 +1,14 @@
-# Reputation: the proof, the guest voices and the evidence (8 Nov 2026)
+# Reputation: the ratings, the reviewers' own words and the evidence (8 Nov 2026)
 
 The brief (§§ C–E) and its addendum: show Tripadvisor's 5.0 and 264 reviews without a date, in an elegant, clickable,
 original panel; build one social-proof chapter that is not a carousel; use only permitted first-party words or official
 embeds; check Google and every trust claim against primary sources; never overstate or add unlike counts together.
+
+Later the same day the owner replaced the chapter: "implement this review section … combine it with trip advisor as
+well", with two screenshots of a Google reviews section (a rating bar with "Write a review", a grid of review cards,
+"Load more"); then "use client original reviews, do not summarise reviews", pointing to the review archive on Drive.
+Sections 3 and 4 describe what was built; the first version (three themes in our words, a postcard, a ribbon) is
+retired with the summaries.
 
 ## 1. Evidence, read on 8 Nov 2026
 
@@ -39,53 +45,66 @@ www.tripadvisor.com, static.tacdn.com) with inline handlers that this site's Con
 for every visitor would also send each visitor's address to Tripadvisor before they have chosen anything, which the
 privacy notice does not allow today. So:
 
-- **Built, as the owner asked**: the proof panel in the site's own type: "Tripadvisor" in plain letters (no owl, no
-  bubbles), the numeral, five stars as decoration, "The reviews speak for themselves.", "5.0 out of 5 on Tripadvisor",
-  "264 traveller reviews", and the green "Read our reviews" to the listing (new tab, `noopener noreferrer`). No date.
+- **Built, as the owner asked**: first the proof panel in the site's own type, then (the owner's follow-up) the rating
+  bar of section 3: Tripadvisor's 5.0 and 264 with its five stars and its mark (the owl the site already uses for its
+  Tripadvisor links), linked to the listing (new tab, `noopener noreferrer`), and the reviewers' own titles. No date.
 - **Release gate**: `site.tripadvisor.permission` (`scripts/release-gate.mjs`) holds production until the owner records
-  Tripadvisor's written permission for that panel, or chooses the widget instead (R4 in the approval register).
+  Tripadvisor's written permission for the rating and the reviewers' titles as shown, or chooses the widgets instead (R4
+  in the approval register). The archive's own usage-rights report (5 Nov 2026) says the same of the reviews: copying
+  Tripadvisor's content needs its prior written permission, and every reviewer's rights are "Not requested".
 - **The widget route, if chosen**: Tripadvisor's Rating widget (`cdsratingsonlynarrow`, location 19611200) works for this
   listing; it would be loaded only when the visitor asks ("Show Tripadvisor's live rating"), inside a sandboxed frame on
   its own page with its own policy, and the plain-text figures would then be removed everywhere (the widget terms).
 
 The owner's mock-up badge is not used as an image: it redraws Tripadvisor's owl and wordmark.
 
-## 3. The guest voices chapter
+## 3. The review section (the owner's request of 8 Nov 2026)
 
-| Register | Content | Rules |
+One component in three places (`src/partials/review-wall.mjs`, `review-wall.css`, `review-wall.js`): the home page's
+chapter 09, `/reviews/` and the Reviews tab of each tour with reviews.
+
+| Part | Content | Rules |
 |---|---|---|
-| The proof (beside the heading) | above | one constant (`site.tripadvisor`); no date; linked |
-| A feature postcard | "Calm days, from the first hello to the last wave": the first theme, beside a Good Times photograph (guests waving at Cape Town International's departures, shown whole in a white print edge, captioned "A Good Times photograph"), a small dashed stamp in its corner | the photograph is used nowhere else; nobody in it is presented as a reviewer |
-| Two staggered notes | "Stories that stay with you"; "A day that bends to the group" | labelled "In our words" |
-| A quiet ribbon | "Google: 5.0 out of 5 from 10 reviews" (linked to the profile); "The three themes are our own summary of what reviewers write most often, not their words. The ratings are each platform's own, never added together." | Google apart from Tripadvisor; no total; the listing's link is the proof's own button, not repeated |
+| The rating bar | "Tripadvisor rating 5.0 ★★★★★ 264 reviews [Write a review]" beside "Google rating 5.0 ★★★★★ 10 reviews [Write a review]" | Each figure from its one constant (`site.tripadvisor`, `site.google`), never added together, no date; the counts link to the listing and the profile; each "Write a review" opens that platform's own form (both opened in a browser on 8 Nov 2026: Tripadvisor's `UserReviewEdit` page for the listing, and Google's form by the profile's Place ID, `ChIJ21BcDeVnzB0R8eeEloFUvnQ`, the profile's feature id in Google's encoding, which landed on the profile with its CID and its 5.0 from 10) |
+| The cards | The reviewer's own rating (stars), the title they gave their review in quotation marks, word for word, "Read more" (the whole review on Tripadvisor, new tab), the product they reviewed (linked to our tour page) and their trip type, their initial in a coloured circle, their name, when they wrote it ("2 weeks ago", from the visitor's clock; the date itself in the element and its tooltip), "Posted on Tripadvisor" | Nothing summarised, shortened or reworded; only spaces around a title trimmed. Four across on wide walls, two in narrower ones, one on phones (container queries, so a tour's tab and the home page use one set of rules) |
+| Load more | Eight more each press on the home page, twelve on `/reviews/` | Focus moves to the first new card; a status line says how many are showing; the button leaves once every card is in. Without the script the first cards show with their dates and the link under them leads to the rest |
 
-The three themes (`src/data/reputation.mjs` › `THEMES`) answer the brief's three: safe, relaxed and seamless planning;
-expert local storytelling; private flexibility and a personal touch. Every phrase traces to the review research behind
-`src/data/reviews.mjs` (a solo traveller who felt safe, clear contact before an airport pickup, the name sign at
-arrivals, help with luggage; Langa with guides who grew up there, District Six, the city's history in order; a flexible
-start, a new route when a rockslide closed Chapman's Peak, a guide who got to know the group). They carry no names,
-stars or quotation marks.
+The cards come from `src/data/guest-reviews.mjs`: the owner's archive (Drive › the reviews archive, the index workbook's
+Reviews tab, compiled 5 Nov 2026), the 81 reviews it records of the 264 on the listing (it indexed the reviews that
+carry photographs; every one is listed, newest first, from 20 Oct 2026 back to 17 Dec 2019, all rated 5). Each entry is
+the archive's record: id, title, name, date, rating, product, trip type and the review's address, from which its tour or
+service follows. The archive holds no review bodies, so a card shows the title and "Read more" leads to the rest; it
+holds no Google reviews, so none is shown and Google's figure stands in the bar alone. A Google review would join the
+list with `platform: 'Google'` and its own address, and the card's mark and "Posted on Google" follow.
 
-Motion (`living-cape.js`, the home chapters' GSAP owner): each card rises once, opacity and 16 px, 0.1 s apart, from 85%
-of the screen; no pin, scrub or loop; opacity only, so the cards stay in the accessibility tree and a focused one shows at
-once; without motion they are simply in place.
+Where each page carries them: `/reviews/` all 81 (12 drawn, the rest in a `<template>`, drawn only when asked for); a tour
+page its own listing's (the Peninsula 41, the Winelands 11, Langa 10, the city 4); the home page the newest eight, and its
+"Load more" reads the rest from `/reviews/` once, on the first press (its links resolved against that page, the cards
+already shown left out), so the home page stays under the site's 200 KB page budget (186 KB; it was 177 KB before the
+change). The stars and the platform's mark are drawn by the stylesheet, not repeated in every card, which keeps a card
+near 1.3 kB.
 
-Design (`voices.css`): white glass cards (`.gt-scenic-glass`) with a leaf-line border and a soft green-black shadow; the
-display face for the numeral and the titles; one 7/5 column system for the head and the cards, so the proof and the first
-note share an edge and the second note steps in by a gutter and a half; the postcard side by side only when the card
-itself is 36rem wide (a container query: stacked on phones and at 1024 px); every theme labelled "In our words"; one
-column on phones. After the critique the postcard lost its tilt and its wave postmark, and the notes their edge rule (it
-read as a quotation mark-up on words that are not quotes).
+Design: the screenshots' structure in the site's own type and greens. The bar is one white card with a cell per
+platform; the cards are light (`--ivory-soft`) with a hairline, and on the home page white glass over the sea plane (72%
+white, blurred where the sea is drawn: `voices.css`). The avatar tones are six of the palette's, each with white initials
+at 5:1 or more. The chapter's heading is centred, as in the screenshots.
 
-## 4. The testimonial registry
+Accessibility: the stars are decoration with "Rated 5 out of 5" for screen readers; each link's name says where it goes
+("Read more of Hannah C's review on Tripadvisor (opens in a new tab)", "264 reviews on Tripadvisor (opens in a new
+tab)"); every control is at least 44 px tall and every link at least 24 px; the cards are a list with a label; a focused
+card shows a ring. Motion: `living-cape.js` rises the head, the bar and the wall once (opacity and 16 px); cards added by
+"Load more" fade in once, not under reduced motion.
 
-`src/data/reputation.mjs` › `TESTIMONIALS`, the brief's model: `platform`, `source_url`, `permission_or_embed_method`,
-`reviewer_display_name`, `date`, `rating`, `actual_verbatim_excerpt`, `tour_tag`, `photo_asset_and_rights`, `approved`.
-`isEligible()` admits only an approved entry with written permission or an official embed, an https source, a name, a
-date and the words themselves; anything else renders nothing. Today the ten Tripadvisor reviews summarised on `/reviews/`
-are listed with "none recorded", so the home page shows none of them. `/reviews/` keeps its summaries for now (the
-existing feature, kept as the brief asks when a direction conflicts with it): they are our own words, not quotes, but
-Tripadvisor's terms ask for permission for that too (R1–R3, R4).
+Removed with it: the three themes in our words, the postcard and the ribbon (`reputation.mjs`), the ten summaries on
+`/reviews/` and the tour pages (`reviews.mjs`), and the summary card (`reviewCard` in `cards.mjs`).
+
+## 4. The testimonial registry: retired
+
+The brief's registry (`TESTIMONIALS`, `isEligible`) admitted a guest's own words only with an approved, written
+permission or an official embed, so it showed nothing. The owner's direction of 8 Nov 2026 replaces it: the reviewers'
+own titles are shown, attributed and linked, with their permission still "Not requested" in the archive. The decision
+and its risk are recorded where the owner can act on them: R1, R3, R4 and R5 in `docs/APPROVAL_REGISTER.md`, and the
+release gate, which refuses production until Tripadvisor's permission is recorded (`site.tripadvisor.permission`).
 
 ## 5. Keeping the figures true
 
@@ -97,5 +116,7 @@ distribution); Google's in `site.google`. Before each release, and monthly:
 2. Open the Google Maps place page; read the rating and the count beside it.
 3. Change `reviewCount`, `rating`, `checked` (and `google`) together; a screenshot of each into `evidence/`.
 4. `npm test`: the reputation tests read the same constants, so a page and its test can never disagree.
+5. New reviews: add the archive's new rows to `src/data/guest-reviews.mjs` in the same shape, newest first, word for word;
+   `test/reviews-data.test.mjs` checks every entry against its listing.
 
 A count that has grown since it was read understates; it never overstates, which is why the date can stay off the panel.

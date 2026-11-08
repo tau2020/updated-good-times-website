@@ -130,6 +130,8 @@ export const site = {
      * used. Not requested yet: the release gate names it (docs/APPROVAL_REGISTER.md › R4).
      */
     permission: { status: 'not requested', verified: false },
+    /** Tripadvisor's own "Write a review" form for the listing (opened in a browser on 8 Nov 2026: "Tell us, how was your visit?", Good Times In Cape Town). */
+    writeReviewUrl: 'https://www.tripadvisor.co.za/UserReviewEdit-g312659-d19611200-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html',
   },
 
   /**
@@ -144,6 +146,12 @@ export const site = {
     url: 'https://maps.google.com/?cid=8412254069527472113',
     checked: '2026-11-08',
     checkedHow: 'The Google Maps place page in a browser on 8 Nov 2026 (place id 0x1dcc67e50d5c50db:0x74be54819684e7f1)',
+    /**
+     * Google's own review form for the profile. The Place ID is the feature id above in Google's ChIJ encoding; opened in
+     * a browser on 8 Nov 2026, it lands on the profile's review panel (ludocid 8412254069527472113, 5.0 from 10 reviews).
+     */
+    placeId: 'ChIJ21BcDeVnzB0R8eeEloFUvnQ',
+    writeReviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJ21BcDeVnzB0R8eeEloFUvnQ',
     verified: true,
   },
 
