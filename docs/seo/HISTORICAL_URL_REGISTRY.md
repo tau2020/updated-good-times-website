@@ -10,16 +10,16 @@ Search Console figures are private and are not in this public repository: the ev
 
 | Action | Entries | | Priority | Entries | | Owner | Entries |
 |---|---|---|---|---|---|---|---|
-| keep | 9 | | Critical | 6 | | engineering | 126 |
-| redirect | 53 | | High | 30 | | owner | 10 |
+| keep | 9 | | Critical | 6 | | engineering | 135 |
+| redirect | 53 | | High | 30 | | owner | 1 |
 | prefix | 27 | | Medium | 20 | | cutover | 2 |
 | page | 2 | | Low | 84 | | platform | 2 |
-| asset | 4 | |  |  | |  |  |
+| asset | 10 | |  |  | |  |  |
 | platform | 1 | |  |  | |  |  |
 | host | 2 | |  |  | |  |  |
 | query | 22 | |  |  | |  |  |
 | retire | 14 | |  |  | |  |  |
-| hold | 6 | |  |  | |  |  |
+| hold | 0 | |  |  | |  |  |
 
 ## Key
 
@@ -108,7 +108,7 @@ Search Console figures are private and are not in this public repository: the ev
 
 | Address | Priority | Action | First response | Final destination | Owner | Evidence | Note |
 |---|---|---|---|---|---|---|---|
-| `/bookings/` | High | redirect | 301 | `/enquire/` | engineering | gsc, gsc-crawl, register, additions | The booking site’s bookings page. There are no customer accounts here; booking is a request through the form. |
+| `/bookings/` | High | redirect | 301 | `/contact/` | engineering (H6) | gsc, gsc-crawl, register, additions | The booking site’s bookings page, where signed-in guests saw their bookings. The owner’s decision of 8 Nov 2026 (H6): generic bookings visits go to Contact, for help with an existing booking; the tour-specific booking links keep opening the form on their tour. |
 | `/accounts/login/` | Critical | redirect | 301 | `/enquire/` | engineering | gsc, gsc-crawl, register, additions | Reviewed: the booking site asked visitors to sign in before booking (Googlebot followed /accounts/login/?next=/users/book/quad-biking/). The form is that step’s successor; the query passes through, and the form chooses the tour named in next=. Never /admin/ (staff only, and a Functions route). (1 addresses, e.g. `/accounts/login/?next=/users/book/quad-biking/`) |
 | `/accounts/signup/` | Low | redirect | 301 | `/enquire/` | engineering | gsc, gsc-crawl, register, additions | Reviewed with /accounts/login/: account creation before booking. No accounts here; the form needs none. |
 
@@ -125,14 +125,14 @@ Search Console figures are private and are not in this public repository: the ev
 | `/tours/` | Medium | keep | 200 | `/tours/` | engineering | audit, wp-backup | WordPress’s tour archive (has_archive: tours). |
 | `/sitemap.xml` | Low | keep | 200 | `/sitemap.xml` | engineering | audit | Production builds only (a preview publishes no sitemap). |
 | `/robots.txt` | Low | keep | 200 | `/robots.txt` | engineering | audit, wayback |  |
-| `/gallery/` | Medium | redirect | 301 | `/tours/` | owner (H2) | gsc, gsc-crawl, register, audit | WordPress gathered every tour’s photographs here; the booking site had a gallery list of its own. Each photograph now sits on its tour’s page, all reached from /tours/ (the audit’s target, and the register’s fallback). A gallery page of its own needs photographs not already placed elsewhere (H2). |
+| `/gallery/` | Medium | redirect | 301 | `/tours/` | engineering (H2) | gsc, gsc-crawl, register, audit | WordPress gathered every tour’s photographs here; the booking site had a gallery list of its own. Each photograph now sits on its tour’s page, all reached from /tours/ (the audit’s target, and the register’s fallback). Approved by the owner on 8 Nov 2026 (H2) for now; a gallery page of its own can come later. |
 | `/tour/` | Low | redirect | 301 | `/tours/` | engineering | repo, audit |  |
 | `/index.php` | Low | redirect | 301 | `/` | engineering | audit |  |
 | `/favicon.ico` | Low | redirect | 301 | `/assets/brand/favicon.ico` | engineering | gsc-crawl, register, audit, wayback | The approved logo pack’s icon (src/assets/brand/favicon.ico). |
 | `/wp-sitemap.xml` | Low | redirect | 301 | `/sitemap.xml` | engineering | audit |  |
 | `/index.html` | Low | platform | 308 | `/` | platform | gsc, gsc-crawl, register, wayback | Pages answers 308 to / for any index.html. |
-| `/services/` | Critical | page | 200 | `/services/` | owner (H1) | gsc, gsc-links, gsc-crawl, register, additions | The booking site’s “Our offer” page (every service). The additions file sent it to /tours/, which covers neither transfers nor the overview it was linked for: it is now an overview of the four services at its own address. If the owner prefers the redirect, change action to redirect, to /tours/. |
-| `/safety/` | Medium | page | 200 | `/safety/` | owner (H1) | gsc-crawl, register, audit, wp-backup | WordPress’s Safety & Trust page. The audit sent it to /about/; the register prefers keeping the page. Restored with the verified statements only (the accreditations, the association, private groups, since 2014); its unverified claims wait for H4. |
+| `/services/` | Critical | page | 200 | `/services/` | engineering (H1) | gsc, gsc-links, gsc-crawl, register, additions | The booking site’s “Our offer” page (every service). The additions file sent it to /tours/, which covers neither transfers nor the overview it was linked for: it is now an overview of the four services at its own address. Approved by the owner on 8 Nov 2026 (H1), on condition that it says only verified things. |
+| `/safety/` | Medium | page | 200 | `/safety/` | engineering (H1) | gsc-crawl, register, audit, wp-backup | WordPress’s Safety & Trust page. The audit sent it to /about/; the register prefers keeping the page. Restored with verified statements only; approved by the owner on 8 Nov 2026 (H1), and the old page’s other claims confirmed by the owner the same day (H4). |
 
 ## WordPress tour categories
 
@@ -169,12 +169,12 @@ Search Console figures are private and are not in this public repository: the ev
 | `/media/tours/gallery/Gardern_Route_3_1.webp` | Medium | asset | 200 | `/media/tours/gallery/Gardern_Route_3_1.webp` | engineering | gsc-crawl, register, media-store, wp-backup, django-export | Hermanus whale sculpture, two guests. On the site already (hermanus-whale-sculpture, W, consent P1): served unaltered. |
 | `/media/tours/gallery/Gardern_Route_4_1.webp` | Medium | asset | 200 | `/media/tours/gallery/Gardern_Route_4_1.webp` | engineering | gsc-crawl, register, media-store, wp-backup, django-export | Rooiberg’s red chair; one person, far. On the site already (rooiberg-red-chair, U): served unaltered. |
 | `/media/tours/gallery/Gardern_Route_5_1.webp` | Medium | asset | 200 | `/media/tours/gallery/Gardern_Route_5_1.webp` | engineering | gsc-crawl, register, media-store, wp-backup, django-export | The Map of Africa viewpoint, two guests. On the site already (map-of-africa-viewpoint, W, consent P1): served unaltered. |
-| `/media/tours/gallery/38.webp` | Medium | hold | 404 (until decided) |  | owner (H3) | gsc-crawl, register, media-store | Airport arrivals: a guest and a driver from behind, a bystander’s face in view. Not yet approved for this site. |
-| `/media/tours/gallery/Gardern_Route_1_2.webp` | Medium | hold | 404 (until decided) |  | owner (H3) | gsc-crawl, register, media-store, wp-backup, django-export | Cango Caves sign, an identifiable guest (the same guest is in the approved cango-caves, P2). Not yet approved for this site. |
-| `/media/tours/gallery/wine_tasting.webp` | Medium | hold | 404 (until decided) |  | owner (H3) | gsc-crawl, register, media-store, wp-backup, django-export | A guest at a wine estate’s fireside, identifiable. Not yet approved for this site. |
-| `/media/tours/citytour_L6J9iiN.png` | Medium | hold | 404 (until decided) |  | owner (H3) | gsc-crawl, register, media-store, wp-backup | The old site’s “Cape Town City Tour” card: lettering over a photograph of two identifiable guests. |
-| `/media/tours/shark-cage-diving.png` | Medium | hold | 404 (until decided) |  | owner (H3) | gsc-crawl, register, media-store, wp-backup, django-export | The old site’s “Shark Cage Diving” card: no people; who took the underwater photograph in it is not recorded (D3). |
-| `/media/gallery/19.png` | Medium | hold | 404 (until decided) |  | owner (H3) | gsc-crawl, register, media-store | The old gallery’s framed photograph of two identifiable guests at Groot Constantia. |
+| `/media/tours/gallery/38.webp` | Medium | asset | 200 | `/media/tours/gallery/38.webp` | engineering (H3) | gsc-crawl, register, media-store | Airport arrivals: a guest and a driver from behind, a bystander’s face in view. Approved by the owner on 8 Nov 2026 (H3): served unaltered. |
+| `/media/tours/gallery/Gardern_Route_1_2.webp` | Medium | asset | 200 | `/media/tours/gallery/Gardern_Route_1_2.webp` | engineering (H3) | gsc-crawl, register, media-store, wp-backup, django-export | Cango Caves sign, an identifiable guest (the same guest is in the approved cango-caves, P2). Approved by the owner on 8 Nov 2026 (H3): served unaltered. |
+| `/media/tours/gallery/wine_tasting.webp` | Medium | asset | 200 | `/media/tours/gallery/wine_tasting.webp` | engineering (H3) | gsc-crawl, register, media-store, wp-backup, django-export | A guest at a wine estate’s fireside, identifiable. Approved by the owner on 8 Nov 2026 (H3): served unaltered. |
+| `/media/tours/citytour_L6J9iiN.png` | Medium | asset | 200 | `/media/tours/citytour_L6J9iiN.png` | engineering (H3) | gsc-crawl, register, media-store, wp-backup | The old site’s “Cape Town City Tour” card: lettering over a photograph of two identifiable guests. Approved by the owner on 8 Nov 2026 (H3): served unaltered. |
+| `/media/tours/shark-cage-diving.png` | Medium | asset | 200 | `/media/tours/shark-cage-diving.png` | engineering (H3) | gsc-crawl, register, media-store, wp-backup, django-export | The old site’s “Shark Cage Diving” card: no people. Approved by the owner on 8 Nov 2026 (H3): served unaltered; who took the underwater photograph in it is still not recorded (D3). |
+| `/media/gallery/19.png` | Medium | asset | 200 | `/media/gallery/19.png` | engineering (H3) | gsc-crawl, register, media-store | The old gallery’s framed photograph of two identifiable guests at Groot Constantia. Approved by the owner on 8 Nov 2026 (H3): served unaltered. |
 | `/media/tours/gallery/Cape_Town_City_Private_Tour7_2.webp` | Medium | retire | 404 |  | engineering | gsc-crawl, register, media-store, wp-backup, django-export | Two children with their family: byte for byte the photograph the rights register withdrew (company-garden-guide, P4). Never served. |
 | `/media/gallery/33.png` | Medium | retire | 404 |  | engineering | gsc-crawl, register, media-store | Children in the frame (P4). Never served. |
 | `/media/tours/peninsula_WsHDY45.png` | Medium | retire | 404 |  | engineering | gsc-crawl, register, media-store, wp-backup | The old “Cape Peninsula Adventure” card: two young people who may be under 18 (the rule that withdrew peninsula-granite-bay, P4). Never served. |

@@ -1,6 +1,7 @@
 // The booking site's old addresses in a real browser: each /users/book/<slug>/ follows its redirect
 // (src/data/legacy-urls.mjs) to the booking form with the same tour chosen, the sign-in page's ?next= link does the
-// same, the account pages open the form at its first step, and both old sites' tour addresses land on the tour.
+// same, the account pages open the form at its first step, the bookings page leads to Contact, and both old sites'
+// tour addresses land on the tour.
 // Runs on the local server (which applies _redirects as Pages does), wrangler pages dev or a deployment (E2E_BASE_URL).
 import { test, expect } from '@playwright/test';
 import { legacyUrls } from '../../src/data/legacy-urls.mjs';
@@ -54,13 +55,17 @@ test.describe('the booking site’s old addresses', () => {
     await expect(step(page, 'service')).toBeVisible();
   });
 
-  test('the account and bookings pages open the form at its first step', async ({ page }) => {
-    for (const path of ['/accounts/login/', '/accounts/signup/', '/bookings/']) {
+  test('the account pages open the form at its first step; the bookings page leads to Contact (H6)', async ({ page }) => {
+    for (const path of ['/accounts/login/', '/accounts/signup/']) {
       await visit(page, path);
       expect(new URL(page.url()).pathname, path).toBe('/enquire/');
       await page.waitForSelector('.wizard.is-ready');
       await expect(step(page, 'service'), path).toBeVisible();
     }
+    // Guests with an existing booking reach a person (the owner's decision of 8 Nov 2026).
+    await visit(page, '/bookings/');
+    expect(new URL(page.url()).pathname).toBe('/contact/');
+    await expect(page.locator('h1')).toBeVisible();
   });
 
   test('both old sites’ tour addresses land on the tour', async ({ page }) => {

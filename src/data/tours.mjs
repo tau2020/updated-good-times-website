@@ -98,7 +98,8 @@ export const tours = [
     images: { hero: 'hout-bay-viewpoint-couple', card: 'boulders-penguins-boardwalk', gallery: ['boulders-welcome-sign', 'boulders-penguin-colony', 'cape-point-sign-trio', 'cape-point-ostrich', 'cape-point-boardwalk', 'boulders-couple-selfie'] },
     heroFocus: '66% 52%',
     seo: {
-      title: 'Cape Peninsula Private Tour: Chapman’s Peak, Cape Point & Penguins',
+      // H8 (8 Nov 2026): the two strongest highlights first, so the descriptive part is not cut off in results
+      title: 'Cape Peninsula Private Tour: Cape Point & Boulders Penguins',
       description: 'A full-day private Cape Peninsula tour from Cape Town: Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the Boulders Beach penguins, with pickup from your accommodation.',
     },
     tripadvisor: { url: `${TA}d19714975-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 87, checked: CHECKED },
@@ -190,7 +191,8 @@ export const tours = [
     images: { hero: 'winelands-cape-dutch-group', card: 'winelands-tasting-flight', gallery: ['winelands-terrace', 'winelands-tasting-counter', 'winelands-group-tasting', 'winelands-terrace-guide'] },
     heroFocus: '56% 46%',
     seo: {
-      title: 'Cape Winelands Private Tour: Stellenbosch, Franschhoek & Paarl',
+      // H8 (8 Nov 2026): Paarl, the third town, made results cut the line mid-word
+      title: 'Cape Winelands Private Tour: Stellenbosch & Franschhoek',
       description: 'A private Cape Winelands day from Cape Town: Fairview Wine & Cheese, La Motte, Franschhoek village and Lanzerac, with pickup from your accommodation.',
     },
     tripadvisor: { url: `${TA}d19685038-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 39, checked: CHECKED },
@@ -268,7 +270,8 @@ export const tours = [
     images: { hero: 'coast-sunset-couple', card: 'coast-sunset-couple', gallery: ['beach-thrones', 'chapmans-peak-guide-selfie'] },
     heroFocus: '45% 58%',
     seo: {
-      title: 'Private Cape Town Experience: a Tailored Day with Your Own Guide',
+      // H8 (8 Nov 2026): the page's own heading, in place of a longer phrase that repeated "private"
+      title: 'Private Cape Town Experience: Your Day, Your Way',
       description: `A tailored full day in and around Cape Town with your own private guide and vehicle, planned around what you would love to see. For groups of up to ${groupMax('private-cape-town-experience')}.`,
     },
     tripadvisor: null,

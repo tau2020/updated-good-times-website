@@ -159,6 +159,20 @@ export const site = {
   },
 
   /**
+   * Safety statements from Good Times' own Safety & Trust page (the WordPress site of 5–7 Nov 2026), which the site
+   * could not verify until the owner confirmed them on 8 Nov 2026 (docs/APPROVAL_REGISTER.md › H4). Shown on /safety/
+   * only while `verified` is true.
+   */
+  safety: {
+    vehicles: 'Our vehicles are regularly serviced and insured',
+    firstAid: 'Our guides are trained in first aid and carry first-aid supplies',
+    certificate: 'A Tripadvisor Certificate of Excellence',
+    guests: 'Thousands of guests hosted safely',
+    source: 'Good Times’ Safety & Trust page (goodtimesincapetown.co.za, 5–7 Nov 2026), confirmed by the owner on 8 Nov 2026 (H4)',
+    verified: true,
+  },
+
+  /**
    * The facts the privacy notice and the terms rest on (POPIA s.18, ECTA s.43), rendered only when
    * verified. Nothing here may be guessed. Until Good Times approves both texts (`privacyApproved`,
    * `termsApproved`), the production deployment refuses to run (scripts/release-gate.mjs).

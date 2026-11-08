@@ -49,6 +49,8 @@ const DEVIATIONS = {
   '/tour-category/adventure-activities': { to: '/tours/#adventure', why: 'as above' },
   '/tour-category/nature-tours/': { to: '/tours/#nature', why: 'the same page, opened on its Nature filter' },
   '/tour-category/nature-tours': { to: '/tours/#nature', why: 'as above' },
+  '/bookings/': { to: '/contact/', why: 'the owner’s decision H6: generic bookings visits go to Contact for existing-booking support' },
+  '/bookings': { to: '/contact/', why: 'as above' },
 };
 
 test('the registry: one entry per address, every field from its own vocabulary', () => {
@@ -259,11 +261,12 @@ test('the union of historical addresses: the 190-URL map’s groups, the registe
   for (const p of ['/contact.html', '/tours.html', '/gallery.html', '/about-us.html', '/our-offer.html', '/customer-protection.html']) assert.equal(byPath.get(p)?.action, 'redirect', p);
 });
 
-test('historic media: the four kept files are the recorded originals; no held or retired original is in the repository', () => {
+test('historic media: the ten kept files are the recorded originals (six approved by the owner, H3); no retired original is in the repository', () => {
   const dir = join(ROOT, 'src', 'legacy-media');
   const files = (d) => readdirSync(d).flatMap((n) => (statSync(join(d, n)).isDirectory() ? files(join(d, n)) : [join(d, n)]));
   const kept = preservedMedia();
-  assert.equal(kept.length, 4);
+  assert.equal(kept.length, 10);
+  assert.equal(kept.filter((e) => e.decision === 'H3').length, 6, 'the six the owner approved');
   assert.deepEqual(files(dir).map((f) => `/media/${f.slice(dir.length + 1)}`).sort(), kept.map((e) => e.path).sort(), 'exactly the kept files');
   for (const e of kept) {
     const bytes = readFileSync(join(dir, e.path.replace(/^\/media\//, '')));
@@ -271,7 +274,7 @@ test('historic media: the four kept files are the recorded originals; no held or
     assert.equal(bytes.length, e.asset.bytes);
   }
   const withheld = new Set(legacyUrls.filter((e) => e.path.startsWith('/media/') && e.action !== 'asset').map((e) => e.asset.sha256));
-  assert.equal(withheld.size, 10, 'six held and four retired');
+  assert.equal(withheld.size, 4, 'the four retired by the rights register’s rules');
   for (const f of files(join(ROOT, 'src'))) {
     if (!/\.(webp|png|jpe?g)$/i.test(f)) continue;
     assert.ok(!withheld.has(createHash('sha256').update(readFileSync(f)).digest('hex')), `${f} is a withheld original`);

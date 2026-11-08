@@ -66,8 +66,9 @@
 /users/book/airport-private-transfer       /enquire/?type=transfer                    301
 
 # ---- The booking site’s account pages (reviewed)
-/bookings/                                 /enquire/                                  301
-/bookings                                  /enquire/                                  301
+# (owner decision H6: docs/APPROVAL_REGISTER.md)
+/bookings/                                 /contact/                                  301
+/bookings                                  /contact/                                  301
 /accounts/login/                           /enquire/                                  301
 /accounts/login                            /enquire/                                  301
 /accounts/signup/                          /enquire/                                  301

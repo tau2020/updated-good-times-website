@@ -1,6 +1,6 @@
 # Step 4B readiness: historical SEO preservation and source remediation
 
-8 Nov 2026 · branch `remediation/historical-seo-preservation` (from `main` at `188d362`).
+8 Nov 2026 · branch `remediation/historical-seo-preservation` (from `main` at `188d362`) · the owner's decisions H1–H9 of the same day applied (section 7).
 
 **Scope kept.** Nothing on the live domain, its DNS, the WordPress hosting or the Pages project's settings was changed. The work is in the repository, tested on the Pages runtime locally (`wrangler pages dev`) and, at the owner's instruction, on a preview deployment of its own (`seo-preview`); staging and production were not deployed. Every request to a live system was a read: public DNS, GET requests to the deployed pages.dev sites, the old booking site's media store and the Internet Archive. **This stops before the domain cutover.**
 
@@ -10,9 +10,9 @@
 |---|---|
 | Historical URL inventory (Phase A) | **Done.** One registry of 140 entries covering 325 addresses, every input reconciled with its provenance, priority, action, destination and owner |
 | Source implementation (Phase B) | **Done.** `npm run build` generates `_redirects` from the registry every time (124 rules) and refuses an unsound file |
-| Historic media and pages (Phase C) | **Done in source**; six images and the two restored pages wait for owner decisions (H1, H3) |
+| Historic media and pages (Phase C) | **Done**, with the owner's decisions applied: both restored pages approved (H1), ten original images served (H3), the confirmed safety statements on /safety/ (H4), three titles improved (H8) |
 | Tests (Phase D) | **Done**: every check passes on the Pages runtime locally for both builds, and on a deployed Cloudflare preview (420 of 420, smoke 27 of 27, browser 334 passed with none failing) |
-| Production dependencies (Phase E) | **Identified.** Two DNS fixes (SPF, CalDAV/CardDAV) and the live-enquiry prerequisites are open; a rollback procedure with the current values is below |
+| Production dependencies (Phase E) | **Prepared.** The two DNS fixes (H5) are verified as far as read-only checks allow; two points remain before the DNS edits (other mail senders; the certificate's renewal). The live-enquiry prerequisites are open; a rollback procedure with the current values is below |
 | Domain cutover | **Not ready, and not attempted.** It needs the owner's approval (A2), the H5 DNS fixes and the cutover checks below |
 
 ## 1. The inventory (Phase A)
@@ -40,6 +40,7 @@
 | `/safety/` | 301 → `/about/` (audit) | The restored Safety & Trust page (H1) | The register prefers keeping it; its verified content is useful on its own |
 | `/tour-category/adventure-activities/` | `/tours/` | `/tours/#adventure` | The same page, opened on its Adventure filter |
 | `/tour-category/nature-tours/` | `/tours/` | `/tours/#nature` | The same page, opened on its Nature filter |
+| `/bookings/` | 301 → `/enquire/` (additions) | 301 → `/contact/` | The owner's decision H6: help with an existing booking |
 
 **Refinements**, also tested: where an input left an address to a catch-all, the registry gives it a rule of its own (the four booking-site tour addresses) or sends it where its parent address goes, through 11 prefix rules: under each of those four tours, and under the seven categories whose page is not `/tours/` (so `/tour-category/multi-day-tours/feed/` now reaches `/packages/` rather than `/tours/`). The test probes every input catch-all with every registry address it covers and accepts nothing else.
 
@@ -49,30 +50,30 @@
 
 | | Entries |
 |---|---|
-| Actions | keep 9 · page 2 · redirect 53 · prefix 27 · asset 4 · platform 1 · host 2 · query 22 · retire 14 · hold 6 |
+| Actions | keep 9 · page 2 · redirect 53 · prefix 27 · asset 10 · platform 1 · host 2 · query 22 · retire 14 · hold 0 |
 | Priority | Critical 6 · High 30 · Medium 20 · Low 84 |
-| Owner | engineering 126 · owner 10 · cutover 2 · platform 2 |
+| Owner | engineering 135 · owner 1 (`/terms/`, waiting for B2) · cutover 2 · platform 2 |
 
 Each entry names its evidence by source; **no Search Console figure is in the public repository** (a test fails on click or impression counts, positions, the linking sites or personal details). The figures, and the Search Console exports themselves, stay in the owner's Drive.
 
 ## 2. The source (Phase B)
 
 - `src/data/redirects.mjs` builds `site/_redirects` from the registry on every build: in the production build **97 static rules, then 27 dynamic** (limits 2,000 and 100; longest line 117 characters of 1,000), all 301. A preview build publishes no sitemap, so it leaves out the two rules that point there (`/wp-sitemap.xml`, `/wp-sitemap-*`): 96 and 26. A copy of the production build's file is in `docs/seo/_redirects.production.txt` for review (generated with the tables; never deployed).
-- `src/tools/pages-redirects.mjs` mirrors Pages' own parser and matcher (wrangler 4, workers-shared). Three of its rules shaped the design:
+- `src/tools/pages-redirects.mjs` mirrors Pages' own parser (wrangler 4) and matcher (pages-shared). Three of its rules shaped the design:
   - once the first rule with a splat appears, **every later rule counts as dynamic**: static rules must all come first, or they would be matched late and use up the 100 dynamic rules;
   - a rule's source **keeps only its path**: a rule for `/?p=13` would be a rule for `/` and redirect the home page. The 22 WordPress query links are therefore not rules (the home page answers them, canonical `/`), and the build refuses any source with a query;
   - the Location keeps the destination's own query when it has one (the booking links), and otherwise passes on the visitor's (`?utm_…` survives on the tour redirects).
 - The build refuses a file that would redirect an existing page (Pages applies `_redirects` before its files), chain two redirects, point at a page or file the build did not write, a tour the form does not offer or a tours-page filter that does not exist, reach into a Functions route (`/api/`, `/admin/`, `/assets/video/`), place a static rule after a dynamic one, or exceed the limits. It also verifies the preserved images byte for byte.
-- **`/services/` evaluated:** kept as a meaningful overview rather than redirected. It was the booking site's "Our offer" page, listing every offering; the new site had no page doing that (`/tours/` has no transfers). The page gathers the home hero's four services and links every tour, activity, the multi-day tour and the transfer, from data already published (no photographs, so the one-photograph-one-placement rule holds). One line in the registry turns it back into a redirect if the owner prefers (H1).
-- **The account pages reviewed** before treating their mappings as final: the booking site asked visitors to sign in before booking (Googlebot followed `/accounts/login/?next=/users/book/quad-biking/`). `/accounts/login/`, `/accounts/signup/` and `/bookings/` go to the booking form, the successor of that step: the site has no customer accounts, and `/admin/` (staff only) is never a destination. The query passes through, and the form now reads the old `next=/users/book/<slug>/` and chooses that tour (`src/assets/js/enquiry.js`), so a signed-out booking link still lands on its tour (H6).
+- **`/services/` evaluated:** kept as a meaningful overview rather than redirected. It was the booking site's "Our offer" page, listing every offering; the new site had no page doing that (`/tours/` has no transfers). The page gathers the home hero's four services and links every tour, activity, the multi-day tour and the transfer, from data already published (no photographs, so the one-photograph-one-placement rule holds). Approved by the owner (H1).
+- **The account pages reviewed** before treating their mappings as final: the booking site asked visitors to sign in before booking (Googlebot followed `/accounts/login/?next=/users/book/quad-biking/`). `/accounts/login/` and `/accounts/signup/` go to the booking form, the successor of that step: the site has no customer accounts, and `/admin/` (staff only) is never a destination. The query passes through, and the form now reads the old `next=/users/book/<slug>/` and chooses that tour (`src/assets/js/enquiry.js`), so a signed-out booking link still lands on its tour. `/bookings/`, where signed-in guests saw their bookings, goes to Contact for help with an existing booking (the owner's decision H6).
 - **Booking deep links tested** against the form's real preselection: all 12 `/users/book/<slug>/` addresses open the form with the same tour chosen (the Garden Route as the multi-day tour; the airport transfer on the transfer path), in Chromium on desktop and mobile; every tour value is one the form offers (`TOUR_SLUGS`, `PACKAGE_SLUGS`), which the build checks too.
 - The local server (`src/tools/serve.mjs`) applies the same `_redirects`, so `npm start` shows the redirects as Pages would.
 
 ## 3. Historic media and search content (Phase C)
 
-**The 14 images** (`docs/seo/HISTORICAL_MEDIA.md`): every original was found in the old booking site's media store (each checked against its MD5) and 10 in the WordPress backup, byte for byte. **4 are served again** unaltered at their old addresses (the same photographs are approved and in use here); **6 are held** for the owner's consent or licence decision (H3; not in the repository); **4 are retired for good**: one is byte for byte the photograph the rights register withdrew for showing children, one shows children, one two young people who may be under 18, and one a guest's full name.
+**The 14 images** (`docs/seo/HISTORICAL_MEDIA.md`): every original was found in the old booking site's media store (each checked against its MD5) and 10 in the WordPress backup, byte for byte. **10 are served again** unaltered at their old addresses: 4 because the same photographs are approved and in use here, 6 approved by the owner on 8 Nov 2026 (H3). **4 are retired for good**: one is byte for byte the photograph the rights register withdrew for showing children, one shows children, one two young people who may be under 18, and one a guest's full name.
 
-**Gallery and Safety:** `/safety/` is restored with the verified statements only (the accreditations, the association, the registration, private tours since 2014, the published answers on weather and personal needs, the activities' safety inclusions, the dated Tripadvisor rating); its four unverifiable claims wait for H4. `/gallery/` stays a 301 to `/tours/`: a page of its own would repeat photographs placed elsewhere (H2).
+**Gallery and Safety:** `/safety/` is restored with verified statements only (the accreditations, the association, the registration, private tours since 2014, the published answers on weather and personal needs, the activities' safety inclusions, the dated Tripadvisor rating) and, since the owner confirmed them (H4), the old page's statements on serviced and insured vehicles, first aid, the Certificate of Excellence and the guests hosted (`site.safety`, shown only while verified). `/gallery/` stays a 301 to `/tours/` for now (H2): a page of its own would repeat photographs placed elsewhere, and can come later.
 
 **Search signals of the production build** (`test/seo.test.mjs`, with `test/production-build.test.mjs`):
 
@@ -84,15 +85,15 @@ Each entry names its evidence by source; **no Search Console figure is in the pu
 | Structured data parses on every page; WebPage names the page; BreadcrumbList below the home page; the services page's ItemList links every offering | Pass |
 | Internal links land directly on a page or file, never on an address `_redirects` bounces | Pass |
 | Every sitemap page reachable by links from the home page; the restored pages in the sitemap and the footer | Pass |
-| Titles longer than 60 characters (the audit's F4, owner's copy, H8) | 8, listed below; not changed |
+| Titles longer than 60 characters (the audit's F4, H8) | Improved where useful, with no 60-character rule: three rewritten, five kept (below) |
 
-The eight titles: the home page (63), the Garden Route tour (62), multi-day tours (61), Cape Peninsula (79), Cape Town City (72), Cape Winelands (75), Private Cape Town Experience (77), Whale Watching (65).
+Rewritten (H8), where results cut the descriptive part mid-word or the wording repeated itself: Cape Peninsula (79 → 71 characters, "Cape Peninsula Private Tour: Cape Point & Boulders Penguins"), Cape Winelands (75 → 68, "Cape Winelands Private Tour: Stellenbosch & Franschhoek"), Private Cape Town Experience (77 → 61, "Private Cape Town Experience: Your Day, Your Way", the page's own heading). Kept, because their descriptive part fits before any cut: the home page (63), the Garden Route tour (62), multi-day tours (61), Cape Town City (72) and Whale Watching (65). Each length includes " | Good Times".
 
 ## 4. Tests (Phase D)
 
 | Run | Result |
 |---|---|
-| `npm test` (unit and integration, incl. the Functions in workerd) | **352 of 352 pass** (329 before this work, 23 added) |
+| `npm test` (unit and integration, incl. the Functions in workerd) | **354 of 354 pass** (329 before this work, 25 added) |
 | The historical URL suite on the Pages runtime (`test/legacy-urls.test.mjs`), **preview build** | **420 of 420 checks pass** |
 | The same, **production build** | **420 of 420 checks pass** |
 | Negative control: the same build with the 26-rule `_redirects` of `188d362` | 186 of 420 fail, as they should |
@@ -104,7 +105,7 @@ The eight titles: the home page (63), the Garden Route tour (62), multi-day tour
 | `npm run guard` (brand guard) | Clean (one exemption: the old address `/tour/cape-town-city-tour/`, Good Times' own WordPress URL, whose slug a template operator also used; the slug anywhere else still fails) |
 | Independent review of the diff (a separate agent, 8 Nov 2026) | Ten findings, all addressed before the push: the privacy test now holds its denylist as hashes, worded figures removed, the guard's exemption narrowed, loops reported with their address, preview builds without the sitemap rules, the mirror aligned with Pages' own matcher, refinements recorded, stronger topic and host checks |
 
-**What the suite checks for each address** (`qa/legacy-urls.mjs`, the same code for a local runtime, a preview or the domain): the first response's status and Location (exactly the registry's destination, with Pages' query rule; both slash forms; a `?utm_…` probe on every redirect), every hop to the final response (at most five; a URL seen twice is a loop; exactly one redirect for a redirected address), the final status, and relevance: the final page's canonical path, a topic word in its title (without the " | Good Times" every title ends with) or main heading (Township, Winelands, Book, Services, "since 2014" for the home page…), that the tour a booking link names is one the form offers (the browser test checks it is chosen), and the robots signals. With `--domain`, after the cutover, it also checks that the other host and http answer one redirect to the same path on the canonical host, and that an old address asked of the other host reaches its page in two at most. Kept images must match their checksum; retired and held addresses must answer 404 without a redirect.
+**What the suite checks for each address** (`qa/legacy-urls.mjs`, the same code for a local runtime, a preview or the domain): the first response's status and Location (exactly the registry's destination, with Pages' query rule; both slash forms; a `?utm_…` probe on every redirect), every hop to the final response (at most five; a URL seen twice is a loop; exactly one redirect for a redirected address), the final status, and relevance: the final page's canonical path, a topic word in its title (without the " | Good Times" every title ends with) or main heading (Township, Winelands, Book, Services, "since 2014" for the home page…), that the tour a booking link names is one the form offers (the browser test checks it is chosen), and the robots signals. With `--domain`, after the cutover, it also checks that the other host and http answer one redirect to the same path on the canonical host, and that an old address asked of the other host reaches its page in two at most. Kept images must match their checksum; retired addresses must answer 404 without a redirect.
 
 **noindex is kept where it belongs and proven absent where it must be.** On the preview build every final page carries `noindex` in both the header and the meta tag. The production build, served on a host that is not pages.dev, carries **no** `X-Robots-Tag` and `index,follow` on every indexable page: the same files on the domain would be indexed. Cloudflare's own pages.dev addresses stay `noindex` through host-scoped `_headers` rules (`https://:project.pages.dev/*` and `https://:version.:project.pages.dev/*`), which also answers the audit's B1. Nothing removed `noindex` globally.
 
@@ -130,7 +131,7 @@ node scripts/cloudflare/smoke.mjs https://seo-preview.good-times-in-cape-town.pa
 E2E_BASE_URL=https://seo-preview.good-times-in-cape-town.pages.dev npx playwright test
 ```
 
-Production (pages.dev) and staging still serve the 26 rules of 5 Nov until they are next deployed (`/tour/winelands-experience/`, `/users/book/quad-biking/` and `/services/` answer 404 there).
+The owner's decisions of 8 Nov (H3, H4, H6, H8) came after this deployment: they are verified on the local Pages runtime (420 of 420 for both builds) and reach the preview the next time it is deployed with the commands above. Production (pages.dev) and staging still serve the 26 rules of 5 Nov until they are next deployed (`/tour/winelands-experience/`, `/users/book/quad-biking/` and `/services/` answer 404 there).
 
 ## 5. Production dependencies (Phase E)
 
@@ -154,8 +155,20 @@ These are public answers anyone can query; the full zone export (with the DKIM k
 ### What must change before the apex moves (H5)
 
 1. **SPF.** `+a` authorises the apex's own address. After the cutover the apex resolves to Cloudflare's shared Pages addresses, so `+a` would authorise those and no longer the mail server. The explicit `ip4:129.232.204.50` already covers the mail server: remove `+a`, giving `v=spf1 +mx +ip4:129.232.204.50 ~all`. Resend, when it comes (A4), uses its own `send.` subdomain for SPF and needs no change here.
-2. **CalDAV/CardDAV.** The four SRV records target the apex on ports 2079/2080 (cPanel's calendar and contacts service). After the cutover they would send calendar and contacts clients to Pages. Retarget them to hosts that stay on the mail server, DNS only: `_caldav`/`_caldavs` → `cpcalendars.goodtimesincapetown.co.za`, `_carddav`/`_carddavs` → `cpcontacts.goodtimesincapetown.co.za` (both already A 129.232.204.50), same ports, keeping the `path=/` TXT records; confirm with the host that their certificate covers those names.
+2. **CalDAV/CardDAV.** The four SRV records target the apex on ports 2079/2080 (cPanel's calendar and contacts service). After the cutover they would send calendar and contacts clients to Pages. Retarget them to hosts that stay on the mail server, DNS only: `_caldav`/`_caldavs` → `cpcalendars.goodtimesincapetown.co.za`, `_carddav`/`_carddavs` → `cpcontacts.goodtimesincapetown.co.za` (both already A 129.232.204.50), same ports, keeping the `path=/` TXT records.
 3. **Mail hostnames: no change needed.** `mail`, `imap`, `smtp` and `pop` are A records (the 29 Oct zone had them as CNAMEs to the apex, which the cutover would have broken).
+**The owner approved preparing both fixes, with the sending sources, the service hostnames and the TLS certificates verified before any DNS edit (H5).** Verified on 8 Nov 2026, read-only:
+
+| Check | Finding |
+|---|---|
+| What `+a` authorises today | 129.232.204.50, the address the explicit `ip4` already names: removing `+a` changes nothing for today's mail |
+| `+mx` | The mail host's filtering cluster (three addresses, one name); kept as it is |
+| The mail server's reverse DNS | Names the hosting server, as a sending mail server's address should (it does not prove which path outgoing mail takes) |
+| Other senders | **Not verifiable from outside:** DMARC is `p=reject` with no reporting address, so no report shows who else sends as @goodtimesincapetown.co.za. Before the edit, the owner lists any service that sends as the domain (newsletters, booking or invoicing tools), or DMARC reporting (`rua=`) is added for two weeks to see them |
+| `cpcalendars.`, `cpcontacts.` | Resolve to the mail server and answer the calendar and contacts service: port 2080 over TLS (401, asking for a login) and port 2079 (302 to the secure port) |
+| Their certificate | Valid for both names (Let's Encrypt, `*.goodtimesincapetown.co.za` and the apex), until **24 Dec 2026** |
+| Its renewal | **To confirm with the host:** a Let's Encrypt wildcard can only be issued by DNS validation, and it was issued on 25 Sep while the zone was still with the old host. With DNS now at Cloudflare, cPanel's AutoSSL cannot add the DNS record: ask how it will renew before 24 Dec (per-name certificates by HTTP validation work for every name that stays on the server) |
+
 4. **The zone's account.** An apex custom domain on Pages needs the zone in the same Cloudflare account as the project ([Cloudflare Pages: custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)). **Met:** the zone is active in the Good Times account, the same account as the Pages project (`setup.mjs check`, read-only, 8 Nov 2026). The token used for the preview could not read DNS records, so the cutover needs a token with Zone › DNS: Edit for that step only. `setup.mjs domain` never overwrites the existing apex A record: the cutover replaces it through the Pages custom-domain flow, which records the old value.
 
 ### Live enquiries (A4), not required for the cutover
@@ -183,28 +196,41 @@ The cutover changes only the apex and `www`, plus a redirect rule; WordPress hos
 5. Verify: `dig +short goodtimesincapetown.co.za A` answers 129.232.204.50; `curl -sI https://goodtimesincapetown.co.za/` answers from Apache with the WordPress site; IMAP 993 and SMTP 465/587 on `mail.goodtimesincapetown.co.za` connect; a test email arrives.
 6. If the rollback comes after about 14 Dec 2026, run AutoSSL in cPanel: the WordPress certificate (expiring 24 Dec 2026, per the audit) cannot renew while the apex points elsewhere.
 
-Keep the WordPress hosting for at least 60 days after the cutover (mail runs there), and keep the old booking site's media store until H3 is decided: two of the held originals exist nowhere else.
+Keep the WordPress hosting for at least 60 days after the cutover (mail runs there). The ten kept originals are now in this repository; the old booking site's media store still serves all 14 publicly at its own address (the four retired ones included), so once the owner has archived what they want privately, it can be closed.
 
 ## 6. The cutover, when approved (not executed)
 
-The audit's section 6 stands, with these changes: the gates now include the H5 DNS fixes, the suite on a deployed preview passing, and Search Console's baseline exported again (H7). After the DNS change: `node qa/legacy-urls.mjs --base=https://goodtimesincapetown.co.za --env=production --domain` (every historical address, plus www → apex and http → https in one hop each, and no `noindex` on the domain), then the smoke suite with `--domain`. Roll back if `noindex` appears on the domain, more than 5% of the suite fails, mail fails, or certificates fail.
+The audit's section 6 stands, with these changes: the gates now include the H5 DNS fixes (after their two remaining checks), the suite passing on a preview of the final commit, and Search Console's baseline exported again just before the cutover, as the owner approved (H7: then `/sitemap.xml` submitted on the day, the home page and the renamed tours inspected). After the DNS change: `node qa/legacy-urls.mjs --base=https://goodtimesincapetown.co.za --env=production --domain` (every historical address, plus www → apex and http → https in one hop each, and no `noindex` on the domain), then the smoke suite with `--domain`. Roll back if `noindex` appears on the domain, more than 5% of the suite fails, mail fails, or certificates fail.
+
+## 7. The owner's decisions of 8 Nov 2026
+
+| # | Decision | Done |
+|---|---|---|
+| H1 | Approve both restored pages, provided they contain only verified claims | Approved; both say only verified things, tested |
+| H2 | `/gallery/` → `/tours/` for now; a separate gallery can come later | Kept as a 301 |
+| H3 | The six images: approved | Served unaltered; ten originals in all |
+| H4 | The safety claims: approved | On /safety/ from `site.safety` |
+| H5 | Prepare SPF and CalDAV/CardDAV; verify sending sources, hostnames and TLS before DNS edits | Prepared and verified read-only (section 5); two points open; no DNS changed |
+| H6 | Keep tour-specific booking links; generic `/bookings/` to Contact | `/bookings/` → /contact/ |
+| H7 | The migration-day baseline and indexing checks | In the cutover steps (section 6) |
+| H8 | Improve the long titles where useful, no arbitrary 60-character limit | Three rewritten, five kept |
+| H9 | Smart Pulse Africa: remove | Not on the site; a test keeps it off |
 
 ## Completed and pending, side by side
 
-| Completed in this branch | Waiting for the owner |
+| Completed in this branch | Still open |
 |---|---|
-| The registry, its generated tables and `_redirects` | H1: the restored /services/ and /safety/ |
-| The four booking-site tour addresses as static rules | H2: a gallery page, or the redirect to /tours/ |
-| The 12 booking pages, the account pages and `next=` links | H3: six held images |
-| 6 old static pages; feeds and attachments under each old tour | H4: the Safety page's unverified claims |
-| 4 originals kept at their addresses; 4 retired for good | H5: the SPF and CalDAV/CardDAV DNS fixes (cutover) |
-| /services/ and /safety/ restored; footer links; sitemap | H6: the account pages' destination |
-| 404 canonical fixed (F5) | H7: Search Console at the cutover |
-| Build-time validation; local server redirects | H8: the eight long titles |
-| 23 tests, the suite for any deployment, three smoke checks | H9: the Smart Pulse Africa script |
-| This report, the media decisions, the registers updated | A2 (cutover and canonical host), A4 (live enquiries), A5 (rotate the pasted tokens), B1–B5 (legal) |
+| The registry, its generated tables and `_redirects` | H5's two remaining checks (other mail senders; the certificate's renewal), then the DNS edits, approved for the cutover |
+| The four booking-site tour addresses as static rules | A gallery page of its own, later (H2) |
+| The 12 booking pages, the account pages, `next=` links; `/bookings/` to Contact (H6) | A2: the cutover and the canonical host |
+| 6 old static pages; feeds and attachments under each old tour | A4: live enquiries (database, Resend, secrets, a controlled test) |
+| 10 originals kept at their addresses (6 approved, H3); 4 retired for good | A5: rotate the tokens pasted in chat |
+| /services/ and /safety/ restored and approved (H1); the confirmed safety statements (H4) | B1–B5: the privacy notice, the terms and the legal facts |
+| Three titles improved (H8); 404 canonical fixed (F5); no Smart Pulse script (H9) | Refresh the `seo-preview` deployment with the decisions (needs a token) |
+| Build-time validation; local server redirects; the suite for any deployment | |
+| The tests, three smoke checks, this report, the media decisions, the registers | |
 | The deployed preview verified (`seo-preview`, `0ac6e22d`): 420 of 420 | |
 
 ## Evidence
 
-In the repository: `src/data/legacy-urls.mjs`, `src/data/legacy-inventory.mjs`, `test/fixtures/legacy/` (the audit's 70-rule file and the additions file as supplied, the 26 rules of `188d362`, and the preservation register without its Search Console column). Kept out of it, in the owner's private files: the Search Console exports (Drive › Good Times Web Migration), the hosting backup (it holds mail, keys and personal data), the DNS zone export, and the 14 original images.
+In the repository: `src/data/legacy-urls.mjs`, `src/data/legacy-inventory.mjs`, `test/fixtures/legacy/` (the audit's 70-rule file and the additions file as supplied, the 26 rules of `188d362`, and the preservation register without its Search Console column). Kept out of it, in the owner's private files: the Search Console exports (Drive › Good Times Web Migration), the hosting backup (it holds mail, keys and personal data), the DNS zone export, and the four retired original images.

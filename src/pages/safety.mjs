@@ -1,10 +1,11 @@
 /**
  * Safety & Trust, at the address WordPress gave it (/safety/, restored in Step 4B rather than redirected to About:
- * src/data/legacy-urls.mjs). Only what the site already holds as verified is said: the accreditations, the
- * association and the registration Good Times states (site.credentials), private tours since 2014, the published
- * answers on weather, pickups and personal needs (src/data/faq.mjs), and the Tripadvisor rating with the date it was
- * read. The old page's other claims (vehicles serviced and insured, first aid, a certificate, a number of guests) are
- * not repeated until Good Times confirms them (docs/APPROVAL_REGISTER.md › H4).
+ * src/data/legacy-urls.mjs; approved by the owner on 8 Nov 2026, H1, on condition that it says only verified things).
+ * What it says: the accreditations, the association and the registration Good Times states (site.credentials),
+ * private tours since 2014, the published answers on weather, pickups and personal needs (src/data/faq.mjs), the
+ * activities' own safety inclusions, the Tripadvisor rating with the date it was read, and the old page's statements
+ * on vehicles, first aid, a certificate and the guests hosted, which the owner confirmed the same day (site.safety, H4).
+ * Each shows only while its data is verified.
  */
 import { esc, icon, button, breadcrumb, sectionHead, ratingRow } from '../partials/ui.mjs';
 import { faqs } from '../data/faq.mjs';
@@ -21,7 +22,7 @@ const activitySafety = tours
 export const page = {
   path: 'safety/index.html',
   title: 'Safety & Trust: accredited local guides',
-  description: 'How Good Times in Cape Town looks after you: accredited local guides, a registered associate of the Cape Tourist Guides Association, private tours only since 2014, and plans that change with the weather.',
+  description: 'How Good Times in Cape Town looks after you: accredited local guides, serviced and insured vehicles, first aid on every tour, a registered associate of the Cape Tourist Guides Association, and private tours only since 2014.',
   priority: 0.6,
   breadcrumbs: crumbs,
   body: ({ site }) => {
@@ -40,11 +41,18 @@ export const page = {
 
 <section class="section" aria-labelledby="who-title">
   <div class="container">
-    ${sectionHead({ eyebrow: 'Who you travel with', title: 'Accredited, registered and local.', id: 'who-title' })}
+    ${sectionHead({ eyebrow: 'Who you travel with', title: site.safety?.verified ? 'Accredited, insured and prepared.' : 'Accredited, registered and local.', id: 'who-title' })}
     <ul class="themes" role="list">
       <li data-reveal><strong>Accredited guides</strong><span>${esc(c.guides)}.</span></li>
       <li data-reveal style="--reveal-i:1"><strong>A registered associate</strong><span>${esc(c.association)}${c.ctga?.verified ? ` (${esc(c.ctga.short)})` : ''}.</span></li>
       <li data-reveal style="--reveal-i:2"><strong>A registered operator</strong><span>${esc(c.operator)}.</span></li>
+      ${
+        site.safety?.verified
+          ? `<li data-reveal><strong>Serviced and insured vehicles</strong><span>${esc(site.safety.vehicles)}.</span></li>
+      <li data-reveal style="--reveal-i:1"><strong>First aid on every tour</strong><span>${esc(site.safety.firstAid)}.</span></li>
+      <li data-reveal style="--reveal-i:2"><strong>Trusted since ${site.founded}</strong><span>${esc(site.safety.guests)}, and ${esc(site.safety.certificate.replace(/^A /, 'a '))}.</span></li>`
+          : ''
+      }
     </ul>
   </div>
 </section>

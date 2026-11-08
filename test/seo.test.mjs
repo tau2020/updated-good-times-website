@@ -132,3 +132,22 @@ test('the 404 page names no canonical and stays out of search', () => {
   assert.doesNotMatch(html, /property="og:url"/);
   assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
 });
+
+test('no third-party lead-logging script: the old site\u2019s Smart Pulse Africa script stays off (the owner\u2019s decision H9)', () => {
+  for (const [p, html] of pages) assert.doesNotMatch(html, /smart\s*-?pulse/i, `${p}: no Smart Pulse reference`);
+  const files = (d) => readdirSync(d).flatMap((n) => (statSync(join(d, n)).isDirectory() ? files(join(d, n)) : [join(d, n)]));
+  for (const f of files(join(out, 'assets', 'js'))) assert.doesNotMatch(readFileSync(f, 'utf8'), /smart\s*-?pulse/i, f);
+  const csp = readFileSync(join(out, '_headers'), 'utf8').match(/Content-Security-Policy: ([^\n]+)/)[1];
+  const scriptSrc = csp.split(';').find((d) => d.trim().startsWith('script-src'));
+  assert.deepEqual(scriptSrc.trim().split(/\s+/).filter((t) => /^https?:/.test(t)), ['https://static.cloudflareinsights.com/beacon.min.js'], 'scripts load only from the site, plus the consent-gated analytics beacon');
+});
+
+test('the Safety page says only verified things: the owner-confirmed statements show only while verified (H1, H4)', async () => {
+  const { page } = await import('../src/pages/safety.mjs');
+  const { site } = await import('../src/data/site.mjs');
+  const on = page.body({ site });
+  for (const k of ['vehicles', 'firstAid', 'guests']) assert.ok(on.includes(site.safety[k]), k);
+  assert.match(on, /Certificate of Excellence/);
+  const off = page.body({ site: { ...site, safety: { ...site.safety, verified: false } } });
+  assert.doesNotMatch(off, /insured|first aid|Certificate of Excellence|Thousands of guests/i);
+});
