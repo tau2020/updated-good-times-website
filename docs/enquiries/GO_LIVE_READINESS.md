@@ -5,7 +5,7 @@
 The owner's brief of 8 Nov 2026 ("Master agentic execution prompt") asked for the enquiry system to be connected to real infrastructure and proven end to end, without switching the public website: Neon for the database, Resend for email, Cloudflare Pages for the site and its Functions, a controlled test with real delivery only to owned inboxes, and this report. What was done:
 
 - **Neon:** a production database (migrated, restricted application role) and an isolated test branch.
-- **Resend:** the sending domain added (eu-west-1, sending only), separate production and test sending keys; its four DNS records printed, **not yet added** (C).
+- **Resend:** the sending domain added (eu-west-1, sending only), separate production and test sending keys; its four DNS records **added on 8 Nov 2026** at the owner's request, through the Cloudflare dashboard. Within minutes Resend had verified DKIM and the return-path CNAME (status "Partially Verified"); the MX and SPF on `send` were still pending at the time of writing (C).
 - **Cloudflare:** the production environment's three secrets set, encrypted, with production still in **preview mode**; a separate, access-restricted test project (`good-times-enquiry-test`) whose `test` branch runs the real pipeline against the test branch and Resend's test inbox.
 - **Code** (this branch): the Resend step's own approval, separate from the website cutover (`setup.mjs`); secrets as code (`secrets.mjs`); the test deployment's access key and allowlist; the restricted database role (`app-role.mjs`); two fixes the cloud tests found (the sign-in email bypassed the test inbox; failed emails were invisible in the dashboard); the cloud test suite (`qa/enquiry-live.mjs`).
 - **Tests:** every scenario of the brief (A–J), the API's refusals, the security and reliability audit and the acceptance journey, **run in the cloud**, each checked in the database and in Resend (D).
@@ -26,9 +26,9 @@ Read back on 8 Nov 2026 through each service's API. Secrets appear by name only;
 | Cloudflare Pages `good-times-enquiry-test` | production (`main`) | Preview mode, never deployed | none | `https://good-times-enquiry-test.pages.dev` answers 404 |
 | Neon project `goodtimes-enquiries` (`soft-hat-33616906`) | production branch `production` (`br-bold-smoke-bdpneffk`, default) | PostgreSQL 18, aws-us-east-2, free plan (0.25–2 CU autoscaling, scale to zero), 6 hours of point-in-time history | Owner role (migrations only) and `gt_app` (the application: data access, no DDL) | 5 of 5 migrations applied; a second run: "database is up to date"; `gt_app` reads and cannot create tables; 0 rows in every data table |
 | Neon | test branch `enquiry-test` (`br-cool-cell-bd0mr0us`, child of production) | Same schema, own endpoint and credentials | Its own owner and `gt_app` URLs | Synthetic data only; emptied after the tests |
-| Resend | domain goodtimesincapetown.co.za (`6c688c77…`) | eu-west-1, sending enabled, receiving disabled, open and click tracking off | — | Status **not_started**: its four DNS records are not yet in the zone (C) |
+| Resend | domain goodtimesincapetown.co.za (`6c688c77…`) | eu-west-1, sending enabled, receiving disabled, open and click tracking off | — | **Partially Verified**: the four records were added on 8 Nov 2026. Resend reported "DNS verified" at 10:09 SAST, then verified DKIM and the `rsend` CNAME (Resend Forge enabled); the MX and SPF on `send` were still pending at the time of writing (C) |
 | Resend | API keys | `good-times-production-sending` (`6c6064b4…`): sending only, restricted to the domain; `good-times-enquiry-test-sending` (`c6d1014c…`): sending only (any domain, so it can use Resend's test sender until the domain verifies). The full-access key `claude-updated` (`1e15e585…`) configured the domain and reads emails back for the tests: never a runtime key. `Onboarding` (`ad5f4397…`), the first key pasted in chat, is unused | — | Both runtime keys created through the API; their values went straight to private files and into Cloudflare |
-| DNS (Cloudflare zone goodtimesincapetown.co.za, nameservers joan/shane.ns.cloudflare.com) | — | MX 10/20/30 mx1–3.rdsa-mail.com, apex SPF `v=spf1 +a +mx +ip4:129.232.204.50 ~all`, DMARC `p=reject; sp=reject; adkim=r; aspf=r`, the website's records: **all unchanged** | — | Read from 1.1.1.1 on 8 Nov 2026. The four Resend records are **not added**: the available token cannot read or edit DNS (403) |
+| DNS (Cloudflare zone goodtimesincapetown.co.za, nameservers joan/shane.ns.cloudflare.com) | — | MX 10/20/30 mx1–3.rdsa-mail.com, apex SPF `v=spf1 +a +mx +ip4:129.232.204.50 ~all`, DMARC `p=reject; sp=reject; adkim=r; aspf=r`, the website's records: **all unchanged** | — | Read from 1.1.1.1 on 8 Nov 2026. The four Resend records were **added on 8 Nov 2026** in the Cloudflare dashboard at the owner's request (DNS only, TTL Auto, each with a comment): 34 → 38 records, and the 40 existing answers compared on the authoritative nameserver are identical before and after |
 | Inbound mail (rdsa-mail, Exim) | — | Unchanged | — | SMTP check without sending (C): info@, hello@ and stuart@ accepted (250), an unknown mailbox refused (550); STARTTLS offered |
 
 ## B. Database
@@ -64,9 +64,9 @@ Read back on 8 Nov 2026 through each service's API. Secrets appear by name only;
 
 ## C. Email
 
-### Sending domain: added to Resend, **not yet verified**
+### Sending domain: records added, Resend **partially verified**
 
-goodtimesincapetown.co.za was added to Resend on 8 Nov 2026 (07:06 UTC) with `setup.mjs resend --apply` and the configuration-only key: region **eu-west-1** (Ireland, the closest to Cape Town), sending enabled, **receiving disabled** (Resend asks for no inbound MX), open and click tracking off. Resend returned four records, all on subdomains. None of these names exists in the zone today, so none conflicts; the apex MX, the apex SPF and DMARC stay exactly as they are:
+goodtimesincapetown.co.za was added to Resend on 8 Nov 2026 (07:06 UTC) with `setup.mjs resend --apply` and the configuration-only key: region **eu-west-1** (Ireland, the closest to Cape Town), sending enabled, **receiving disabled** (Resend asks for no inbound MX), open and click tracking off. Resend returned four records, all on subdomains. None of these names existed in the zone, so none conflicted; the apex MX, the apex SPF and DMARC stayed exactly as they were:
 
 | Type | Name | Value | Priority | Cloudflare proxy |
 |---|---|---|---|---|
@@ -77,7 +77,14 @@ goodtimesincapetown.co.za was added to Resend on 8 Nov 2026 (07:06 UTC) with `se
 
 (The DKIM value is a public key: it is published in DNS by design.)
 
-**Why they were not added.** The only Cloudflare token available can deploy Pages but cannot read or edit the zone's DNS (403), and the brief forbids asking for tokens in chat. The script therefore stopped and printed the records instead of writing them. **To finish:** in the Cloudflare dashboard (goodtimesincapetown.co.za › DNS › Records › Add record), add the four records as above, or provide a token with *Zone › DNS: Edit* for this zone in the environment and run `node scripts/cloudflare/setup.mjs resend --apply` (it adds exactly these, never the apex's, then asks Resend to verify). Then record `verified: true` in `SENDING_DOMAIN` (`scripts/cloudflare/project.mjs`): the test deployment then sends as hello@ and lets info@ (its `EMAIL_TEST_RECIPIENTS`) receive real mail.
+**How they were added (8 Nov 2026).** The Cloudflare token available to the scripts cannot read or edit DNS (403), so `setup.mjs resend --apply` printed the records instead of writing them. At the owner's request they were then added by hand in the Cloudflare dashboard (goodtimesincapetown.co.za › DNS › Records › Add record, in the owner's signed-in browser), exactly as above: DNS only, TTL Auto, each with a comment naming its purpose. Each value was checked character for character before saving. Afterwards:
+
+- the zone went from 34 to 38 records;
+- every one of the 40 existing answers compared on the authoritative nameserver (MX, the apex SPF, DMARC, the website and mail-service records) is identical before and after;
+- the four new records resolve exactly on both Cloudflare nameservers and on 1.1.1.1 and 8.8.8.8;
+- in Resend, **Verify DNS records** was pressed. Resend reported **DNS verified** at 10:09 SAST. Minutes later DKIM and the `rsend` CNAME were **Verified** (status **Partially Verified**, Resend Forge enabled), while the MX and SPF on `send` were still **Pending** when this was written. Resend says verification can take a few hours and emails the account when it is done.
+
+**Next:** once Resend shows **Verified**, set `verified: true` in `SENDING_DOMAIN` (`scripts/cloudflare/project.mjs`) and redeploy the test project. It then sends as hello@ and lets info@ (its `EMAIL_TEST_RECIPIENTS`) receive real mail (A8). *Undo:* delete the four records (each carries its comment); nothing else uses them.
 
 **Alignment once added.** Mail from hello@goodtimesincapetown.co.za is signed with DKIM `d=goodtimesincapetown.co.za` and returns to `send.goodtimesincapetown.co.za`; both align (relaxed) with the From domain, so the existing `p=reject` DMARC policy passes without being weakened. No second SPF record is created at the apex. The apex SPF's `+a` is a separate cutover item (H5) and is untouched.
 
@@ -366,7 +373,7 @@ It is **not ready for production approval** because these remain:
 
 | # | Blocker | Kind | Who | Unblocks |
 |---|---|---|---|---|
-| 1 | The sending domain is **not verified**: Resend's four DNS records are not in the zone (C; A7). Production cannot send as hello@ until they are | DNS change (approved, not yet made) | Whoever holds DNS access for goodtimesincapetown.co.za: four records in the Cloudflare dashboard, or a token with Zone › DNS: Edit | Authenticated sending |
+| 1 | The sending domain is **not yet verified by Resend**. Its four records were added on 8 Nov 2026. Resend has verified DKIM and the return-path CNAME ("Partially Verified"); the MX and SPF on `send` were still pending at the time of writing (C; A7). Production cannot send as hello@ until Resend shows Verified | Provider check, in progress | Resend (automatic), then a deployment of the test project with `SENDING_DOMAIN.verified` | Authenticated sending |
 | 2 | **Real delivery and authentication not demonstrated.** Every test email went to Resend's test inbox; no message has reached info@, and no DKIM/SPF/DMARC result exists for hello@ (C; A8) | Test, after 1 | Run the test project as hello@ with `EMAIL_TEST_RECIPIENTS=info@`; a person confirms the inbox and the headers | Real inbox delivery |
 | 3 | **Booking rules not approved** (D9): 2 vehicles a day, 24 hours' notice, the transfer hours and holds decide which real requests are refused (I4) | Business approval | The owner | Availability decisions customers will see |
 | 4 | **Legal texts not approved** (B1–B5): the privacy notice, the terms and their open points, the registered entity, the Information Officer, the retention period. The production override covers good-times-in-cape-town.pages.dev only, not real data collection on the domain | Legal approval | The owner | Collecting real customers' data |
@@ -379,12 +386,12 @@ Public activation also needs the owner's explicit go-ahead for `ENQUIRY_MODE=liv
 
 | Requirement | Status | Evidence, or what remains |
 |---|---|---|
-| Domain verified for transactional sending | ✗ | A7: the four records |
+| Domain verified for transactional sending | ◐ partially verified | Records added and resolving everywhere; Resend: DKIM and `rsend` verified, the MX and SPF on `send` pending (A7) |
 | Existing inbound email operational | ✓ at the SMTP level / ✗ mailbox level | MX unchanged; RCPT accepted for info@, hello@, stuart@ (C). A person to confirm the inbox (A8) |
 | Database production-ready | ✓ | Migrated, restricted role, empty (B); backups and region are owner decisions (A9, A10) |
 | Migrations applied | ✓ | 5 of 5; a second run changes nothing |
 | Encrypted secrets configured | ✓ | `DATABASE_URL`, `RESEND_API_KEY`, `ENQUIRY_SIGNING_SECRET` in production (A) |
-| Admin users verified | ✓ flow / ✗ real inbox | `ADMIN_EMAILS=info@`; sign-in, replay refusal, sessions and sign-out passed in the cloud (G1–G9); the link reaching info@ waits for A7 |
+| Admin users verified | ✓ flow / ✗ real inbox | `ADMIN_EMAILS=info@`; sign-in, replay refusal, sessions and sign-out passed in the cloud (G1–G9); the link reaching info@ waits for Resend's verification and A8 |
 | Live email delivery tested | ✗ | Resend's test inbox only (C) |
 | Booking rules approved | ✗ | D9 |
 | Privacy notice approved | ✗ | B1 |
@@ -396,7 +403,7 @@ Public activation also needs the owner's explicit go-ahead for `ENQUIRY_MODE=liv
 
 ### Reversible deployment plan
 
-1. **Verify the domain (A7).** Add the four records; `node scripts/cloudflare/setup.mjs resend` shows them in place and asks Resend to verify. Set `SENDING_DOMAIN.verified: true` in `scripts/cloudflare/project.mjs`: the test project then sends as hello@ and lets info@ receive. `setup.mjs test --apply`, `build.mjs test`, deploy to `--branch test`. *Undo:* delete the four records; nothing else uses them.
+1. **Verify the domain (A7).** *Records added and verification requested on 8 Nov 2026.* Wait for Resend's **Verified** (its dashboard, or its email to the account; `node scripts/cloudflare/setup.mjs resend` also shows the status). Then set `SENDING_DOMAIN.verified: true` in `scripts/cloudflare/project.mjs`: the test project then sends as hello@ and lets info@ receive. `setup.mjs test --apply`, `build.mjs test`, deploy to `--branch test`. *Undo:* delete the four records; nothing else uses them.
 2. **Prove real delivery (A8).** `node qa/enquiry-live.mjs --base=https://test.good-times-enquiry-test.pages.dev --only=X,G,H` (the team notification and the sign-in link now reach info@). A person confirms the inbox and the `Authentication-Results` header. *Undo:* nothing to undo (test data only, removed by `--cleanup`).
 3. **Approvals.** D9, B1–B5 (or a recorded override for the domain), A9–A11 decisions, and the owner's written go-ahead for live enquiries.
 4. **Activate.** In `project.mjs` set production `ENQUIRY_MODE: 'live'`; `setup.mjs pages --apply` (it refuses while a secret is missing); `build.mjs production` (the static form and the runtime read the same variables, so they agree); `wrangler pages deploy site --project-name good-times-in-cape-town --branch main`; `smoke.mjs … --env production`; `/api/health?check=db`; one controlled enquiry from staff. *Undo:* set `ENQUIRY_MODE: 'preview'` and redeploy, or roll back to the previous deployment in the Cloudflare dashboard (seconds); stored enquiries are kept (F › rollback).

@@ -61,8 +61,9 @@ export const DOMAIN = {
  * `setup.mjs resend --apply` may then add exactly the records Resend asks for, all on subdomains (on 8 Nov 2026: DKIM at
  * resend._domainkey, the return path's MX and SPF at send., and a CNAME at rsend.); it refuses any at the apex, never
  * touches the apex's MX, SPF or address records, the nameservers or inbound mail, and DOMAIN.approved (the website's
- * cutover) stays as it is. The domain was added to Resend on 8 Nov 2026 (sending only, receiving and tracking off);
- * `verified` records Resend's own verdict once its records resolve.
+ * cutover) stays as it is. The domain was added to Resend on 8 Nov 2026 (sending only, receiving and tracking off), and
+ * its four records were added to the zone the same day by hand in the Cloudflare dashboard (the token cannot edit DNS).
+ * `verified` records Resend's own verdict: set it once Resend shows the domain Verified, then redeploy the test project.
  */
 export const SENDING_DOMAIN = { approved: true, date: '2026-11-08', by: 'the owner (live enquiry pipeline brief)', region: 'eu-west-1', verified: false };
 
