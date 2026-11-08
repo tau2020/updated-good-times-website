@@ -24,6 +24,15 @@ const PATTERNS = [
   /cape-peninsula-penguins-cape-of-good-hope-chapmans-peak|table-mountain-penguins-cape-of-good-hope|penguins-cape-of-good-hope-and-winelands|stellenbosch-franschhoek-winelands-tour|hermanus-whale-watching|cape-agulhas-two-oceans-tour|\bcape-town-city-tour\b|cape-town-winelands-classic|garden[- ]route[- ]explorer|winelands classic|safari-transfer-from-cape-town|cape-town-airport-transfer|safari-reserve/i,
   /safari\s*(?:and|&|&amp;)\s*soul|safariandsoul|\bSJ-[A-Z0-9]{3,}|\bssj[:_\-A-Z]|SAFARI_ENQUIRY|cal\.com|calcom|consultation_scheduled|journey[-_ ]first/i,
 ];
+/**
+ * Good Times' own earlier addresses that happen to share a banned slug. The WordPress site of 5–7 Nov 2026 published
+ * the city tour at /tour/cape-town-city-tour/ (the slug came from Good Times' booking site; the hosting backup and
+ * Search Console both record it), and the historical URL registry has to name that address to redirect it
+ * (src/data/legacy-urls.mjs, site/_redirects, docs/seo/). Only that exact address is exempt, standing on its own (not
+ * inside another URL or host) and ending there, at a slash, or at the backtick of a Markdown code span: the slug
+ * anywhere else, or extended ("…-tour-with-…", "…-tour.html"), still fails.
+ */
+const OWN_HISTORY = [/(?<![\w.:/-])\/tour\/cape-town-city-tour(?=[/\s`]|$)/g];
 const SKIP = [/^licenses\//, /^package-lock\.json$/, /^src\/tools\/brand-guard\.mjs$/, /^test\/identity\.test\.mjs$/, /^src\/assets\/js\/vendor\//];
 const TEXT = new Set(['.mjs', '.js', '.json', '.md', '.html', '.css', '.sql', '.yml', '.yaml', '.toml', '.txt', '.svg', '.example', '.webmanifest', '.xml', '']);
 
@@ -48,7 +57,8 @@ for (const file of [...new Set([...tracked, ...built])]) {
   if (SKIP.some((re) => re.test(file)) || !TEXT.has(extname(file)) || !existsSync(join(ROOT, file))) continue;
   const lines = readFileSync(join(ROOT, file), 'utf8').split('\n');
   lines.forEach((line, i) => {
-    if (PATTERNS.some((re) => re.test(line)) && !line.includes('brand-guard-allow')) hits.push(`${file}:${i + 1}: ${line.trim().slice(0, 120)}`);
+    const own = OWN_HISTORY.reduce((l, re) => l.replace(re, ''), line);
+    if (PATTERNS.some((re) => re.test(own)) && !line.includes('brand-guard-allow')) hits.push(`${file}:${i + 1}: ${line.trim().slice(0, 120)}`);
   });
 }
 if (hits.length) {

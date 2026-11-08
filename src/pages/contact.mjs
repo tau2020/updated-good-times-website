@@ -7,7 +7,6 @@ export const page = {
   nav: 'contact/',
   title: 'Contact Good Times in Cape Town',
   description: 'Contact Good Times in Cape Town by phone or email, visit our office in Sea Point, or send a booking request for a private tour or airport transfer.',
-  priority: 0.7,
   breadcrumbs: crumbs,
   body: ({ site }) => {
     // The contact section also lists the additional address (Stuart's, 6 Nov 2026) after the primary one

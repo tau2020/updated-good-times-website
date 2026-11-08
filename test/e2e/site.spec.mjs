@@ -692,13 +692,13 @@ test.describe('guest stories', () => {
     await expect(section.locator('.stories__eyebrow .lc-mark__label')).toHaveText('The people behind the good times');
     await expect(section.locator('h2')).toHaveText('Good times, by the people who had them.');
     expect(await section.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(239, 248, 240)');
-    // The listing's own rating, dated, linked, and no review count that would go stale
+    // The listing's own rating and number of reviews, dated (the day both were read), linked
     const rating = section.locator('.stories__rating');
     await expect(rating).toHaveAttribute('href', /tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200/);
     await expect(rating).toHaveAttribute('target', '_blank');
     await expect(rating.locator('.stories__rating-label')).toHaveText('Rated 5.0 out of 5 on Tripadvisor');
-    await expect(rating.locator('.stories__rating-date')).toContainText('As listed on 5 November 2026');
-    await expect(section).not.toContainText('264');
+    await expect(rating.locator('.stories__rating-count')).toHaveText('Number of reviews on Tripadvisor: 264');
+    await expect(rating.locator('.stories__rating-date')).toContainText('As listed on 8 November 2026');
     const { reviews } = await import('../../src/data/reviews.mjs');
     await expect(cards(page)).toHaveCount(reviews.length);
     // Open the collapsed grid first: a hidden card's link has no accessible name to check

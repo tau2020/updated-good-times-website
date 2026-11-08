@@ -35,7 +35,6 @@ export const page = {
   nav: 'about/',
   title: 'Our Story: about Good Times in Cape Town',
   description: 'Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides.',
-  priority: 0.7,
   breadcrumbs: crumbs,
   preload: [preloadFor('cape-coastline')],
   styles: ['assets/css/culinary.css'],

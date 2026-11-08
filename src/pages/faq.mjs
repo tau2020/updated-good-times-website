@@ -8,7 +8,6 @@ export const page = {
   nav: 'faq/',
   title: 'Frequently asked questions',
   description: 'How to book a Good Times private tour or transfer, group prices, payment, cancellations, where tours start, what to bring, the weather and accredited guides.',
-  priority: 0.6,
   breadcrumbs: crumbs,
   schema: [
     {

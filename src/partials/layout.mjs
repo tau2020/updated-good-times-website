@@ -171,7 +171,8 @@ function officeLine(site) {
 
 function render(page, site) {
   const pretty = page.path === 'index.html' ? '' : page.path.replace(/index\.html$/, '');
-  const canonical = `${site.url}/${pretty}`;
+  // A page answered at many addresses (the 404 page) names no canonical: /404.html itself redirects (Pages, 308).
+  const canonical = page.canonical === false ? '' : `${site.url}/${pretty}`;
   const title = page.path === 'index.html' ? `${site.name} | ${site.tagline}` : `${page.title} | ${site.shortName}`;
   const og = page.ogImage || 'assets/img/og-default.jpg';
   const current = (href) => (page.nav === href ? ' aria-current="page"' : '');
@@ -196,7 +197,7 @@ function render(page, site) {
 ${page.base ? `<base href="${page.base}">` : ''}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(page.description)}">
-<link rel="canonical" href="${canonical}">
+${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
 <meta name="robots" content="${noindex ? 'noindex,nofollow' : 'index,follow'}">
 <meta name="theme-color" content="${site.themeColor}">
 <meta name="format-detection" content="telephone=no">
@@ -204,7 +205,7 @@ ${site.analytics.cloudflareToken ? `<meta name="gt-analytics" content="${esc(sit
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${esc(site.name)}">
 <meta property="og:locale" content="${site.locale.replace('-', '_')}">
-<meta property="og:url" content="${canonical}">
+${canonical ? `<meta property="og:url" content="${canonical}">` : ''}
 <meta property="og:title" content="${esc(page.ogTitle || title)}">
 <meta property="og:description" content="${esc(page.description)}">
 <meta property="og:image" content="${site.url}/${og}">
@@ -313,6 +314,8 @@ ${main}
       <h2 class="footer-heading" id="footer-company">Company</h2>
       <ul class="footer-links">
         <li><a href="about/">About</a></li>
+        <li><a href="services/">Services</a></li>
+        <li><a href="safety/">Safety &amp; Trust</a></li>
         <li><a href="destinations/">Destinations</a></li>
         <li><a href="reviews/">Reviews</a></li>
         <li><a href="faq/">FAQ</a></li>

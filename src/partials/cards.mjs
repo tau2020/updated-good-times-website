@@ -4,7 +4,7 @@
 import { reviewerPhoto } from './reviewer-photo.mjs';
 import { esc, icon, picture, price, fmtDate, showRating, stars, artPanel } from './ui.mjs';
 import { routeArt } from './route-art.mjs';
-import { tourBySlug, categories, themeLabel } from '../data/tours.mjs';
+import { tourBySlug, categories, themeLabel, operatorRun } from '../data/tours.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
 
 /**
@@ -70,7 +70,7 @@ export function tourCard(t, site, { headingLevel = 3, i = 0, badge = '', sizes =
     <p class="card__text">${esc(t.card)}</p>
     <div class="card__meta">
       <span>${icon('clock')} ${esc(t.duration)}</span>
-      <span>${icon('users')} Private</span>
+      ${operatorRun(t) ? '' : `<span>${icon('users')} Private</span>`}
       ${showRating(ta) ? `<span>${icon('star')} ${ta.rating.toFixed(1)} · ${ta.reviews} reviews</span>` : ''}
     </div>
     <div class="card__foot">

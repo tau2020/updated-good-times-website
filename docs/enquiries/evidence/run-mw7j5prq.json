@@ -1,0 +1,325 @@
+{
+ "base": "https://test.good-times-enquiry-test.pages.dev",
+ "run": "mw7j5prq",
+ "commit": "95831eb",
+ "at": "2026-11-08T07:49:00.056Z",
+ "references": {
+  "X": "GT-Q2W7U9"
+ },
+ "results": [
+  {
+   "id": "X1",
+   "scenario": "Acceptance: the customer submits",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the real enquiry page takes the request and shows a unique reference",
+   "actual": "201 GT-Q2W7U9",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:20.545Z"
+  },
+  {
+   "id": "X-db",
+   "scenario": "Acceptance",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "exactly one enquiry with this reference, every field as sent, status NEW",
+   "actual": "1 row, NEW, fields match",
+   "pass": true,
+   "evidence": {
+    "reference": "GT-Q2W7U9",
+    "id": "c8648b1b…",
+    "checked": [
+     "tour_slug",
+     "preferred_date"
+    ]
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:23.641Z"
+  },
+  {
+   "id": "X-events",
+   "scenario": "Acceptance",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "history: created by the website, terms acceptance recorded",
+   "actual": "created, terms",
+   "pass": true,
+   "evidence": {
+    "events": [
+     "website: created",
+     "customer: terms"
+    ]
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:23.957Z"
+  },
+  {
+   "id": "X-log",
+   "scenario": "Acceptance",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "email_log: the team notification and the acknowledgement, both sent, each with a provider message id",
+   "actual": "enquiry-received sent → delivered+gt-mw7j5prq-x@resend.dev (01a1ba21…); new-enquiry-internal sent → delivered@resend.dev (01a1ba21…)",
+   "pass": true,
+   "evidence": {
+    "rows": [
+     {
+      "template": "enquiry-received",
+      "status": "sent",
+      "recipient": "delivered+gt-mw7j5prq-x@resend.dev",
+      "attempts": 1,
+      "provider_message_id": "01a1ba21…"
+     },
+     {
+      "template": "new-enquiry-internal",
+      "status": "sent",
+      "recipient": "delivered@resend.dev",
+      "attempts": 1,
+      "provider_message_id": "01a1ba21…"
+     }
+    ]
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:24.271Z"
+  },
+  {
+   "id": "X-team-email",
+   "scenario": "Acceptance",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "Email A in Resend: to the team inbox (routed to delivered@resend.dev until the domain verifies), reply-to the customer, reference, details, dashboard and signed status links; delivered",
+   "actual": "Tour GT-Q2W7U9 · Cape Winelands Private Tour · 15 May · 2 adults · delivered · dashboard link, 4 status links",
+   "pass": true,
+   "evidence": {
+    "id": "01a1ba21…",
+    "to": [
+     "delivered@resend.dev"
+    ],
+    "from": "Good Times in Cape Town (test) <onboarding@resend.dev>",
+    "reply_to": [
+     "delivered+gt-mw7j5prq-x@resend.dev"
+    ],
+    "subject": "Tour GT-Q2W7U9 · Cape Winelands Private Tour · 15 May · 2 adults",
+    "last_event": "delivered",
+    "html_bytes": 14609,
+    "text_bytes": 2118
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:25.600Z"
+  },
+  {
+   "id": "X-ack-email",
+   "scenario": "Acceptance",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "Email B in Resend: to the customer, reply-to the team inbox, reference, summary, plainly not yet confirmed; delivered",
+   "actual": "Your Good Times tour enquiry GT-Q2W7U9: received, not yet confirmed · delivered",
+   "pass": true,
+   "evidence": {
+    "id": "01a1ba21…",
+    "to": [
+     "delivered+gt-mw7j5prq-x@resend.dev"
+    ],
+    "from": "Good Times in Cape Town (test) <onboarding@resend.dev>",
+    "reply_to": [
+     "info@goodtimesincapetown.co.za"
+    ],
+    "subject": "Your Good Times tour enquiry GT-Q2W7U9: received, not yet confirmed",
+    "last_event": "delivered",
+    "html_bytes": 8415,
+    "text_bytes": 1000
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:26.704Z"
+  },
+  {
+   "id": "G1",
+   "scenario": "G Admin: the sign-in link by email (Email E)",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "asking for a link sends one email through Resend, routed to the test inbox, from the site’s sender, with a single-use link to this deployment; never stored in email_log",
+   "actual": "received in 5 s · to delivered@resend.dev · delivered · link to test.good-times-enquiry-test.pages.dev · email_log rows 0",
+   "pass": true,
+   "evidence": {
+    "id": "01a1ba21…",
+    "subject": "Your Good Times bookings dashboard sign-in link",
+    "from": "Good Times in Cape Town (test) <onboarding@resend.dev>"
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:32.952Z"
+  },
+  {
+   "id": "G2",
+   "scenario": "G Admin: opening the link changes nothing",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the link opens a page with a Sign in button and sets no session (mail scanners open links)",
+   "actual": "button shown, session cookie false",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:33.045Z"
+  },
+  {
+   "id": "G3",
+   "scenario": "G Admin: signed in",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the button starts a 12-hour session in a __Host- cookie (Secure, HttpOnly, SameSite=Lax) and lands on the bookings list",
+   "actual": "secure true, httpOnly true, sameSite Lax, ~12 h",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:34.074Z"
+  },
+  {
+   "id": "X2",
+   "scenario": "Acceptance: staff find the enquiry",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "searching the reference in the dashboard finds it",
+   "actual": "1 result link(s) for GT-Q2W7U9",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:34.519Z"
+  },
+  {
+   "id": "X3",
+   "scenario": "Acceptance: the details",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the detail page shows the reference, customer, tour, date and pickup, history and the two emails sent",
+   "actual": "reference, customer, tour, pickup, history and emails shown",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:35.117Z"
+  },
+  {
+   "id": "X4",
+   "scenario": "Acceptance: staff confirm the booking",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the dashboard says the status is Confirmed and the customer has been emailed",
+   "actual": "Status set to Confirmed. The customer has been emailed.",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:37.552Z"
+  },
+  {
+   "id": "X5",
+   "scenario": "Acceptance: the follow-up email (Email C)",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the booking confirmation reaches Resend for the customer: reference, Confirmed, the booking terms line, the site’s sender; delivered",
+   "actual": "Your Good Times booking GT-Q2W7U9 is confirmed · from Good Times in Cape Town (test) <onboarding@resend.dev> · delivered",
+   "pass": true,
+   "evidence": {
+    "id": "01a1ba21…",
+    "to": [
+     "delivered+gt-mw7j5prq-x@resend.dev"
+    ],
+    "from": "Good Times in Cape Town (test) <onboarding@resend.dev>",
+    "reply_to": [
+     "info@goodtimesincapetown.co.za"
+    ],
+    "subject": "Your Good Times booking GT-Q2W7U9 is confirmed",
+    "last_event": "delivered",
+    "html_bytes": 7303,
+    "text_bytes": 762
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:39.481Z"
+  },
+  {
+   "id": "X7",
+   "scenario": "Acceptance: the links in the emails",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "every link in the three emails answers: this deployment’s pages, the dashboard and the status links (opening one changes nothing), and the outside links; none is plain http",
+   "actual": "8 links; broken: /api/enquiries/c8648b1b-46ba-4760-9dad-5059d18eefa1/status → 409, /api/enquiries/c8648b1b-46ba-4760-9dad-5059d18eefa1/status → 409; outside: none; status still CONFIRMED",
+   "pass": false,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:44.050Z"
+  },
+  {
+   "id": "X6",
+   "scenario": "Acceptance: the journey in the database",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "status CONFIRMED; history: created, terms, NEW → Confirmed by the staff address; email_log: three emails, all sent",
+   "actual": "CONFIRMED; events created, terms, status (New → Confirmed by info@goodtimesincapetown.co.za); emails enquiry-received sent, new-enquiry-internal sent, booking-confirmed sent",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:46.197Z"
+  },
+  {
+   "id": "G4",
+   "scenario": "G Admin: replayed sign-in link",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the same link a second time is refused (single use)",
+   "actual": "400 “already been used”",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:46.567Z"
+  },
+  {
+   "id": "G5",
+   "scenario": "G Admin: sign out",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "signing out clears the session; the dashboard then asks to sign in again",
+   "actual": "cookie cleared, then /admin/sign-in",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:46.915Z"
+  },
+  {
+   "id": "G6",
+   "scenario": "G Admin: refusals",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "no session → sign-in page; an invalid, forged or expired link → refused; an expired or forged session → signed out; a non-staff address gets the same answer and no email",
+   "actual": "none 303→/admin/sign-in; invalid 400; forged 400; expired 400; old session 303; forged session 303; non-staff session 303; stranger 200, new emails 0",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:54.879Z"
+  },
+  {
+   "id": "G7",
+   "scenario": "G Admin: forged requests (CSRF)",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "a change posted from another origin, or without the page’s form token, is refused and changes nothing",
+   "actual": "no enquiry to aim at (run A or D first)",
+   "pass": false,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:54.879Z"
+  },
+  {
+   "id": "G8",
+   "scenario": "G Admin: the lists",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "New, Upcoming, Past, Closed & cancelled and All answer; search finds by reference and by name; a non-match finds nothing",
+   "actual": "new 200, upcoming 200, past 200, cancelled 200, all 200; by reference false, by name true, non-match empty true",
+   "pass": false,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:58.460Z"
+  },
+  {
+   "id": "G9",
+   "scenario": "G Admin: page defences",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "dashboard pages forbid scripts, framing and indexing (CSP default-src none, X-Robots-Tag), keep sign-in tokens from other sites (Referrer-Policy)",
+   "actual": "CSP default-src 'none'; style-src 'unsafe-in…; noindex, nofollow; same-origin",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:48:58.523Z"
+  },
+  {
+   "id": "L1",
+   "scenario": "Email: no unintended recipients",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "every email of this run went to Resend’s test inbox or a synthetic resend.dev address, never to a real mailbox",
+   "actual": "3 emails, 0 to a non-test address",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:49:00.023Z"
+  }
+ ]
+}

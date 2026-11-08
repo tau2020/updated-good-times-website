@@ -24,6 +24,12 @@ export default defineConfig({
       REMOTE && process.env.CF_ACCESS_CLIENT_ID
         ? { 'CF-Access-Client-Id': process.env.CF_ACCESS_CLIENT_ID, 'CF-Access-Client-Secret': process.env.CF_ACCESS_CLIENT_SECRET || '' }
         : undefined,
+    // The enquiry test project's door (ENQUIRY_ACCESS_KEY, lib/http/app.mjs): a cookie for that host only, so the key
+    // never travels to another site. E2E_ACCESS_KEY=… E2E_BASE_URL=https://test.good-times-enquiry-test.pages.dev
+    storageState:
+      REMOTE && process.env.E2E_ACCESS_KEY
+        ? { cookies: [{ name: 'gt_access', value: process.env.E2E_ACCESS_KEY, domain: new URL(REMOTE).hostname, path: '/', expires: -1, httpOnly: true, secure: true, sameSite: 'Strict' }], origins: [] }
+        : undefined,
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },

@@ -158,8 +158,8 @@ function storyCard(r) {
 }
 
 /**
- * 09 · The heading, the listing's rating (dated, linked, kept apart from the cards; no review count, which changes),
- * the grid and the way to every review.
+ * 09 · The heading, the listing's rating and its number of reviews (dated, linked, kept apart from the cards; the date
+ * is when both were read, data/site.mjs), the grid and the way to every review.
  */
 function storiesSection(site) {
   const ta = site.tripadvisor;
@@ -176,6 +176,7 @@ function storiesSection(site) {
         <span class="stories__rating-score" aria-hidden="true">${ta.rating.toFixed(1)}</span>
         ${stars()}
         <span class="stories__rating-label">Rated ${ta.rating.toFixed(1)} out of 5 on Tripadvisor</span>
+        <span class="stories__rating-count">Number of reviews on <span>Tripadvisor: <strong>${ta.reviewCount}</strong></span></span>
         <span class="stories__rating-date">As listed on ${longDate(ta.checked)}<span class="visually-hidden">. See the listing (opens in a new tab)</span></span>
       </a>
     </div>
@@ -227,8 +228,6 @@ export const page = {
   title: 'Good Times in Cape Town',
   description:
     'Private, guide-led tours of Cape Town since 2014: the Cape Peninsula and Cape Point, the city and Langa, the Winelands, whale watching, adventures, the Garden Route and airport transfers. Send a booking request for a quote.',
-  priority: 1,
-  changefreq: 'weekly',
   overlayHeader: true,
   // The logo's airliner flies in and lands as the "i" of "in" (partials/aircraft.mjs, assets/js/brand-plane.js)
   brandFlight: true,
@@ -361,7 +360,7 @@ ${scene({
     </figure>
     <div class="container lc-wild__beat" data-wild-beat>
       <div class="lc-wild__words">
-        <p class="lc-scene__line">Fancy something with a little more adrenaline? Quad bikes on the dunes, a tandem skydive with the Cape below you, a cage dive with great white sharks off Gansbaai. Each runs with a safety briefing and depends on the weather and the season, so tell us your dates and we’ll help you work out what fits your Cape Town days.</p>
+        <p class="lc-scene__line">Fancy something with a little more adrenaline? Quad bikes on the dunes, a tandem skydive with the Cape below you, a shark cage dive off Gansbaai. Each runs with a safety briefing and depends on the weather and the season, so tell us your dates and we’ll help you work out what fits your Cape Town days.</p>
         ${travelNote({ href: 'tours/#adventure', label: 'See the Adventures', tone: 'light' })}
       </div>
     </div>

@@ -21,7 +21,9 @@
     "test:e2e": "playwright test",
     "qa:screens": "node qa/screenshots.mjs --full",
     "guard": "node src/tools/brand-guard.mjs",
-    "preview:zip": "bash qa/preview-zip.sh"
+    "preview:zip": "bash qa/preview-zip.sh",
+    "seo:registry": "node src/tools/url-registry.mjs",
+    "seo:legacy": "node qa/legacy-urls.mjs"
   },
   "engines": {
     "node": ">=20"

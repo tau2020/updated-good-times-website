@@ -12,6 +12,7 @@
      cleared once Good Times has confirmed receipt
    - prefill: ?type=tour&tour=<slug|package|custom>[&nights&date&adults&children&pickup]
               ?type=transfer[&transfer=<type>][&pickup_location&destination&transfer_date&adults&children]
+              ?next=/users/book/<slug>/ (the old booking site's sign-in links, redirected here)
    - multi-day packages travel the tour path: their own summary card, a nights
      choice, "Multi-day tour" in the summaries
    - preview mode: no network request at all; the result says so plainly
@@ -1102,8 +1103,21 @@ function init(root) {
   }
 
   /* ---------- prefill from the URL ---------- */
+  /**
+   * The old booking site's sign-in page sent visitors on with ?next=/users/book/<slug>/. That address now redirects
+   * here keeping its query (src/data/legacy-urls.mjs), so the booking it was for is chosen as its own link would be.
+   */
+  function legacyBooking(params) {
+    const m = /^\/users\/book\/([a-z0-9-]+)\/?$/.exec(params.get('next') || '');
+    if (!m) return null;
+    if (m[1] === 'airport-private-transfer') return { type: 'transfer' };
+    return TOUR_SLUGS.includes(m[1]) || PACKAGE_SLUGS.includes(m[1]) ? { type: 'tour', tour: m[1] } : null;
+  }
+
   function applyPrefill() {
     const params = new URLSearchParams(location.search);
+    const legacy = params.get('type') ? null : legacyBooking(params);
+    if (legacy) for (const [k, v] of Object.entries(legacy)) params.set(k, v);
     const t = params.get('type');
     if (t !== 'tour' && t !== 'transfer') return false;
     if (session.search === location.search) return false; // already applied in this tab (e.g. a reload)

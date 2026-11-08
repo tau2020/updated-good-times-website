@@ -1612,7 +1612,7 @@
   }
 }
 .stories__rating-score {
-  grid-row: span 3;
+  grid-row: span 4;
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 2rem + 2vw, 3.5rem);
   font-weight: var(--weight-display-strong);
@@ -1626,6 +1626,17 @@
 .stories__rating-label {
   font-size: var(--text-small);
   font-weight: 600;
+}
+.stories__rating-count {
+  font-size: var(--text-small);
+}
+/* A narrow card wraps before "Tripadvisor", never between the label and its number */
+.stories__rating-count span {
+  white-space: nowrap;
+}
+.stories__rating-count strong {
+  font-weight: 700;
+  color: var(--green-deep);
 }
 .stories__rating-date {
   font-size: var(--text-xs);

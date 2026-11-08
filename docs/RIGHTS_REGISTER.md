@@ -157,6 +157,25 @@ Each was checked one by one for what it shows (several file names did not match:
 | castle-cannons-group | Tripadvisor collection, file 076 | "A city day at the Castle of Good Hope" showed Table Mountain more than the Castle (6.G of the brief); both its places (the home page and About) now show photographs in which the Castle is the subject | Deleted (in git history) |
 | ocean-footprints-reveal | `Golden Shoreline Footprints.png` (G) | The sand journey's destination is now the owner's film made from it (`section-2-video.mp4`) | Deleted (master kept in `media-src/journey/` and Drive) |
 
+### Original files kept at their old addresses (Step 4B, 8 Nov 2026)
+
+Googlebot-Image still asked for 14 images at the booking site's `/media/` addresses. Ten are served again there, byte for byte as the booking site served them (no rendition, no crop, on no page): four because the same photographs are approved and in use on this site, six because the owner approved them on 8 Nov 2026 (approval register H3). The build refuses a file whose checksum differs (`src/data/legacy-urls.mjs`, `src/legacy-media/`). The evidence is in `docs/seo/HISTORICAL_MEDIA.md`.
+
+| Old address | Same photograph as | Basis | People | Status |
+|---|---|---|---|---|
+| `/media/tours/gallery/Cape_Town_City_Private_Tour0.webp` | bokaap-street | U | far | Served at its old address |
+| `/media/tours/gallery/Gardern_Route_3_1.webp` | hermanus-whale-sculpture | W | guests | Served at its old address, consent P1 |
+| `/media/tours/gallery/Gardern_Route_4_1.webp` | rooiberg-red-chair | U | far | Served at its old address |
+| `/media/tours/gallery/Gardern_Route_5_1.webp` | map-of-africa-viewpoint | W | guests | Served at its old address, consent P1 |
+| `/media/tours/gallery/38.webp` | (not otherwise used) | W, approved by the owner (H3) | far (from behind); a bystander's face | Served at its old address |
+| `/media/tours/gallery/Gardern_Route_1_2.webp` | (not otherwise used; the same guest is in cango-caves) | W, approved by the owner (H3) | guests | Served at its old address, consent P1 |
+| `/media/tours/gallery/wine_tasting.webp` | (not otherwise used) | W, approved by the owner (H3) | guests | Served at its old address, consent P1 |
+| `/media/tours/citytour_L6J9iiN.png` | (the old site's City Tour card) | W, approved by the owner (H3) | guests | Served at its old address, consent P1 |
+| `/media/tours/shark-cage-diving.png` | (the old site's Shark Cage Diving card) | W, approved by the owner (H3) | none | Served at its old address; who took the underwater photograph is not recorded (D3) |
+| `/media/gallery/19.png` | (the old gallery's framed photograph) | W, approved by the owner (H3) | guests | Served at its old address, consent P1 |
+
+Four are never served: `Cape_Town_City_Private_Tour7_2.webp` is byte for byte the withdrawn company-garden-guide (children), `gallery/33.png` shows children, `peninsula_WsHDY45.png` two young people who may be under 18, and `36.webp` a guest's full name on a welcome sign.
+
 ## The home hero (AI-generated, G)
 
 Supplied by the owner on 5 Nov 2026 with the "frozen moment" brief, which names the film and the gallery package (a Drive folder was shared with it; the files used are the ones the brief names), at the owner's direction. They show five fictional friends, the same five throughout; no real person is depicted or named. Used in the home hero only (`test/hero.test.mjs` proves it), and the photo credits say they are AI-generated illustrations. The supplied gallery package's own note says to "validate that the represented excursions match the tour operator's published packages and replace any synthetic picture with licensed real client imagery when available" (P5).

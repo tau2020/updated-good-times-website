@@ -8,8 +8,10 @@ import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { query, one, closeDb, post, validTour, key } from './helpers/env.mjs';
 
-// The staging set-up: Resend for real, not production, the default API address.
-Object.assign(process.env, { EMAIL_PROVIDER: 'resend', RESEND_API_KEY: 're_test_preview', SITE_ENV: 'preview' });
+// The staging set-up: Resend for real, not production, the default API address. A test deployment's staff address
+// (ADMIN_EMAILS) is real, and EMAIL_TEST_RECIPIENTS names the one owned inbox that may receive real mail.
+Object.assign(process.env, { EMAIL_PROVIDER: 'resend', RESEND_API_KEY: 're_test_preview', SITE_ENV: 'preview', ADMIN_EMAILS: 'staff@goodtimes.test, owner@goodtimes.test' });
+delete process.env.EMAIL_TEST_RECIPIENTS;
 delete process.env.RESEND_API_URL;
 const { config, resetConfig } = await import('../lib/config.mjs');
 resetConfig();
@@ -64,4 +66,33 @@ test('Resend’s own test addresses keep their address (the staging browser suit
   const res = await handle(...post('/api/enquiries', { ...validTour(), email: 'delivered+e2e-7@resend.dev', pickup_area: 'Green Point' }, { headers: { 'idempotency-key': key() } }));
   assert.equal(res.status, 201);
   assert.ok(sent.some((m) => m.to[0] === 'delivered+e2e-7@resend.dev'));
+});
+
+test('the staff sign-in link obeys the sink too: Resend’s test inbox, or an allowlisted owned inbox, never another address', async () => {
+  const signIn = (email, ip) =>
+    handle(
+      new Request('http://test.local/admin/sign-in', {
+        method: 'POST',
+        headers: { origin: 'http://test.local', 'content-type': 'application/x-www-form-urlencoded', 'x-forwarded-for': ip },
+        body: new URLSearchParams({ email }),
+      }),
+      { ip },
+    );
+  sent.length = 0;
+  assert.equal((await signIn('staff@goodtimes.test', '192.0.2.31')).status, 200);
+  assert.equal(sent.length, 1);
+  assert.deepEqual(sent[0].to, ['delivered@resend.dev'], 'not the staff address itself');
+  assert.match(sent[0].subject, /sign-in link/);
+
+  // The allowlisted owned inbox receives its own link.
+  process.env.EMAIL_TEST_RECIPIENTS = 'owner@goodtimes.test';
+  resetConfig();
+  try {
+    sent.length = 0;
+    assert.equal((await signIn('owner@goodtimes.test', '192.0.2.32')).status, 200);
+    assert.deepEqual(sent.map((m) => m.to), [['owner@goodtimes.test']]);
+  } finally {
+    delete process.env.EMAIL_TEST_RECIPIENTS;
+    resetConfig();
+  }
 });

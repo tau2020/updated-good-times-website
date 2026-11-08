@@ -23,7 +23,6 @@ export const page = {
   nav: null,
   title: 'Privacy notice and credits',
   description: 'How Good Times in Cape Town handles the details you send through this website, in line with POPIA: what we collect, who helps us, your rights, and credits for the photography.',
-  priority: 0.3,
   breadcrumbs: crumbs,
   body: ({ site }) => {
     const { legal, contact } = site;

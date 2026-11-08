@@ -1,32 +1,160 @@
 /**
- * The current website's addresses and where each one lives on this site, written to site/_redirects
- * (Cloudflare Pages) as permanent redirects. They only matter once the domain is moved here (an owner
- * decision, docs/APPROVAL_REGISTER.md); on staging they are harmless.
+ * site/_redirects (Cloudflare Pages), generated on every build from the historical URL registry
+ * (src/data/legacy-urls.mjs): the old addresses of goodtimesincapetown.co.za, each sent once, with a 301, to the page
+ * that replaces it. They matter once the domain points here (A2); until then they are harmless on pages.dev.
  *
- * Only addresses recorded as sources (each offering's own page on goodtimesincapetown.co.za, read on
- * 5 Nov 2026) are listed, so nothing is guessed. The current site's full address list is to be checked
- * before the cutover, and any other page added here.
+ * Layout, as Pages requires (src/tools/pages-redirects.mjs has the rules): every static rule first (an exact path,
+ * written with and without its trailing slash), then the dynamic rules, the more specific before the catch-alls.
+ * A rule after the first dynamic one would itself count as dynamic, so the order is not cosmetic. An entry marked for
+ * one environment (the sitemap redirects: only production builds publish a sitemap) is left out of the others.
+ *
+ * checkRedirects() is run by the build and refuses a file that would: redirect a page that exists (Pages applies
+ * _redirects before its files), chain two redirects, point at a page, file, tour or booking choice that does not
+ * exist, carry a query string in a source (Pages drops it, so the rule would catch the bare path), reach into a
+ * Functions route, leave a static rule after a dynamic one, or exceed Pages' limits.
  */
-import { tours } from './tours.mjs';
-import { packages } from './packages.mjs';
-import { services } from './transfers.mjs';
+import { legacyUrls, staticRedirects, dynamicRedirects, REGISTRY_DATE } from './legacy-urls.mjs';
+import { parseRedirects, matchRedirect, LIMITS } from '../tools/pages-redirects.mjs';
+import { TOUR_SLUGS, PACKAGE_SLUGS, CUSTOM_TOUR, TRANSFER_TYPES } from '../assets/js/enquiry-schema.js';
+import { themes, categories } from './tours.mjs';
 
-const pathOf = (url) => new URL(url).pathname;
+export const STATUS = 301;
 
-/** [from, to] pairs, the most specific first (Pages applies the first match). */
-export const redirects = [
-  ...packages.map((p) => [pathOf(p.source.listing), `/packages/${p.slug}/`]),
-  ...services.map((s) => [pathOf(s.source.listing), '/transfers/']),
-  ...tours.map((t) => [pathOf(t.source.listing), `/tours/${t.slug}/`]),
-  ['/tour/', '/tours/'],
-].filter(([from, to]) => from !== to);
+/** Routes served by Pages Functions (functions/): _redirects never applies to them. */
+export const FUNCTION_ROUTES = ['/api/', '/admin/', '/assets/video/'];
 
-/** The _redirects file: each address with and without its trailing slash, as a 301. */
-export function redirectsFile(list = redirects) {
-  const lines = [];
-  for (const [from, to] of list) {
-    const bare = from.replace(/\/+$/, '');
-    for (const f of new Set([from, bare].filter(Boolean))) lines.push(`${f} ${to} 301`);
+/**
+ * Destinations that are files rather than pages, and the builds that write them. Used when the caller cannot look at
+ * the built files (the build itself checks the files on disk).
+ */
+export const FILE_TARGETS = { '/assets/brand/favicon.ico': ['preview', 'production'], '/sitemap.xml': ['production'] };
+
+/** An entry's static sources: the path, and without its trailing slash (the bare form needs its own rule). */
+export function sourcesOf(path) {
+  const bare = path.replace(/\/+$/, '');
+  return bare && bare !== path ? [path, bare] : [path];
+}
+
+/** Whether an entry belongs in this environment's build. */
+export const inEnv = (entry, env) => !entry.env || entry.env === env;
+
+/** [from, to, status] for every rule of an environment's build, static first, in registry order. */
+export function redirectRules({ env = 'production' } = {}) {
+  const rules = [];
+  const seen = new Map();
+  const add = (from, to) => {
+    if (seen.has(from)) {
+      if (seen.get(from) !== to) throw new Error(`_redirects: ${from} is sent to both ${seen.get(from)} and ${to}`);
+      return; // the same rule twice: kept once
+    }
+    seen.set(from, to);
+    rules.push([from, to, STATUS]);
+  };
+  for (const e of staticRedirects().filter((x) => inEnv(x, env))) for (const from of sourcesOf(e.path)) add(from, e.to);
+  for (const e of dynamicRedirects().filter((x) => inEnv(x, env))) add(e.path, e.to);
+  return rules;
+}
+
+/** The _redirects file body for an environment's build. */
+export function redirectsFile({ env = 'production', rules = redirectRules({ env }) } = {}) {
+  const byPath = new Map(legacyUrls.map((e) => [e.path, e]));
+  const pad = Math.max(...rules.map(([from]) => from.length)) + 2;
+  const line = ([from, to, status]) => `${from.padEnd(pad)}${to.padEnd(Math.max(pad, to.length + 2))}${status}`;
+  const out = [
+    `# goodtimesincapetown.co.za's earlier addresses → their pages here. Generated by src/data/redirects.mjs from the`,
+    `# historical URL registry (src/data/legacy-urls.mjs, ${REGISTRY_DATE}): edit the registry, never this file.`,
+    `# Static rules first (each path with and without its trailing slash), then the dynamic ones, specific before general.`,
+    `# Not here: www → apex and http → https (zone rules at the cutover); /api/*, /admin/* and /assets/video/* (Pages`,
+    `# Functions, which _redirects never reaches); ?p= and ?page_id= links (a source cannot match a query string).`,
+    `# This is the ${env} build's file.`,
+  ];
+  let dynamic = false;
+  let group = '';
+  for (const rule of rules) {
+    const entry = byPath.get(rule[0]) || byPath.get(`${rule[0]}/`);
+    if (!dynamic && /[*:]/.test(rule[0])) {
+      dynamic = true;
+      out.push('', '# ======== Dynamic rules: after every static rule, the specific prefixes before the catch-alls');
+    }
+    if (entry?.group && entry.group !== group) {
+      group = entry.group;
+      out.push('', `# ---- ${group}`);
+    }
+    if (entry?.decision && entry.path === rule[0]) out.push(`# (owner decision ${entry.decision}: docs/APPROVAL_REGISTER.md)`);
+    out.push(line(rule));
   }
-  return `# The current website's addresses → this site (src/data/redirects.mjs)\n${lines.join('\n')}\n`;
+  return `${out.join('\n')}\n`;
+}
+
+const pagePath = (file) => `/${file.replace(/(^|\/)index\.html$/, '$1')}`;
+
+/**
+ * Problems with an environment's generated rules, given the pages the build wrote (their files, e.g.
+ * "tours/index.html") and, from the build, a way to ask whether a file exists in its output. Empty when sound.
+ */
+export function checkRedirects({ pages, env = 'production', text = redirectsFile({ env }), fileExists }) {
+  const problems = [];
+  const parsed = parseRedirects(text);
+  const rules = redirectRules({ env });
+  const pagePaths = new Set(pages.map(pagePath));
+  const statics = rules.filter(([from]) => !/[*:]/.test(from));
+  const isFile = (path) => (fileExists ? fileExists(path) : (FILE_TARGETS[path] || []).includes(env));
+
+  for (const p of parsed.invalid) problems.push(`line ${p.lineNumber}: ${p.message}`);
+  if (parsed.counts.static !== statics.length) problems.push(`a static rule follows a dynamic one (${parsed.counts.static} of ${statics.length} static rules read as static)`);
+  if (parsed.counts.static > LIMITS.static) problems.push(`${parsed.counts.static} static rules (limit ${LIMITS.static})`);
+  if (parsed.counts.dynamic > LIMITS.dynamic) problems.push(`${parsed.counts.dynamic} dynamic rules (limit ${LIMITS.dynamic})`);
+
+  for (const [from, to] of rules) {
+    if (!from.startsWith('/') || /[?#\s]/.test(from)) problems.push(`${from}: a source must be a plain path (no query, fragment or space)`);
+    if (FUNCTION_ROUTES.some((r) => from.startsWith(r))) problems.push(`${from}: inside a Functions route, where _redirects never applies`);
+    const dest = new URL(to, 'https://site.invalid');
+    if (dest.origin !== 'https://site.invalid') {
+      problems.push(`${from} → ${to}: destinations stay on the site`);
+      continue;
+    }
+    // The destination exists in this build: a page, or a file it writes.
+    if (!pagePaths.has(dest.pathname) && !isFile(dest.pathname)) problems.push(`${from} → ${to}: nothing at ${dest.pathname} in the ${env} build`);
+    // A booking choice the form offers.
+    if (dest.pathname === '/enquire/' && dest.search) {
+      const q = dest.searchParams;
+      const type = q.get('type');
+      if (type === 'tour') {
+        const tour = q.get('tour');
+        if (!tour || ![...TOUR_SLUGS, ...PACKAGE_SLUGS, CUSTOM_TOUR].includes(tour)) problems.push(`${from} → ${to}: the form offers no tour "${tour}"`);
+      } else if (type === 'transfer') {
+        const t = q.get('transfer');
+        if (t && !TRANSFER_TYPES.includes(t)) problems.push(`${from} → ${to}: the form offers no transfer "${t}"`);
+      } else problems.push(`${from} → ${to}: type must be tour or transfer`);
+    }
+    // A filter the tours page offers (its chips read the fragment).
+    if (dest.hash) {
+      const filter = dest.hash.slice(1);
+      const filters = new Set([...themes.map((t) => t.id), ...categories.map((c) => c.id), 'most-reviewed']);
+      if (dest.pathname !== '/tours/' || !filters.has(filter)) problems.push(`${from} → ${to}: no such filter on the tours page`);
+    }
+    // One hop: the destination is not itself redirected.
+    const again = matchRedirect(parsed, dest.pathname);
+    if (again) problems.push(`${from} → ${to} → ${again.to}: a chain (the destination is redirected again)`);
+  }
+
+  // No page is shadowed: Pages applies _redirects before it serves a file.
+  for (const p of pagePaths) {
+    for (const path of sourcesOf(p)) {
+      const hit = matchRedirect(parsed, path);
+      if (hit) problems.push(`${path}: a page here, but ${hit.from} redirects it to ${hit.to}`);
+    }
+  }
+
+  // Each entry is answered by its own rule (or one with the same destination): no earlier rule shadows it.
+  for (const e of [...staticRedirects(), ...dynamicRedirects()].filter((x) => inEnv(x, env))) {
+    const probes = e.action === 'prefix' ? e.samples || [] : sourcesOf(e.path);
+    for (const probe of probes) {
+      const path = new URL(probe, 'https://site.invalid').pathname;
+      const hit = matchRedirect(parsed, path);
+      if (!hit) problems.push(`${probe}: no rule answers it`);
+      else if (hit.to !== e.to) problems.push(`${probe}: answered by ${hit.from} (→ ${hit.to}), not its own rule (→ ${e.to})`);
+    }
+  }
+  return problems;
 }

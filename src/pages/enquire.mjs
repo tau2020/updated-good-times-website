@@ -23,7 +23,7 @@
  */
 import { esc, icon, picture, breadcrumb, contactList, showRating, ratingRow, currencyPicker, artPanel } from '../partials/ui.mjs';
 import { routeArt } from '../partials/route-art.mjs';
-import { tours } from '../data/tours.mjs';
+import { tours, groupLine } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
 import { types as transferTypes } from '../data/transfers.mjs';
 import { SERVICES } from '../partials/living-cape.mjs';
@@ -192,7 +192,7 @@ function tourSummary(t) {
   const ta = t.tripadvisor;
   const features = [
     { icon: 'clock', text: t.duration },
-    { icon: 'users', text: 'Private: only your group' },
+    { icon: 'users', text: groupLine(t) },
     { icon: 'pin', text: /^Pickup from your accommodation/.test(t.pickup) ? 'Pickup included' : t.pickup.startsWith('Pickup can be added') ? 'Transport as an add-on' : 'At the operator’s site' },
   ];
   return `<div class="booking-summary" data-tour-card="${esc(t.slug)}" hidden>
@@ -548,7 +548,6 @@ export const page = {
   title: 'Book a private tour or transfer',
   description: 'Send Good Times in Cape Town a booking request for a private tour, an activity or an airport transfer. We reply to confirm availability and a quote; a request is not a confirmed booking.',
   breadcrumbs: crumbs,
-  priority: 0.8,
   styles: ['assets/css/enquiry.css'],
   scripts: siteData.enquiry.enabled === false ? [] : [{ module: 'assets/js/enquiry.js' }],
   body: ({ site }) => {

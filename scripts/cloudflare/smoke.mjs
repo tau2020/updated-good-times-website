@@ -17,7 +17,7 @@ import { ENVIRONMENTS, DOMAIN } from './project.mjs';
 
 // The template's earlier operator, which must never be named on this site.
 const FORMER_OPERATOR = /jap[ -]?shuttles|japshuttlesandtours/i; // brand-guard-allow: the check that keeps the name out
-const PAGES = ['/', '/tours/', '/tours/cape-peninsula-private-tour/', '/tours/sky-diving/', '/packages/', '/packages/garden-route-private-tour/', '/transfers/', '/destinations/', '/about/', '/reviews/', '/faq/', '/enquire/', '/contact/', '/privacy/', '/terms/'];
+const PAGES = ['/', '/tours/', '/tours/cape-peninsula-private-tour/', '/tours/sky-diving/', '/packages/', '/packages/garden-route-private-tour/', '/transfers/', '/destinations/', '/about/', '/reviews/', '/faq/', '/enquire/', '/contact/', '/privacy/', '/terms/', '/services/', '/safety/'];
 
 /**
  * @param {{ url: string, env: 'preview'|'production', domain?: boolean, fetchImpl?: typeof fetch }} opts
@@ -84,13 +84,21 @@ export async function smoke({ url, env, domain = false, fetchImpl = fetch }) {
       expect(res.status === 200, `status ${res.status}`);
     });
   }
-  await check('current-site address redirect', async () => {
-    const res = await get('/tour/garden-route-private-tour/');
-    await res.arrayBuffer();
-    const to = res.headers.get('location') || '';
-    expect(res.status === 301 && /\/packages\/garden-route-private-tour\/$/.test(to), `${res.status} → ${to || 'nowhere'}`);
-    return `301 → ${to}`;
-  });
+  // The domain's earlier addresses (src/data/legacy-urls.mjs; the full suite is qa/legacy-urls.mjs): a booking-site
+  // tour, a WordPress slug and an old booking page, each one 301 to its page here.
+  for (const [from, want] of [
+    ['/tour/garden-route-private-tour/', '/packages/garden-route-private-tour/'],
+    ['/tour/winelands-experience/', '/tours/cape-winelands-private-tour/'],
+    ['/users/book/quad-biking/', '/enquire/?type=tour&tour=quad-biking'],
+  ]) {
+    await check(`earlier address ${from}`, async () => {
+      const res = await get(from);
+      await res.arrayBuffer();
+      const to = res.headers.get('location') || '';
+      expect(res.status === 301 && to.endsWith(want), `${res.status} → ${to || 'nowhere'}`);
+      return `301 → ${to}`;
+    });
+  }
   await check('missing page', async () => {
     const res = await get('/no-such-page/');
     await res.arrayBuffer();

@@ -1,0 +1,95 @@
+# Good Times In Cape Town: legacy WordPress URLs -> Cloudflare Pages
+# Proposed 7 Nov 2026. Replaces the deployed _redirects in full. Lines marked
+# (live) reproduce the 9 redirects deployment 1fe1f8ff already serves.
+#
+# Rules: top-most match wins; static rules first, splats last.
+# Each static rule is listed with and without the trailing slash. Query strings pass through.
+# Not handled here (see audit): /api/*, /admin/*, /assets/video/* are Pages Functions
+# routes, so _redirects never applies to them; www -> apex needs a zone Redirect Rule;
+# ?p= / ?page_id= query URLs cannot be matched by _redirects.
+
+# ---- Tour archive (live)
+/tour/                                   /tours/                                     301
+/tour                                    /tours/                                     301
+
+# ---- Tours, same slug (live)
+/tour/whale-watching-private-tour/       /tours/whale-watching-private-tour/         301
+/tour/whale-watching-private-tour        /tours/whale-watching-private-tour/         301
+/tour/quad-biking/                       /tours/quad-biking/                         301
+/tour/quad-biking                        /tours/quad-biking/                         301
+/tour/sky-diving/                        /tours/sky-diving/                          301
+/tour/sky-diving                         /tours/sky-diving/                          301
+/tour/shark-cage-diving/                 /tours/shark-cage-diving/                   301
+/tour/shark-cage-diving                  /tours/shark-cage-diving/                   301
+/tour/cape-agulhas-private-tour/         /tours/cape-agulhas-private-tour/           301
+/tour/cape-agulhas-private-tour          /tours/cape-agulhas-private-tour/           301
+/tour/private-cape-town-experience/      /tours/private-cape-town-experience/        301
+/tour/private-cape-town-experience       /tours/private-cape-town-experience/        301
+
+# ---- Tours moved to another section (live)
+/tour/garden-route-private-tour/         /packages/garden-route-private-tour/        301
+/tour/garden-route-private-tour          /packages/garden-route-private-tour/        301
+/tour/airport-private-transfer/          /transfers/                                 301
+/tour/airport-private-transfer           /transfers/                                 301
+
+# ---- Tours, renamed slug (NEW)
+/tour/cape-peninsula-adventure/          /tours/cape-peninsula-private-tour/         301
+/tour/cape-peninsula-adventure           /tours/cape-peninsula-private-tour/         301
+/tour/cape-town-city-tour/               /tours/cape-town-city-private-tour/         301
+/tour/cape-town-city-tour                /tours/cape-town-city-private-tour/         301
+/tour/township-cultural-tour/            /tours/township-private-tour/               301
+/tour/township-cultural-tour             /tours/township-private-tour/               301
+/tour/winelands-experience/              /tours/cape-winelands-private-tour/         301
+/tour/winelands-experience               /tours/cape-winelands-private-tour/         301
+
+# ---- Pages with no direct equivalent (NEW; owner to confirm targets)
+/gallery/                                /tours/                                     301
+/gallery                                 /tours/                                     301
+/safety/                                 /about/                                     301
+/safety                                  /about/                                     301
+
+# ---- Tour categories (NEW)
+/tour-category/private-tours/            /tours/                                     301
+/tour-category/private-tours             /tours/                                     301
+/tour-category/day-tours/                /tours/                                     301
+/tour-category/day-tours                 /tours/                                     301
+/tour-category/nature-tours/             /tours/                                     301
+/tour-category/nature-tours              /tours/                                     301
+/tour-category/adventure-activities/     /tours/                                     301
+/tour-category/adventure-activities      /tours/                                     301
+/tour-category/multi-day-tours/          /packages/                                  301
+/tour-category/multi-day-tours           /packages/                                  301
+/tour-category/airport-pickups/          /transfers/                                 301
+/tour-category/airport-pickups           /transfers/                                 301
+/tour-category/cultural-tours/           /tours/township-private-tour/               301
+/tour-category/cultural-tours            /tours/township-private-tour/               301
+/tour-category/cultural-experiences/     /tours/township-private-tour/               301
+/tour-category/cultural-experiences      /tours/township-private-tour/               301
+/tour-category/city-tours/               /tours/cape-town-city-private-tour/         301
+/tour-category/city-tours                /tours/cape-town-city-private-tour/         301
+/tour-category/peninsula-tours/          /tours/cape-peninsula-private-tour/         301
+/tour-category/peninsula-tours           /tours/cape-peninsula-private-tour/         301
+/tour-category/winelands/                /tours/cape-winelands-private-tour/         301
+/tour-category/winelands                 /tours/cape-winelands-private-tour/         301
+
+# ---- WordPress system URLs (NEW)
+/index.php                               /                                           301
+/favicon.ico                             /assets/brand/favicon.ico                   301
+/wp-sitemap.xml                          /sitemap.xml                                301
+
+# ---- Dynamic: attachment pages, feeds and pagination under each tour (NEW)
+/tour/whale-watching-private-tour/*      /tours/whale-watching-private-tour/         301
+/tour/quad-biking/*                      /tours/quad-biking/                         301
+/tour/sky-diving/*                       /tours/sky-diving/                          301
+/tour/shark-cage-diving/*                /tours/shark-cage-diving/                   301
+/tour/cape-agulhas-private-tour/*        /tours/cape-agulhas-private-tour/           301
+/tour/private-cape-town-experience/*     /tours/private-cape-town-experience/        301
+/tour/garden-route-private-tour/*        /packages/garden-route-private-tour/        301
+/tour/airport-private-transfer/*         /transfers/                                 301
+/tour/cape-peninsula-adventure/*         /tours/cape-peninsula-private-tour/         301
+/tour/cape-town-city-tour/*              /tours/cape-town-city-private-tour/         301
+/tour/township-cultural-tour/*           /tours/township-private-tour/               301
+/tour/winelands-experience/*             /tours/cape-winelands-private-tour/         301
+/tour/*                                  /tours/                                     301
+/tour-category/*                         /tours/                                     301
+/wp-sitemap-*                            /sitemap.xml                                301

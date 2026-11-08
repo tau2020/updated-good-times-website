@@ -13,15 +13,17 @@
  * disallows everything and no sitemap is published. SITE_ENV=production
  * builds the indexable site.
  */
-import { readdir, mkdir, writeFile, cp, rm } from 'node:fs/promises';
-import { watch } from 'node:fs';
+import { readdir, mkdir, writeFile, readFile, cp, rm } from 'node:fs/promises';
+import { watch, existsSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { site } from './data/site.mjs';
 import { layout } from './partials/layout.mjs';
 import { headersFile } from './partials/security.mjs';
-import { redirectsFile } from './data/redirects.mjs';
+import { redirectsFile, checkRedirects } from './data/redirects.mjs';
+import { preservedMedia } from './data/legacy-urls.mjs';
 
 const SRC = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(SRC, '..');
@@ -48,26 +50,45 @@ async function build() {
       const outPath = join(OUT, page.path);
       await mkdir(dirname(outPath), { recursive: true });
       await writeFile(outPath, html, 'utf8');
-      if (!page.noindex) urls.push({ loc: page.path, priority: page.priority ?? 0.6, changefreq: page.changefreq ?? 'monthly' });
+      if (!page.noindex) urls.push(page.path);
     }
   }
 
   await writeFile(join(OUT, '_headers'), headersFile({ preview: site.preview }), 'utf8');
-  // The current website's addresses, redirected to their pages here (used once the domain moves).
-  await writeFile(join(OUT, '_redirects'), redirectsFile(), 'utf8');
 
   const pretty = (p) => (p === 'index.html' ? '' : p.replace(/index\.html$/, ''));
   if (site.preview) {
     await writeFile(join(OUT, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
   } else {
+    // <loc> only: Google ignores <changefreq> and <priority>, and no page has a last-modified date that can be derived
+    // reliably (a page is assembled from shared data files), so <lastmod> is left out rather than invented
+    // (docs/seo/GSC_AUDIT_IMPLEMENTATION.md › Sitemap).
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url><loc>${site.url}/${pretty(u.loc)}</loc><changefreq>${u.changefreq}</changefreq><priority>${u.priority}</priority></url>`).join('\n')}
+${urls.map((loc) => `  <url><loc>${site.url}/${pretty(loc)}</loc></url>`).join('\n')}
 </urlset>
 `;
     await writeFile(join(OUT, 'sitemap.xml'), sitemap, 'utf8');
     await writeFile(join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`, 'utf8');
   }
+
+  // The booking site's original images that may be kept at their old addresses, byte for byte (docs/seo/HISTORICAL_MEDIA.md).
+  for (const m of preservedMedia()) {
+    const from = join(SRC, 'legacy-media', m.path.replace(/^\/media\//, ''));
+    const bytes = await readFile(from);
+    const sha256 = createHash('sha256').update(bytes).digest('hex');
+    if (sha256 !== m.asset.sha256 || bytes.length !== m.asset.bytes) throw new Error(`${relative(ROOT, from)} is not the original recorded for ${m.path}`);
+    await mkdir(dirname(join(OUT, m.path)), { recursive: true });
+    await writeFile(join(OUT, m.path), bytes);
+  }
+
+  // The domain's earlier addresses, each sent once to its page here (src/data/legacy-urls.mjs; used once the domain
+  // moves). Last, so every destination can be checked against what this build wrote: the build refuses rules that
+  // would shadow a page, chain, or point at something that does not exist here.
+  const redirects = redirectsFile({ env: site.env });
+  const problems = checkRedirects({ pages: [...seen], env: site.env, text: redirects, fileExists: (p) => existsSync(join(OUT, p)) && statSync(join(OUT, p)).isFile() });
+  if (problems.length) throw new Error(`_redirects:\n  ${problems.join('\n  ')}`);
+  await writeFile(join(OUT, '_redirects'), redirects, 'utf8');
 
   console.log(`built ${seen.size} pages (${site.env}) → ${relative(ROOT, OUT)}/ in ${Date.now() - started}ms`);
 }

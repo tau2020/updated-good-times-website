@@ -107,18 +107,19 @@ export const site = {
   },
 
   /**
-   * Verified listing facts. The rating and review count were read on the listing on 5 Nov 2026. Tripadvisor
-   * draws its rating breakdown in the browser only, so the breakdown is the one recorded for the 263 reviews
-   * indexed by Good Times' own research on 3 Nov 2026 (Drive › Tripadvisor Photo Collection › 09).
+   * Verified listing facts, read on the listing in a browser on 8 Nov 2026 (Tripadvisor draws its rating breakdown
+   * there only): 264 reviews at 5.0, 260 Excellent and 4 Good. The rating and the count are as read on 5 Nov 2026;
+   * the breakdown replaces the one recorded for 263 reviews on 3 Nov 2026. The home page's reviews and /reviews/ show
+   * the count with this date; the five product listings' counts were read the same day (tours.mjs, transfers.mjs).
    */
   tripadvisor: {
     url: 'https://www.tripadvisor.co.za/Attraction_Review-g312659-d19611200-Reviews-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html',
     rating: 5.0,
     reviewCount: 264,
-    checked: '2026-11-05',
-    distribution: { excellent: 259, good: 4, average: 0, poor: 0, terrible: 0 },
-    distributionTotal: 263,
-    distributionChecked: '2026-11-03',
+    checked: '2026-11-08',
+    distribution: { excellent: 260, good: 4, average: 0, poor: 0, terrible: 0 },
+    distributionTotal: 264,
+    distributionChecked: '2026-11-08',
   },
 
   /** Recognition the company states on its own About and Safety pages (read on 5 Nov 2026). */
@@ -159,6 +160,20 @@ export const site = {
   },
 
   /**
+   * Safety statements from Good Times' own Safety & Trust page (the WordPress site of 5–7 Nov 2026), which the site
+   * could not verify until the owner confirmed them on 8 Nov 2026 (docs/APPROVAL_REGISTER.md › H4). Shown on /safety/
+   * only while `verified` is true.
+   */
+  safety: {
+    vehicles: 'Our vehicles are regularly serviced and insured',
+    firstAid: 'Our guides are trained in first aid and carry first-aid supplies',
+    certificate: 'A Tripadvisor Certificate of Excellence',
+    guests: 'Thousands of guests hosted safely',
+    source: 'Good Times’ Safety & Trust page (goodtimesincapetown.co.za, 5–7 Nov 2026), confirmed by the owner on 8 Nov 2026 (H4)',
+    verified: true,
+  },
+
+  /**
    * The facts the privacy notice and the terms rest on (POPIA s.18, ECTA s.43), rendered only when
    * verified. Nothing here may be guessed. Until Good Times approves both texts (`privacyApproved`,
    * `termsApproved`), the production deployment refuses to run (scripts/release-gate.mjs).
@@ -169,17 +184,20 @@ export const site = {
     address: { text: '277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005', verified: true },
     informationOfficer: { name: '', email: '', verified: false },
     retention: { text: '', verified: false },
-    effective: '',
+    // The day the approved texts took effect: the owner's approval (B1, B2). Change it if they should start at go-live.
+    effective: '2026-11-08',
     // The texts are Good Times' own (goodtimesincapetown.co.za/terms and /privacy), adapted to how this website works.
-    // They wait for the owner's approval of those adaptations (docs/APPROVAL_REGISTER.md).
-    privacyApproved: false,
-    termsApproved: false,
+    // Approved by the owner on 8 Nov 2026 ("booking and legal approved"; docs/APPROVAL_REGISTER.md, B1 and B2). The
+    // approval covers the texts: the facts still empty above (entity, informationOfficer, retention) and the terms'
+    // OPEN_POINTS need Good Times' own values, and the release gate keeps naming them until they are set.
+    privacyApproved: true,
+    termsApproved: true,
     // The version of the Terms & Conditions text on the site, recorded with every booking request that accepts them.
     // Change it whenever the text changes (test/terms.test.mjs fails until you do).
     termsVersion: '2026-11-05',
     // Recorded 7 Nov 2026 by tau2020, the repository's owner, for the production deployment at
     // good-times-in-cape-town.pages.dev only (not the domain): these open items are accepted for that release and stay
-    // open, so the privacy notice and the terms still say they are drafts (docs/APPROVAL_REGISTER.md, A1 and B1–B5)
+    // open (docs/APPROVAL_REGISTER.md, A1 and B1–B5). Kept as given; the texts themselves were approved on 8 Nov 2026.
     releaseOverride: {
       date: '2026-11-07',
       by: 'tau2020 (repository owner)',

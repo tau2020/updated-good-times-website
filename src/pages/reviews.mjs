@@ -11,7 +11,6 @@ export const page = {
   nav: 'reviews/',
   title: 'What Our Guests Say: Tripadvisor reviews',
   description: 'Good Times in Cape Town is rated 5.0 on Tripadvisor. Read short summaries of guests’ reviews, each linking to the full review.',
-  priority: 0.7,
   breadcrumbs: crumbs,
   preload: [preloadFor('diaz-beach-cove')],
   body: ({ site }) => {

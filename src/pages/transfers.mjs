@@ -59,9 +59,8 @@ function serviceBlock(s, site, i) {
 export const page = {
   path: 'transfers/index.html',
   nav: 'transfers/',
-  title: 'Airport Transfers in Cape Town',
+  title: 'Private Airport Transfers in Cape Town',
   description: `Private transfers between Cape Town International Airport and your accommodation, with meet and greet at arrivals and help with your luggage. ${fromLine(airport.price)}.`,
-  priority: 0.9,
   breadcrumbs: crumbs,
   // The banner is art-directed (images.mjs): a wide cut of traveller 12 from 48em, a taller one for phones; each
   // screen preloads only its own
@@ -72,7 +71,7 @@ export const page = {
   <div class="container">
     <div class="banner__content">
       ${breadcrumb(crumbs)}
-      <h1>Airport Transfers</h1>
+      <h1>Private Airport Transfers</h1>
       <p class="banner__sub">Land in Cape Town. We’ll take it from there.</p>
       <p class="banner__text">Private transfers between Cape Town International Airport and your accommodation, for individuals, families and small groups: a name board at arrivals, a hand with your luggage and a private drive to your door.</p>
     </div>

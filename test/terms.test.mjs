@@ -162,9 +162,9 @@ test('wherever the terms page is built, every footer has one Terms & Conditions 
     const mod = await import(new URL(f, dir));
     pages.push(...(Array.isArray(mod.pages) ? mod.pages : [mod.page]).filter(Boolean));
   }
-  // A preview build has the page; so does production once the terms are approved, or under the owner's release override
-  // that accepts them as a draft (7 Nov 2026). An unapproved production build without that override has none.
-  const locked = { ...production, legal: { ...production.legal, releaseOverride: null } };
+  // A preview build has the page; so does production once the terms are approved (8 Nov 2026), or under the owner's
+  // release override that accepts them as a draft (7 Nov 2026). An unapproved production build without it has none.
+  const locked = { ...production, legal: { ...production.legal, termsApproved: false, releaseOverride: null } };
   for (const [x, links] of [[{ ...site, preview: true }, 1], [approvedTerms(production), 1], [production, termsPublished(production) ? 1 : 0], [locked, 0]]) {
     for (const p of pages) {
       const html = layout(p, x);
