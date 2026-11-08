@@ -9,6 +9,7 @@
  *   CLOUDFLARE_API_TOKEN=… node scripts/cloudflare/setup.mjs domain --apply                custom domains, DNS, HTTPS, www → apex
  *   CLOUDFLARE_API_TOKEN=… node scripts/cloudflare/setup.mjs email --forward-to <mailbox> --apply
  *                                                                                           the site's addresses through Email Routing
+ *   CLOUDFLARE_API_TOKEN=… node scripts/cloudflare/setup.mjs test --apply                  the isolated test project of the live enquiry pipeline
  *   CLOUDFLARE_API_TOKEN=… RESEND_API_KEY=… node scripts/cloudflare/setup.mjs resend --apply
  *                                                                                           the sending domain in Resend and its DNS records
  *
@@ -17,9 +18,10 @@
  *    name contains it, or the token owner's own account when the owner's
  *    address does. CLOUDFLARE_ACCOUNT_ID picks one of the token's accounts, and
  *    the same proof still applies.
- *  - domain, email and resend change nothing (even with --apply) until the
- *    owner has approved the cutover (DOMAIN.approved in project.mjs): the
- *    domain serves the current website.
+ *  - domain and email change nothing (even with --apply) until the owner has
+ *    approved the cutover (DOMAIN.approved in project.mjs): the domain serves
+ *    the current website. resend has its own approval (SENDING_DOMAIN.approved)
+ *    and adds only the sending domain's subdomain records, never the apex's.
  *  - Never deletes or overwrites a DNS record. Where an existing record is in
  *    the way it stops for that record and says which, so a person decides.
  *  - Never reads, writes or prints a secret's value: it checks that the secret
@@ -39,7 +41,7 @@ import * as defaults from './project.mjs';
 const CF_API = 'https://api.cloudflare.com/client/v4';
 const RESEND_API = 'https://api.resend.com';
 const WWW_RULE_REF = 'gt_www_to_apex';
-const COMMANDS = ['check', 'pages', 'domain', 'email', 'resend'];
+const COMMANDS = ['check', 'pages', 'test', 'domain', 'email', 'resend'];
 
 export class Refusal extends Error {
   constructor(message) {
@@ -376,7 +378,7 @@ export async function email(cf, accountId, { cfg, apply, log, forwardTo }) {
 
 /* ---------- outbound mail: the Resend sending domain ---------- */
 
-export async function resend(cf, accountId, rs, { cfg, apply, log, region = 'eu-west-1' }) {
+export async function resend(cf, accountId, rs, { cfg, apply, log, region = cfg.SENDING_DOMAIN?.region || 'eu-west-1' }) {
   const { DOMAIN } = cfg;
   const zone = await zoneOf(cf, accountId, DOMAIN.apex, log);
   if (!zone) return { zone: null };
@@ -389,11 +391,29 @@ export async function resend(cf, accountId, rs, { cfg, apply, log, region = 'eu-
   }
   const full = await rs.get(`/domains/${dom.id}`);
   log(`  ${full.status === 'verified' ? '✓' : '·'} Resend domain ${DOMAIN.apex}: ${full.status}`);
-  const records = (await cf.get(`/zones/${zone.id}/dns_records?per_page=500`)) || [];
-  const steps = (full.records || []).map((r) => {
+  const wanted = (full.records || []).map((r) => {
     const name = r.name === '@' || r.name === DOMAIN.apex ? DOMAIN.apex : `${r.name.replace(new RegExp(`\\.${DOMAIN.apex.replace(/\./g, '\\.')}$`), '')}.${DOMAIN.apex}`;
-    const want = { type: r.type, name, content: r.type === 'TXT' ? `"${unquote(r.value)}"` : r.value, ...(r.priority !== undefined ? { priority: Number(r.priority) } : {}), match: r.type === 'TXT' ? (r.record === 'DKIM' ? /^p=/ : /^v=spf1/i) : undefined };
-    return { want, ...planRecord(records, want) };
+    return { type: r.type, name, content: r.type === 'TXT' ? `"${unquote(r.value)}"` : r.value, ...(r.priority !== undefined ? { priority: Number(r.priority) } : {}), match: r.type === 'TXT' ? (r.record === 'DKIM' ? /^p=/ : /^v=spf1/i) : undefined };
+  });
+  // Sending records live on their own names (DKIM at resend._domainkey, the return path at send.): never the apex,
+  // whose MX, SPF and address records belong to the current mail and website.
+  const strays = wanted.filter((w) => w.name === DOMAIN.apex || !w.name.endsWith(`.${DOMAIN.apex}`) || !['MX', 'TXT', 'CNAME'].includes(w.type));
+  if (strays.length) throw new Refusal(`Resend asks for ${strays.map((w) => `${w.type} ${w.name}`).join(', ')}, which this step may not touch (only the sending domain's own subdomain records): set it up by hand if it is right.`);
+  let records;
+  try {
+    records = (await cf.get(`/zones/${zone.id}/dns_records?per_page=500`)) || [];
+  } catch (err) {
+    if (err.status !== 403) throw err;
+    // The token cannot read DNS: say exactly what to add, and what the token lacks; verify nothing.
+    log(`  · the token cannot read or edit ${DOMAIN.apex}'s DNS (it needs Zone › DNS: Edit for that zone). Add these records by hand, then run this step again to verify:`);
+    for (const w of wanted) log(`      ${w.type} ${w.name}${w.priority !== undefined ? ` ${w.priority}` : ''} ${w.content}`);
+    return { zone, domain: full, dns: null, manual: wanted };
+  }
+  const steps = wanted.map((want) => {
+    const plan = planRecord(records, want);
+    // A CNAME (Resend's return path at rsend.) stands alone: any other record at its name is in the way.
+    const others = want.type === 'CNAME' && plan.create ? records.filter((r) => r.name === want.name) : [];
+    return others.length ? { want, conflict: others } : { want, ...plan };
   });
   const dns = await applyRecords(cf, zone, steps, { apply, log, label: 'DNS (Resend)' });
   if (apply && (dns.plan.length || full.status !== 'verified')) await rs.post(`/domains/${dom.id}/verify`);
@@ -418,9 +438,14 @@ export async function run(argv, { env = process.env, fetchImpl = fetch, log = co
   };
   const what = argv.find((a) => COMMANDS.includes(a)) || 'check';
   const apply = flag('apply') && what !== 'check';
-  // The domain serves the current website: nothing touches its DNS, mail or redirects before the owner's approval.
-  if (apply && ['domain', 'email', 'resend'].includes(what) && !cfg.DOMAIN?.approved) {
+  // Two go-aheads. The domain serves the current website: its DNS, inbound mail and redirects wait for the owner's
+  // cutover approval (DOMAIN.approved). The sending domain's own records (Resend's DKIM and return path, never the
+  // apex) have an approval of their own (SENDING_DOMAIN.approved), so outbound mail can be verified before the cutover.
+  if (apply && ['domain', 'email'].includes(what) && !cfg.DOMAIN?.approved) {
     throw new Refusal(`${what} --apply changes ${cfg.DOMAIN?.apex || 'the domain'}, which serves the current website: the owner has not approved the cutover (DOMAIN.approved in scripts/cloudflare/project.mjs). Run it without --apply to see what it would change.`);
+  }
+  if (apply && what === 'resend' && !cfg.SENDING_DOMAIN?.approved) {
+    throw new Refusal(`resend --apply adds the sending domain's records to ${cfg.DOMAIN?.apex || 'the domain'}: the owner has not approved the sending domain (SENDING_DOMAIN.approved in scripts/cloudflare/project.mjs). Run it without --apply to see what it would change.`);
   }
   if (!env.CLOUDFLARE_API_TOKEN) throw new Refusal('set CLOUDFLARE_API_TOKEN (a token created in the Good Times account; never commit it)');
   const cf = cloudflareClient({ token: env.CLOUDFLARE_API_TOKEN, base: env.CLOUDFLARE_API_BASE || CF_API, fetchImpl });
@@ -435,6 +460,11 @@ export async function run(argv, { env = process.env, fetchImpl = fetch, log = co
   if (what === 'check' || what === 'pages') {
     log('\nPages');
     results.pages = await pages(cf, account.id, opts);
+  }
+  if (what === 'test') {
+    // The isolated test project of the live enquiry pipeline (TEST_PROJECT in project.mjs), with the same safeguards.
+    log('\nPages (enquiry test project)');
+    results.test = await pages(cf, account.id, { ...opts, cfg: { ...cfg, PROJECT: cfg.TEST_PROJECT, ENVIRONMENTS: cfg.TEST_ENVIRONMENTS, SECRETS: cfg.TEST_SECRETS } });
   }
   if (what === 'check' || what === 'domain') {
     log('\nDomain');

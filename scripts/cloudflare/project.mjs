@@ -56,6 +56,17 @@ export const DOMAIN = {
 };
 
 /**
+ * The go-ahead for the transactional sending domain, separate from the cutover: the owner's live enquiry pipeline brief
+ * of 8 Nov 2026 permits configuring Resend's sending authentication and adding its non-conflicting DNS records.
+ * `setup.mjs resend --apply` may then add exactly the records Resend asks for, all on subdomains (on 8 Nov 2026: DKIM at
+ * resend._domainkey, the return path's MX and SPF at send., and a CNAME at rsend.); it refuses any at the apex, never
+ * touches the apex's MX, SPF or address records, the nameservers or inbound mail, and DOMAIN.approved (the website's
+ * cutover) stays as it is. The domain was added to Resend on 8 Nov 2026 (sending only, receiving and tracking off);
+ * `verified` records Resend's own verdict once its records resolve.
+ */
+export const SENDING_DOMAIN = { approved: true, date: '2026-11-08', by: 'the owner (live enquiry pipeline brief)', region: 'eu-west-1', verified: false };
+
+/**
  * Good Times' public address is hello@ (the owner's instruction of 6 Nov 2026): the site shows it, and the emails are
  * sent from it. Where mail is delivered (new enquiries, customers' replies, the dashboard's sign-in links) stays the
  * mailbox that receives mail today, info@, until Good Times confirms hello@ is set up to receive it: the brief of
@@ -139,3 +150,42 @@ export function deployTarget(branch, { release = RELEASE } = {}) {
   const alias = PROJECT.previewBranches.includes(branch) ? branch : PROJECT.stagingBranch;
   return { environment: 'preview', alias, url: `https://${alias}.${PROJECT.name}.pages.dev` };
 }
+
+/**
+ * The isolated test project of the live enquiry pipeline (8 Nov 2026). A Pages project of its own, because a project's
+ * preview variables are shared by every preview branch: making them live here would make staging live too. Deployed
+ * only to its `test` branch and never given a domain; a preview build (noindex, the preview bar). Its preview
+ * environment takes live enquiries into the Neon branch `enquiry-test`, only from requests that carry
+ * ENQUIRY_ACCESS_KEY (lib/http/app.mjs), and sends every email to Resend's test inbox except the addresses in
+ * EMAIL_TEST_RECIPIENTS (lib/email/send.mjs). Until Resend has verified the domain it sends as Resend's own test sender,
+ * which can reach only that test inbox. Its production environment is never deployed and stays in preview mode.
+ */
+export const TEST_PROJECT = { ...PROJECT, name: 'good-times-enquiry-test', previewBranches: ['test'], stagingBranch: 'test' };
+export const TEST_SECRETS = [...SECRETS, 'ENQUIRY_ACCESS_KEY'];
+const TEST_URL = `https://test.${TEST_PROJECT.name}.pages.dev`;
+export const TEST_ENVIRONMENTS = {
+  production: {
+    branch: TEST_PROJECT.productionBranch,
+    url: `https://${TEST_PROJECT.name}.pages.dev`,
+    vars: { SITE_ENV: 'preview', PUBLIC_SITE_URL: `https://${TEST_PROJECT.name}.pages.dev`, ENQUIRY_MODE: 'preview', ENQUIRY_SYSTEM_ENABLED: 'true', RATE_LIMIT_PER_MINUTE: '10', SHOW_INDICATIVE_PRICES: 'true' },
+  },
+  preview: {
+    branch: 'test',
+    url: TEST_URL,
+    vars: {
+      SITE_ENV: 'preview',
+      PUBLIC_SITE_URL: TEST_URL,
+      ENQUIRY_MODE: 'live',
+      ENQUIRY_SYSTEM_ENABLED: 'true',
+      EMAIL_PROVIDER: 'resend',
+      FROM_EMAIL: SENDING_DOMAIN.verified ? `Good Times in Cape Town <${PUBLIC_ADDRESS}>` : 'Good Times in Cape Town (test) <onboarding@resend.dev>',
+      ENQUIRY_TEAM_EMAIL: TEAM_INBOX,
+      REPLY_TO_EMAIL: TEAM_INBOX,
+      ADMIN_EMAILS: TEAM_INBOX,
+      // The staff inbox receives real test mail only once the domain is verified; every other address, the test inbox.
+      ...(SENDING_DOMAIN.verified ? { EMAIL_TEST_RECIPIENTS: TEAM_INBOX } : {}),
+      RATE_LIMIT_PER_MINUTE: '10',
+      SHOW_INDICATIVE_PRICES: 'true',
+    },
+  },
+};

@@ -33,6 +33,8 @@ function mockApi(state = {}) {
     addresses: [],
     rules: [],
     resendDomains: [],
+    resendExtraRecords: [],
+    dnsForbidden: false,
     dropSecretsOnPatch: false,
     ...state,
   };
@@ -59,6 +61,8 @@ function mockApi(state = {}) {
           { record: 'SPF', name: 'send', type: 'MX', ttl: 'Auto', status: 'not_started', value: `feedback-smtp.${body.region}.amazonses.com`, priority: 10 },
           { record: 'SPF', name: 'send', type: 'TXT', ttl: 'Auto', status: 'not_started', value: '"v=spf1 include:amazonses.com ~all"' },
           { record: 'DKIM', name: 'resend._domainkey', type: 'TXT', ttl: 'Auto', status: 'not_started', value: 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC' },
+          { record: 'SPF', name: 'rsend', type: 'CNAME', ttl: 'Auto', status: 'not_started', value: 'send.forge.rmta.net' },
+          ...s.resendExtraRecords,
         ] };
         s.resendDomains.push(d);
         return res(200, d);
@@ -101,6 +105,7 @@ function mockApi(state = {}) {
     }
     if (p === '/zones') return ok(s.zones.filter((z) => z.name === u.searchParams.get('name') && z.account === u.searchParams.get('account.id')));
     if ((m = /^\/zones\/([^/]+)\/dns_records$/.exec(p))) {
+      if (s.dnsForbidden) return res(403, { success: false, errors: [{ code: 10000, message: 'Authentication error' }] });
       if (method === 'GET') return ok(s.records);
       const r = { id: `rec-${++ids}`, ...body };
       s.records.push(r);
@@ -153,7 +158,7 @@ const exec = (argv, api, { cfg = quiet, env = {} } = {}) => {
 };
 const out = () => lines.join('\n');
 const activeZone = { id: 'zone-1', name: project.DOMAIN.apex, status: 'active', account: GT.id, name_servers: ['ada.ns.cloudflare.com', 'bob.ns.cloudflare.com'] };
-/** The same settings once the owner has approved the cutover: the only way the domain, email and resend steps may write. */
+/** The same settings once the owner has approved the cutover: the only way the domain and email steps may write (resend has SENDING_DOMAIN.approved). */
 const cutover = { ...quiet, DOMAIN: { ...project.DOMAIN, approved: true } };
 const APEX = project.DOMAIN.apex;
 const WWW = project.DOMAIN.www;
@@ -351,20 +356,89 @@ test('an environment switched to ENQUIRY_MODE=live is refused while its secrets 
 
 /* ---------- the domain: untouched until the owner approves the cutover ---------- */
 
-test('until the owner approves the cutover, domain, email and resend --apply are refused before any call; without --apply they only read', async () => {
+test('until the owner approves the cutover, domain and email --apply are refused before any call; resend has its own approval; without --apply they only read', async () => {
   assert.equal(project.DOMAIN.approved, false);
+  assert.equal(project.SENDING_DOMAIN.approved, true, 'the sending domain was approved on its own (8 Nov 2026)');
   assert.equal(APEX, 'goodtimesincapetown.co.za');
-  for (const argv of [['domain', '--apply'], ['email', '--forward-to', 'owner@example.com', '--apply'], ['resend', '--apply']]) {
+  for (const argv of [['domain', '--apply'], ['email', '--forward-to', 'owner@example.com', '--apply']]) {
     const api = mockApi({ zones: [activeZone], projects: { [NAME]: { name: NAME, production_branch: 'main', deployment_configs: {} } } });
     await assert.rejects(exec(argv, api, { env: { RESEND_API_KEY: 're_full_access' } }), (e) => e instanceof Refusal && new RegExp(`^${argv[0]} --apply changes goodtimesincapetown\\.co\\.za, which serves the current website: the owner has not approved the cutover`).test(e.message), argv.join(' '));
     assert.deepEqual(api.calls, [], `${argv[0]}: not even a read`);
   }
+  // Without its own approval, resend --apply is refused the same way, before any call.
+  const unapproved = mockApi({ zones: [activeZone] });
+  await assert.rejects(exec(['resend', '--apply'], unapproved, { cfg: { ...quiet, SENDING_DOMAIN: { ...project.SENDING_DOMAIN, approved: false } }, env: { RESEND_API_KEY: 're_full_access' } }), (e) => e instanceof Refusal && /^resend --apply adds the sending domain's records to goodtimesincapetown\.co\.za: the owner has not approved the sending domain/.test(e.message));
+  assert.deepEqual(unapproved.calls, []);
   // Without --apply the same steps only read, and say what they would change.
   const api = mockApi({ zones: [activeZone], projects: { [NAME]: { name: NAME, production_branch: 'main', deployment_configs: {} } } });
   await exec(['domain'], api);
   await exec(['email', '--forward-to', 'owner@example.com'], api);
   assert.deepEqual(api.writes(), []);
   assert.match(out(), /would change/);
+});
+
+test('resend --apply with the cutover still locked: the sending domain’s subdomain records only, never the apex, the website or inbound mail', async () => {
+  const mx = { id: 'rec-mx', type: 'MX', name: APEX, content: 'mx1.rdsa-mail.com', priority: 10 };
+  const spf = { id: 'rec-spf', type: 'TXT', name: APEX, content: '"v=spf1 +a +mx ~all"' };
+  const site = { id: 'rec-a', type: 'A', name: APEX, content: '192.0.2.10' };
+  const api = mockApi({ zones: [activeZone], records: [mx, spf, site] });
+  await exec(['resend', '--apply'], api, { env: { RESEND_API_KEY: 're_full_access' } });
+  const added = api.writes().filter((c) => c.path.endsWith('/dns_records')).map((c) => `${c.body.type} ${c.body.name}`);
+  assert.deepEqual(added, ['MX send.goodtimesincapetown.co.za', 'TXT send.goodtimesincapetown.co.za', 'TXT resend._domainkey.goodtimesincapetown.co.za', 'CNAME rsend.goodtimesincapetown.co.za']);
+  assert.deepEqual(api.s.records.slice(0, 3), [mx, spf, site], 'the apex’s mail, SPF and website records are untouched');
+  assert.ok(!api.writes().some((c) => /\/(settings|rulesets|email\/routing|pages\/projects)/.test(c.path)), 'no zone setting, redirect, Email Routing or Pages change');
+  assert.ok(api.calls.some((c) => c.method === 'POST' && /^\/domains\/[^/]+\/verify$/.test(c.path)), 'Resend is asked to verify');
+});
+
+test('resend leaves a CNAME alone when anything else already answers at its name', async () => {
+  const there = { id: 'rec-rsend', type: 'TXT', name: `rsend.${APEX}`, content: '"something else"' };
+  const api = mockApi({ zones: [activeZone], records: [there] });
+  await exec(['resend', '--apply'], api, { env: { RESEND_API_KEY: 're_full_access' } });
+  const added = api.writes().filter((c) => c.path.endsWith('/dns_records')).map((c) => `${c.body.type} ${c.body.name}`);
+  assert.ok(!added.includes(`CNAME rsend.${APEX}`), 'no CNAME beside an existing record');
+  assert.match(out(), /✗ CNAME rsend\.goodtimesincapetown\.co\.za: existing TXT something else is in the way/);
+  assert.deepEqual(api.s.records[0], there);
+});
+
+test('resend refuses a record Resend would want at the apex, before writing anything', async () => {
+  const api = mockApi({ zones: [activeZone], resendExtraRecords: [{ record: 'SPF', name: '@', type: 'TXT', value: 'v=spf1 include:amazonses.com ~all' }] });
+  await assert.rejects(exec(['resend', '--apply'], api, { env: { RESEND_API_KEY: 're_full_access' } }), (e) => e instanceof Refusal && /Resend asks for TXT goodtimesincapetown\.co\.za, which this step may not touch/.test(e.message));
+  assert.ok(!api.writes().some((c) => c.path.endsWith('/dns_records')), 'no DNS record written');
+});
+
+test('resend without DNS permission: the exact records to add by hand and the permission the token lacks; nothing written, nothing verified', async () => {
+  const api = mockApi({ zones: [activeZone], dnsForbidden: true });
+  const r = await exec(['resend', '--apply'], api, { env: { RESEND_API_KEY: 're_full_access' } });
+  assert.equal(r.results.resend.manual.length, 4);
+  assert.match(out(), /CNAME rsend\.goodtimesincapetown\.co\.za send\.forge\.rmta\.net/);
+  assert.match(out(), /it needs Zone › DNS: Edit for that zone/);
+  assert.match(out(), /MX send\.goodtimesincapetown\.co\.za 10 feedback-smtp\.eu-west-1\.amazonses\.com/);
+  assert.match(out(), /TXT resend\._domainkey\.goodtimesincapetown\.co\.za "p=MIGf/);
+  assert.ok(!api.calls.some((c) => /^\/domains\/[^/]+\/verify$/.test(c.path)), 'Resend is not asked to verify (the Cloudflare token check is not this)');
+  assert.ok(!api.writes().some((c) => c.path.endsWith('/dns_records')));
+});
+
+test('test --apply: the isolated test project, its preview live only with all four secrets, its production inert, the main project and the domain untouched', async () => {
+  const T = project.TEST_PROJECT.name;
+  assert.notEqual(T, NAME);
+  assert.equal(project.TEST_ENVIRONMENTS.preview.vars.ENQUIRY_MODE, 'live');
+  assert.equal(project.TEST_ENVIRONMENTS.preview.vars.SITE_ENV, 'preview', 'a preview build: noindex, the preview bar, the test inbox');
+  assert.equal(project.TEST_ENVIRONMENTS.production.vars.ENQUIRY_MODE, 'preview', 'its production environment never takes enquiries');
+  assert.deepEqual(project.TEST_SECRETS, ['DATABASE_URL', 'RESEND_API_KEY', 'ENQUIRY_SIGNING_SECRET', 'ENQUIRY_ACCESS_KEY']);
+  // Live without its secrets: refused before any write.
+  const bare = mockApi({ projects: { [T]: { name: T, production_branch: 'main', deployment_configs: { production: {}, preview: {} } } } });
+  await assert.rejects(exec(['test', '--apply'], bare), /preview is set to ENQUIRY_MODE=live but its secrets DATABASE_URL, RESEND_API_KEY, ENQUIRY_SIGNING_SECRET, ENQUIRY_ACCESS_KEY are missing/);
+  assert.deepEqual(bare.writes(), []);
+  // With them: the variables are applied, the secrets kept, nothing else touched.
+  const secrets = Object.fromEntries(project.TEST_SECRETS.map((k) => [k, { type: 'secret_text' }]));
+  const api = mockApi({ zones: [activeZone], projects: { [T]: { name: T, production_branch: 'main', deployment_configs: { production: {}, preview: { env_vars: secrets } } } } });
+  await exec(['test', '--apply'], api);
+  const prev = api.s.projects[T].deployment_configs.preview.env_vars;
+  assert.equal(prev.ENQUIRY_MODE.value, 'live');
+  assert.equal(prev.FROM_EMAIL.value, project.SENDING_DOMAIN.verified ? 'Good Times in Cape Town <hello@goodtimesincapetown.co.za>' : 'Good Times in Cape Town (test) <onboarding@resend.dev>');
+  for (const k of project.TEST_SECRETS) assert.equal(prev[k].type, 'secret_text', `${k} kept`);
+  assert.equal(api.s.projects[T].deployment_configs.production.env_vars.ENQUIRY_MODE.value, 'preview');
+  assert.ok(api.writes().every((c) => c.path.includes(`/pages/projects/${T}`)), 'only the test project is written');
 });
 
 test('domain --apply (approved): DNS for the apex and www, both custom domains, HTTPS settings and the www → apex redirect; then nothing', async () => {
@@ -441,9 +515,9 @@ test('email --forward-to … --apply (approved): routing on, info@ forwarded, DM
   assert.equal(api.writes().length, before, 'idempotent');
 });
 
-test('resend --apply (approved): adds the domain in Resend, its records in Cloudflare (TXT quoted, MX with priority) and asks Resend to verify', async () => {
+test('resend --apply: adds the domain in Resend, its records in Cloudflare (TXT quoted, MX with priority, the CNAME not proxied) and asks Resend to verify', async () => {
   const api = mockApi({ zones: [activeZone] });
-  await exec(['resend', '--apply'], api, { cfg: cutover, env: { RESEND_API_KEY: 're_full_access' } });
+  await exec(['resend', '--apply'], api, { env: { RESEND_API_KEY: 're_full_access' } });
   assert.equal(api.s.resendDomains[0].name, APEX);
   assert.equal(api.s.resendDomains[0].region, 'eu-west-1');
   const added = api.s.records.map((r) => [r.type, r.name, r.content, r.priority]);
@@ -451,7 +525,9 @@ test('resend --apply (approved): adds the domain in Resend, its records in Cloud
     ['MX', 'send.goodtimesincapetown.co.za', 'feedback-smtp.eu-west-1.amazonses.com', 10],
     ['TXT', 'send.goodtimesincapetown.co.za', '"v=spf1 include:amazonses.com ~all"', undefined],
     ['TXT', 'resend._domainkey.goodtimesincapetown.co.za', '"p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC"', undefined],
+    ['CNAME', 'rsend.goodtimesincapetown.co.za', 'send.forge.rmta.net', undefined],
   ]);
+  assert.ok(api.writes().filter((c) => c.path.endsWith('/dns_records')).every((c) => c.body.proxied === false), 'mail records are DNS only');
   assert.ok(api.calls.some((c) => c.method === 'POST' && c.path === `/domains/${api.s.resendDomains[0].id}/verify`));
-  await assert.rejects(exec(['resend', '--apply'], api, { cfg: cutover }), /set RESEND_API_KEY \(a Good Times Resend key/);
+  await assert.rejects(exec(['resend', '--apply'], api), /set RESEND_API_KEY \(a Good Times Resend key/);
 });
