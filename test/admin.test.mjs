@@ -266,3 +266,72 @@ test('failed emails are visible: a count beside Retry, a mark on the booking, a 
   const after = await (await req('/admin/?view=all', { cookie: s.cookie })).text();
   assert.doesNotMatch(after.slice(after.indexOf(failing.reference_number), after.indexOf('</tr>', after.indexOf(failing.reference_number))), /Email failed/);
 });
+
+test('availability: a month in plain words; one tap closes, opens, adds or removes a vehicle; a run of days closes at once', async () => {
+  const s = session();
+  const tap = (form) => req('/admin/availability', { method: 'POST', cookie: s.cookie, form: { ...form, form: s.form } });
+  const row = (day) => one('SELECT vehicles, note FROM day_capacity WHERE day = $1::date', [day]);
+  const day = inDays(81); // dates no other test in this file books
+  // The test database gives every day 50 vehicles; this day goes back to the normal 2 first.
+  assert.match((await tap({ day, action: 'open' })).headers.get('location'), new RegExp(`day=${day}&m=opened#day$`));
+  assert.equal(await row(day), null);
+
+  // The month: a calendar of plain words, never the code's names; the chosen day says what it is in a sentence.
+  const page = await (await req(`/admin/availability?day=${day}`, { cookie: s.cookie })).text();
+  assert.match(page, /<table class="cal">/);
+  assert.match(page, /Choose a day to close it, open it again, or change how many vehicles can go out\./);
+  assert.match(page, /Open\. 2 vehicles can go out and none is booked yet\./);
+  assert.match(page, />Close this day</);
+  assert.doesNotMatch(page, /BOOKING_RULES|enquiry-schema|Busiest moment/);
+
+  // One fewer, one more: never down to 0 by a tap (that is "Close this day"); back at the normal 2, no special day is left.
+  await tap({ day, action: 'fewer' });
+  assert.deepEqual(await row(day), { vehicles: 1, note: '' });
+  assert.match((await tap({ day, action: 'fewer' })).headers.get('location'), /m=vehicles\.1#day$/);
+  assert.equal((await row(day)).vehicles, 1);
+  await tap({ day, action: 'more' });
+  assert.equal(await row(day), null);
+  await tap({ day, action: 'more' });
+  assert.equal((await row(day)).vehicles, 3);
+  const said = await (await req(`/admin/availability?day=${day}&m=vehicles.3`, { cookie: s.cookie })).text();
+  assert.match(said, /: 3 vehicles can go out\./);
+
+  // Close with a reason, then open again (the normal number).
+  await tap({ day, action: 'close', note: 'Public holiday' });
+  assert.deepEqual(await row(day), { vehicles: 0, note: 'Public holiday' });
+  const closed = await (await req(`/admin/availability?day=${day}&m=closed`, { cookie: s.cookie })).text();
+  assert.match(closed, /is closed\. The website will not offer it\./);
+  assert.match(closed, /Closed\. The website does not offer this day\. Reason: Public holiday\./);
+  assert.match(closed, />Open this day</);
+  await tap({ day, action: 'open' });
+  assert.equal(await row(day), null);
+
+  // A run of days: closed at once with one reason, listed as one line, opened again at once.
+  const [from, to] = [inDays(90), inDays(96)];
+  const run = await tap({ action: 'closeRange', from, to, note: 'Team holiday' });
+  assert.match(run.headers.get('location'), new RegExp(`m=closedrange\\.7\\.${from}\\.${to}$`));
+  assert.equal((await one('SELECT count(*)::int AS n FROM day_capacity WHERE day BETWEEN $1::date AND $2::date AND vehicles = 0 AND note = $3', [from, to, 'Team holiday'])).n, 7);
+  const list = await (await req(`/admin/availability?month=${from.slice(0, 7)}&m=closedrange.7.${from}.${to}`, { cookie: s.cookie })).text();
+  assert.match(list, /Closed 7 days: /);
+  assert.match(list, / to [A-Z][a-z]{2} \d{1,2} [A-Z][a-z]{2}: closed <span class="muted">· Team holiday<\/span>/);
+  await tap({ action: 'openRange', from, to });
+  assert.equal((await one('SELECT count(*)::int AS n FROM day_capacity WHERE day BETWEEN $1::date AND $2::date', [from, to])).n, 0);
+  // Refused: the last day before the first, a day gone by, more than three months, an unknown action
+  for (const bad of [{ action: 'closeRange', from: to, to: from }, { action: 'closeRange', from: '2000-01-01', to }, { action: 'closeRange', from, to: inDays(200) }]) {
+    assert.match((await tap(bad)).headers.get('location'), /m=rangeinvalid$/);
+  }
+  assert.match((await tap({ day, action: 'explode' })).headers.get('location'), /m=dayinvalid$/);
+  assert.match((await tap({ day: inDays(-1), action: 'close' })).headers.get('location'), /m=dayinvalid$/);
+
+  // A booked day lists its bookings by reference; the month stays between this month and 18 months ahead.
+  const bookedDay = inDays(84);
+  await tap({ day: bookedDay, action: 'open' });
+  const b = await booking({ ...validTour(), preferred_date: bookedDay, email: 'panel@example.com' });
+  const panel = await (await req(`/admin/availability?day=${bookedDay}`, { cookie: s.cookie })).text();
+  assert.match(panel, new RegExp(`<a class="ref" href="/admin/bookings/${b.id}">${b.reference_number}</a>`));
+  assert.match(panel, /1 of 2 vehicles still free\./);
+  assert.match(panel, /The booking above stays as it is: closing only stops new bookings\./);
+  const thisMonth = inDays(0).slice(0, 7);
+  assert.match(await (await req('/admin/availability?month=1999-01', { cookie: s.cookie })).text(), new RegExp(`month=${thisMonth}&amp;day=`));
+  assert.match(await (await req('/admin/availability?month=nonsense', { cookie: s.cookie })).text(), /<h2 class="month">/);
+});
