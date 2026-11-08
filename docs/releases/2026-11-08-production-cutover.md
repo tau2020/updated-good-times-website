@@ -41,7 +41,7 @@ of them is a rollback trigger unless it fails.
 | Google Search Console | PASS | Domain property, the owner's Google account. `https://goodtimesincapetown.co.za/sitemap.xml` submitted 8 Nov: **Success, 25 pages discovered**. Live tests at 23:48–23:52: `/`, `/packages/garden-route-private-tour/` (was `/tour/garden-route-private-tour/`) and `/tours/cape-winelands-private-tour/` (was `/tour/winelands-experience/`): available to Google, crawl and indexing allowed, fetch successful, user-declared canonical the apex URL; indexing requested for all three. The WordPress-era sitemap entry (`http://www…/sitemap.xml`, "1 error" since 2024) is left as the baseline. Search figures are kept out of this repository |
 | Bing Webmaster Tools | PASS | Sitemap submitted (processing); the 25 sitemap URLs submitted through URL Submission (23:46); a Site Scan (100 pages, subdomains excluded) queued, with a report email to the owner |
 | Rollback readiness | PASS | Zone backup at 23:04 (records, BIND export, settings, rulesets, page rules) and a post-cutover snapshot at 23:55, kept off the repository. A rollback script (dry run tested, steps below). The old host still serves WordPress |
-| Independent verification | PENDING at the time of this commit | A second, adversarial pass by a separate agent against the live domain (its result is added to this table when it completes) |
+| Independent verification | PASS | A separate agent tried to refute nine claims against the live domain (00:00–00:10, 9 Nov) and refuted none. Confirmed: the 25 sitemap pages, the 404 page, `sitemap.xml` and `robots.txt` are byte-identical to the build, and a clean rebuild of `201a8db` matches all 1,086 files. Every sitemap URL answers 200 with its own canonical and no noindex. www and http take one hop, with no loops. Both certificates verify. Historical URLs pass 430/430, and 27 of the WordPress sitemap's 30 URLs reach their page (the other 3 are WordPress boilerplate, 404). 18 page loads (1440 px and Pixel 7) had no failed request, no mixed content, no broken image and no overflow; the analytics beacon was blocked and never ran. All 998 same-origin references answer 200/206. `/admin/` stays closed (303), also with a forged session cookie. Mail records and TLS match the H5 row. Its other findings are below |
 
 ## Owner checks (the only open items of the brief)
 
@@ -63,8 +63,17 @@ of them is a rollback trigger unless it fails.
 - **www in Pages shows "pending".** The www custom domain is still validating, because the edge redirect answers www
   before Pages does. Visitors are unaffected: www is served by the redirect, with the zone's certificate (to Feb 2027).
 - **The mail server's certificate renews by 24 Dec 2026.** It is a Let's Encrypt wildcard issued by DNS validation.
-  With DNS at Cloudflare, ask the host how AutoSSL renews it (H5). HSTS now covers the subdomains (`includeSubDomains`),
-  so browsers will refuse webmail on an expired certificate.
+  With DNS at Cloudflare, ask the host how AutoSSL renews it (H5). AutoSSL should try around 24 Nov: check its log in
+  cPanel after that. Per-name certificates work for `mail.` and `webmail.`, which still point at the host. HSTS now
+  covers the subdomains (`includeSubDomains`), so browsers will refuse webmail on an expired certificate.
+- **HSTS and `whm.`/`ftp.`.** The old site sent no HSTS; the new one sends `includeSubDomains`. `whm.` and `ftp.` show
+  the host's own certificates on port 443, not certificates for these names. A browser that has opened the apex will
+  refuse `https://whm.…` and `https://ftp.…` for a year. FTP clients are unaffected, and cPanel and webmail have valid
+  certificates.
+- **www has only an ECDSA certificate** (the zone's Universal SSL). A client that can only use RSA (very old devices)
+  fails on www; the apex serves both. It resolves itself if the www custom domain validates.
+- **Inbound mail.** The MX records did not change. Resend's two deliveries to info@ at 23:33, through those MX
+  records, show the receiving side accepts mail after the cutover. Arrival in the inbox is owner check 1.
 - **Mail and webmail by the bare domain.** `goodtimesincapetown.co.za/webmail` and `/cpanel` now reach the new site
   (404). Use `webmail.goodtimesincapetown.co.za` and `cpanel.goodtimesincapetown.co.za`. A mail app that names
   `goodtimesincapetown.co.za` as its server must use `mail.goodtimesincapetown.co.za`.
