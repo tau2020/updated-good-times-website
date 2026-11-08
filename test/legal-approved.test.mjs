@@ -33,8 +33,9 @@ test('both texts approved by the owner on 8 Nov 2026, effective that day; the fa
   assert.equal(site.legal.privacyApproved, true);
   assert.equal(site.legal.termsApproved, true);
   assert.equal(site.legal.effective, '2026-11-08', 'effective from the approval');
-  // The one override on record, kept as given: the release to good-times-in-cape-town.pages.dev of 7 Nov 2026 (A1)
-  assert.deepEqual(site.legal.releaseOverride.accepted, ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS']);
+  // The one override on record: the release to good-times-in-cape-town.pages.dev of 7 Nov 2026 (A1), extended on 8 Nov
+  // 2026 at the owner's instruction to the legal practitioner's sign-off (B7) and Tripadvisor's permission (R4)
+  assert.deepEqual(site.legal.releaseOverride.accepted, ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS', 'site.legal.counselReview', 'site.tripadvisor.permission']);
   assert.match(site.legal.releaseOverride.date, /^\d{4}-\d{2}-\d{2}$/);
   assert.match(site.legal.releaseOverride.scope, /pages\.dev only/);
   // The Legal details checklist, completed and signed by the owner on 8 Nov 2026 (items 1–3)
@@ -111,14 +112,15 @@ test('the release gate names what the approval did not settle: the unconfirmed f
     else assert.match(open, new RegExp(`site\\.legal\\.${key}`), key);
   }
   for (const point of OPEN_POINTS) assert.ok(open.includes(point), point);
-  // The override of 7 Nov 2026 (A1) still covers what it named; two new items it never named hold production: the legal
-  // practitioner's sign-off and Tripadvisor's permission for the rating shown in the site's own design (8 Nov 2026)
+  // The override (A1, extended on 8 Nov 2026 at the owner's instruction) lets the pages.dev release through with the legal
+  // practitioner's sign-off and Tripadvisor's permission still open: accepted, never recorded as given
   const d = releaseDecision(site);
-  assert.equal(d.clear, false);
-  assert.deepEqual(d.remaining, [
+  assert.equal(d.clear, true, d.remaining.join('; '));
+  for (const m of [
     'no South African legal practitioner has signed off the privacy notice and the terms (site.legal.counselReview)',
     'Tripadvisor’s permission to show its rating, its review count and its reviewers’ titles outside its widgets is not recorded (site.tripadvisor.permission)',
-  ]);
+  ]) assert.ok(d.overridden.includes(m), m);
+  assert.equal(site.tripadvisor.permission.verified, false, 'the permission is not recorded as given');
   assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } }).clear, false, 'the domain still needs every open point');
 });
 

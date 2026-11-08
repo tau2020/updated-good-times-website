@@ -272,11 +272,15 @@ export const site = {
     // Recorded 7 Nov 2026 by tau2020, the repository's owner, for the production deployment at
     // good-times-in-cape-town.pages.dev only (not the domain): these open items are accepted for that release and stay
     // open (docs/APPROVAL_REGISTER.md, A1 and B1–B5). Kept as given; the texts themselves were approved on 8 Nov 2026.
+    // Extended on 8 Nov 2026 at the owner's instruction ("upgrade all approvals to true") for the release of the
+    // enhancement (PR #7) to the same pages.dev address: the legal practitioner's sign-off (B7) and Tripadvisor's
+    // permission (R4) are accepted as open. Neither is recorded as given: counselReview and tripadvisor.permission stay
+    // false until they are, and the domain still needs them.
     releaseOverride: {
-      date: '2026-11-07',
+      date: '2026-11-08',
       by: 'tau2020 (repository owner)',
       scope: 'https://good-times-in-cape-town.pages.dev only; not goodtimesincapetown.co.za',
-      accepted: ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS'],
+      accepted: ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS', 'site.legal.counselReview', 'site.tripadvisor.permission'],
     },
   },
 
