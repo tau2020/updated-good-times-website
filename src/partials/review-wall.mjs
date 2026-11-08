@@ -1,0 +1,86 @@
+/**
+ * The review wall (the owner's request of 8 Nov 2026: the review section of the reference screenshots, with
+ * Tripadvisor beside Google, in the reviewers' own words; docs/enhancement/03-reputation.md). Three parts:
+ *
+ *   ratingBar(site)        each platform's own rating and number of reviews, linked to its listing, and its own
+ *                          "Write a review"; the figures sit side by side and are never added together
+ *   guestReviewCard(r)     one review, as a short, clean chat message (the owner's requests of 8 Nov 2026: no photo
+ *                          heads, the names on top, no product, platform or Read more line): the reviewer's name
+ *                          heading the bubble, their own rating, the title they gave their review (in quotation marks,
+ *                          word for word), and at the foot, where a chat puts it, the time
+ *   reviewWall({ list })   the cards, a few at a time: the rest wait in a <template> (carried by the page, drawn only
+ *                          when asked for) and "Load more" adds them (src/assets/js/review-wall.js). A wall may instead
+ *                          name a page to take the rest from (`moreFrom`: the home page carries eight cards and fetches
+ *                          the others from the reviews page on the first "Load more", so it stays light). Without the
+ *                          script the first cards show with their dates, and the link under them leads to the rest.
+ *
+ * The cards come from src/data/guest-reviews.mjs (the owner's archive); the figures from site.tripadvisor and
+ * site.google. The script turns each date into "2 weeks ago" against the visitor's own clock (a static page cannot);
+ * the date itself stays in the <time> element and its tooltip.
+ */
+import { esc, stars, brandMark } from './ui.mjs';
+
+export const REVIEW_WALL_ASSETS = Object.freeze({ styles: ['assets/css/review-wall.css'], scripts: ['assets/js/review-wall.js'] });
+
+const NEW_TAB = '<span class="visually-hidden"> (opens in a new tab)</span>';
+const EXTERNAL = 'target="_blank" rel="noopener noreferrer"';
+/** Six name colours (review-wall.css), one per reviewer and the same on every page, as a group chat colours its senders */
+const TONES = 6;
+export const nameTone = (name) => [...String(name)].reduce((h, c) => (h * 31 + c.codePointAt(0)) >>> 0, 7) % TONES;
+const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+/** The platforms' own ratings, side by side: Tripadvisor's operator listing and, once verified, the Google profile. */
+export function ratingBar(site, { cls = '', attrs = '' } = {}) {
+  const ta = site.tripadvisor;
+  const g = site.google?.verified ? site.google : null;
+  const item = ({ key, name, rating, count, url, write }) => `<li class="rating-bar__platform rating-bar__platform--${key}">
+      ${brandMark(key, 'rating-bar__mark')}
+      <div class="rating-bar__figures">
+        <p class="rating-bar__name">${name} rating</p>
+        <p class="rating-bar__score"><span class="rating-bar__value">${rating.toFixed(1)}</span><span class="visually-hidden"> out of 5</span>${stars()}<a class="rating-bar__count" href="${esc(url)}" ${EXTERNAL}>${count} reviews<span class="visually-hidden"> on ${name}</span>${NEW_TAB}</a></p>
+      </div>
+      ${write ? `<a class="btn gt-button gt-button--secondary gt-button--compact rating-bar__write" href="${esc(write)}" ${EXTERNAL}>Write a review<span class="visually-hidden"> on ${name}</span>${NEW_TAB}</a>` : ''}
+    </li>`;
+  return `<ul class="rating-bar${g ? ' rating-bar--two' : ''}${cls ? ` ${cls}` : ''}" role="list" aria-label="Our ratings, each platform’s own"${attrs ? ` ${attrs}` : ''}>
+    ${item({ key: 'tripadvisor', name: 'Tripadvisor', rating: ta.rating, count: ta.reviewCount, url: ta.url, write: ta.writeReviewUrl })}
+    ${g ? item({ key: 'google', name: 'Google', rating: g.rating, count: g.reviewCount, url: g.url, write: g.writeReviewUrl }) : ''}
+  </ul>`;
+}
+
+/** One review card (a list item, keyed by its review's id): the name, the rating, the reviewer's words, the time. */
+export function guestReviewCard(r) {
+  // Kept lean: a page may carry eighty of these (the stars are drawn by the stylesheet)
+  const rating = Math.max(1, Math.min(5, Math.round(r.rating)));
+  return `<li class="review-card" data-review-id="${esc(r.id)}">
+  <figure class="review-card__inner">
+    <figcaption class="review-card__name review-card__name--${nameTone(r.name)}">${esc(r.name)}</figcaption>
+    <p class="review-card__rating"><span class="review-card__stars" style="--n:${rating}" aria-hidden="true"></span><span class="visually-hidden">Rated ${rating} out of 5</span></p>
+    <blockquote class="review-card__quote"><p>“${esc(r.title)}”</p></blockquote>
+    <p class="review-card__foot"><time class="review-card__date" datetime="${esc(r.date)}" data-review-date>${esc(shortDate(r.date))}</time></p>
+  </figure>
+</li>`;
+}
+
+/**
+ * The wall: `initial` cards drawn, the rest in a <template> for "Load more" (`step` at a time), or, with `moreFrom`, the
+ * rest taken from that page's own wall when first asked for. `all` is the link under the cards ({ href, label,
+ * external }): the rest of the reviews for a visitor without the script, and every review for everyone.
+ */
+export function reviewWall({ list, initial = 8, step = 8, label = 'Guest reviews', all = null, moreFrom = '', cls = '', attrs = '' }) {
+  const card = (r) => guestReviewCard(r);
+  const first = list.slice(0, initial);
+  const rest = list.slice(initial);
+  const link = all ? `<a class="review-wall__all" href="${esc(all.href)}"${all.external ? ` ${EXTERNAL}` : ''}>${esc(all.label)}${all.external ? NEW_TAB : ''}</a>` : '';
+  const more = rest.length || moreFrom;
+  return `<div class="review-wall${cls ? ` ${cls}` : ''}" data-review-wall data-step="${step}"${moreFrom ? ` data-more-from="${esc(moreFrom)}"` : ''}${attrs ? ` ${attrs}` : ''}>
+  <ul class="review-wall__grid" role="list" aria-label="${esc(label)}" data-review-list>
+    ${first.map(card).join('\n    ')}
+  </ul>
+  ${rest.length ? `<template data-review-rest>${rest.map(card).join('')}</template>` : ''}
+  ${more || link ? `<div class="review-wall__actions">
+    ${more ? `<button class="btn gt-button gt-button--secondary review-wall__more" type="button" data-review-more hidden>Load more<span class="visually-hidden"> reviews</span></button>` : ''}
+    ${link}
+  </div>` : ''}
+  <p class="visually-hidden" role="status" data-review-status></p>
+</div>`;
+}

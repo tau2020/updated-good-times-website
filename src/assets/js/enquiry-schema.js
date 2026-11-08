@@ -83,18 +83,25 @@ export function sastIso(date, time) {
 
 /**
  * The booking rules: the one place to change them. Approved by the owner on 8 Nov 2026
- * (docs/APPROVAL_REGISTER.md, D9): how many vehicles can be out at once, the notice
+ * (docs/APPROVAL_REGISTER.md, D9; the owner's "Booking rules (approved 8 Nov 2026)", which
+ * raised the notice from 24 to 48 hours): how many vehicles can be out at once, the notice
  * needed, the transfer hours and how long each transfer holds a vehicle. The form uses them for
  * the dates and times it offers; the API applies the same checks and, with
  * them, keeps every request within the vehicles available (lib/bookings/
  * availability.mjs). A single day's vehicle count can be changed, or the day
  * closed, from the staff dashboard (/admin/availability).
+ *
+ * The notice, at its boundaries (Cape Town time, UTC+2 all year, no daylight saving):
+ *   a transfer   its pickup must be at least minNoticeHours after the moment of the request;
+ *   a tour       a date-only request: the first date offered is the Cape Town date reached
+ *                minNoticeHours from now (earliestDate), so at 10:00 on a Monday the first
+ *                tour date is Wednesday, whatever time the tour then starts.
  */
 export const BOOKING_RULES = Object.freeze({
   /** Vehicles with a driver that can be out at the same time on a normal day. */
   vehicles: 2,
   /** Minimum notice before a tour date or a transfer pickup, in hours. */
-  minNoticeHours: 24,
+  minNoticeHours: 48,
   /** Earliest and latest transfer pickup times, Cape Town time. */
   transferHours: Object.freeze({ first: '04:00', last: '23:00' }),
   /** How long one transfer holds a vehicle, in minutes, by transfer type; 'day' holds it for the whole date. */

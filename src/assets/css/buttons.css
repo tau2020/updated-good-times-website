@@ -3,7 +3,7 @@
    Loaded after living-cape-system.css. One family of controls for the whole site, every
    colour, size and duration a token (tokens.css for the palette, :root below for the shape):
 
-     .gt-button--primary     Leaf Green: the green pill, white words, a lime leaf (the main action of a section)
+     .gt-button--primary     Leaf Green: the green pill, white words (the main action of a section)
      .gt-button--secondary   Soft Leaf: a pale-leaf pill, deep-green words, a clean border (View details, Discover more)
      .gt-button--outline     Fresh Air: transparent, a green line and green words (a quiet action on a light ground)
      .gt-button--on-image    On-image: a solid white pill over photographs, legible on any picture
@@ -13,11 +13,12 @@
      sizes: --compact (44 px), standard (48 px), --large (52 px); --block fills its column
      .gt-button--on-dark     the light-on-dark versions of secondary, tertiary and utility (ocean navy grounds)
 
-   The leaf: a small leaf after the words of the primary, secondary, outline and on-image pills (a CSS mask, so no
-   markup carries it), lime on green, green on the pale ones. It turns a little under the pointer and is the only
-   thing that moves besides a lift of 2 px. Not on compact controls, nor beside a meaningful icon (a car, a quote).
-   The brand's primary calls to action (Plan My Day and the others in design/button-tokens.md)
-   are the signature leaf below, which reads these tokens too. No control in the family carries an arrow or chevron.
+   No leaf on the pills (the owner's request of 8 Nov 2026): a pill carries its words alone, centred between equal
+   paddings, with an icon before them only where it means something (a car, WhatsApp); the only movement is a lift of
+   2 px. Nothing in this family draws a leaf, so none can reappear on a page that uses it. The leaf-shaped calls to
+   action of 6 Nov 2026 (the signature leaf: Plan My Day, Request Your Tour, Arrange My Transfer, the home page's
+   closing and Peninsula actions) are this standard green pill too since the owner's request of 8 Nov 2026
+   (ui.mjs › ctaButton). No control in the family carries an arrow or chevron.
    Contrast (measured): white on --green-primary 5.2:1, on hover 7.0:1, pressed 8.2:1; --green-deep on
    --green-leaf-light 7.0:1; --green-primary on white 5.2:1; --green-deep on white 8.2:1.
    ========================================================================== */
@@ -32,19 +33,18 @@
   /* Motion: one natural ease, a lift of at most 2 px, nothing loops */
   --btn-lift: -2px;
   --btn-dur: 200ms;
-  --btn-leaf-dur: 240ms;
   --btn-ease: cubic-bezier(0.22, 1, 0.36, 1);
   /* Focus: the ink ring on light grounds, the lime ring on dark grounds and photographs (both over 3:1) */
   --btn-focus: var(--ink-primary);
   --btn-focus-on-dark: var(--green-lime-accent);
-  /* Depth: a leaf's thickness at the foot of the pill, and a soft green-tinted shadow */
+  /* Depth: a slim edge at the foot of the pill, and a soft green-tinted shadow */
   --btn-edge: inset 0 -2px 0 rgb(16 91 53 / 0.55);
   --btn-shadow: 0 1px 1px rgb(16 91 53 / 0.16), 0 6px 14px -8px rgb(16 91 53 / 0.6);
   --btn-shadow-hover: 0 2px 3px rgb(16 91 53 / 0.14), 0 12px 22px -10px rgb(16 91 53 / 0.55);
   --btn-press: inset 0 2px 5px rgb(4 40 20 / 0.3);
-  --btn-sheen: radial-gradient(120% 140% at 16% 0%, rgb(255 255 255 / 0.18) 0%, rgb(255 255 255 / 0) 52%);
-  /* The leaf, a 24 px glyph with its midrib cut out, used as a mask (the colour comes from the button) */
-  --btn-leaf: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M4.2 19.8C3.6 11 9.6 4.4 19.9 4.1c.3 10.3-6.3 16.3-15.1 15.7Zm1.3-2.4c2.9-3.6 6.2-6.7 10-9.5-.5.9-1.1 1.6-1.8 2.4-2.4 2.6-5 5-8 7.4l-.2-.3Z'/%3E%3Cpath d='M1.8 22.2 4.6 19.4' stroke='%23000' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
+  /* The gleam from the top left: 12% white at its centre (18% until 8 Nov 2026, when the white words on the green pills
+     measured 4.5:1 where it is brightest; at 12% the lowest of every pill on the site is 4.7:1: qa/pill-contrast.mjs) */
+  --btn-sheen: radial-gradient(120% 140% at 16% 0%, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0) 52%);
 
   /* The earlier system's names, still read by other sheets: the same values */
   --gt-ink: var(--ink-primary);
@@ -68,7 +68,6 @@
   --btn-bg: transparent;
   --btn-fg: var(--ink-primary);
   --btn-border: transparent;
-  --btn-leaf-color: currentColor;
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -118,36 +117,11 @@
   outline-color: var(--btn-focus-on-dark);
 }
 
-/* ---------- The leaf after the words ---------- */
-:is(.gt-button--primary, .gt-button--secondary, .gt-button--outline, .gt-button--on-image):not(.gt-button--compact, .gt-button--plain)::after {
-  content: '';
-  flex: none;
-  width: 1.05em;
-  height: 1.05em;
-  margin-right: -0.25em;
-  background-color: var(--btn-leaf-color);
-  -webkit-mask: var(--btn-leaf) center / contain no-repeat;
-  mask: var(--btn-leaf) center / contain no-repeat;
-  transform-origin: 18% 82%;
-  transition: transform var(--btn-leaf-dur) var(--btn-ease);
-}
-/* A meaningful icon says enough: no leaf beside it. `--plain` opts a control out where a trailing flourish could read
-   as a direction (the booking form's Back) */
-.gt-button:has(> .icon, > .gt-engraved-icon)::after {
-  content: none;
-}
-@media (hover: hover) {
-  .gt-button:hover:not(:disabled, [aria-disabled='true'], [aria-busy='true'])::after {
-    transform: rotate(-16deg) translateX(1px);
-  }
-}
-
 /* ---------- Primary · Leaf Green ---------- */
 .gt-button--primary {
   --btn-bg: var(--green-primary);
   --btn-fg: var(--surface-white);
   --btn-border: var(--green-deep);
-  --btn-leaf-color: var(--green-lime-accent);
   background-image: var(--btn-sheen);
   box-shadow: var(--btn-edge), var(--btn-shadow);
 }
@@ -164,7 +138,6 @@
   --btn-bg: var(--green-leaf-light);
   --btn-fg: var(--green-deep);
   --btn-border: var(--green-leaf-line);
-  --btn-leaf-color: var(--green-primary);
 }
 .gt-button--secondary:hover {
   --btn-bg: var(--green-leaf-hover);
@@ -176,7 +149,6 @@
   --btn-bg: rgb(255 255 255 / 0.07);
   --btn-fg: var(--surface-white);
   --btn-border: rgb(201 233 112 / 0.7);
-  --btn-leaf-color: var(--green-lime-accent);
 }
 .gt-button--secondary.gt-button--on-dark:hover {
   --btn-bg: rgb(255 255 255 / 0.14);
@@ -209,7 +181,6 @@
   --btn-bg: var(--surface-white);
   --btn-fg: var(--green-deep);
   --btn-border: rgb(255 255 255 / 0.92);
-  --btn-leaf-color: var(--green-primary);
   box-shadow: 0 10px 26px -12px rgb(0 0 0 / 0.6);
 }
 .gt-button--on-image:hover {
@@ -300,7 +271,7 @@
 }
 
 /* The narrowest phones (under 384 px): a long label wraps inside its pill in balanced lines rather than running past
-   the screen ("Explore the Cape Peninsula Tour" at 320 px); the leaf stays with the last word */
+   the screen ("Explore the Cape Peninsula Tour" at 320 px) */
 @media (max-width: 23.99em) {
   .gt-button:not(.gt-button--tertiary) {
     max-width: 100%;
@@ -334,7 +305,7 @@
 .gt-button--tertiary[aria-disabled='true'] {
   text-decoration-style: dashed;
 }
-/* Loading: the width holds, a quiet ring turns beside the label in the leaf's place, and a second press does nothing */
+/* Loading: the width holds, a quiet ring turns beside the label, and a second press does nothing */
 .gt-button[aria-busy='true'] {
   cursor: progress;
   pointer-events: none;
@@ -351,8 +322,6 @@
   border-right-color: transparent;
   border-radius: 50%;
   background: none;
-  -webkit-mask: none;
-  mask: none;
   animation: gt-button-turn 0.8s linear infinite;
 }
 /* A control that brings its own spinner (the booking form's Send Enquiry) keeps just that one */
@@ -381,9 +350,6 @@
   --btn-bg: var(--green-soft-background);
   --btn-fg: var(--green-deep);
 }
-.lc-specimen .gt-button.is-hover::after {
-  transform: rotate(-16deg) translateX(1px);
-}
 .lc-specimen .gt-button.is-pressed {
   box-shadow: var(--btn-press);
 }
@@ -393,13 +359,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gt-button,
-  .gt-button::after {
+  .gt-button {
     transition: none !important;
   }
   .gt-button:hover,
-  .gt-button:active,
-  .gt-button:hover::after {
+  .gt-button:active {
     transform: none !important;
   }
   .gt-button[aria-busy='true']::after {
@@ -415,9 +379,6 @@
     forced-color-adjust: auto;
     border: 1px solid ButtonText;
   }
-  .gt-button::after {
-    background-color: ButtonText;
-  }
   .gt-button:focus-visible {
     outline-color: Highlight;
   }
@@ -428,260 +389,23 @@
   }
 }
 
-/* ==========================================================================
-   The signature leaf (the owner's brief of 6 Nov 2026; design/button-tokens.md)
-   The brand's primary calls to action are leaf-shaped: Plan My Day (the header, the concierge, the
-   phone menu and bar, the home page's closing seals), Explore the Cape Peninsula Tour and Arrange My Transfer. The leaf is
-   an inline SVG (ui.mjs › leafButton) laid behind the words: its body, a short stem, a midrib that is clear near the base
-   and the tip and faint under the words, side veins that open on hover, and a leaf-shaped focus ring. The link is the
-   target, a rectangle at least 44 px tall, so the leaf's narrow ends never cost a tap. Form buttons and small controls
-   keep the pill (.gt-button above). Motion is leaf.js (GSAP); here, only what holds without it.
-   ========================================================================== */
-:root {
-  --leaf-h: 52px;
-  --leaf-h-large: 58px;
-  --leaf-h-compact: 46px;
-  /* the tip is at the right and narrows sooner than the rounded base at the left, so the words sit a little left of centre
-     and never reach either narrow end */
-  --leaf-pad-base: 1.55em;
-  --leaf-pad-tip: 2.45em;
-  --leaf-shadow: drop-shadow(0 1px 1px rgb(16 91 53 / 0.18)) drop-shadow(0 6px 9px rgb(16 91 53 / 0.22));
-  --leaf-shadow-hover: drop-shadow(0 2px 2px rgb(16 91 53 / 0.18)) drop-shadow(0 10px 14px rgb(16 91 53 / 0.24));
-  --leaf-dur: 280ms;
-}
-.leaf-defs {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-}
-.leaf-btn {
-  position: relative;
-  isolation: isolate;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: var(--leaf-h);
-  padding: 0.35rem var(--leaf-pad-tip) 0.35rem var(--leaf-pad-base);
-  border: 0;
-  border-radius: 0;
-  background: none;
-  color: #ffffff;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 650;
-  line-height: 1.15;
-  letter-spacing: 0.005em;
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.leaf-btn__shape {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  filter: var(--leaf-shadow);
-  transition: filter var(--leaf-dur) var(--btn-ease);
-  pointer-events: none;
-}
-.leaf-btn__body {
-  fill: url(#gt-leaf-fill);
-  transition: fill var(--leaf-dur) var(--btn-ease);
-}
-.leaf-btn__stem {
-  fill: none;
-  stroke: #0f6236;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-.leaf-btn__vein {
-  fill: none;
-  stroke: url(#gt-leaf-vein);
-  stroke-width: 1.4;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-  vector-effect: non-scaling-stroke;
-}
-.leaf-btn__veinlets {
-  fill: none;
-  stroke: rgb(223 243 222 / 0.42);
-  stroke-width: 1.1;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  vector-effect: non-scaling-stroke;
-  transition: stroke-dashoffset 420ms var(--btn-ease);
-}
-/* The focus ring: the leaf's own outline a little larger, ink on light grounds and lime on dark ones */
-.leaf-btn__ring {
-  fill: none;
-  stroke: transparent;
-  stroke-width: 3;
-  vector-effect: non-scaling-stroke;
-  transform: scale(1.055, 1.2);
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.leaf-btn:focus {
-  outline: none;
-}
-.leaf-btn:focus-visible .leaf-btn__ring {
-  stroke: var(--btn-focus);
-}
-.lc-dark .leaf-btn:focus-visible .leaf-btn__ring,
-.on-dark .leaf-btn:focus-visible .leaf-btn__ring,
-.hero .leaf-btn:focus-visible .leaf-btn__ring,
-.site-header--overlay:not(.is-condensed) .leaf-btn:focus-visible .leaf-btn__ring,
-.gt-concierge-panel .leaf-btn:focus-visible .leaf-btn__ring {
-  stroke: var(--btn-focus-on-dark);
-}
-.leaf-btn__label {
-  position: relative;
-  display: inline-block;
-}
-.leaf-btn:hover .leaf-btn__body,
-.leaf-btn:focus-visible .leaf-btn__body {
-  fill: url(#gt-leaf-fill-hover);
-}
-/* The words stay white in every state, wherever the leaf sits (link colours of the header, footer and prose never reach it) */
-a.leaf-btn,
-a.leaf-btn:hover,
-a.leaf-btn:focus,
-a.leaf-btn:focus-visible,
-a.leaf-btn:active,
-.site-header a.leaf-btn:hover,
-.site-header a.leaf-btn:focus-visible,
-.site-header--overlay:not(.is-condensed) a.leaf-btn:hover {
-  color: #ffffff;
-  text-decoration: none;
-}
-.leaf-btn:hover .leaf-btn__shape {
-  filter: var(--leaf-shadow-hover);
-}
-@media (hover: hover) {
-  .leaf-btn:hover .leaf-btn__veinlets {
-    stroke-dashoffset: 0;
-  }
-}
-.leaf-btn:active .leaf-btn__shape {
-  transform: scale(0.97, 0.94);
-}
-.leaf-btn[aria-disabled='true'],
-.leaf-btn.is-disabled {
-  pointer-events: none;
-  color: rgb(255 255 255 / 0.86);
-  cursor: not-allowed;
-}
-.leaf-btn[aria-disabled='true'] .leaf-btn__body,
-.leaf-btn.is-disabled .leaf-btn__body {
-  fill: #8fa99a;
-}
-.leaf-btn[aria-disabled='true'] .leaf-btn__shape,
-.leaf-btn.is-disabled .leaf-btn__shape {
-  filter: none;
-}
-/* Loading: the words stay, a small ring turns at the tip, the vein rests */
-.leaf-btn[aria-busy='true']::after {
-  content: '';
-  position: absolute;
-  right: 0.95em;
-  top: 50%;
-  width: 0.9em;
-  height: 0.9em;
-  margin-top: -0.45em;
-  border: 2px solid rgb(255 255 255 / 0.35);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: gt-button-turn 0.8s linear infinite;
-}
-/* Sizes */
-.leaf-btn--large {
-  min-height: var(--leaf-h-large);
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 700;
-}
-.leaf-btn--compact {
-  min-height: var(--leaf-h-compact);
-  --leaf-pad-base: 1.35em;
-  --leaf-pad-tip: 1.85em;
-  font-size: 0.9375rem;
-}
-.leaf-btn--block {
-  display: flex;
-  width: 100%;
-}
-/* Long labels on the narrowest screens wrap in balanced lines inside the leaf, which grows with them */
-@media (max-width: 23.99em) {
-  .leaf-btn {
-    white-space: normal;
-    text-wrap: balance;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .leaf-btn__shape,
-  .leaf-btn__body,
-  .leaf-btn__veinlets {
-    transition: none;
-  }
-  .leaf-btn:active .leaf-btn__shape {
-    transform: none;
-  }
-  .leaf-btn[aria-busy='true']::after {
-    animation: none;
-  }
-}
-@media (forced-colors: active) {
-  .leaf-btn {
-    border: 2px solid ButtonText;
-    border-radius: 999px;
-    color: ButtonText;
-  }
-  .leaf-btn__shape {
-    display: none;
-  }
-}
-
-/* Where the leaf sits */
-.header-cta.leaf-btn {
-  min-height: 48px;
-  --leaf-pad-base: 1.45em;
-  --leaf-pad-tip: 1.95em;
-  font-size: 1rem;
-}
-/* Phones keep Plan My Day in the menu and the call bar: no leaf in the header below 40em (styles.css › .header-cta;
-   this sheet loads after it, so .leaf-btn's display would otherwise win) */
+/* ---------- The navbar's Book Your Adventure (the owner's request of 8 Nov 2026): the standard primary pill ----------
+   Phones keep the booking action in the menu and the call bar: no button in the header bar below 40em (styles.css ›
+   .header-cta; this sheet loads after it, so .gt-button's display would otherwise win). From 1024 to 1279 px, where
+   the navigation and the concierge share the bar, it takes the compact pill's measures, so its words never push the
+   bar past its edge; over the home page's film (the transparent header) its focus ring is the on-dark one. */
 @media (max-width: 39.99em) {
-  .header-cta.leaf-btn {
+  .header-cta.gt-button {
     display: none;
   }
 }
-@media (min-width: 64em) and (max-width: 69.99em) {
-  .header-cta.leaf-btn,
-  .has-overlay-header .header-cta.leaf-btn {
-    min-height: 46px;
-    font-size: 0.9375rem;
-    --leaf-pad-base: 1.3em;
-    --leaf-pad-tip: 1.9em;
+@media (min-width: 64em) and (max-width: 79.99em) {
+  .header-cta.gt-button {
+    min-height: var(--btn-height-compact);
+    padding: 0.5rem 1.05rem;
+    font-size: 0.875rem;
   }
 }
-.mobile-cta .leaf-btn {
-  flex: 1;
-  min-width: 0;
-  min-height: 48px;
-  --leaf-pad-base: 1.2em;
-  --leaf-pad-tip: 1.9em;
+.site-header--overlay:not(.is-condensed) .gt-button:focus-visible {
+  outline-color: var(--btn-focus-on-dark);
 }
-.leaf-btn.sand-journey__cta {
-  min-height: var(--leaf-h);
-}
-

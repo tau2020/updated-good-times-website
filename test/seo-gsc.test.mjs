@@ -300,8 +300,8 @@ test('booking links keep their service: every tour’s booking card and header b
   for (const t of tours) {
     const h = page(prod, `/tours/${t.slug}/`).h;
     assert.ok(h.includes(`<input type="hidden" name="tour" value="${t.slug}">`), `${t.slug}: the booking card carries the tour`);
-    // The header's Plan My Day (always in the bar, on phones too) opens the form on this tour
-    assert.match(h, new RegExp(`<a class="leaf-btn header-cta" href="(?:\\.\\./)*enquire/\\?type=tour&amp;tour=${t.slug}"`), `${t.slug}: the header's booking button carries the tour`);
+    // The navbar's booking action (Book Your Adventure since 8 Nov 2026) opens the form on this tour
+    assert.match(h, new RegExp(`<a class="btn gt-button gt-button--primary header-cta" href="(?:\\.\\./)*enquire/\\?type=tour&amp;tour=${t.slug}"`), `${t.slug}: the header's booking button carries the tour`);
   }
   const transfers = page(prod, '/transfers/').h;
   for (const type of ['airport-arrival', 'airport-departure']) assert.ok(transfers.includes(`enquire/?type=transfer&amp;transfer=${type}`), `transfers: ${type}`);

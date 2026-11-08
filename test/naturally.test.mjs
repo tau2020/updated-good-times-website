@@ -9,7 +9,8 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
 import { imageByName } from '../src/data/images.mjs';
-import { reviews } from '../src/data/reviews.mjs';
+import { guestReviews } from '../src/data/guest-reviews.mjs';
+import { esc } from '../src/partials/ui.mjs';
 
 const ROOT = new URL('../', import.meta.url);
 const read = (p) => readFileSync(new URL(p, ROOT), 'utf8');
@@ -73,7 +74,7 @@ test('type: Bricolage Grotesque, DM Sans and Caveat, self-hosted WOFF2 under the
   assert.match(styles, /font-synthesis: none;/);
 });
 
-test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one pill system with a leaf, a 2 px lift and reduced motion', () => {
+test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one pill system with no leaf on it (8 Nov 2026), a 2 px lift and reduced motion', () => {
   const tokens = read('src/assets/css/tokens.css');
   const want = { 'green-primary': '#147d43', 'green-deep': '#105b35', 'green-hover': '#106638', 'green-leaf-light': '#dff3de', 'green-soft-background': '#eff8f0', 'green-lime-accent': '#c9e970', 'ink-primary': '#10241d', 'surface-white': '#ffffff' };
   for (const [k, v] of Object.entries(want)) assert.equal(token(tokens, k), v, k);
@@ -93,18 +94,22 @@ test('buttons: the leaf-green tokens as briefed, every pairing at WCAG AA, one p
   assert.match(b, /--btn-lift: -2px;/);
   assert.match(b, /--btn-dur: 200ms;/);
   for (const v of ['primary', 'secondary', 'outline', 'on-image', 'tertiary', 'utility', 'danger']) assert.match(b, new RegExp(`\\.gt-button--${v} \\{`), v);
-  assert.match(b, /mask: var\(--btn-leaf\)/, 'the leaf is a mask: no markup carries it');
+  // No leaf on the pills (the owner's request of 8 Nov 2026): no leaf token, and nothing drawn after a pill's words but
+  // the loading ring; the credentials strip draws its own leaf bullets, outside the button system
+  assert.doesNotMatch(b, /--btn-leaf|gt-button--plain/, 'no leaf token or leaf opt-out in the button system');
+  const afters = b.match(/[^{}]*\.gt-button[^{}]*::(after|before)[^{]*\{/g) || [];
+  assert.ok(afters.length > 0 && afters.every((r) => /aria-busy/.test(r)), `only the loading ring is drawn on a pill: ${afters.filter((r) => !/aria-busy/.test(r)).join(' | ')}`);
+  assert.doesNotMatch(read('src/assets/css/styles.css'), /var\(--btn-leaf/, 'no sheet reads a button leaf');
   assert.match(b, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?transform: none !important/);
   assert.match(b, /:focus-visible \{\s*outline: 3px solid var\(--btn-focus\);/);
-  // Nothing loops but the loading rings (the pill's and the leaf's), which stop with reduced motion
-  assert.equal((b.match(/infinite/g) || []).length, 2);
+  // Nothing loops but the loading ring, which stops with reduced motion
+  assert.equal((b.match(/infinite/g) || []).length, 1);
   assert.match(b, /\.gt-button\[aria-busy='true'\]::after \{[^}]*animation: gt-button-turn 0\.8s linear infinite;/);
-  assert.match(b, /\.leaf-btn\[aria-busy='true'\]::after \{[^}]*animation: gt-button-turn 0\.8s linear infinite;/);
-  assert.match(b, /@media \(prefers-reduced-motion: reduce\) \{[^@]*\.leaf-btn\[aria-busy='true'\]::after \{\s*animation: none;/);
-  // The signature leaf replaced the medallion pill and the hero's pill (design/button-tokens.md): their styles are gone
+  // The medallion pill, the hero's pill and the signature leaf are retired (the leaf at the owner's request of 8 Nov
+  // 2026: every former leaf is the green pill): their styles are gone
   const styles = read('src/assets/css/styles.css');
   assert.doesNotMatch(styles, /\.btn-coin|\.btn-champagne|\.hero__cta-sheen/);
-  assert.match(b, /\.leaf-btn \{/);
+  assert.doesNotMatch(b, /\.leaf-btn|--leaf-/);
 });
 
 test('the water chapter is gone: no markup, styles, script, timeline or test hook remains, and the coast road is chapter 01', () => {
@@ -171,34 +176,63 @@ test('the owner’s Cape Peninsula photograph: the original file’s renditions,
   assert.match(lc, /\.lc-memory__frame img \{[^}]*object-fit: contain;/);
   // Captioned by place, credited, attached to no review and naming nobody
   const html = render('index.html');
-  const block = html.slice(html.indexOf('<section class="lc-memory"'), html.indexOf('</section>', html.indexOf('<section class="lc-memory"')));
+  const block = html.slice(html.indexOf('<section class="lc-memory'), html.indexOf('</section>', html.indexOf('<section class="lc-memory')));
   assert.match(block, /Chapman’s Peak Drive, above Hout Bay/);
   assert.match(block, /A guest’s photograph from a Good Times tour/);
-  assert.doesNotMatch(block, new RegExp(reviews.map((r) => r.author.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')));
+  assert.doesNotMatch(block, new RegExp(`\\b(${guestReviews.map((r) => r.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`));
   assert.match(read('docs/RIGHTS_REGISTER.md'), new RegExp(`\\| ${name} \\|[^\\n]*In use`));
 });
 
-test('reviews: real names and ratings, initials until an approved photo exists, labelled summaries, no stand-in faces, no hard-coded count', () => {
+test('guest voices (8 Nov 2026): each platform’s own rating and review form, no date; the reviewers’ own words, eight drawn and the rest waiting; no summary, no Read more', () => {
   const html = render('index.html');
-  const sec = html.slice(html.indexOf('<section class="stories"'), html.indexOf('</section>', html.indexOf('<section class="stories"')));
-  const cards = sec.match(/<li class="story-card"/g) || [];
-  assert.equal(cards.length, reviews.length);
-  assert.doesNotMatch(sec, /assets\/img\/avatars\//, 'no illustrated stand-in faces');
-  assert.equal((sec.match(/class="story-card__initials" aria-hidden="true">/g) || []).length, reviews.length);
-  // No reviewer photo is approved and supplied yet (content/reviews-source-audit.md): none is shown
-  assert.doesNotMatch(sec, /assets\/img\/reviewers\//);
-  for (const r of reviews) {
-    assert.match(sec, new RegExp(`href="${r.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`), r.author);
-    assert.ok(!r.quote && !r.excerpt, `${r.author}: no verbatim text without the reviewer’s permission`);
+  const at = html.indexOf('<section class="voices');
+  const sec = html.slice(at, html.indexOf('</section>', at));
+  assert.ok(at > 0 && /id="reviews"/.test(sec), 'the chapter keeps the #reviews anchor');
+  assert.doesNotMatch(html, /class="stories|story-card|data-stories|voices-proof|voices-postcard|voices-note|In our words|Review summary|summed up/, 'the summaries and the themes in our words are gone');
+  // The bar: Tripadvisor's and Google's own figures from the one place each is kept, linked, with their own review forms
+  const ta = site.tripadvisor;
+  const g = site.google;
+  const bar = sec.slice(sec.indexOf('<ul class="rating-bar'), sec.indexOf('</ul>', sec.indexOf('<ul class="rating-bar')));
+  assert.equal(ta.reviewCount, 264);
+  for (const [name, p] of [['Tripadvisor', ta], ['Google', g]]) {
+    assert.ok(bar.includes(`<p class="rating-bar__name">${name} rating</p>`), name);
+    assert.ok(bar.includes(`<span class="rating-bar__value">${p.rating.toFixed(1)}</span><span class="visually-hidden"> out of 5</span>`), name);
+    assert.ok(bar.includes(`<a class="rating-bar__count" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${p.reviewCount} reviews<span class="visually-hidden"> on ${name}</span>`), name);
+    assert.ok(bar.includes(`href="${esc(p.writeReviewUrl)}" target="_blank" rel="noopener noreferrer">Write a review<span class="visually-hidden"> on ${name}</span>`), name);
   }
-  assert.equal((sec.match(/The review in short, in our words/g) || []).length, reviews.length);
-  assert.doesNotMatch(sec, /in their words|“/, 'no claim that the words are the reviewers’');
-  // The listing's rating and its number of reviews (the owner's request of 8 Nov 2026), dated with the day both were read
-  assert.match(sec, new RegExp(`Rated ${site.tripadvisor.rating.toFixed(1)} out of 5 on Tripadvisor`));
-  assert.match(sec, new RegExp(`Number of reviews on <span>Tripadvisor: <strong>${site.tripadvisor.reviewCount}</strong></span>`));
-  assert.equal(site.tripadvisor.reviewCount, 264);
-  assert.match(sec, /As listed on 8 November 2026/);
-  // Several visible at once without JavaScript: the grid is collapsed only by the script
-  assert.doesNotMatch(sec, /class="stories__grid is-collapsed"/);
-  assert.match(sec, /data-stories-more hidden/);
+  assert.match(ta.writeReviewUrl, /^https:\/\/www\.tripadvisor\.co\.za\/UserReviewEdit-g312659-d19611200-/);
+  assert.equal(g.writeReviewUrl, `https://search.google.com/local/writereview?placeid=${g.placeId}`);
+  assert.doesNotMatch(bar, /As of|As listed|checked|20\d\d|November/i, 'no date beside the figures (the owner’s instruction)');
+  assert.doesNotMatch(sec, new RegExp(`\\b${ta.reviewCount + g.reviewCount}\\b`), 'no total of unlike counts');
+  // The cards: the newest eight drawn here; "Load more" takes the rest from the reviews page, which carries them all
+  assert.equal((sec.match(/<li class="review-card" data-review-id="/g) || []).length, 8);
+  assert.doesNotMatch(sec, /review-card__more|Read more/, 'no Read more on the cards (the owner’s request of 8 Nov 2026)');
+  assert.doesNotMatch(sec, /<template data-review-rest>/);
+  assert.match(sec, /<div class="review-wall" data-review-wall data-step="8" data-more-from="reviews\/" data-voice>/);
+  assert.match(sec, /<button class="btn gt-button gt-button--secondary review-wall__more" type="button" data-review-more hidden>Load more<span class="visually-hidden"> reviews<\/span><\/button>/);
+  assert.ok(sec.includes(`<a class="review-wall__all" href="reviews/">See all ${guestReviews.length} reviews</a>`));
+  assert.match(sec, /<p class="visually-hidden" role="status" data-review-status><\/p>/);
+  const all = render('reviews/index.html');
+  const wall = all.slice(all.indexOf('<div class="review-wall"'));
+  assert.equal((wall.slice(0, wall.indexOf('<template data-review-rest>')).match(/<li class="review-card" data-review-id="/g) || []).length, 12, 'twelve drawn on the reviews page');
+  assert.equal((all.match(/<li class="review-card" data-review-id="/g) || []).length, guestReviews.length, 'every review in the archive');
+  for (const [where, html, list] of [['home', sec, guestReviews.slice(0, 8)], ['reviews', all, guestReviews]]) {
+    let last = -1;
+    for (const r of list) {
+      const quote = `<blockquote class="review-card__quote"><p>“${esc(r.title)}”</p></blockquote>`;
+      const i = html.indexOf(quote);
+      assert.ok(i > last, `${where} ${r.id}: the reviewer’s own title, word for word, newest first`);
+      last = i;
+      assert.ok(html.includes(`<li class="review-card" data-review-id="${r.id}">`), `${where} ${r.id}: keyed by its review`);
+      assert.ok(html.includes(`<time class="review-card__date" datetime="${r.date}" data-review-date>`), `${where} ${r.id}`);
+      assert.ok(html.includes(`<span class="review-card__stars" style="--n:${r.rating}" aria-hidden="true"></span><span class="visually-hidden">Rated ${r.rating} out of 5</span>`), `${where} ${r.id}`);
+    }
+  }
+  assert.doesNotMatch(all, /Review summary|summed up|class="themes"/);
+  assert.doesNotMatch(sec, /lorem ipsum|placeholder|AggregateRating/i);
+  // A tour's own page: its own listing's reviews only
+  const peninsula = render('tours/cape-peninsula-private-tour/index.html');
+  const own = guestReviews.filter((r) => r.tour === 'cape-peninsula-private-tour');
+  assert.equal((peninsula.match(/<li class="review-card" data-review-id="/g) || []).length, own.length);
+  for (const r of guestReviews.filter((x) => x.tour !== 'cape-peninsula-private-tour')) assert.ok(!peninsula.includes(`data-review-id="${r.id}"`), `${r.id}: not on the Peninsula’s page`);
 });

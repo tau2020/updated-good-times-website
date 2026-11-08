@@ -102,6 +102,16 @@
     gsap.from(els, { y: 28, autoAlpha: 0, duration: 0.7, ease: 'power2.out', stagger: 0.1, scrollTrigger: { trigger: els[0], start: 'top 85%', once: true } });
   });
 
+  /* ---------- 09 · Guest voices (the owner's request of 8 Nov 2026): the chapter's words, the rating bar and the review
+     wall rise once with a light drift (16 px) and opacity only (never visibility, so they stay in the accessibility tree
+     and the tab order; voices.css shows a focused one at once), at most 0.1 s apart. Cards that "Load more" adds later
+     have their own short entrance (review-wall.css). No pin, no scrub, no loop; without motion (above) they are simply
+     in place. ---------- */
+  var voices = toArray('[data-voice]');
+  if (voices.length) {
+    gsap.from(voices, { opacity: 0, y: 16, duration: 0.7, ease: 'power2.out', stagger: 0.1, scrollTrigger: { trigger: voices[0], start: 'top 85%', once: true } });
+  }
+
   /* ---------- Depth: in the asymmetric compositions, some prints travel a little faster or slower (desktop) ---------- */
   gsap.matchMedia().add('(min-width: 64em)', function () {
     toArray('[data-depth]').forEach(function (el) {
@@ -224,8 +234,8 @@
   /* ---------- 10 · The invitation (motion bible §13): the journey's calm close, the other end of "Look where your
      footsteps led.". The photograph comes up out of the dusk (its layer from 0.3 to full over 1.5 s, the picture
      settling from 1.08 over 2 s); the seal and the chapter mark; the headline's words rise and clear one after another
-     (SplitText words: a softer gesture than the Peninsula's line masks); the line; then Plan My Day unfurls (its leaf
-     is this scene's: data-leaf-owner="invite") and the transfer action appears beside it. Once, as it comes into
+     (SplitText words: a softer gesture than the Peninsula's line masks); the line; then Plan My Day appears (its pill
+     is this scene's: data-cta-owner="invite") and the transfer action beside it. Once, as it comes into
      view: the invitation never hides again, and focus inside it shows it whole. The scene's drift (scrubbed, wide
      screens) is shared with the other scenes: it moves the drift layer and the words block, never these. ---------- */
   (function invite() {
@@ -238,9 +248,9 @@
     var mark = head && head.querySelector('.lc-mark');
     var title = s.querySelector('.lc-statement');
     var line = s.querySelector('.lc-scene__line');
-    var leaf = s.querySelector('[data-leaf-owner="invite"]');
+    var cta = s.querySelector('[data-cta-owner="invite"]');
     var rest = toArray('.lc-scene__actions > *', s).filter(function (a) {
-      return a !== leaf;
+      return a !== cta;
     });
     var words = null;
     if (title && window.SplitText) {
@@ -258,11 +268,7 @@
       else if (title) tl.fromTo(title, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9 * f, clearProps: 'opacity,transform' }, 0.6 * f);
       if (line) tl.fromTo(line, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 * f, clearProps: 'opacity,transform' }, 1.25 * f);
       var at = 1.75 * f;
-      if (leaf) {
-        tl.fromTo(leaf, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', clearProps: 'opacity' }, at);
-        var unfurl = window.GTLeaf && window.GTLeaf.unfurl ? window.GTLeaf.unfurl(leaf) : null;
-        if (unfurl) tl.add(unfurl, at);
-      }
+      if (cta) tl.fromTo(cta, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', clearProps: 'opacity' }, at);
       if (rest.length) tl.fromTo(rest, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'opacity,transform' }, at + 0.45);
       s.__entrance = tl;
       api.invite = tl;

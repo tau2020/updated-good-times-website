@@ -1,6 +1,7 @@
 import { esc, icon, button, picture, preloadFor, breadcrumb, sectionHead } from '../partials/ui.mjs';
 import { focusOf } from '../partials/media.mjs';
 import { frameSizes } from '../partials/culinary.mjs';
+import { scenicLayer } from '../partials/scenic.mjs';
 
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'About', href: 'about/' }];
@@ -37,7 +38,8 @@ export const page = {
   description: 'Good Times in Cape Town was founded in 2014 by Stuart Matanhire: private, tailored tours of Cape Town and the Western Cape with accredited local guides.',
   breadcrumbs: crumbs,
   preload: [preloadFor('cape-coastline')],
-  styles: ['assets/css/culinary.css'],
+  // The approach band's faint dusk sky (scenic.css; src/data/scenic.mjs › about-approach)
+  styles: ['assets/css/culinary.css', 'assets/css/scenic.css'],
   scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/culinary.js'],
   body: ({ site }) => `
 <section class="banner" style="--focus: 60% 50%; --focus-mobile: 66% 50%; --banner-h: clamp(26rem, 18rem + 22vw, 42rem)">
@@ -84,7 +86,8 @@ export const page = {
   </div>
 </section>
 
-<section class="section" aria-labelledby="approach-title">
+<section class="section gt-scenic-host" aria-labelledby="approach-title">
+  ${scenicLayer('about-approach')}
   <div class="container">
     ${sectionHead({ eyebrow: 'Our approach', title: 'Personal, local and safe.', id: 'approach-title', lead: 'Three things we never skip.' })}
     <ul class="themes" role="list">

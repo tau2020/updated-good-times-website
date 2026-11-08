@@ -1,10 +1,9 @@
 /**
- * Card partials: tours, multi-day packages, transfer rows, reviews, destinations.
+ * Card partials: tours, multi-day packages, transfer rows, destinations (review cards: partials/review-wall.mjs).
  */
-import { reviewerPhoto } from './reviewer-photo.mjs';
-import { esc, icon, picture, price, fmtDate, showRating, stars, artPanel } from './ui.mjs';
+import { esc, icon, picture, price, showRating, artPanel } from './ui.mjs';
 import { routeArt } from './route-art.mjs';
-import { tourBySlug, categories, themeLabel, operatorRun } from '../data/tours.mjs';
+import { categories, themeLabel, operatorRun } from '../data/tours.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
 
 /**
@@ -88,51 +87,6 @@ export function rowCard({ image, title, text, href, meta = '', i = 0, sizes = '(
     <h3 class="row-card__title"><a href="${esc(href)}"${external ? ' rel="noopener" target="_blank"' : ''}>${esc(title)}</a></h3>
     <p class="row-card__text">${esc(text)}</p>
     ${meta ? `<p class="row-card__meta">${meta}</p>` : ''}
-  </div>
-</article>`;
-}
-
-const initials = (name) =>
-  name
-    .replace(/[^A-Za-z0-9 ]/g, ' ')
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase() || '·';
-
-/**
- * Review card: a verified review's metadata with our labelled summary. The
- * bold line is the tour's name, or the one approved pull-quote when the entry
- * carries verbatim text. Stars appear only when the review's own rating is
- * recorded (none are today), never as decoration.
- */
-export function reviewCard(r, { i = 0, showTour = true } = {}) {
-  const t = r.tour ? tourBySlug(r.tour) : null;
-  const meta = [r.origin, r.visited].filter(Boolean).join(' · ');
-  const verbatim = r.quote && r.quoteApproval;
-  // The reviewer's own photo over their initials, once its file is supplied (partials/reviewer-photo.mjs)
-  const photo = reviewerPhoto(r.avatar);
-  const title = verbatim ? `“${esc(r.quote)}”` : t ? esc(t.shortTitle) : esc(r.label || 'A private day with Good Times');
-  const body = verbatim
-    ? `<p class="review__label">In their words</p>`
-    : `<p class="review__label">Review summary</p><p class="review__text">${esc(r.summary)}</p>`;
-  const top = r.rating ? `<p class="review__source">${stars({ count: r.rating })}<span class="visually-hidden">Rated ${r.rating} out of 5 on Tripadvisor.</span></p>` : `<p class="review__source">${icon('chat')} Tripadvisor review${r.visited ? ` · ${esc(r.visited)}` : ''}</p>`;
-  return `<article class="review" data-reveal style="--reveal-i:${i % 4}">
-  ${top}
-  <h3 class="review__title">${title}</h3>
-  ${body}
-  <div class="review__head">
-    <span class="review__avatar" aria-hidden="true">${esc(initials(r.author))}${photo ? `<img src="${photo}" alt="" width="80" height="80" loading="lazy" decoding="async">` : ''}</span>
-    <div>
-      <p class="review__author">${esc(r.author)}</p>
-      ${meta ? `<p class="review__meta">${esc(meta)}</p>` : ''}
-    </div>
-  </div>
-  <div class="review__foot">
-    ${showTour && t ? `<a href="tours/${t.slug}/">${esc(t.shortTitle)}</a>` : showTour && r.service ? `<a href="transfers/#${esc(r.service)}">${esc(r.label)}</a>` : `<span class="muted">Written ${esc(fmtDate(r.written))}</span>`}
-    <a class="external" href="${esc(r.url)}" rel="noopener" target="_blank">Read on Tripadvisor<span class="visually-hidden"> (opens in a new tab)</span></a>
   </div>
 </article>`;
 }

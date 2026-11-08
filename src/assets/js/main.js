@@ -22,7 +22,11 @@
     window.addEventListener('resize', setBar, { passive: true });
   }
 
-  /* ---------- Header ---------- */
+  /* ---------- Header ----------
+     The one owner of the header's scrolled state: .is-condensed past the threshold (data-condense-at, 8 px by default,
+     40 on the home page), which styles.css paints as white glass (paint only; nothing moves). Re-read when a page
+     comes back from the back/forward cache. Its measured height (--header-live) gives anchors their offset. Phones
+     that report little memory or ask to save data get the solid header (.is-lite): blur is costly there. */
   const header = doc.querySelector('[data-header]');
   if (header) {
     const condenseAt = Number(header.dataset.condenseAt) || 8;
@@ -37,7 +41,14 @@
         ticking = true;
       }
     }, { passive: true });
+    window.addEventListener('pageshow', (e) => e.persisted && update());
     update();
+    const lite = (navigator.deviceMemory && navigator.deviceMemory <= 2) || navigator.connection?.saveData === true;
+    if (lite) header.classList.add('is-lite');
+    const measure = () => html.style.setProperty('--header-live', `${header.offsetHeight}px`);
+    measure();
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(header);
+    else window.addEventListener('resize', measure, { passive: true });
   }
 
   /* ---------- Drawer ---------- */
@@ -53,6 +64,7 @@
       requestAnimationFrame(() => drawer.classList.add('is-open'));
       toggle.setAttribute('aria-expanded', 'true');
       doc.body.classList.add('drawer-open');
+      html.classList.add('drawer-open');
       header?.classList.add('is-condensed');
       (focusables()[0] || drawer).focus({ preventScroll: true });
     };
@@ -60,6 +72,7 @@
       drawer.classList.remove('is-open');
       toggle.setAttribute('aria-expanded', 'false');
       doc.body.classList.remove('drawer-open');
+      html.classList.remove('drawer-open');
       const done = () => {
         drawer.hidden = true;
         drawer.removeEventListener('transitionend', done);

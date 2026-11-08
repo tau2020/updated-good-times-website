@@ -1,4 +1,4 @@
-import { esc, picture, preloadFor, coverSizes, stars } from '../partials/ui.mjs';
+import { esc, picture, preloadFor, coverSizes } from '../partials/ui.mjs';
 import { engraved } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, SERVICES } from '../partials/living-cape.mjs';
 import { destinationCarousel, photoExhibition, mediaLightbox, focusOf } from '../partials/media.mjs';
@@ -11,11 +11,11 @@ import { imageByName, creditFor } from '../data/images.mjs';
 import { tours, destinations } from '../data/tours.mjs';
 import { services } from '../data/transfers.mjs';
 import { fromLine } from '../data/pricing.mjs';
-import { reviews } from '../data/reviews.mjs';
-import { reviewerPhoto } from '../partials/reviewer-photo.mjs';
+import { guestReviews } from '../data/guest-reviews.mjs';
+import { ratingBar, reviewWall, REVIEW_WALL_ASSETS } from '../partials/review-wall.mjs';
+import { scenicLayer } from '../partials/scenic.mjs';
 import { credentialsStrip } from '../partials/credentials.mjs';
 
-const initials = (name) => name.replace(/[^A-Za-z ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('') || name.slice(0, 1).toUpperCase();
 const tour = (slug) => tours.find((t) => t.slug === slug);
 const tourHref = (slug) => `tours/${tour(slug).slug}/`;
 const PENINSULA = 'cape-peninsula-private-tour';
@@ -99,94 +99,27 @@ const GALLERY = [
 ];
 
 /**
- * 09 · The people behind the good times (the brief §7): the chosen Tripadvisor reviews as a grid of cards, several in
- * view at once (six on wide screens, four on tablets, three on phones, the rest a press away; all of them without
- * JavaScript). Each card: the reviewer's own photo where the owner has supplied an approved file
- * (partials/reviewer-photo.mjs), otherwise their initials, never a stand-in face; the name and place as Tripadvisor
- * shows them; their own rating; the tour; our labelled one-line summary (a verbatim passage only with the reviewer's
- * permission, `quoteApproval`, none recorded); the month it was written; and the link to the full review.
- * Sources and permissions: content/reviews-source-audit.md.
+ * 09 · Guest voices (the owner's request of 8 Nov 2026, in place of the editorial chapter of the brief's § D;
+ * docs/enhancement/03-reputation.md): the review section of the owner's reference screenshots, with Tripadvisor beside
+ * Google. The chapter's words; each platform's own rating with its own "Write a review" (ratingBar, the figures from
+ * site.tripadvisor and site.google, never added together); then the reviewers' own words, newest first, eight at a
+ * time (reviewWall over src/data/guest-reviews.mjs, the owner's archive: each card the title the reviewer gave their
+ * review, linked to the whole review). The home page draws the newest eight; "Load more" takes the rest from the
+ * reviews page, so this page stays light (under 200 KB). The sea at the chapter's edge is a scenic plane (scenic.mjs);
+ * the bar and the cards are white glass over it (voices.css). living-cape.js rises the head, the bar and the wall once
+ * as they arrive.
  */
-const LANGUAGES = { fr: 'French', de: 'German' };
-/** The order on the page: a different tour in each of the first six places, so the first row is not one reviewer twice */
-const STORY_ORDER = [0, 1, 5, 8, 9, 2, 3, 6, 7, 4];
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const monthYear = (iso) => {
-  const m = /^(\d{4})-(\d{2})/.exec(iso || '');
-  return m ? `${MONTHS[Number(m[2]) - 1]} ${m[1]}` : '';
-};
-const longDate = (iso) => {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
-  return m ? `${Number(m[3])} ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][Number(m[2]) - 1]} ${m[1]}` : '';
-};
-
-function storyCard(r) {
-  const lang = r.quoteLang && r.quoteLang !== 'en' ? r.quoteLang : '';
-  const real = reviewerPhoto(r.avatar);
-  const quoted = Boolean(r.excerpt && r.quote && r.quoteApproval);
-  const text = quoted ? r.excerpt : r.summary;
-  const goesOn = quoted && r.quote.trim() !== r.excerpt.trim();
-  // Where the review goes on, an ellipsis says so: in place of a closing full stop, after any other closing mark
-  const passage = !goesOn ? text : /\.$/.test(text) ? `${text.slice(0, -1)}…` : /[!?]$/.test(text) ? `${text} …` : `${text}…`;
-  const rated = Number.isFinite(r.rating) && r.rating >= 1 && r.rating <= 5;
-  // The initials are always drawn; an approved photo, where supplied, covers them (and if it fails to load, reviews.js
-  // removes it and the initials show). The name beside it is the text: the initials are decoration.
-  const avatar = `<span class="story-card__avatar"><span class="story-card__initials" aria-hidden="true">${esc(initials(r.author))}</span>${
-    real ? `<img src="${real}" alt="${esc(r.author)}’s Tripadvisor profile photo" width="104" height="104" loading="lazy" decoding="async">` : ''
-  }</span>`;
-  const t = r.tour ? tour(r.tour) : null;
-  const about = t ? t.shortTitle : r.label || '';
-  const when = monthYear(r.written);
-  return `<li class="story-card" data-story-card>
-        <article class="story-card__inner" aria-label="${esc(`${r.author}’s review${about ? ` of the ${about}` : ''}`)}">
-          <div class="story-card__head">
-            ${avatar}
-            <div class="story-card__who">
-              <p class="story-card__name">${esc(r.author)}</p>
-              ${r.origin ? `<p class="story-card__place">${esc(r.origin)}</p>` : ''}
-            </div>
-          </div>
-          <p class="story-card__meta">${rated ? `${stars({ count: r.rating })}<span class="visually-hidden">Rated ${r.rating} out of 5. </span>` : ''}${about ? `<span class="story-card__tour">${esc(about)}</span>` : ''}</p>
-          ${
-            quoted
-              ? `<blockquote class="story-card__quote" cite="${esc(r.url)}"${lang ? ` lang="${lang}"` : ''}><p>“${esc(passage)}”</p></blockquote>`
-              : `<div class="story-card__quote story-card__quote--summary"><p class="story-card__label">The review in short, in our words</p><p>${esc(text)}</p></div>`
-          }
-          <p class="story-card__source"><a href="${esc(r.url)}" rel="noopener" target="_blank">Read the full review<span class="visually-hidden"> by ${esc(r.author)} on Tripadvisor (opens in a new tab)</span></a> on Tripadvisor${when ? ` · <time datetime="${esc(r.written)}">${when}</time>` : ''}${lang ? ` · Written in ${LANGUAGES[lang] || lang}` : ''}</p>
-        </article>
-      </li>`;
-}
-
-/**
- * 09 · The heading, the listing's rating and its number of reviews (dated, linked, kept apart from the cards; the date
- * is when both were read, data/site.mjs), the grid and the way to every review.
- */
-function storiesSection(site) {
-  const ta = site.tripadvisor;
-  const ordered = STORY_ORDER.filter((i) => reviews[i]).map((i) => reviews[i]).concat(reviews.filter((_, i) => !STORY_ORDER.includes(i)));
-  return `<section class="stories" id="reviews" aria-labelledby="stories-title">
-  <div class="container stories__inner">
-    <div class="stories__head">
-      <div class="stories__intro">
-        ${chapterMark(9, 'The people behind the good times', 'stories__eyebrow')}
-        <h2 class="lc-title stories__title" id="stories-title">Good times, <em>by the people who had them.</em></h2>
-        <p class="lc-lead stories__lead" data-reveal>Don’t just take our word for it. Here’s what travellers said about their days in the Cape: each card sums up a real review in a line, and the whole review is a tap away on Tripadvisor.</p>
-      </div>
-      <a class="stories__rating" href="${esc(ta.url)}" rel="noopener" target="_blank">
-        <span class="stories__rating-score" aria-hidden="true">${ta.rating.toFixed(1)}</span>
-        ${stars()}
-        <span class="stories__rating-label">Rated ${ta.rating.toFixed(1)} out of 5 on Tripadvisor</span>
-        <span class="stories__rating-count">Number of reviews on <span>Tripadvisor: <strong>${ta.reviewCount}</strong></span></span>
-        <span class="stories__rating-date">As listed on ${longDate(ta.checked)}<span class="visually-hidden">. See the listing (opens in a new tab)</span></span>
-      </a>
-    </div>
-    <ul class="stories__grid" id="stories-grid" role="list" data-stories>
-      ${ordered.map((r) => storyCard(r)).join('\n      ')}
-    </ul>
-    <div class="stories__foot">
-      <button class="gt-button gt-button--outline stories__more" type="button" aria-expanded="true" aria-controls="stories-grid" data-stories-more hidden>Show more reviews</button>
-      <a class="gt-button gt-button--secondary stories__cta" href="${esc(ta.url)}" rel="noopener" target="_blank"><span>Read every review on Tripadvisor</span><span class="visually-hidden"> (opens in a new tab)</span></a>
-    </div>
+const HOME_REVIEWS = 8;
+function voicesSection(site) {
+  return `<section class="voices gt-scenic-host" id="reviews" aria-labelledby="voices-title">
+  ${scenicLayer('voices')}
+  <div class="container voices__inner">
+    <header class="voices__head" data-voice>
+      ${chapterMark(9, 'The people behind the good times', 'voices__eyebrow')}
+      <h2 class="lc-title voices__title" id="voices-title">Good times, <em>by the people who had them.</em></h2>
+    </header>
+    ${ratingBar(site, { attrs: 'data-voice' })}
+    ${reviewWall({ list: guestReviews.slice(0, HOME_REVIEWS), initial: HOME_REVIEWS, step: 8, moreFrom: 'reviews/', label: 'Reviews from Tripadvisor, newest first', all: { href: 'reviews/', label: `See all ${guestReviews.length} reviews` }, attrs: 'data-voice' })}
   </div>
 </section>`;
 }
@@ -237,12 +170,13 @@ export const page = {
   // The Living Cape chapters have their own sheet, loaded after styles.css and the system sheet, scoped to .living-cape.
   // The hero's phone gallery has its own sheet and script (HeroPhoneGallery, partials/phone-gallery.mjs), and so do its
   // services (HeroServices, partials/hero-services.mjs; their entrance is part of hero.js).
-  styles: ['assets/css/phone-gallery.css', 'assets/css/hero-services.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css'],
+  styles: ['assets/css/phone-gallery.css', 'assets/css/hero-services.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css', ...REVIEW_WALL_ASSETS.styles, 'assets/css/scenic.css', 'assets/css/voices.css'],
   // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger, Flip and MotionPathPlugin, and
-  // CustomEase and SplitText for the Cape Peninsula entrance and the leaf's unfurl (GSAP 3.15, self-hosted; the policy
-  // allows same-origin scripts only), the hero's entrance, its phone gallery, the guest stories carousel, the chapters
+  // CustomEase and SplitText for the Cape Peninsula entrance (GSAP 3.15, self-hosted; the policy
+  // allows same-origin scripts only), the hero's entrance, its phone gallery, the chapters (the guest voices' reveal
+  // among them, living-cape.js)
   // and the media system: the destination carousel, the exhibition and its lightbox.
-  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/vendor/MotionPathPlugin.min.js', 'assets/js/vendor/CustomEase.min.js', 'assets/js/vendor/SplitText.min.js', 'assets/js/brand-plane.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/reviews.js', 'assets/js/sand-journey.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js'],
+  scripts: ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/vendor/Flip.min.js', 'assets/js/vendor/MotionPathPlugin.min.js', 'assets/js/vendor/CustomEase.min.js', 'assets/js/vendor/SplitText.min.js', 'assets/js/brand-plane.js', 'assets/js/hero.js', 'assets/js/phone-gallery.js', 'assets/js/sand-journey.js', 'assets/js/living-cape.js', 'assets/js/media.js', 'assets/js/culinary.js', ...REVIEW_WALL_ASSETS.scripts],
   /*
    * The hero, "the world has stopped, the memories haven't": five friends in a café above the Atlantic, Table Mountain
    * behind, held still in one moment of laughter (the film moves only the cloud and the sea, src/tools/build-video.sh).
@@ -294,7 +228,8 @@ ${scene({
   credit: 'A viewpoint above the Atlantic, Cape Peninsula · A Good Times photograph',
 })}
 
-<section class="lc-memory" aria-labelledby="memory-title">
+<section class="lc-memory gt-scenic-host" aria-labelledby="memory-title">
+  ${scenicLayer('memory')}
   <div class="container lc-memory__grid">
     <figure class="lc-memory__photo" data-rise="memory">
       <div class="lc-memory__frame">${picture({ name: MEMORY.name, sizes: '(min-width: 64em) 27rem, (min-width: 48em) 40vw, min(78vw, 22rem)' })}</div>
@@ -461,7 +396,8 @@ ${scene({
   credit: 'Table Mountain across the bay · A Good Times photograph',
 })}
 
-<section class="lc-ease" aria-labelledby="ease-title">
+<section class="lc-ease gt-scenic-host" aria-labelledby="ease-title">
+  ${scenicLayer('ease')}
   <div class="container">
     <div class="lc-ease__head">
       ${chapterMark(8, 'Easy does it')}
@@ -498,7 +434,7 @@ ${scene({
   </div>
 </section>
 
-${storiesSection(site)}
+${voicesSection(site)}
 
 <section class="lc-scene lc-scene--invite lc-dark" aria-labelledby="invite-title" style="--focus: 50% 34%; --focus-tall: 42% 30%" data-scene data-invite>
   <div class="lc-scene__media" aria-hidden="true"><div class="lc-scene__drift" data-scene-drift>${picture({ name: 'camps-bay-twelve-apostles', alt: '', sizes: sceneSizes('camps-bay-twelve-apostles') })}</div></div>

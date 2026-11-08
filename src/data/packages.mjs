@@ -14,6 +14,7 @@
  */
 
 import { priceFor } from './pricing.mjs';
+import { CANCELLATION } from './cancellation.mjs';
 
 const APPROVAL = 'published by Good Times on goodtimesincapetown.co.za; wording adapted for this site';
 const SOURCE = { listing: 'https://www.goodtimesincapetown.co.za/tour/garden-route-private-tour/', checked: '2026-11-05' };
@@ -45,7 +46,8 @@ export const packages = [
     included: ['Private vehicle', 'Driver-guide', 'Fuel', 'Bottled water'],
     notIncluded: ['Accommodation', 'Meals', 'Entrance fees', 'Tips'],
     price: priceFor('garden-route-private-tour', 'Per day, for 1–4 guests. Groups of 5–8: please enquire.'),
-    cancellation: 'Free cancellation up to 24 hours before the scheduled departure time. Cancellations within 24 hours of departure, and no-shows, are non-refundable.',
+    // The owner's rule for multi-day tours (8 Nov 2026): 48 hours, not the day tours' 24
+    cancellation: CANCELLATION.multiDay,
     // The gallery never repeats the hero or the card (audit/image-change-register.md). The destination card for the
     // Garden Route links to this page, so it shows this package's card, as the tour list does
     images: { hero: 'rooiberg-red-chair', card: 'map-of-africa-viewpoint', gallery: ['cango-caves', 'garden-route-garden-path', 'mountain-road-arch'] },

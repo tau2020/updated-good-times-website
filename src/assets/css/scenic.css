@@ -1,0 +1,199 @@
+/* ==========================================================================
+   Good Times in Cape Town — scenic backdrops (the brief of 8 Nov 2026, § B)
+   A section's faint photographic plane: a landscape kept behind the content like the far wall of a room, washed
+   to a whisper, with the words and cards on their own layer in front at full strength. One component, opted into by
+   named sections (src/partials/scenic.mjs reads src/data/scenic.mjs); no section is given a background image any
+   other way. Tokens: tokens.css › Scenic. Layers, back to front:
+     the section's own ground (its background colour, unchanged)
+     .gt-scenic__plane  the photograph at --gt-scene-opacity, shaped by the variant's mask (soft edges, no seams)
+     .gt-scenic__wash   a tonal wash over it (--gt-scene-wash), under the content
+     the content        position: relative, z-index 1, never transparent
+   Variants: --copy (behind a text band, sky behind the words), --head (an inner page's title band: the sky beside the
+   title, washed behind the words), --bleed (a horizon at the band's foot, fading up), --side (a tall accent at one
+   side, fading toward the content), --held (the plane stays in view while the band scrolls past it: position sticky
+   inside the layer, never background-attachment: fixed, which iOS does not honour).
+   Nothing here animates; the held plane is static under reduced motion. Hidden in print and forced colours.
+   ========================================================================== */
+
+.gt-scenic-host {
+  position: relative;
+  isolation: isolate;
+}
+.gt-scenic-host > :not(.gt-scenic) {
+  position: relative;
+  z-index: 1;
+}
+.gt-scenic {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Clipped to the band without becoming a scroll container, so a held plane can still stick to the viewport */
+  overflow: clip;
+}
+.gt-scenic__plane {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: var(--gt-scene-mask);
+  mask-image: var(--gt-scene-mask);
+}
+.gt-scenic__plane picture,
+.gt-scenic__plane img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.gt-scenic__plane img {
+  object-fit: cover;
+  object-position: var(--gt-scene-focal-desktop);
+  opacity: var(--gt-scene-opacity);
+}
+@media (max-width: 47.99em) {
+  .gt-scenic__plane img {
+    object-position: var(--gt-scene-focal-mobile);
+  }
+}
+.gt-scenic__wash {
+  position: absolute;
+  inset: 0;
+  background: var(--gt-scene-wash);
+}
+
+/* --copy: the whole band, fading in from its top and out at its foot; the wash keeps the paragraph side whiter
+   than the heading's (stronger whites behind longer copy), lighter since the owner's request of 8 Nov 2026 */
+.gt-scenic--copy {
+  --gt-scene-mask: linear-gradient(to bottom, transparent 0, #000 var(--gt-scene-fade), #000 calc(100% - var(--gt-scene-fade)), transparent 100%);
+  --gt-scene-wash: linear-gradient(180deg, rgb(255 255 255 / 0) 0%, rgb(255 255 255 / 0) 50%, var(--gt-scene-paper) 100%);
+}
+
+/* --head: an inner page's title band. The sky fills the band and fades into its foot; on wide screens the wash keeps
+   the left, where the title and the lead sit, light and leaves the right open; on phones, where the words cross the
+   whole band, an even veil */
+.gt-scenic--head {
+  --gt-scene-mask: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+  --gt-scene-wash: linear-gradient(90deg, var(--gt-scene-paper) 0%, rgb(247 250 249 / 0.5) 42%, rgb(247 250 249 / 0) 74%);
+  --gt-scene-paper: rgb(247 250 249 / 0.82); /* the band's own --paper */
+}
+@media (max-width: 47.99em) {
+  .gt-scenic--head {
+    --gt-scene-wash: linear-gradient(180deg, rgb(247 250 249 / 0.42) 0%, rgb(247 250 249 / 0.62) 100%);
+  }
+}
+
+/* --bleed: a horizon along the band's foot, the sky fading up to nothing above the content */
+.gt-scenic--bleed .gt-scenic__plane {
+  top: auto;
+  height: var(--gt-scene-height, 64%);
+}
+.gt-scenic--bleed {
+  --gt-scene-mask: linear-gradient(to bottom, transparent 0%, #000 60%, #000 88%, transparent 100%);
+}
+
+/* --side: a tall accent at the band's right edge on wide screens, fading toward the content; on phones and tablets a
+   band across the top, fading down before the cards */
+.gt-scenic--side {
+  --gt-scene-mask: linear-gradient(to bottom, transparent 0, #000 22%, #000 58%, transparent 92%);
+}
+.gt-scenic--side .gt-scenic__plane {
+  bottom: auto;
+  height: min(70vh, 38rem);
+}
+@media (min-width: 64em) {
+  .gt-scenic--side {
+    --gt-scene-mask:
+      linear-gradient(to right, transparent 0, #000 46%),
+      linear-gradient(to bottom, transparent 0, #000 16%, #000 62%, transparent 86%);
+  }
+  .gt-scenic--side .gt-scenic__plane {
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+    left: auto;
+    width: var(--gt-scene-width, 44%);
+    height: 100%;
+  }
+  /* Held: the plane is one screen tall and sticks while the band scrolls by */
+  .gt-scenic--side.gt-scenic--held .gt-scenic__plane {
+    position: sticky;
+    top: 0;
+    margin-left: auto;
+    height: 100vh;
+    height: 100svh;
+  }
+}
+@media (min-width: 64em) and (prefers-reduced-motion: reduce) {
+  .gt-scenic--side.gt-scenic--held .gt-scenic__plane {
+    position: absolute;
+    height: 100%;
+  }
+}
+
+/* The placements (src/data/scenic.mjs): only what differs per band, its ground for the wash and the horizon's height */
+.lc-memory > .gt-scenic {
+  --gt-scene-paper: rgb(239 248 240 / 0.72); /* the band's soft leaf ground, --green-soft-background */
+}
+/* The steps band: the dusk sky behind the heading only, gone before the steps and the button */
+.lc-ease > .gt-scenic .gt-scenic__plane {
+  bottom: auto;
+  height: min(70%, 34rem);
+}
+.lc-ease > .gt-scenic {
+  --gt-scene-mask: linear-gradient(to bottom, transparent 0, #000 18%, #000 42%, transparent 92%);
+  --gt-scene-wash: none;
+}
+/* The guest voices: the sea only beside the cards on wide screens, faded out well before the ribbon's small print;
+   on phones and tablets, where it would sit behind the heading and the introduction, there is none */
+@media (max-width: 63.99em) {
+  #reviews > .gt-scenic {
+    display: none;
+  }
+}
+
+/* Over a plane the small secondary words take their stronger tones, as the header's statement does on its glass: the
+   accent green its deep green (8.2:1 on white), the grey the body ink (13:1). The planes are stronger since the owner's
+   request of 8 Nov 2026, and the regular tones measured 3.7–4.4:1 over their darkest clouds; with these every line
+   meets AA over its darkest decile (qa/scenic-contrast.mjs). Large words (the titles' green) keep their colour. */
+.gt-scenic-host :is(.eyebrow, .lc-mark, .lc-mark__num, .lc-ease__num) {
+  color: var(--green-deep);
+}
+.gt-scenic-host :is(.lead, .breadcrumb ol, .themes span, .lc-memory__credit) {
+  color: var(--text);
+}
+
+/* Bands with a placement on the inner pages (src/data/scenic.mjs): the band's own ground for the wash */
+.page-head > .gt-scenic {
+  --gt-scene-paper: rgb(247 250 249 / 0.82);
+}
+.section > .gt-scenic--copy {
+  --gt-scene-paper: rgb(255 255 255 / 0.72);
+}
+
+/* A card that floats over a scenic band: white glass, a little translucent (the owner's request of 8 Nov 2026), the
+   blur keeping its words clear of the photograph; near-opaque white where blur is missing or transparency is reduced */
+.gt-scenic-glass {
+  background: var(--gt-glass-fallback);
+}
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .gt-scenic-glass {
+    background: var(--gt-scenic-card);
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+    backdrop-filter: blur(14px) saturate(125%);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .gt-scenic-glass {
+    background: var(--gt-glass-fallback);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media print {
+  .gt-scenic {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .gt-scenic {
+    display: none;
+  }
+}

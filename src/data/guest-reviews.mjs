@@ -1,0 +1,133 @@
+/**
+ * Guest reviews in the reviewers' own words (the owner's direction of 8 Nov 2026: "use client original reviews, do not
+ * summarise reviews"; docs/enhancement/03-reputation.md).
+ *
+ * Source: the owner's review archive (Drive › the reviews archive folder, the index workbook's Reviews tab, compiled
+ * 5 Nov 2026 from Good Times' Tripadvisor listing): the 81 reviews it records, of the 264 on the listing (the archive
+ * indexed the reviews that carry photographs; every one of them is listed here, none left out). Each entry is copied
+ * from the archive as recorded: the title the reviewer gave their review (`title`, word for word; only spaces around
+ * it trimmed), their display name as Tripadvisor shows it, the date they wrote it, their own rating, the product they
+ * reviewed, their trip type ('' where they gave none) and the review's own address. The archive holds no review
+ * bodies, so a card shows the title and links to the whole review: nothing here is summarised, shortened or reworded.
+ *
+ * Rights: the archive records the reviewers' usage rights as "Not requested", and its own usage-rights report
+ * (5 Nov 2026) notes that Tripadvisor's terms ask for its written permission to reproduce its content. The owner chose
+ * to show the reviewers' own titles; production waits on that permission (scripts/release-gate.mjs › R4;
+ * docs/APPROVAL_REGISTER.md › R4, R5).
+ *
+ * Google: the archive holds no Google reviews, so none is shown; the Google rating beside the cards is the profile's
+ * own figure (site.google). A Google review would join this list with `platform: 'Google'` and its own `url`.
+ *
+ * Do not add review markup (Review or AggregateRating schema): these are third-party reviews of the business itself.
+ */
+
+export const REVIEW_ARCHIVE = Object.freeze({
+  compiled: '2026-11-05',
+  platform: 'Tripadvisor',
+  usageRights: 'not requested',
+});
+
+/** Tripadvisor's listing id of each Good Times product, and the page of ours it belongs to. */
+export const PRODUCTS = Object.freeze({
+  19714975: { tour: 'cape-peninsula-private-tour' },
+  19685038: { tour: 'cape-winelands-private-tour' },
+  20311065: { tour: 'township-private-tour' },
+  19907537: { tour: 'cape-town-city-private-tour' },
+  19930417: { service: 'airport' },
+  19611200: {}, // the operator's own listing: no single tour
+});
+
+/** A Tripadvisor address's listing id (19714975). */
+export const listingOf = (url) => /-d(\d+)-/.exec(url || '')?.[1] || '';
+
+const TA = 'https://www.tripadvisor.co.za/ShowUserReviews-g312659-';
+
+/** Newest first, as the archive lists them. */
+const ARCHIVE = [
+  { id: '1082535697', title: 'Best tour I’ve ever done', name: 'Hannah C', date: '2026-10-20', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r1082535697-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1082133195', title: 'Great tour with a great agency and guide', name: 'Rafael Y', date: '2026-10-17', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r1082133195-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1072787683', title: 'Awesome experience', name: 'Tendaishe M', date: '2026-08-12', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Couples', url: `${TA}d19685038-r1072787683-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1058780007', title: 'Township tour sustainable!', name: 'jog1953', date: '2026-05-03', rating: 5, product: 'Langa Township Private Tour', trip: 'Family', url: `${TA}d20311065-r1058780007-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1057814124', title: 'Best tour guide in the world\'s most beautiful city', name: 'Randolph F', date: '2026-04-25', rating: 5, product: 'Cape Town Private Airport Transfer', trip: 'Couples', url: `${TA}d19930417-r1057814124-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '1057762546', title: 'Amazing day tour', name: 'Sonia D', date: '2026-04-24', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r1057762546-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1057662922', title: 'Fantastic', name: 'Davihoffy', date: '2026-04-23', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r1057662922-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1057613184', title: 'Must do Cape peninsula tour', name: 'Explore21022700559', date: '2026-04-23', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r1057613184-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1052347335', title: 'The perfect Cape Peninsula Tour, vetted by someone who researches way too much!!!', name: 'seamus0314', date: '2026-03-08', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r1052347335-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1051393678', title: 'Township with Mzu', name: 'Andrea H', date: '2026-02-28', rating: 5, product: 'Langa Township Private Tour', trip: 'Couples', url: `${TA}d20311065-r1051393678-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1051287014', title: 'The kind of guide you end up calling a friend! Thank You Stuart!', name: 'TravelAngelDani', date: '2026-02-27', rating: 5, product: 'Cape Town Private City Tour', trip: 'Couples', url: `${TA}d19907537-r1051287014-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1051281574', title: 'Two unforgettable wine days – perfectly planned, zero stress, outstanding guide', name: 'TravelAngelDani', date: '2026-02-27', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Couples', url: `${TA}d19685038-r1051281574-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1051278542', title: 'The perfect Cape Peninsula day – incredible scenery, penguins & a guide you actually want to spend a whole day with', name: 'TravelAngelDani', date: '2026-02-27', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r1051278542-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1051276181', title: 'Seamless, safe & genuinely welcoming airport transfers', name: 'TravelAngelDani', date: '2026-02-27', rating: 5, product: 'Cape Town Private Airport Transfer', trip: 'Couples', url: `${TA}d19930417-r1051276181-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '1044295963', title: 'Awesome Tour', name: 'Patience M', date: '2025-12-30', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r1044295963-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1044294966', title: 'Fun times', name: 'Rufaro M', date: '2025-12-30', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r1044294966-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1035795020', title: 'Sharon P', name: 'Jet52436208146', date: '2025-10-21', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r1035795020-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1035256532', title: 'Exceptional Experience with Stuart at GoodTimes – A Must for Cape Town Visitors! ⭐⭐⭐⭐⭐', name: 'Pioneer26373687896', date: '2025-10-17', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r1035256532-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1030362979', title: 'A+ Airport transfer to and from Cape Town airport', name: 'Laurie de', date: '2025-09-14', rating: 5, product: 'Cape Town Private Airport Transfer', trip: '', url: `${TA}d19930417-r1030362979-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '1025115236', title: 'What a solo experience', name: 'Culture34068981218', date: '2025-08-18', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Solo', url: `${TA}d19714975-r1025115236-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1014352796', title: 'First time in Cape Town', name: 'Trip67383868826', date: '2025-06-23', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r1014352796-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1009051917', title: 'A legendary 🇿🇦 tour .', name: 'Dr Aditya Vikra... S', date: '2025-05-25', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r1009051917-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1002466092', title: 'Great Tour', name: 'Mac K', date: '2025-04-15', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r1002466092-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '1000642918', title: 'Cape Town Tour', name: 'Ronica Ruts', date: '2025-04-01', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r1000642918-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '997530936', title: 'Enlightened visit to township Langa, Cape town.', name: 'Thea H', date: '2025-03-11', rating: 5, product: 'Langa Township Private Tour', trip: '', url: `${TA}d20311065-r997530936-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '995470531', title: 'A glimpse into local culture', name: 'Lydia W', date: '2025-02-26', rating: 5, product: 'Langa Township Private Tour', trip: 'Solo', url: `${TA}d20311065-r995470531-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '995395596', title: 'Unforgettable Tour with a Caring Guide', name: 'Lydia W', date: '2025-02-25', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Solo', url: `${TA}d19714975-r995395596-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '981402774', title: 'Very educational tour of the township', name: 'Thomas C', date: '2024-11-21', rating: 5, product: 'Langa Township Private Tour', trip: 'Friends', url: `${TA}d20311065-r981402774-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '979094670', title: 'Great times with “Good Times in Cape Town”', name: 'Resort03029820201', date: '2024-11-08', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r979094670-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '977035487', title: 'The tour to go with!', name: 'Torey G', date: '2024-10-28', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r977035487-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '976979761', title: 'Learning, Exciting, Interesting!', name: 'Torey G', date: '2024-10-28', rating: 5, product: 'Langa Township Private Tour', trip: '', url: `${TA}d20311065-r976979761-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '972224570', title: 'Insta worthy private tour, travelling in style and safety!', name: 'Meena301', date: '2024-10-02', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r972224570-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '958891925', title: 'A Unique Window into the Reality of Township Life', name: 'Dave F', date: '2024-07-10', rating: 5, product: 'Langa Township Private Tour', trip: 'Family', url: `${TA}d20311065-r958891925-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '956906932', title: 'Outstanding', name: 'Sibzytours', date: '2024-06-27', rating: 5, product: 'Langa Township Private Tour', trip: 'Friends', url: `${TA}d20311065-r956906932-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '934034600', title: 'SA the best', name: 'Darlington M', date: '2024-01-14', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r934034600-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '933948122', title: 'Great Tour Guide', name: 'Mac K', date: '2024-01-13', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r933948122-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '933897862', title: 'Stuart is the best tour guide', name: 'Brezhnev Muzuva', date: '2024-01-13', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r933897862-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '930704811', title: 'We had the best day!', name: 'Christa B', date: '2023-12-23', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r930704811-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '930704492', title: 'Wonderful family tour.', name: 'Christa B', date: '2023-12-23', rating: 5, product: 'Cape Town Private City Tour', trip: '', url: `${TA}d19907537-r930704492-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '930686130', title: 'Life changing!', name: 'Christina B', date: '2023-12-23', rating: 5, product: 'Langa Township Private Tour', trip: 'Family', url: `${TA}d20311065-r930686130-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '921143619', title: 'Stuart is the best!', name: 'Kashou106', date: '2023-10-13', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r921143619-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '917553992', title: 'Great time on Cape Peninsula tour with Stuart.', name: 'isaac b', date: '2023-09-20', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r917553992-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '915258453', title: 'Goodtimes in CPT indeed!!', name: 'Nokwanda H', date: '2023-09-07', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Solo', url: `${TA}d19685038-r915258453-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '914461434', title: 'A tour through history that will stay with you forever.', name: 'andyjanec', date: '2023-09-02', rating: 5, product: 'Cape Town Private City Tour', trip: '', url: `${TA}d19907537-r914461434-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '914457706', title: 'A fabulous introduction to the cape.', name: 'andyjanec', date: '2023-09-02', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r914457706-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '905302517', title: 'Awesome Three Day Personal Tour Guide', name: 'Dom A', date: '2023-07-24', rating: 5, product: 'Cape Town Private City Tour', trip: '', url: `${TA}d19907537-r905302517-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '900732877', title: 'Superb!', name: 'Ms. V', date: '2023-07-05', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Friends', url: `${TA}d19685038-r900732877-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '895929681', title: 'Excellent cape peninsula tour - exactly what we were looking for.', name: 'practicalgirl', date: '2023-06-19', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r895929681-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '886915890', title: 'Amazing experience! A must do around Cape Town', name: 'mattvickLincs', date: '2023-04-19', rating: 5, product: 'Cape Winelands Private Tour', trip: '', url: `${TA}d19685038-r886915890-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '886509568', title: 'Excellent Cape Day Tour', name: 'NGolberg', date: '2023-04-16', rating: 5, product: 'Good Times In Cape Town', trip: 'Couples', url: `${TA}d19611200-r886509568-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html` },
+  { id: '883788776', title: 'Definitely book!', name: 'Taneequa F', date: '2023-03-27', rating: 5, product: 'Cape Town Private Airport Transfer', trip: 'Couples', url: `${TA}d19930417-r883788776-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '883648532', title: 'Simply Wonderful', name: 'Ryan V', date: '2023-03-26', rating: 5, product: 'Cape Town Private Airport Transfer', trip: '', url: `${TA}d19930417-r883648532-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '883648065', title: 'Hands down the best tour you will receive in Cape Town', name: 'Ryan V', date: '2023-03-26', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r883648065-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '882846612', title: 'Top Tier Tour', name: 'Leila V', date: '2023-03-20', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r882846612-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '881758868', title: 'Cape Peninsular Tour', name: 'lyndabeck', date: '2023-03-11', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r881758868-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '878227394', title: 'I love Stuart!', name: 'Simone', date: '2023-02-11', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Friends', url: `${TA}d19685038-r878227394-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '875937567', title: 'Fun and relaxing', name: 'Kent L', date: '2023-01-22', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Friends', url: `${TA}d19685038-r875937567-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '871101464', title: 'This is the guide to hire', name: 'Darryl S', date: '2022-12-09', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r871101464-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '864112232', title: 'Walking with Nela through Langa', name: 'Barbara', date: '2022-10-11', rating: 5, product: 'Langa Township Private Tour', trip: '', url: `${TA}d20311065-r864112232-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '860260699', title: 'Amazing, knowledgable, friendly tour guide & an incredible tour!', name: 'Diane', date: '2022-09-15', rating: 5, product: 'Good Times In Cape Town', trip: '', url: `${TA}d19611200-r860260699-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html` },
+  { id: '860196112', title: 'Best experience in the Wine estates', name: 'Mercy', date: '2022-09-15', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Couples', url: `${TA}d19685038-r860196112-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '854814673', title: 'Best Service Ever', name: 'SaSaSeSe', date: '2022-08-18', rating: 5, product: 'Cape Town Private Airport Transfer', trip: '', url: `${TA}d19930417-r854814673-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '854717313', title: 'The Best Ride Ever', name: 'Prince Homela', date: '2022-08-17', rating: 5, product: 'Cape Town Private Airport Transfer', trip: 'Solo', url: `${TA}d19930417-r854717313-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '845575285', title: 'Excellent!', name: 'Adam F', date: '2022-07-01', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r845575285-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '844621339', title: 'Great Private Wine Tour outside Cape Town', name: 'roacha76', date: '2022-06-25', rating: 5, product: 'Cape Winelands Private Tour', trip: '', url: `${TA}d19685038-r844621339-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '839373569', title: 'Wonderful Day in the Cape Peninsula', name: 'Amelia U', date: '2022-05-21', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r839373569-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '839372027', title: 'Absolutely wonderful!!', name: 'sinukas', date: '2022-05-21', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r839372027-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '839103475', title: 'We had the best wine tasting day ever.', name: 'Justin', date: '2022-05-19', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Friends', url: `${TA}d19685038-r839103475-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '834773706', title: 'Best Vacation Ever', name: 'Owen P.', date: '2022-04-16', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Family', url: `${TA}d19714975-r834773706-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '833466873', title: 'Highly recommend, very professional.', name: 'Senah N', date: '2022-04-05', rating: 5, product: 'Cape Town Private Airport Transfer', trip: '', url: `${TA}d19930417-r833466873-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '825204610', title: 'A wonderful day trip with beautiful scenery!', name: 'Megan H', date: '2022-01-17', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r825204610-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '825203423', title: 'Friendly and helpful!', name: 'Megan H', date: '2022-01-17', rating: 5, product: 'Cape Town Private Airport Transfer', trip: 'Couples', url: `${TA}d19930417-r825203423-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '824149831', title: 'Excellent service', name: 'Heloise', date: '2022-01-06', rating: 5, product: 'Cape Town Private Airport Transfer', trip: 'Family', url: `${TA}d19930417-r824149831-Cape_Town_Private_Airport_Transfer-Cape_Town_Central_Western_Cape.html` },
+  { id: '820458890', title: 'Cape Town and Cape Peninsula Private Tours', name: 'BrettG', date: '2021-11-29', rating: 5, product: 'Cape Peninsula Private Tour', trip: '', url: `${TA}d19714975-r820458890-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '817982314', title: 'There is not enough room to give Stuart the praise he deserves!', name: 'Alan H', date: '2021-11-08', rating: 5, product: 'Good Times In Cape Town', trip: '', url: `${TA}d19611200-r817982314-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html` },
+  { id: '803455545', title: 'Incredible day in Cape Town!', name: 'm00nbeam28', date: '2021-08-13', rating: 5, product: 'Good Times In Cape Town', trip: 'Couples', url: `${TA}d19611200-r803455545-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html` },
+  { id: '752208368', title: 'Amazing', name: 'billz E', date: '2020-04-03', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r752208368-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '748813404', title: 'Fantastic services', name: 'Mercy', date: '2020-03-03', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Couples', url: `${TA}d19714975-r748813404-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '741591820', title: 'Amazing full day experience!', name: 'Jay Middy', date: '2020-01-27', rating: 5, product: 'Cape Winelands Private Tour', trip: 'Friends', url: `${TA}d19685038-r741591820-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+  { id: '739391030', title: 'Best Tour Guide Ever', name: 'Karin', date: '2020-01-16', rating: 5, product: 'Good Times In Cape Town', trip: 'Friends', url: `${TA}d19611200-r739391030-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html` },
+  { id: '733226961', title: 'Birthday Trip to Capetown', name: 'StacyLomba22', date: '2019-12-17', rating: 5, product: 'Cape Peninsula Private Tour', trip: 'Friends', url: `${TA}d19714975-r733226961-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html` },
+];
+
+export const guestReviews = ARCHIVE.map((r) => ({ platform: 'Tripadvisor', ...r, ...(PRODUCTS[listingOf(r.url)] || {}) }));
+
+/** The reviews of one tour (its slug) or one transfer service (its id), newest first. */
+export const reviewsOf = ({ tour, service } = {}) => guestReviews.filter((r) => (tour && r.tour === tour) || (service && r.service === service));

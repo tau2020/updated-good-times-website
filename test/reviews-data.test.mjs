@@ -1,63 +1,70 @@
-// The review cards (D57) show our own short summary of each Tripadvisor review, labelled as a summary and linked to
-// the original: a guest's own words are quoted only with their permission, and none is on record, so no entry
-// carries quoted text. Each rating is the reviewer's own. A reviewer's own profile photo appears only once the owner
-// has supplied its file (shown at the owner's request; consent pending, docs/APPROVAL_REGISTER.md › R2).
+// The reviews in the reviewers' own words (the owner's direction of 8 Nov 2026: "use client original reviews, do not
+// summarise reviews"), from the owner's archive: each entry as the archive records it, linked to the review itself on
+// the listing of the product it names. Nothing is summarised or reworded. Each review is drawn as a chat message: the
+// reviewer's name on top, no photo head (the owner's request of 8 Nov 2026).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-import { reviews, pullQuote, reviewSource } from '../src/data/reviews.mjs';
-import { reviewerPhoto, REVIEWER_FILE } from '../src/partials/reviewer-photo.mjs';
+import { guestReviews, reviewsOf, PRODUCTS, listingOf, REVIEW_ARCHIVE } from '../src/data/guest-reviews.mjs';
+import { guestReviewCard, nameTone } from '../src/partials/review-wall.mjs';
 import { tourBySlug } from '../src/data/tours.mjs';
 import { services } from '../src/data/transfers.mjs';
+import { site } from '../src/data/site.mjs';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-/** A Tripadvisor address's listing id (d19714975). */
-const listingOf = (url) => /-d(\d+)-/.exec(url || '')?.[1];
 
-test('every review is our own short summary, linked to the original review on the matching listing; no guest’s words are quoted', () => {
-  assert.ok(reviews.length >= 2);
-  assert.equal(pullQuote, null, 'no verbatim pull-quote without the reviewer’s permission');
-  assert.match(reviewSource.url, /^https:\/\/www\.tripadvisor\.co\.za\/Attraction_Review-g312659-d19611200-/, 'Good Times’ own listing');
-  for (const r of reviews) {
-    assert.equal(r.quote, undefined, `${r.author}: no quoted review text`);
-    assert.equal(r.excerpt, undefined, `${r.author}: no excerpt`);
-    assert.ok(r.summary && r.summary.trim().length > 20, `${r.author}: has a summary`);
-    assert.ok(r.summary.length <= 220, `${r.author}: the summary fits a card (${r.summary.length} characters)`);
-    assert.ok(!/\n/.test(r.summary), `${r.author}: one passage, no paragraph breaks`);
-    assert.doesNotMatch(r.summary, /[“”"]/, `${r.author}: a paraphrase, with no quoted words`);
-    assert.match(r.url, /^https:\/\/www\.tripadvisor\.co\.za\/ShowUserReviews-g312659-d\d+-r\d+-/, `${r.author}: the original review`);
-    assert.match(r.written, /^\d{4}-\d{2}-\d{2}$/, `${r.author}: when it was written`);
-    // The review sits on the listing of the product it names
-    const product = r.tour ? tourBySlug(r.tour) : services.find((s) => s.id === r.service);
-    assert.ok(product, `${r.author}: names a real Good Times tour or service`);
-    if (product.tripadvisor) assert.equal(listingOf(r.url), listingOf(product.tripadvisor.url), `${r.author}: on ${product.slug || product.id}’s listing`);
+test('every review is the archive’s own record: the reviewer’s title, name, date, rating, product and link; nothing summarised', () => {
+  assert.equal(guestReviews.length, 81, 'every review the archive records');
+  assert.ok(guestReviews.length <= site.tripadvisor.reviewCount);
+  assert.equal(new Set(guestReviews.map((r) => r.id)).size, guestReviews.length, 'no review twice');
+  assert.deepEqual(guestReviews.map((r) => r.date), [...guestReviews.map((r) => r.date)].sort().reverse(), 'newest first');
+  assert.equal(REVIEW_ARCHIVE.usageRights, 'not requested', 'the archive’s own record of the reviewers’ rights, kept as it is');
+  for (const r of guestReviews) {
+    const who = `${r.name} (${r.id})`;
+    assert.equal(r.platform, 'Tripadvisor', who);
+    assert.ok(r.title && r.title === r.title.trim() && r.title.length <= 140, `${who}: the reviewer’s own title`);
+    for (const field of ['summary', 'excerpt', 'quote', 'text']) assert.equal(r[field], undefined, `${who}: no ${field} of ours`);
+    assert.ok(r.name && r.name === r.name.trim(), `${who}: a name`);
+    assert.match(r.date, /^20\d\d-\d\d-\d\d$/, `${who}: when it was written`);
+    assert.ok(r.date <= '2026-11-05', `${who}: written before the archive was compiled`);
+    assert.ok(Number.isInteger(r.rating) && r.rating >= 1 && r.rating <= 5, `${who}: the reviewer’s own rating`);
+    assert.match(r.url, new RegExp(`^https://www\\.tripadvisor\\.co\\.za/ShowUserReviews-g312659-d\\d+-r${r.id}-[A-Za-z_]+-Cape_Town_Central_Western_Cape\\.html$`), `${who}: the review itself`);
+    assert.ok(Object.hasOwn(PRODUCTS, listingOf(r.url)), `${who}: a Good Times listing`);
+    assert.ok(r.product, `${who}: the product reviewed`);
+    // The review sits on the listing of the product it names, and that product is a real Good Times tour or service
+    if (r.tour) {
+      const t = tourBySlug(r.tour);
+      assert.ok(t, `${who}: ${r.tour}`);
+      assert.equal(listingOf(t.tripadvisor?.url), listingOf(r.url), `${who}: on ${t.slug}’s listing`);
+    } else if (r.service) {
+      assert.ok(services.find((s) => s.id === r.service), `${who}: ${r.service}`);
+    } else {
+      assert.equal(listingOf(r.url), listingOf(site.tripadvisor.url), `${who}: the operator’s own listing`);
+    }
   }
 });
 
-test('a rating is only ever a whole number from 1 to 5, and none is invented', () => {
-  for (const r of reviews) {
-    if (r.rating === undefined) continue;
-    assert.ok(Number.isInteger(r.rating) && r.rating >= 1 && r.rating <= 5, `${r.author}: rating ${r.rating}`);
-    assert.ok(r.url, `${r.author}: a recorded rating links the review it comes from`);
+test('a tour’s reviews are those of its own listing, and every listed tour with reviews in the archive has them', () => {
+  for (const [id, where] of Object.entries(PRODUCTS)) {
+    const list = where.tour || where.service ? reviewsOf(where) : guestReviews.filter((r) => !r.tour && !r.service);
+    assert.ok(list.length > 0, `listing ${id}`);
+    for (const r of list) assert.equal(listingOf(r.url), id);
   }
+  assert.deepEqual(reviewsOf({}), []);
+  assert.equal(reviewsOf({ tour: 'cape-peninsula-private-tour' }).length + reviewsOf({ tour: 'cape-winelands-private-tour' }).length + reviewsOf({ tour: 'township-private-tour' }).length + reviewsOf({ tour: 'cape-town-city-private-tour' }).length + reviewsOf({ service: 'airport' }).length + guestReviews.filter((r) => !r.tour && !r.service).length, guestReviews.length);
 });
 
-test('each reviewer has one photo file name, the same on every review of theirs, and a photo shows only once its file exists', () => {
-  const byAuthor = new Map();
-  for (const r of reviews) {
-    assert.match(r.avatar, REVIEWER_FILE, `${r.author}: a plain lower-case file name`);
-    if (byAuthor.has(r.author)) assert.equal(r.avatar, byAuthor.get(r.author), `${r.author}: one photo for all their reviews`);
-    byAuthor.set(r.author, r.avatar);
-    const supplied = existsSync(join(HERE, '..', 'src', 'assets', 'img', 'reviewers', r.avatar));
-    assert.equal(reviewerPhoto(r.avatar), supplied ? `assets/img/reviewers/${r.avatar}` : '', `${r.author}: never a broken image`);
+test('a review is a short chat message: the name on top in its own colour, the rating, the words and the time; no photo head, product, platform or Read more', () => {
+  for (const r of guestReviews) {
+    const html = guestReviewCard(r);
+    assert.equal(r.avatar, undefined, `${r.name}: no photo file`);
+    assert.doesNotMatch(html, /avatar|<img|Posted on|review-card__about|review-card__platform|review-card__mark|review-card__more|Read more|<a /, `${r.name}: no photo head, product, platform or Read more`);
+    assert.ok(html.startsWith(`<li class="review-card" data-review-id="${r.id}">`), `${r.name}: keyed by its review`);
+    assert.ok(!html.includes(`>${r.product}<`), `${r.name}: the product is not printed`);
+    const tone = nameTone(r.name);
+    assert.ok(Number.isInteger(tone) && tone >= 0 && tone < 6 && tone === nameTone(r.name), `${r.name}: one colour, always the same`);
+    const order = ['<figcaption class="review-card__name', 'class="review-card__rating"', 'class="review-card__quote"', 'class="review-card__foot"', 'class="review-card__date"'].map((k) => html.indexOf(k));
+    assert.ok(order.every((i, n) => i > 0 && (n === 0 || i > order[n - 1])), `${r.name}: name, rating, words, then the time`);
+    assert.ok(html.includes(`<figcaption class="review-card__name review-card__name--${tone}">`), r.name);
+    assert.match(html, /<p class="review-card__foot"><time class="review-card__date" datetime="\d{4}-\d{2}-\d{2}" data-review-date>[^<]+<\/time><\/p>/, `${r.name}: the time at the foot`);
   }
-  // Two people never share a file
-  assert.equal(new Set(byAuthor.values()).size, byAuthor.size);
-  // The helper itself: a supplied file is used, a missing one or an unsafe name never is
-  assert.equal(reviewerPhoto('dave-f.jpg', { exists: () => true }), 'assets/img/reviewers/dave-f.jpg');
-  assert.equal(reviewerPhoto('dave-f.jpg', { exists: () => false }), '');
-  for (const bad of ['', undefined, '../x.jpg', 'Dave F.jpg', 'x.svg']) assert.equal(reviewerPhoto(bad, { exists: () => true }), '', String(bad));
 });

@@ -1,10 +1,11 @@
 import { esc, icon, button, picture, preloadFor, coverSizes, breadcrumb, sectionHead, imageWidth, imageSize, showRating, ratingRow, stars, sfield, travellersField, moneyTag, currencyPicker, priceBasis, priceOffers, artPanel } from '../partials/ui.mjs';
-import { tourCard, reviewCard, enquireTourHref, packageCard } from '../partials/cards.mjs';
+import { tourCard, enquireTourHref, packageCard } from '../partials/cards.mjs';
+import { reviewWall, REVIEW_WALL_ASSETS } from '../partials/review-wall.mjs';
 import { photoExhibition, mediaLightbox, galleryItems, gallerySizes, GALLERY_ASSETS, focusOf } from '../partials/media.mjs';
 import { diningDiptych } from '../partials/culinary.mjs';
 import { tours, categories, themes, groupLine, operatorRun } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
-import { reviews } from '../data/reviews.mjs';
+import { reviewsOf } from '../data/guest-reviews.mjs';
 import { imageByName, creditFor } from '../data/images.mjs';
 
 /** The photo band's height (styles.css .photo-band), for the width its photograph is drawn at: a phone's band crops a
@@ -214,7 +215,7 @@ function metaRow(t) {
 }
 
 function detailPage(t) {
-  const tourReviews = reviews.filter((r) => r.tour === t.slug);
+  const tourReviews = reviewsOf({ tour: t.slug });
   // Similar days share a region; where fewer than three do, other featured tours fill the row, so the section is always offered
   const related = tours.filter((x) => x.slug !== t.slug && x.categories.some((c) => t.categories.includes(c)));
   const similar = [...related, ...tours.filter((x) => x.slug !== t.slug && x.featured && !related.includes(x))].slice(0, 3);
@@ -289,8 +290,8 @@ function detailPage(t) {
     preload: t.images.hero ? [preloadFor(t.images.hero, { sizes: framed ? '(min-width: 56em) 50vw, 100vw' : '100vw' })] : [],
     enquireHref: href,
     // The gallery's exhibition and lightbox (media.css, media.js) and, on the Winelands day, the dining diptych (culinary)
-    styles: [...(hasGallery ? GALLERY_ASSETS.styles : []), ...(CULINARY[t.slug] ? ['assets/css/culinary.css'] : [])],
-    scripts: [...new Set([...(hasGallery ? GALLERY_ASSETS.scripts : []), ...(CULINARY[t.slug] ? ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/culinary.js'] : [])])],
+    styles: [...(hasGallery ? GALLERY_ASSETS.styles : []), ...(CULINARY[t.slug] ? ['assets/css/culinary.css'] : []), ...(tourReviews.length ? REVIEW_WALL_ASSETS.styles : [])],
+    scripts: [...new Set([...(hasGallery ? GALLERY_ASSETS.scripts : []), ...(CULINARY[t.slug] ? ['assets/js/vendor/ScrollTrigger.min.js', 'assets/js/culinary.js'] : []), ...(tourReviews.length ? REVIEW_WALL_ASSETS.scripts : [])])],
     schema: [
       {
         '@type': 'TouristTrip',
@@ -380,8 +381,8 @@ ${hero}
         tourReviews.length
           ? `<section class="tab-panel" id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" tabindex="0">
         <h2 class="tab-panel__title">Reviews</h2>
-        <p class="lead">What guests said about this day on Tripadvisor, summed up by us in a line; each links to the full review.</p>
-        <div class="review-grid mt-5">${tourReviews.map((r, i) => reviewCard(r, { i, showTour: false })).join('')}</div>
+        <p class="lead">What guests wrote about this day on Tripadvisor, in their own words: each card is the title a reviewer gave their review.</p>
+        <div class="mt-5">${reviewWall({ list: tourReviews, initial: 4, step: 8, label: `Reviews of the ${t.shortTitle}, newest first`, all: t.tripadvisor ? { href: t.tripadvisor.url, label: `All ${t.tripadvisor.reviews} reviews of this tour on Tripadvisor`, external: true } : null })}</div>
       </section>`
           : ''
       }
@@ -397,7 +398,7 @@ ${hero}
           <div><h3>Booking</h3><p>Send a booking request and we’ll reply with availability and a quote. Every booking is confirmed by one of our team.</p></div>
           ${
             t.cancellation
-              ? `<div><h3>Cancellation</h3><p>${esc(t.cancellation)} The terms for your booking are confirmed with you when you book.</p></div>`
+              ? `<div><h3>Cancellation</h3><p>${esc(t.cancellation)} Notice counts back from the scheduled time, Cape Town time; how to cancel is in our <a href="terms/#cancellations">Terms &amp; Conditions</a>.</p></div>`
               : `<div><h3>Cancellation</h3><p>The cancellation terms for your day are confirmed with you when you book.</p></div>`
           }
         </div>

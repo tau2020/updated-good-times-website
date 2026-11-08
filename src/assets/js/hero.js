@@ -56,7 +56,6 @@
   var lead = services ? one('.hero-services__lead', services) : null;
   var brush = services ? one('.hero-services__brush', services) : null;
   var items = services ? list('.hero-services__item', services) : [];
-  var leaf = window.GTLeaf && window.GTLeaf.unfurl ? window.GTLeaf.unfurl : function () { return null; };
 
   // The aircraft is measured before anything moves (the brand's own entrance shifts it by a few pixels)
   var plane = null;
@@ -110,14 +109,11 @@
     tl.addLabel('statement', plane ? 0.15 + plane.handoverAt : 1.2);
     if (statement) tl.to(statement, { opacity: 1, y: 0, clipPath: 'inset(-1em 0% -1em -1em)', duration: 0.5, ease: 'power2.out', clearProps: 'transform,clipPath' }, 'statement');
 
-    // Act V — Plan My Day, the navigation's leaf, unfolds last, as the statement settles (the brief of 6 Nov 2026). It is
-    // in the tab order and takes a click throughout: only its opacity was held
+    // Act V — the navigation's call to action (Book Your Adventure, a pill since the owner's request of 8 Nov 2026; Plan My
+    // Day's leaf before it) rises last, as the statement settles. It is in the tab order and takes a click throughout:
+    // only its opacity was held
     tl.addLabel('bookNow', 'statement+=0.1');
-    if (bookNow) {
-      tl.to(bookNow, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', clearProps: 'transform' }, 'bookNow');
-      var navLeaf = leaf(bookNow);
-      if (navLeaf) tl.add(navLeaf, 'bookNow');
-    }
+    if (bookNow) tl.to(bookNow, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', clearProps: 'transform' }, 'bookNow');
 
     // Act III — the headline, Good Times Start Here!, rises into its place (2.2 s), the shade behind the words with it
     // (wide screens); the lime swash under "Start Here!" draws in one quick stroke from left to right (2.4 s)

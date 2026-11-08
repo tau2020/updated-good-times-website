@@ -45,7 +45,10 @@ test('nothing verified: no contact links, header slot or contact bar on any page
   for (const preview of [true, false]) {
     const s = variant({ preview });
     for (const p of pages) {
-      const html = layout(p, s);
+      // The privacy notice names the Information Officer's address (site.legal, POPIA s.18; the owner's checklist of
+      // 8 Nov 2026), a legal fact rather than a contact channel: it stays whatever the channels' state
+      const io = site.legal.informationOfficer;
+      const html = p.path === 'privacy/index.html' && io.verified ? layout(p, s).replaceAll(`href="mailto:${io.email}"`, '') : layout(p, s);
       assert.doesNotMatch(html, /wa\.me|href="tel:|href="mailto:/, `${p.path} (${s.env})`);
       assert.doesNotMatch(html, /header-contact|data-contact-bar/, `${p.path} (${s.env})`);
       if (!preview) assert.doesNotMatch(html, /awaiting confirmation|class="pending"/, `${p.path} (production)`);
@@ -74,17 +77,17 @@ test('verified WhatsApp: every page gets a WhatsApp + Plan My Day bar; tour page
     assert.ok(bar, `${p.path}: contact bar`);
     assert.match(html, /<body class="[^"]*\bhas-mobile-cta\b/, `${p.path}: footer clears the bar`);
     assert.match(bar, new RegExp(`href="https://wa\\.me/${digits}"[^>]*>.*WhatsApp`), `${p.path}: WhatsApp button`);
-    assert.equal((bar.match(/class="(?:btn |leaf-btn[" ])/g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the leaf)`);
+    assert.equal((bar.match(/class="btn /g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the green pill)`);
     assert.doesNotMatch(html, /data-mobile-cta[ >]/, `${p.path}: one bar only`);
     if (p.path === 'enquire/index.html') {
       assert.match(bar, /href="tel:/, 'enquiry page: Call');
       assert.doesNotMatch(bar, /href="[^"]*enquire\//, 'enquiry page: no link to itself');
     } else if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
     } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
     } else {
-      assert.match(bar, /href="[^"]*enquire\/"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: Plan My Day`);
+      assert.match(bar, /href="[^"]*enquire\/"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: Plan My Day`);
     }
   }
 });
@@ -161,13 +164,13 @@ test('only the phone verified (Good Times until 7 Nov 2026): every page gets a C
       assert.equal((bar.match(/class="btn /g) || []).length, 1, 'enquiry page: Call alone');
       assert.doesNotMatch(bar, /href="[^"]*enquire\//, 'enquiry page: no link to itself');
     } else {
-      assert.equal((bar.match(/class="(?:btn |leaf-btn[" ])/g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the leaf)`);
+      assert.equal((bar.match(/class="btn /g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the green pill)`);
       if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
       } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
       } else {
-        assert.match(bar, /<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: Plan My Day`);
+        assert.match(bar, /<span>Plan My Day<\/span>/, `${p.path}: Plan My Day`);
       }
     }
   }
@@ -198,7 +201,10 @@ test('the contacts: the published number for calls (5 Nov 2026) and WhatsApp (co
   for (const p of pages) {
     const html = layout(p, live);
     assert.doesNotMatch(html, /info@/, `${p.path}: no info@ left`);
-    if (p.path !== 'contact/index.html') assert.doesNotMatch(html, /stuart@/, `${p.path}: the additional address belongs to the contact section`);
+    // stuart@ is the additional contact on the contact page (6 Nov 2026) and, since the owner's checklist of 8 Nov 2026,
+    // the Information Officer's address for privacy requests on the privacy notice; nowhere else
+    if (!['contact/index.html', 'privacy/index.html'].includes(p.path)) assert.doesNotMatch(html, /stuart@/, `${p.path}: the additional address belongs to the contact section`);
+    if (p.path === 'privacy/index.html') assert.ok([...html.matchAll(/stuart@[^"<]*/g)].every((m) => m.index > html.indexOf('Information Officer')), 'privacy: stuart@ only as the Information Officer’s address');
   }
   // The contact section: both addresses, each with its own label, the primary first.
   const direct = section(render('contact/index.html', live), '<h2>Phone, email and our office</h2>', '<h3>');

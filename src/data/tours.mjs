@@ -24,6 +24,7 @@
  */
 
 import { priceFor, groupMax } from './pricing.mjs';
+import { CANCELLATION } from './cancellation.mjs';
 
 const OFFICIAL = 'https://www.goodtimesincapetown.co.za/tour/';
 const TA = 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-';
@@ -32,10 +33,9 @@ const CHECKED = '2026-11-05';
 const TA_CHECKED = '2026-11-08';
 const APPROVAL = 'published by Good Times on goodtimesincapetown.co.za; wording adapted for this site';
 const source = (slug) => ({ listing: `${OFFICIAL}${slug}/`, checked: CHECKED });
-/** The usual cancellation terms on the official tour pages. */
-const CANCEL_DAY = 'Free cancellation up to 24 hours before the scheduled departure time. Cancellations within 24 hours of departure, and no-shows, are non-refundable.';
-const CANCEL_ACTIVITY =
-  'Free cancellation up to 24 hours before your scheduled activity. Adventure activities depend on the weather and the season: if the operator cancels for safety reasons, you are offered a full refund or a new date.';
+/** The cancellation terms: the owner's rule per kind of booking (8 Nov 2026), worded once in cancellation.mjs. */
+const CANCEL_DAY = CANCELLATION.day;
+const CANCEL_ACTIVITY = `${CANCELLATION.activity} Adventure activities depend on the weather and the season: if the operator cancels for safety reasons, you are offered a full refund or a new date.`;
 const MOBILITY = 'Tell us about any mobility needs when you book, so we can plan the day around them.';
 /** The owner's question for each adventure activity (groupLine below, and the site-wide wording in docs/seo/GSC_AUDIT_IMPLEMENTATION.md). */
 const PRIVATE_ACTIVITY =
@@ -279,7 +279,8 @@ export const tours = [
     notIncluded: [],
     pickup: 'Pickup and drop-off are arranged with you.',
     accessibility: MOBILITY,
-    cancellation: '',
+    // A day tour under the owner's rule of 8 Nov 2026 (it had no published cancellation line)
+    cancellation: CANCEL_DAY,
     price: priceFor('private-cape-town-experience'),
     images: { hero: 'coast-sunset-couple', card: 'coast-sunset-couple', gallery: ['beach-thrones', 'chapmans-peak-guide-selfie'] },
     heroFocus: '45% 58%',

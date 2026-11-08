@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Good Times in Cape Town — 09 · Guest voices (src/pages/index.mjs; the owner's request of 8 Nov 2026)
+   The home page's review chapter: the chapter's words centred over each platform's own rating and the reviewers'
+   own words (the review wall: review-wall.css). The band's right edge holds the sea on wide screens (scenic.css ›
+   --side, held); the rating bar and the cards are white glass over it. Motion: living-cape.js rises the head, the bar
+   and the wall once (opacity and 16 px).
+   ========================================================================== */
+
+.voices {
+  padding-block: var(--lc-chapter);
+  color: var(--lc-body);
+  background:
+    radial-gradient(46% 52% at 6% 96%, rgb(201 233 112 / 0.22) 0%, rgb(201 233 112 / 0) 72%),
+    linear-gradient(180deg, var(--surface-white) 0%, var(--green-soft-background) 100%);
+}
+/* Anything the visitor reaches by keyboard is never left faded (the reveal sets opacity inline) */
+.voices [data-voice]:focus-within {
+  opacity: 1 !important;
+}
+
+.voices__head {
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  max-width: 46rem;
+  margin: 0 auto clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  text-align: center;
+}
+.voices__title {
+  max-width: 16ch;
+  margin-inline: auto;
+}
+
+/* The rating bar and the review bubbles: white glass, a little translucent (the owner's request of 8 Nov 2026), the
+   scenic tokens' own (tokens.css; a bubble's tail takes the same --bubble colour). The blur only where the sea is drawn
+   behind them (wide screens, scenic.css); on phones and tablets plain translucent white over the band's ground.
+   Near-opaque where transparency is reduced. Styled here, not with a class on each card, so the cards "Load more"
+   brings from the reviews page are glass too. */
+.voices .rating-bar {
+  background: var(--gt-scenic-card);
+}
+.voices .review-card__inner {
+  --bubble: var(--gt-scenic-card);
+}
+@media (min-width: 64em) {
+  @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .voices .rating-bar,
+    .voices .review-card__inner {
+      -webkit-backdrop-filter: blur(14px) saturate(125%);
+      backdrop-filter: blur(14px) saturate(125%);
+    }
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .voices .rating-bar,
+  .voices .review-card__inner {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .voices .rating-bar {
+    background: var(--gt-glass-fallback);
+  }
+  .voices .review-card__inner {
+    --bubble: var(--gt-glass-fallback);
+  }
+}

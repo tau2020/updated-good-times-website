@@ -474,7 +474,7 @@
     line-height: 1.45;
   }
   .sand-journey__cta {
-    min-height: 2.5rem;
+    min-height: var(--btn-height-compact);
     padding-block: 0.45rem;
   }
   .sand-journey__credit {

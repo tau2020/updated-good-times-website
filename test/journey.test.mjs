@@ -12,7 +12,7 @@ import { site } from '../src/data/site.mjs';
 import { images } from '../src/data/images.mjs';
 import { tours } from '../src/data/tours.mjs';
 import { layout } from '../src/partials/layout.mjs';
-import { leafButton, leafShape, leafDefs, LEAF_PATH, LEAF_STEM, LEAF_VEIN, LEAF_VEINLETS, SIGNATURE_CTA, SIGNATURE_DESC_ID } from '../src/partials/ui.mjs';
+import { ctaButton, SIGNATURE_CTA, SIGNATURE_DESC_ID, NAV_CTA } from '../src/partials/ui.mjs';
 import { SAND_WORDS } from '../src/partials/sand-journey.mjs';
 import { SERVICES } from '../src/partials/living-cape.mjs';
 
@@ -25,70 +25,47 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith('.mjs')).sort()) {
 const rendered = pages.map((p) => ({ path: p.path, html: layout(p, site) }));
 const home = rendered.find((p) => p.path === 'index.html').html;
 const css = (f) => readFileSync(new URL(`../src/assets/css/${f}`, import.meta.url), 'utf8');
-/** Every leaf on a page: [opening tag attributes, label]. */
-const leaves = (html) => [...html.matchAll(/<a class="leaf-btn([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g)].map((m) => ({ cls: m[1], attrs: m[2], inner: m[3], label: (/<span class="leaf-btn__label">([\s\S]*?)<\/span>$/.exec(m[3]) || [])[1] }));
+/** Every primary pill on a page: its classes, attributes and words (the former leaves are among them since 8 Nov 2026). */
+const pills = (html) => [...html.matchAll(/<a class="btn gt-button gt-button--primary([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g)].map((m) => ({ cls: m[1], attrs: m[2], inner: m[3], label: (/<span>([\s\S]*?)<\/span>$/.exec(m[3]) || [])[1] }));
 const text = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 /** Where a photograph is shown in a page's own content (<main>; the concierge and the phone menu repeat the four
     services' photographs on every page as navigation): one entry per <img> of that slot, as page paths. */
 const mainOf = (html) => html.slice(html.indexOf('<main'), html.indexOf('</main>'));
 const shownOn = (name) => rendered.flatMap((p) => [...mainOf(p.html).matchAll(new RegExp(`<img [^>]*src="(?:\\.\\./)*assets/img/${name}-\\d+\\.`, 'g'))].map(() => p.path));
 
-test('the leaf: one link, its drawing behind its words, hidden from assistive technology and never focusable', () => {
-  const a = leafButton({ href: 'tours/', label: 'View the Tours' });
-  assert.match(a, /^<a class="leaf-btn" href="tours\/" data-leaf><svg class="leaf-btn__shape" viewBox="0 0 240 64" preserveAspectRatio="none" aria-hidden="true" focusable="false">/);
-  assert.match(a, /<span class="leaf-btn__label">View the Tours<\/span><\/a>$/);
-  // Its parts, in this order: the focus ring and the body (one outline), the stem, the midrib, the side veins
-  const d = [...leafShape().matchAll(/<path class="leaf-btn__(\w+)" d="([^"]+)"/g)].map((m) => [m[1], m[2]]);
-  assert.deepEqual(d, [['ring', LEAF_PATH], ['body', LEAF_PATH], ['stem', LEAF_STEM], ['vein', LEAF_VEIN], ['veinlets', LEAF_VEINLETS]]);
-  assert.match(leafShape(), /class="leaf-btn__vein" d="[^"]+" pathLength="1"/, 'the midrib draws (a dash offset from 1 to 0)');
+test('the leaf-shaped buttons are the standard green pill (the owner’s request of 8 Nov 2026): one helper, no leaf drawing anywhere', () => {
+  const a = ctaButton({ href: 'tours/', label: 'View the Tours' });
+  assert.equal(a, '<a class="btn gt-button gt-button--primary" href="tours/"><span>View the Tours</span></a>');
   // Sizes, placement classes, extra attributes and the scene that plays its entrance
-  assert.match(leafButton({ href: 'x/', label: 'Y', size: 'large compact', cls: 'hero__cta', attrs: 'data-intro', owner: 'hero' }), /^<a class="leaf-btn leaf-btn--large leaf-btn--compact hero__cta" href="x\/" data-leaf data-intro data-leaf-owner="hero">/);
-  // Words with markup keep the plain label as the visible text
-  assert.match(leafButton({ href: 'x/', label: 'Find Your Good Time', html: 'Find Your <em>Good Time</em>' }), /<span class="leaf-btn__label">Find Your <em>Good Time<\/em><\/span>/);
-  // The signature is described wherever it appears
-  assert.match(leafButton({ href: 'enquire/', label: SIGNATURE_CTA }), new RegExp(`aria-describedby="${SIGNATURE_DESC_ID}"`));
-  assert.doesNotMatch(leafButton({ href: 'x/', label: 'Arrange My Transfer' }), /aria-describedby/);
+  assert.equal(ctaButton({ href: 'x/', label: 'Y', size: 'large', cls: 'lc-seal', attrs: 'data-intro', owner: 'invite' }), '<a class="btn gt-button gt-button--primary gt-button--large lc-seal" href="x/" data-intro data-cta-owner="invite"><span>Y</span></a>');
+  // The signature is described wherever it appears, and only once
+  const sig = ctaButton({ href: 'enquire/', label: SIGNATURE_CTA });
+  assert.equal((sig.match(new RegExp(`aria-describedby="${SIGNATURE_DESC_ID}"`, 'g')) || []).length, 1);
+  assert.doesNotMatch(ctaButton({ href: 'x/', label: 'Arrange My Transfer' }), /aria-describedby/);
   // Escaped
-  assert.match(leafButton({ href: 'a/?b=1&c=2', label: 'A & B' }), /href="a\/\?b=1&amp;c=2"[\s\S]*>A &amp; B<\/span>/);
-});
-
-test('every page: one set of leaf gradients after the skip link; every leaf a link with words, never inside a form', () => {
-  assert.match(leafDefs(), /^<svg class="leaf-defs" [^>]*aria-hidden="true"[^>]*>/);
-  for (const id of ['gt-leaf-fill', 'gt-leaf-fill-hover', 'gt-leaf-vein']) assert.match(leafDefs(), new RegExp(`id="${id}"`));
+  assert.match(ctaButton({ href: 'a/?b=1&c=2', label: 'A & B' }), /href="a\/\?b=1&amp;c=2"><span>A &amp; B<\/span>/);
   for (const { path, html } of rendered) {
-    assert.equal((html.match(/class="leaf-defs"/g) || []).length, 1, `${path}: one set of gradients`);
-    assert.ok(html.indexOf('class="leaf-defs"') > html.indexOf('class="skip-link'), `${path}: after the skip link`);
-    for (const l of leaves(html)) {
-      assert.match(l.attrs, /^ href="[^"]+" data-leaf/, `${path}: a link with a destination`);
-      assert.ok(l.label && text(l.label).length > 2, `${path}: words in every leaf`);
-    }
-    for (const form of html.match(/<form\b[\s\S]*?<\/form>/g) || []) assert.doesNotMatch(form, /leaf-btn/, `${path}: a leaf never submits a form`);
+    assert.doesNotMatch(html, /leaf-btn|leaf-defs|gt-leaf-|data-leaf|leaf\.js/, `${path}: no leaf drawing, gradient, hook or script`);
+    for (const form of html.match(/<form\b[\s\S]*?<\/form>/g) || []) assert.doesNotMatch(form, /gt-button--primary"[^>]* href=/, `${path}: a link never sits in a form as its action`);
   }
-});
-
-test('the leaf in the stylesheet: at least 44 px tall at every size, white words, a visible focus ring, forced colours and reduced motion', () => {
   const b = css('buttons.css');
-  const px = (name) => Number((new RegExp(`--${name}:\\s*(\\d+)px`).exec(b) || [])[1]);
-  for (const n of ['leaf-h', 'leaf-h-large', 'leaf-h-compact']) assert.ok(px(n) >= 44, `${n} is ${px(n)} px`);
-  assert.match(b, /\.leaf-btn:focus-visible[^{]*\{[^}]*\}|\.leaf-btn:focus-visible \.leaf-btn__ring/);
-  assert.match(b, /@media \(forced-colors: active\)[\s\S]*?\.leaf-btn/);
-  assert.match(b, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.leaf-btn/);
-  assert.doesNotMatch(b, /\.leaf-btn[^{]*\{[^}]*outline:\s*(?:none|0)\s*;[^}]*\}(?![\s\S]*leaf-btn__ring)/, 'the outline is never removed without the ring');
-  // This sheet loads after styles.css, so .leaf-btn's display would show the header's leaf on phones: it must not
-  assert.match(b, /@media \(max-width: 39\.99em\) \{\s*\.header-cta\.leaf-btn \{\s*display: none;/);
+  assert.doesNotMatch(b, /\.leaf-btn|--leaf-/, 'no leaf component in the button system');
+  // This sheet loads after styles.css, so .gt-button's display would show the navbar's pill on phones: it must not
+  assert.match(b, /@media \(max-width: 39\.99em\) \{\s*\.header-cta\.gt-button \{\s*display: none;/);
   assert.match(css('styles.css'), /\.header-cta \{\s*display: none;\s*\}/);
 });
 
-test('the primary calls to action: Plan My Day in the header, Explore the Cape Peninsula Tour at the end of the footprints; the hero has its headline, not a leaf', () => {
-  const all = leaves(home);
+test('the primary calls to action: Book Your Adventure in the navbar, Explore the Cape Peninsula Tour at the end of the footprints; the hero has its headline', () => {
+  const all = pills(home);
   // The owner's choice of 7 Nov 2026: the hero's Find Your Good Time leaf gave its place to the headline
   assert.equal(all.find((l) => /hero__cta/.test(l.cls)), undefined);
   assert.doesNotMatch(home, /Find Your Good Time/);
   assert.match(home, /<p class="hero-headline" data-intro>/);
   assert.match(home, /Good Times Start Here/i, 'the slogan stays');
   for (const { path, html } of rendered) {
-    const header = leaves(html).find((l) => /header-cta/.test(l.cls));
-    assert.equal(text(header.label), SIGNATURE_CTA, `${path}: header`);
+    const header = pills(html).find((l) => /header-cta/.test(l.cls));
+    assert.equal(text(header.label), NAV_CTA, `${path}: header`);
+    assert.match(header.attrs, new RegExp(`aria-describedby="${SIGNATURE_DESC_ID}"`), `${path}: the booking action's description`);
   }
   const sand = all.find((l) => /sand-journey__cta/.test(l.cls));
   assert.equal(text(sand.label), 'Explore the Cape Peninsula Tour');
