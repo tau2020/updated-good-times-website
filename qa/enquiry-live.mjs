@@ -772,6 +772,29 @@ if (want('X') || want('G')) {
         if (!/Terms/i.test(v.text)) v.problems.push('no terms line');
         return { pass: v.problems.length === 0, actual: v.problems.length ? v.problems.join('; ') : `${v.summary.subject} · from ${v.summary.from} · ${v.summary.last_event}`, evidence: v.summary };
       });
+      await check('X7', 'Acceptance: the links in the emails', 'every link in the three emails answers: this deployment’s pages, the dashboard and the status links (opening one changes nothing), and the outside links; none is plain http', async () => {
+        const ids = (await logsOf(row.id)).map((l) => l.provider_message_id).filter(Boolean);
+        const links = new Set();
+        for (const id of ids) for (const l of linksIn((await rs(`/emails/${id}`)).html)) if (/^https?:/i.test(l)) links.add(l);
+        const broken = [];
+        const outside = [];
+        for (const l of links) {
+          if (/^http:/i.test(l)) broken.push(`${l} (plain http)`);
+          if (l.startsWith(`${BASE}/`) || l === BASE) {
+            const u = new URL(l);
+            const r = await api(BASE, u.pathname + u.search);
+            // A status link the booking has moved past answers 409 with a page saying nothing changed: it works.
+            const movedPast = /\/status$/.test(u.pathname) && r.status === 409 && /No change/.test(r.text);
+            if (!(r.status >= 200 && r.status < 400) && !movedPast) broken.push(`${u.pathname} → ${r.status}`);
+          } else {
+            const r = await fetch(l, { redirect: 'follow', headers: { 'user-agent': 'Mozilla/5.0 (Good Times link check)' } }).catch(() => ({ status: 0 }));
+            outside.push(`${new URL(l).host} ${r.status}`);
+            if (!(r.status >= 200 && r.status < 400) && r.status !== 403) broken.push(`${new URL(l).host} → ${r.status}`);
+          }
+        }
+        const statusAfter = (await byRef(refs.X)).status;
+        return { pass: links.size > 0 && broken.length === 0 && statusAfter === 'CONFIRMED', actual: `${links.size} links; ${broken.length ? `broken: ${broken.join(', ')}` : 'all answer'}; outside: ${outside.join(', ') || 'none'}; status still ${statusAfter}` };
+      });
       await check('X6', 'Acceptance: the journey in the database', 'status CONFIRMED; history: created, terms, NEW → Confirmed by the staff address; email_log: three emails, all sent', async () => {
         const now = await byRef(refs.X);
         const ev = await eventsOf(row.id);
@@ -815,8 +838,9 @@ if (want('G')) {
     return { pass: ok, actual: `none ${none.status}→${none.headers.get('location')}; invalid ${invalid.status}; forged ${forged.status}; expired ${expired.status}; old session ${oldSession.status}; forged session ${forgedSession.status}; non-staff session ${outsiderSession.status}; stranger ${stranger.status}, new emails ${newer.length}` };
   });
   await check('G7', 'G Admin: forged requests (CSRF)', 'a change posted from another origin, or without the page’s form token, is refused and changes nothing', async () => {
-    const target = refs.A ? await byRef(refs.A) : refs.D ? await byRef(refs.D) : null;
-    if (!target) return { pass: false, actual: 'no enquiry to aim at (run A or D first)' };
+    const ref = [refs.A, refs.D, refs.X].find(Boolean);
+    const target = ref ? await byRef(ref) : null;
+    if (!target) return { pass: false, actual: 'no enquiry to aim at (run A, D or X first)' };
     const evil = await adminPost(BASE, `/admin/bookings/${target.id}/status`, { status: 'CANCELLED' }, staff, { origin: 'https://evil.example' });
     const noToken = await api(BASE, `/admin/bookings/${target.id}/status`, { method: 'POST', cookie: staff.cookie, form: { status: 'CANCELLED' } });
     const after = await byRef(target.reference_number);
@@ -825,7 +849,7 @@ if (want('G')) {
   await check('G8', 'G Admin: the lists', 'New, Upcoming, Past, Closed & cancelled and All answer; search finds by reference and by name; a non-match finds nothing', async () => {
     const views = {};
     for (const v of ['new', 'upcoming', 'past', 'cancelled', 'all']) views[v] = (await adminGet(BASE, `/admin/?view=${v}`, staff)).status;
-    const ref = refs.A || refs.D;
+    const ref = refs.A || refs.D || refs.X;
     const byRefQ = await adminGet(BASE, `/admin/?view=all&q=${encodeURIComponent(ref || 'GT-')}`, staff);
     const byName = await adminGet(BASE, `/admin/?view=all&q=${encodeURIComponent(`Synthetic Tester`)}`, staff);
     const none = await adminGet(BASE, `/admin/?view=all&q=zzzz-no-such-${RUN}`, staff);

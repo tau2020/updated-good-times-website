@@ -1,0 +1,235 @@
+{
+ "base": "https://test.good-times-enquiry-test.pages.dev",
+ "run": "mw7ixaop",
+ "commit": "95831eb",
+ "at": "2026-11-08T07:42:52.595Z",
+ "references": {
+  "D": "GT-ZNJ8PS",
+  "E": "GT-UPC6GA",
+  "J": "GT-79UFJD"
+ },
+ "results": [
+  {
+   "id": "P1",
+   "scenario": "Preflight",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "health answers live; the database check passes from the Functions runtime",
+   "actual": "health 200 live; db 200 ok (673 ms)",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:41:35.652Z"
+  },
+  {
+   "id": "P2",
+   "scenario": "Preflight: access restriction",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "without the access key (or with a wrong one) the enquiry, availability and dashboard routes answer 403 and store nothing",
+   "actual": "403, 403, 403, 403; rows 14 → 14",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:41:37.658Z"
+  },
+  {
+   "id": "P3",
+   "scenario": "Preflight: not indexable, not production",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "pages carry noindex (header and meta); the project’s production address has no deployment",
+   "actual": "X-Robots-Tag \"noindex, nofollow\", meta true, production address 404",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:41:38.606Z"
+  },
+  {
+   "id": "D1",
+   "scenario": "D Duplicate submission",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "a browser retry (same idempotency key) answers 409 with the first reference; the same request under a new key within 10 minutes answers 409 too; one enquiry, one pair of emails",
+   "actual": "201 GT-ZNJ8PS in 4311 ms; retry 409 duplicate_submission GT-ZNJ8PS in 991 ms; same content 409 duplicate_content; rows 1; emails 2",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:41:52.370Z"
+  },
+  {
+   "id": "E1",
+   "scenario": "E Email failure: the request is kept",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "with Resend refusing the key: 201 with emailed:false and a reference; the enquiry is stored; both emails logged as failed with the provider’s error",
+   "actual": "201 GT-UPC6GA emailed false; logs enquiry-received failed: Resend responded 401: API key is invalid; new-enquiry-internal failed: Resend responded 401: API key is invalid",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:41:58.069Z"
+  },
+  {
+   "id": "E1b",
+   "scenario": "E Email failure: visible to staff",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the bookings list says how many emails failed and marks the request “Email failed”",
+   "actual": "row mark true; “2 emails failed to send and will go again when you press Retry.”",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:41:58.749Z"
+  },
+  {
+   "id": "E2",
+   "scenario": "E Email failure: the retry",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "after the provider is restored, the dashboard’s “Retry emails that failed” sends them: same rows, now sent with message ids, attempts 2; no new enquiry; the obsolete confirmation is superseded, the cancellation sent",
+   "actual": "retry → /admin/?m=retried.5.0; first: enquiry-received sent ×2, new-enquiry-internal sent ×2; second: new-enquiry-internal sent, enquiry-received sent, booking-confirmed failed (superseded: the booking is now CANCELLED), booking-cancelled sent; enquiries 2",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:14.346Z"
+  },
+  {
+   "id": "E2b",
+   "scenario": "E Email failure: cleared after the retry",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "once resent, the request loses its “Email failed” mark",
+   "actual": "mark gone",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:14.975Z"
+  },
+  {
+   "id": "E3",
+   "scenario": "E Email failure: the retried email",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the retried acknowledgement reaches Resend’s inbox with the original reference",
+   "actual": "Your Good Times tour enquiry GT-UPC6GA: received, not yet confirmed · delivered",
+   "pass": true,
+   "evidence": {
+    "id": "01a1ba1b…",
+    "to": [
+     "delivered+gt-mw7ixaop-e@resend.dev"
+    ],
+    "from": "Good Times in Cape Town (test) <onboarding@resend.dev>",
+    "reply_to": [
+     "info@goodtimesincapetown.co.za"
+    ],
+    "subject": "Your Good Times tour enquiry GT-UPC6GA: received, not yet confirmed",
+    "last_event": "delivered",
+    "html_bytes": 8411,
+    "text_bytes": 996
+   },
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:16.355Z"
+  },
+  {
+   "id": "F1",
+   "scenario": "F Database failure: cannot connect",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the API answers an error (no false success, no invented reference, no diagnostics); health reports the database; nothing is stored",
+   "actual": "500 \"Something went wrong on our side. Please try again in a moment.\"; health 503 error; stored 0",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:17.790Z"
+  },
+  {
+   "id": "F2",
+   "scenario": "F Database failure: the dashboard",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the dashboard shows a plain error page, not a stack trace or a false empty list",
+   "actual": "500 Something went wrong on our side. Please try again in a moment.",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:18.099Z"
+  },
+  {
+   "id": "F3",
+   "scenario": "F Database failure: the insert is refused",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "an error answer with no reference; no row, no email; the next request works again",
+   "actual": "500 \"Something went wrong on our side. Please try again in a moment.\"; stored 0; emails 0; afterwards ok",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:22.914Z"
+  },
+  {
+   "id": "F4",
+   "scenario": "F Database failure: the email log cannot be written",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the stored enquiry is kept and the answer says the emails were not sent (emailed:false), never a false “emailed”",
+   "actual": "201 GT-54YXAJ emailed false; stored true; email_log rows 0",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:28.422Z"
+  },
+  {
+   "id": "F5",
+   "scenario": "F Database failure: the unannounced request is visible",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the bookings list marks it “No email sent” and its page tells staff to contact the customer",
+   "actual": "list mark true; page warning true",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:29.897Z"
+  },
+  {
+   "id": "J1",
+   "scenario": "J Mobile: validation",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "an empty step answers with plain messages at the top of the step, on a 412 px wide screen",
+   "actual": "412×839: “Some information needs attention Choose a preferred date, or tick “My dates are flexible”.”",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:31.868Z"
+  },
+  {
+   "id": "J2",
+   "scenario": "J Mobile: keyboard and tap targets",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "with the lower 42% of the screen taken by a keyboard, the field and the Next button stay reachable, uncovered and at least 44 px tall; no sideways scroll",
+   "actual": "field covered false, Next in view true covered false (334×48); overflow 0",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:33.365Z"
+  },
+  {
+   "id": "J3",
+   "scenario": "J Mobile: repeated taps",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "three quick taps on Send make one request and one enquiry; the confirmation is shown",
+   "actual": "1 request(s), 1 enquiry, shown GT-79UFJD",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:43.913Z"
+  },
+  {
+   "id": "T1",
+   "scenario": "Reliability: response times",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "the database check, the availability month and the dashboard answer within a few seconds from the Functions runtime",
+   "actual": "health+db median 633 ms (max 772); availability 837 ms (max 841); dashboard list 567 ms (max 629)",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:51.127Z"
+  },
+  {
+   "id": "L1",
+   "scenario": "Email: no unintended recipients",
+   "environment": "cloud: test.good-times-enquiry-test.pages.dev (Pages Functions, Neon enquiry-test, Resend)",
+   "expected": "every email of this run went to Resend’s test inbox or a synthetic resend.dev address, never to a real mailbox",
+   "actual": "10 emails, 0 to a non-test address",
+   "pass": true,
+   "evidence": {},
+   "commit": "95831eb",
+   "at": "2026-11-08T07:42:52.566Z"
+  }
+ ]
+}

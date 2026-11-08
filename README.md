@@ -185,6 +185,7 @@ The go-live evidence and the remaining approvals are in `docs/enquiries/GO_LIVE_
 ## Documentation
 
 - `docs/APPROVAL_REGISTER.md`: every decision and fact still waiting for the owner, and what each one unlocks
+- `docs/enquiries/GO_LIVE_READINESS.md`: the live enquiry pipeline (8 Nov 2026): Neon, Resend and Cloudflare as configured, the cloud test matrix with its evidence (`docs/enquiries/evidence/`), the security and reliability findings, how staff operate it, and what still blocks going live
 - `docs/seo/`: the historical URLs (Step 4B): the readiness report with the cutover dependencies and the rollback (`READINESS.md`), the registry's tables (`HISTORICAL_URL_REGISTRY.md`, `historical-url-registry.csv`), a copy of the production build's `_redirects` for review, and the decisions on the old site's images (`HISTORICAL_MEDIA.md`)
 - `docs/motion/`: the cinematic motion layer (brand aircraft, sand journey): discovery, validation, performance, critique, delivery, and the evidence in `docs/motion/qa/`
 - `docs/RIGHTS_REGISTER.md`: origin and status of every photograph, the logo, reviews, prices and facts
