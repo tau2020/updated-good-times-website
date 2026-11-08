@@ -4,8 +4,10 @@ The owner's master enhancement prompt and its legal and reputation addendum, car
 `enhancement/glass-scenic-reputation-legal` (from `main` `45e972f`), with the owner's follow-up requests of the same day:
 the review section of the reference screenshots in the reviewers' own words (short chat-style cards: the name, the
 stars, the words, the time), the backdrops more visible and on four more pages, no leaf on any button (every
-leaf-shaped button is the standard green pill), and "Book Your Adventure" as the navbar's call to action. Not merged and not deployed to production: it is on a Cloudflare preview alias,
-<https://glass-review.good-times-in-cape-town.pages.dev> (`06-qa.md` › G8).
+leaf-shaped button is the standard green pill), and "Book Your Adventure" as the navbar's call to action. Merged into
+`main` (PR #7, `2889071`) and released on 8 Nov 2026 to <https://good-times-in-cape-town.pages.dev> (deployment `93527eca`
+from `a7ce038`) on the owner's recorded override of B7 and R4; never to the domain. Reviewed first on a Cloudflare preview
+alias, <https://glass-review.good-times-in-cape-town.pages.dev> (`06-qa.md` › G8).
 
 | | Report |
 |---|---|
@@ -28,4 +30,5 @@ summaries and the themes, retired at the owner's direction),
 **T1** reopened and **T2** (the CTGA associate claim and the Certificate of Excellence: the issuing bodies do not list
 them), **P14** (the scenic backdrops), **G1** (the Google profile's address), **S6** (the header's glass), **D9** (48 hours,
 as the approved document says), and **B3–B5** settled by the checklist. The release gate (`node scripts/release-gate.mjs`)
-holds production on B7 and R4.
+held production on B7 and R4 until the owner accepted both as open in the recorded override of 8 Nov 2026 (neither is
+recorded as given; the domain still needs them).
