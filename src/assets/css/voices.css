@@ -30,10 +30,6 @@
   max-width: 16ch;
   margin-inline: auto;
 }
-.voices__lead {
-  max-width: 40rem;
-  margin-inline: auto;
-}
 
 /* The rating bar and the cards: white glass, a little translucent (the owner's request of 8 Nov 2026), the scenic
    tokens' own (tokens.css). The blur only where the sea is drawn behind them (wide screens, scenic.css); on phones and

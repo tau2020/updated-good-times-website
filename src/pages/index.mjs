@@ -117,7 +117,6 @@ function voicesSection(site) {
     <header class="voices__head" data-voice>
       ${chapterMark(9, 'The people behind the good times', 'voices__eyebrow')}
       <h2 class="lc-title voices__title" id="voices-title">Good times, <em>by the people who had them.</em></h2>
-      <p class="lc-lead voices__lead">Don’t just take our word for it. These are travellers’ own reviews of their days with us, newest first: each card shows the title they gave their review, and Read more opens the whole of it.</p>
     </header>
     ${ratingBar(site, { attrs: 'data-voice' })}
     ${reviewWall({ list: guestReviews.slice(0, HOME_REVIEWS), initial: HOME_REVIEWS, step: 8, moreFrom: 'reviews/', label: 'Reviews from Tripadvisor, newest first', all: { href: 'reviews/', label: `See all ${guestReviews.length} reviews` }, attrs: 'data-voice' })}
