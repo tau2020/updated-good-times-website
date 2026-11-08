@@ -25,6 +25,7 @@
      cannot be reached the form carries on: the server checks again on send. */
 import { validateEnquiry, TOUR_SLUGS, PACKAGE_SLUGS, CUSTOM_TOUR, TRANSFER_TYPES, FLIGHT_REQUIRED_TYPES, todayInSast, earliestDate, stepOf, BOOKING_RULES } from './enquiry-schema.js';
 import { display, onCurrencyChange } from './currency.js';
+import { enhancePhone, enhanceCountry } from './country-pickers.js';
 
 const root = document.querySelector('[data-enquiry]');
 if (root) {
@@ -67,6 +68,8 @@ function init(root) {
   // Without motion (a reduced-motion preference, or ?nomotion as everywhere else on the site) every scroll is instant.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]nomotion\b/.test(location.search);
   const state = { step: 'service', busy: false, done: false, checking: false };
+  // The calling-code button beside the phone number (country-pickers.js), once the form is ready.
+  let phoneUi = null;
 
   /* ---------- storage (best effort; never throws) ---------- */
   const store = {
@@ -172,7 +175,10 @@ function init(root) {
 
   function values() {
     const d = detailsPanel();
-    return { ...readPanel(panels.service), ...(d ? readPanel(d) : {}), ...readPanel(panels.contact) };
+    const contact = readPanel(panels.contact);
+    // The number as it will be sent: with the chosen country's code in front (the field itself changes on blur only).
+    if (phoneUi && contact.phone) contact.phone = phoneUi.compose(contact.phone);
+    return { ...readPanel(panels.service), ...(d ? readPanel(d) : {}), ...contact };
   }
 
   function persist() {
@@ -1226,6 +1232,9 @@ function init(root) {
   updateTotal();
   onCurrencyChange(updateTotal);
   form.querySelectorAll('[data-calendar-for]').forEach(initCalendar);
+  // Searchable country pickers: the phone's calling code, and the country of residence (which suggests the code).
+  phoneUi = enhancePhone(panels.contact.querySelector('[name="phone"]'));
+  enhanceCountry(panels.contact.querySelector('[name="country"]'), { onPick: (c) => phoneUi?.follow(c.iso) });
   syncOnline();
 
   let start = prefilled ? 'details' : ORDER.includes(draft?.step) ? draft.step : 'service';

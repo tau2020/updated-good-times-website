@@ -1129,3 +1129,132 @@
     display: none !important;
   }
 }
+
+/* ---------- Country pickers (assets/js/country-pickers.js): the phone's calling code, the country of residence ---------- */
+.tel {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.tel > .input {
+  flex: 1;
+  min-width: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.tel__code {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 52px;
+  min-width: 5.75rem;
+  padding: 0 0.7rem 0 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-right: 0;
+  border-radius: 8px 0 0 8px;
+  background: var(--gold-tint);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+.tel__code:hover {
+  background: var(--forest-soft);
+}
+.tel__code:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(5, 106, 43, 0.18);
+}
+.tel__flag,
+.cpick__flag {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.tel__dial,
+.cpick__dial {
+  font-variant-numeric: tabular-nums;
+}
+.tel__caret {
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: 0.1rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+.tel__code[aria-expanded='true'] .tel__caret {
+  transform: translateY(2px) rotate(-135deg);
+}
+.combo {
+  position: relative;
+}
+.cpick,
+.combo__list {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--surface-white);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(16, 36, 29, 0.18);
+}
+.cpick {
+  padding: 0.5rem;
+}
+.cpick__search {
+  min-height: 46px;
+  margin-bottom: 0.4rem;
+}
+.cpick__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: min(320px, 50vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.combo__list {
+  padding: 0.35rem;
+  max-height: min(300px, 45vh);
+}
+.cpick__opt {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.cpick__opt:hover {
+  background: var(--gold-tint);
+}
+.cpick__opt[aria-selected='true'] {
+  background: var(--forest-soft);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+.cpick__opt.is-current .cpick__name {
+  font-weight: 700;
+}
+.cpick__flag {
+  width: 1.6rem;
+  text-align: center;
+}
+.cpick__name {
+  flex: 1;
+}
+.cpick__dial {
+  color: var(--muted);
+}
+.cpick__empty {
+  margin: 0.5rem 0.65rem;
+  color: var(--muted);
+}
