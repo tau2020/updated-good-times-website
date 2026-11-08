@@ -183,17 +183,20 @@ export const site = {
     address: { text: '277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005', verified: true },
     informationOfficer: { name: '', email: '', verified: false },
     retention: { text: '', verified: false },
-    effective: '',
+    // The day the approved texts took effect: the owner's approval (B1, B2). Change it if they should start at go-live.
+    effective: '2026-11-08',
     // The texts are Good Times' own (goodtimesincapetown.co.za/terms and /privacy), adapted to how this website works.
-    // They wait for the owner's approval of those adaptations (docs/APPROVAL_REGISTER.md).
-    privacyApproved: false,
-    termsApproved: false,
+    // Approved by the owner on 8 Nov 2026 ("booking and legal approved"; docs/APPROVAL_REGISTER.md, B1 and B2). The
+    // approval covers the texts: the facts still empty above (entity, informationOfficer, retention) and the terms'
+    // OPEN_POINTS need Good Times' own values, and the release gate keeps naming them until they are set.
+    privacyApproved: true,
+    termsApproved: true,
     // The version of the Terms & Conditions text on the site, recorded with every booking request that accepts them.
     // Change it whenever the text changes (test/terms.test.mjs fails until you do).
     termsVersion: '2026-11-05',
     // Recorded 7 Nov 2026 by tau2020, the repository's owner, for the production deployment at
     // good-times-in-cape-town.pages.dev only (not the domain): these open items are accepted for that release and stay
-    // open, so the privacy notice and the terms still say they are drafts (docs/APPROVAL_REGISTER.md, A1 and B1–B5)
+    // open (docs/APPROVAL_REGISTER.md, A1 and B1–B5). Kept as given; the texts themselves were approved on 8 Nov 2026.
     releaseOverride: {
       date: '2026-11-07',
       by: 'tau2020 (repository owner)',

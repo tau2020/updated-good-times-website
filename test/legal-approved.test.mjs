@@ -1,13 +1,12 @@
 /**
- * The Booking Terms and the Privacy Notice await Good Times' approval (the
- * texts are the company's own, adapted to this website; docs/APPROVAL_REGISTER.md):
- * both say plainly that they are drafts and keep their content, the terms
- * exist only in preview builds (noindex) and are linked from the footer only
- * where the page exists, and the release gate names everything still open (the
- * two approvals, the legal facts, the effective date, the commercial terms).
- * Once approved, the same pages lose the draft notice and the terms are linked
- * from every footer. Every "From" price states Good Times' own basis (per
- * group, per day, per trip), never "per adult".
+ * The Booking Terms and the Privacy Notice, approved by the owner on 8 Nov 2026
+ * (the texts are the company's own, adapted to this website; docs/APPROVAL_REGISTER.md,
+ * B1 and B2): no draft notice, an effective date, the terms indexable and linked
+ * from every footer, and no fact Good Times has not confirmed. Unapproved, the
+ * same pages say plainly that they are drafts and the terms exist only in a
+ * preview or under the release override. The release gate still names what the
+ * approval did not settle (the legal facts, the commercial terms). Every "From"
+ * price states Good Times' own basis (per group, per day, per trip), never "per adult".
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -30,12 +29,11 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith('.mjs')).sort()) {
 }
 const footerOf = (html) => html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));
 
-test('nothing is approved yet, and the facts only Good Times can give stay unconfirmed', () => {
-  assert.equal(site.legal.privacyApproved, false);
-  assert.equal(site.legal.termsApproved, false);
-  assert.equal(site.legal.effective, '', 'no effective date before the approval');
-  // The one override on record: the release to good-times-in-cape-town.pages.dev of 7 Nov 2026 (A1), accepting exactly
-  // the items still open; the texts themselves stay unapproved and say so
+test('both texts approved by the owner on 8 Nov 2026, effective that day; the facts only Good Times can give stay unconfirmed', () => {
+  assert.equal(site.legal.privacyApproved, true);
+  assert.equal(site.legal.termsApproved, true);
+  assert.equal(site.legal.effective, '2026-11-08', 'effective from the approval');
+  // The one override on record, kept as given: the release to good-times-in-cape-town.pages.dev of 7 Nov 2026 (A1)
   assert.deepEqual(site.legal.releaseOverride.accepted, ['site.legal.privacyApproved', 'site.legal.termsApproved', 'site.legal.effective', 'site.legal.entity', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS']);
   assert.match(site.legal.releaseOverride.date, /^\d{4}-\d{2}-\d{2}$/);
   assert.match(site.legal.releaseOverride.scope, /pages\.dev only/);
@@ -44,33 +42,38 @@ test('nothing is approved yet, and the facts only Good Times can give stay uncon
   assert.deepEqual(site.legal.address, { text: '277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005', verified: true });
 });
 
-test('the Privacy Notice: says it is a draft for Good Times’ approval, and keeps its content', () => {
+test('the Privacy Notice: approved, so no draft notice; it keeps its content, gives its effective date and names no unconfirmed fact', () => {
   for (const s of [site, production]) {
     const html = privacy.body({ site: s });
-    assert.match(html, /<p class="notice notice--warning">[\s\S]*?Draft for Good Times’ approval\./);
+    assert.doesNotMatch(html, /Draft for Good Times|notice--warning/);
+    assert.match(html, /Effective 2026-11-08\./);
+    for (const key of ['entity', 'informationOfficer']) if (!site.legal[key].verified) assert.doesNotMatch(html, key === 'entity' ? /Registered name and number:/ : /Information Officer:/, key);
     for (const kept of ['Who we are', 'What we collect', 'Why we use it', 'Who helps us, and where your details are kept', 'Cloudflare', 'Neon', 'Resend', 'Our email provider', 'How long we keep it', 'Keeping it safe', 'session storage', 'Your rights', 'Information Regulator', 'Information Commissioner’s Office', 'Changes to this notice', 'Photo credits']) assert.ok(html.includes(kept), kept);
     // Good Times' own policy, kept: no selling, sharing only to deliver a booking.
     assert.match(html, /We do not sell your personal information to third parties/);
     assert.match(html, /We share information only where it is needed to deliver your booking/);
   }
-  const approved = privacy.body({ site: approvedTexts(production) });
-  assert.doesNotMatch(approved, /Draft for Good Times|notice--warning/, 'once approved, no draft notice');
+  assert.doesNotMatch(privacy.body({ site: approvedTexts(production) }), /Draft for Good Times|notice--warning/, 'approved: no draft notice');
+  // Unapproved, the same page says it is a draft: the switch works both ways.
+  const draft = { ...production, legal: { ...production.legal, privacyApproved: false } };
+  assert.match(privacy.body({ site: draft }), /<p class="notice notice--warning">[\s\S]*?Draft for Good Times’ approval\./);
 });
 
-test('the Terms & Conditions: a draft and noindex until approved; built for a preview, or for production under the owner’s release override; the footer links them only where the page exists', () => {
+test('the Terms & Conditions: approved, so indexable, dated, without a draft notice and linked from every footer; unapproved, a draft built only for a preview or under the release override', () => {
   const html = termsPage.body({ site: production });
-  assert.match(html, /<p class="notice notice--warning">[\s\S]*?Draft for Good Times’ approval\./);
-  assert.equal(termsPage.noindex, true);
-  assert.equal(termsPages.length, termsPublished(site) ? 1 : 0);
+  assert.doesNotMatch(html, /Draft for Good Times|notice--warning/);
+  assert.match(html, /Effective 2026-11-08\./);
+  assert.equal(termsPage.noindex, false);
+  assert.equal(termsPages.length, 1);
   const home = pages.find((p) => p.path === 'index.html');
-  // A preview build has the page, so its footer links it
-  const previewFooter = footerOf(layout(home, { ...site, preview: true }));
-  assert.match(previewFooter, /<a href="terms\/">Terms &amp; Conditions<\/a>/);
-  // So does production under the owner's release override (7 Nov 2026), which accepts the unapproved terms as a draft
-  assert.equal(termsPublished(production), true);
+  assert.match(footerOf(layout(home, { ...site, preview: true })), /<a href="terms\/">Terms &amp; Conditions<\/a>/);
   assert.match(footerOf(layout(home, production)), /<a href="terms\/">Terms &amp; Conditions<\/a>/);
-  // Without that override a production build has neither the page nor a link to it
-  const locked = { ...production, legal: { ...production.legal, releaseOverride: null } };
+  // Unapproved: a draft that says so, published in production only under the owner's release override (7 Nov 2026)
+  const unapproved = { ...production, legal: { ...production.legal, termsApproved: false } };
+  assert.match(termsPage.body({ site: unapproved }), /<p class="notice notice--warning">[\s\S]*?Draft for Good Times’ approval\./);
+  assert.equal(termsPublished(unapproved), true);
+  // Without approval or override a production build has neither the page nor a link to it
+  const locked = { ...unapproved, legal: { ...unapproved.legal, releaseOverride: null } };
   assert.equal(termsPublished(locked), false);
   const productionFooter = footerOf(layout(home, locked));
   assert.doesNotMatch(productionFooter, /href="terms\//, 'no link to a page that is not built');
@@ -81,11 +84,9 @@ test('the Terms & Conditions: a draft and noindex until approved; built for a pr
   assert.match(footerOf(layout(home, approved)), /<a href="terms\/">Terms &amp; Conditions<\/a>/);
 });
 
-test('the release gate names everything still open: both approvals, the effective date, the unconfirmed facts and each open commercial point', () => {
+test('the release gate names what the approval did not settle: the unconfirmed facts and each open commercial point', () => {
   const open = releaseBlockers(site).join('\n');
-  assert.match(open, /Good Times has not approved the privacy notice \(site\.legal\.privacyApproved\)/);
-  assert.match(open, /Good Times has not approved the booking terms \(site\.legal\.termsApproved\)/);
-  if (!site.legal.effective) assert.match(open, /effective date/);
+  assert.doesNotMatch(open, /site\.legal\.privacyApproved|site\.legal\.termsApproved|effective date/, 'both texts approved and dated');
   for (const key of ['entity', 'address', 'informationOfficer', 'retention']) {
     if (site.legal[key].verified) assert.doesNotMatch(open, new RegExp(`site\\.legal\\.${key}\\b`), `${key} is confirmed`);
     else assert.match(open, new RegExp(`site\\.legal\\.${key}`), key);
@@ -95,7 +96,7 @@ test('the release gate names everything still open: both approvals, the effectiv
   const d = releaseDecision(site);
   assert.equal(d.clear, true);
   assert.deepEqual(d.overridden, d.open, 'everything open is accepted by name');
-  assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } }).clear, false, 'no production release without the override');
+  assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } }).clear, false, 'the domain still needs the facts and the commercial points');
 });
 
 test('every "From" price states Good Times’ own basis, never "per adult"; the FAQ says prices are per group', () => {

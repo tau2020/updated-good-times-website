@@ -63,9 +63,10 @@ export const DOMAIN = {
  * touches the apex's MX, SPF or address records, the nameservers or inbound mail, and DOMAIN.approved (the website's
  * cutover) stays as it is. The domain was added to Resend on 8 Nov 2026 (sending only, receiving and tracking off), and
  * its four records were added to the zone the same day by hand in the Cloudflare dashboard (the token cannot edit DNS).
- * `verified` records Resend's own verdict: set it once Resend shows the domain Verified, then redeploy the test project.
+ * `verified` records Resend's own verdict: the domain was Verified on 8 Nov 2026 (10:25 SAST), so the test project sends as
+ * hello@ and lets info@ receive real mail once it is redeployed with these settings (setup.mjs test --apply).
  */
-export const SENDING_DOMAIN = { approved: true, date: '2026-11-08', by: 'the owner (live enquiry pipeline brief)', region: 'eu-west-1', verified: false };
+export const SENDING_DOMAIN = { approved: true, date: '2026-11-08', by: 'the owner (live enquiry pipeline brief)', region: 'eu-west-1', verified: true, verifiedOn: '2026-11-08' };
 
 /**
  * Good Times' public address is hello@ (the owner's instruction of 6 Nov 2026): the site shows it, and the emails are

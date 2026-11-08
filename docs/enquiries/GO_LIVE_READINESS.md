@@ -1,11 +1,11 @@
 # Go-live readiness: the live enquiry pipeline
 
-**8 November 2026 · branch `integration/live-enquiry-pipeline` (stacked on PR #4) · tested code `95831eb` · decision: BLOCKED (G)**
+**8 November 2026 · branch `integration/live-enquiry-pipeline` (stacked on PR #4) · tested code `95831eb` · decision: BLOCKED (G) · updated the same day: sending domain verified, booking rules and legal texts approved**
 
 The owner's brief of 8 Nov 2026 ("Master agentic execution prompt") asked for the enquiry system to be connected to real infrastructure and proven end to end, without switching the public website: Neon for the database, Resend for email, Cloudflare Pages for the site and its Functions, a controlled test with real delivery only to owned inboxes, and this report. What was done:
 
 - **Neon:** a production database (migrated, restricted application role) and an isolated test branch.
-- **Resend:** the sending domain added (eu-west-1, sending only), separate production and test sending keys; its four DNS records **added on 8 Nov 2026** at the owner's request, through the Cloudflare dashboard. Within minutes Resend had verified DKIM and the return-path CNAME (status "Partially Verified"); the MX and SPF on `send` were still pending at the time of writing (C).
+- **Resend:** the sending domain added (eu-west-1, sending only), separate production and test sending keys; its four DNS records **added on 8 Nov 2026** at the owner's request, through the Cloudflare dashboard. Resend **verified the domain** at 10:25 SAST (C).
 - **Cloudflare:** the production environment's three secrets set, encrypted, with production still in **preview mode**; a separate, access-restricted test project (`good-times-enquiry-test`) whose `test` branch runs the real pipeline against the test branch and Resend's test inbox.
 - **Code** (this branch): the Resend step's own approval, separate from the website cutover (`setup.mjs`); secrets as code (`secrets.mjs`); the test deployment's access key and allowlist; the restricted database role (`app-role.mjs`); two fixes the cloud tests found (the sign-in email bypassed the test inbox; failed emails were invisible in the dashboard); the cloud test suite (`qa/enquiry-live.mjs`).
 - **Tests:** every scenario of the brief (A–J), the API's refusals, the security and reliability audit and the acceptance journey, **run in the cloud**, each checked in the database and in Resend (D).
@@ -22,11 +22,11 @@ Read back on 8 Nov 2026 through each service's API. Secrets appear by name only;
 |---|---|---|---|---|
 | Cloudflare Pages `good-times-in-cape-town` | **production** (branch `main`, https://good-times-in-cape-town.pages.dev; the domain is not attached) | As code in `scripts/cloudflare/project.mjs`: `SITE_ENV=production`, `PUBLIC_SITE_URL=https://goodtimesincapetown.co.za`, `ENQUIRY_SYSTEM_ENABLED=true`, **`ENQUIRY_MODE=preview`**, `EMAIL_PROVIDER=resend`, `FROM_EMAIL=Good Times in Cape Town <hello@goodtimesincapetown.co.za>`, `ENQUIRY_TEAM_EMAIL`, `REPLY_TO_EMAIL` and `ADMIN_EMAILS` = info@goodtimesincapetown.co.za, `RATE_LIMIT_PER_MINUTE=10`, `SHOW_INDICATIVE_PRICES=true`; compatibility date 2026-10-01, `nodejs_compat` | `DATABASE_URL` (the `gt_app` role on the Neon production branch), `RESEND_API_KEY` (the production sending key), `ENQUIRY_SIGNING_SECRET` (64 random characters, generated for production only), all `secret_text`, set 8 Nov 2026 with `scripts/cloudflare/secrets.mjs` | `setup.mjs pages`: "nothing to change", three secrets set; the read-back proved every other variable unchanged. The live deployment (`1fe1f8ff`, 7 Nov 2026) predates the secrets and still answers `enquiries: preview`; they take effect only at the next production deployment, still in preview mode |
 | Cloudflare Pages `good-times-in-cape-town` | preview (staging, `seo-preview` and every other preview branch) | `ENQUIRY_MODE=preview`, no email provider | **none, by design** (`secrets.mjs` refuses this environment) | Staging `de716d83` unchanged |
-| Cloudflare Pages `good-times-enquiry-test` (new, isolated) | preview, branch `test` → https://test.good-times-enquiry-test.pages.dev | `SITE_ENV=preview` (noindex, preview bar), `ENQUIRY_MODE=live`, `FROM_EMAIL=Good Times in Cape Town (test) <onboarding@resend.dev>` until the domain verifies, team/reply-to/admin = info@, no `EMAIL_TEST_RECIPIENTS` yet (every email goes to Resend's test inbox) | `DATABASE_URL` (`gt_app` on the Neon branch `enquiry-test`), `RESEND_API_KEY` (the test sending key), `ENQUIRY_SIGNING_SECRET` (its own), `ENQUIRY_ACCESS_KEY` | `setup.mjs test`: "nothing to change", four secrets set; deployment `ad633a6c` from `95831eb` (the first, `bc6565a1` from `01715bb`, was replaced and deleted); without the key every route but `/api/health` answers 403 |
+| Cloudflare Pages `good-times-enquiry-test` (new, isolated) | preview, branch `test` → https://test.good-times-enquiry-test.pages.dev | `SITE_ENV=preview` (noindex, preview bar), `ENQUIRY_MODE=live`, as deployed (`ad633a6c`): `FROM_EMAIL=Good Times in Cape Town (test) <onboarding@resend.dev>`, team/reply-to/admin = info@, no `EMAIL_TEST_RECIPIENTS` (every email to Resend's test inbox). Since the domain was verified, `project.mjs` gives it `FROM_EMAIL=Good Times in Cape Town <hello@goodtimesincapetown.co.za>` and `EMAIL_TEST_RECIPIENTS=info@goodtimesincapetown.co.za`, applied at its next deployment (A8) | `DATABASE_URL` (`gt_app` on the Neon branch `enquiry-test`), `RESEND_API_KEY` (the test sending key), `ENQUIRY_SIGNING_SECRET` (its own), `ENQUIRY_ACCESS_KEY` | `setup.mjs test`: "nothing to change", four secrets set; deployment `ad633a6c` from `95831eb` (the first, `bc6565a1` from `01715bb`, was replaced and deleted); without the key every route but `/api/health` answers 403 |
 | Cloudflare Pages `good-times-enquiry-test` | production (`main`) | Preview mode, never deployed | none | `https://good-times-enquiry-test.pages.dev` answers 404 |
 | Neon project `goodtimes-enquiries` (`soft-hat-33616906`) | production branch `production` (`br-bold-smoke-bdpneffk`, default) | PostgreSQL 18, aws-us-east-2, free plan (0.25–2 CU autoscaling, scale to zero), 6 hours of point-in-time history | Owner role (migrations only) and `gt_app` (the application: data access, no DDL) | 5 of 5 migrations applied; a second run: "database is up to date"; `gt_app` reads and cannot create tables; 0 rows in every data table |
 | Neon | test branch `enquiry-test` (`br-cool-cell-bd0mr0us`, child of production) | Same schema, own endpoint and credentials | Its own owner and `gt_app` URLs | Synthetic data only; emptied after the tests |
-| Resend | domain goodtimesincapetown.co.za (`6c688c77…`) | eu-west-1, sending enabled, receiving disabled, open and click tracking off | — | **Partially Verified**: the four records were added on 8 Nov 2026. Resend reported "DNS verified" at 10:09 SAST, then verified DKIM and the `rsend` CNAME (Resend Forge enabled); the MX and SPF on `send` were still pending at the time of writing (C) |
+| Resend | domain goodtimesincapetown.co.za (`6c688c77…`) | eu-west-1, sending enabled, receiving disabled, open and click tracking off | — | **Verified** at 10:25 SAST on 8 Nov 2026 ("ready to send emails"; DNS verified 10:09), Resend Forge enabled, TLS opportunistic, tracking off |
 | Resend | API keys | `good-times-production-sending` (`6c6064b4…`): sending only, restricted to the domain; `good-times-enquiry-test-sending` (`c6d1014c…`): sending only (any domain, so it can use Resend's test sender until the domain verifies). The full-access key `claude-updated` (`1e15e585…`) configured the domain and reads emails back for the tests: never a runtime key. `Onboarding` (`ad5f4397…`), the first key pasted in chat, is unused | — | Both runtime keys created through the API; their values went straight to private files and into Cloudflare |
 | DNS (Cloudflare zone goodtimesincapetown.co.za, nameservers joan/shane.ns.cloudflare.com) | — | MX 10/20/30 mx1–3.rdsa-mail.com, apex SPF `v=spf1 +a +mx +ip4:129.232.204.50 ~all`, DMARC `p=reject; sp=reject; adkim=r; aspf=r`, the website's records: **all unchanged** | — | Read from 1.1.1.1 on 8 Nov 2026. The four Resend records were **added on 8 Nov 2026** in the Cloudflare dashboard at the owner's request (DNS only, TTL Auto, each with a comment): 34 → 38 records, and the 40 existing answers compared on the authoritative nameserver are identical before and after |
 | Inbound mail (rdsa-mail, Exim) | — | Unchanged | — | SMTP check without sending (C): info@, hello@ and stuart@ accepted (250), an unknown mailbox refused (550); STARTTLS offered |
@@ -64,7 +64,7 @@ Read back on 8 Nov 2026 through each service's API. Secrets appear by name only;
 
 ## C. Email
 
-### Sending domain: records added, Resend **partially verified**
+### Sending domain: **verified** (8 Nov 2026, 10:25 SAST)
 
 goodtimesincapetown.co.za was added to Resend on 8 Nov 2026 (07:06 UTC) with `setup.mjs resend --apply` and the configuration-only key: region **eu-west-1** (Ireland, the closest to Cape Town), sending enabled, **receiving disabled** (Resend asks for no inbound MX), open and click tracking off. Resend returned four records, all on subdomains. None of these names existed in the zone, so none conflicted; the apex MX, the apex SPF and DMARC stayed exactly as they were:
 
@@ -82,27 +82,27 @@ goodtimesincapetown.co.za was added to Resend on 8 Nov 2026 (07:06 UTC) with `se
 - the zone went from 34 to 38 records;
 - every one of the 40 existing answers compared on the authoritative nameserver (MX, the apex SPF, DMARC, the website and mail-service records) is identical before and after;
 - the four new records resolve exactly on both Cloudflare nameservers and on 1.1.1.1 and 8.8.8.8;
-- in Resend, **Verify DNS records** was pressed. Resend reported **DNS verified** at 10:09 SAST. Minutes later DKIM and the `rsend` CNAME were **Verified** (status **Partially Verified**, Resend Forge enabled), while the MX and SPF on `send` were still **Pending** when this was written. Resend says verification can take a few hours and emails the account when it is done.
+- in Resend, **Verify DNS records** was pressed. Resend reported **DNS verified** at 10:09 SAST; DKIM and the `rsend` CNAME were verified first, then the MX and SPF on `send`, and Resend marked the domain **Verified** at 10:25 SAST ("Your domain is ready to send emails"), confirmed in its dashboard.
 
-**Next:** once Resend shows **Verified**, set `verified: true` in `SENDING_DOMAIN` (`scripts/cloudflare/project.mjs`) and redeploy the test project. It then sends as hello@ and lets info@ (its `EMAIL_TEST_RECIPIENTS`) receive real mail (A8). *Undo:* delete the four records (each carries its comment); nothing else uses them.
+**Next:** `SENDING_DOMAIN.verified` is now `true` (`scripts/cloudflare/project.mjs`). At its next deployment (`setup.mjs test --apply`, then `build.mjs test` and the deploy) the test project sends as hello@ and lets info@ (its `EMAIL_TEST_RECIPIENTS`) receive real mail: that is the real-delivery test (A8). *Undo:* delete the four records (each carries its comment); nothing else uses them.
 
 **Alignment once added.** Mail from hello@goodtimesincapetown.co.za is signed with DKIM `d=goodtimesincapetown.co.za` and returns to `send.goodtimesincapetown.co.za`; both align (relaxed) with the From domain, so the existing `p=reject` DMARC policy passes without being weakened. No second SPF record is created at the apex. The apex SPF's `+a` is a separate cutover item (H5) and is untouched.
 
 ### Authentication results
 
-Not yet measurable: no message has been sent as hello@ (Resend refuses it until the domain verifies). Every test email in this report was sent as Resend's own test sender (`onboarding@resend.dev`), which proves the pipeline, the content and the provider's acceptance, but **not** Good Times' DKIM, SPF or DMARC. After verification, check one delivered message's headers in the info@ mailbox: `Authentication-Results: … dkim=pass header.d=goodtimesincapetown.co.za; spf=pass smtp.mailfrom=send.goodtimesincapetown.co.za; dmarc=pass`.
+Not yet measured: the domain is verified since 10:25 SAST on 8 Nov 2026, but no message has been sent as hello@ yet (that is the real-delivery test, A8). Every test email in this report was sent as Resend's own test sender (`onboarding@resend.dev`), which proves the pipeline, the content and the provider's acceptance, but **not** Good Times' DKIM, SPF or DMARC. After verification, check one delivered message's headers in the info@ mailbox: `Authentication-Results: … dkim=pass header.d=goodtimesincapetown.co.za; spf=pass smtp.mailfrom=send.goodtimesincapetown.co.za; dmarc=pass`.
 
 ### Test recipients and delivery
 
 | Email | Trigger | Sent to (test) | Reply-To | Verified in Resend | Result |
 |---|---|---|---|---|---|
-| A. Team notification | a new enquiry | `delivered@resend.dev` (info@ is routed there until the domain verifies) | the customer | subject with reference, customer, tour/transfer, date, travellers, pickup, the customer's message, the dashboard link and 4 signed status links (A, B, C, X `-team-email`) | accepted, **delivered to Resend's test inbox** |
+| A. Team notification | a new enquiry | `delivered@resend.dev` (info@ was routed there during these runs) | the customer | subject with reference, customer, tour/transfer, date, travellers, pickup, the customer's message, the dashboard link and 4 signed status links (A, B, C, X `-team-email`) | accepted, **delivered to Resend's test inbox** |
 | B. Acknowledgement | a new enquiry | the synthetic customer, `delivered+gt-…@resend.dev` | info@ | reference, summary, "This is not yet a confirmed booking." in text and HTML, no payment or confirmation implied (`-ack-email`, re-checked) | accepted, delivered (test inbox) |
 | C. Booking confirmation | staff confirm in the dashboard or by the email link | the customer | info@ | reference, "is confirmed", the booking terms line (X5, H3) | accepted, delivered (test inbox) |
 | D. Cancellation | staff cancel | the customer | info@ | reference, neutral wording, **no refund promise** (H5) | accepted, delivered (test inbox) |
 | E. Staff sign-in link | `/admin/sign-in` | `delivered@resend.dev` | info@ | single-use link to the deployment, 20 minutes, never stored in the database (G1) | accepted, delivered (test inbox) |
 
-Every email of the runs went to a `resend.dev` test address: none to a real mailbox (test L1). `delivered` here means Resend's own test inbox accepted it. **Real delivery to a Good Times mailbox is not demonstrated** and cannot be until the domain is verified.
+Every email of the runs went to a `resend.dev` test address: none to a real mailbox (test L1). `delivered` here means Resend's own test inbox accepted it. **Real delivery to a Good Times mailbox is not yet demonstrated**: it needs the test project redeployed with the verified sender (A8).
 
 ### Failed-email behaviour (cloud)
 
@@ -373,10 +373,10 @@ It is **not ready for production approval** because these remain:
 
 | # | Blocker | Kind | Who | Unblocks |
 |---|---|---|---|---|
-| 1 | The sending domain is **not yet verified by Resend**. Its four records were added on 8 Nov 2026. Resend has verified DKIM and the return-path CNAME ("Partially Verified"); the MX and SPF on `send` were still pending at the time of writing (C; A7). Production cannot send as hello@ until Resend shows Verified | Provider check, in progress | Resend (automatic), then a deployment of the test project with `SENDING_DOMAIN.verified` | Authenticated sending |
-| 2 | **Real delivery and authentication not demonstrated.** Every test email went to Resend's test inbox; no message has reached info@, and no DKIM/SPF/DMARC result exists for hello@ (C; A8) | Test, after 1 | Run the test project as hello@ with `EMAIL_TEST_RECIPIENTS=info@`; a person confirms the inbox and the headers | Real inbox delivery |
-| 3 | **Booking rules not approved** (D9): 2 vehicles a day, 24 hours' notice, the transfer hours and holds decide which real requests are refused (I4) | Business approval | The owner | Availability decisions customers will see |
-| 4 | **Legal texts not approved** (B1–B5): the privacy notice, the terms and their open points, the registered entity, the Information Officer, the retention period. The production override covers good-times-in-cape-town.pages.dev only, not real data collection on the domain | Legal approval | The owner | Collecting real customers' data |
+| 1 | ~~The sending domain is not verified~~ **Done 8 Nov 2026**: the four records were added and Resend verified the domain at 10:25 SAST (C; A7) | DNS change and provider check | Done | Authenticated sending |
+| 2 | **Real delivery and authentication not demonstrated.** Every test email went to Resend's test inbox; no message has reached info@, and no DKIM/SPF/DMARC result exists for hello@ (C; A8) | Test (next) | Run the test project as hello@ with `EMAIL_TEST_RECIPIENTS=info@`; a person confirms the inbox and the headers | Real inbox delivery |
+| 3 | ~~Booking rules not approved~~ **Approved 8 Nov 2026** by the owner (D9; `BOOKING_RULES` says so) | Business approval | Done | Availability decisions customers will see |
+| 4 | **Legal: texts approved on 8 Nov 2026** (B1, B2: no draft notices, effective 2026-11-08). **Still needed:** the facts only Good Times can give (B3 registered name and number, B4 Information Officer, B5 retention period) and a decision on the terms' two open points: cancellation notice and charges, payment and deposit (B2). The release gate names these five until they are set | Facts from the owner | The owner | Collecting real customers' data on the domain |
 | 5 | **Recommended before activation:** backups beyond 6 hours (A9), the database region (A10), automatic email retry (A11) | Owner decisions | The owner | Recovery, speed, unattended retries |
 | 6 | **Credentials pasted in chat** (Cloudflare token, Neon API key, two Resend keys): rotate or revoke (A5) | Hygiene | The owner | Least privilege |
 
@@ -386,16 +386,16 @@ Public activation also needs the owner's explicit go-ahead for `ENQUIRY_MODE=liv
 
 | Requirement | Status | Evidence, or what remains |
 |---|---|---|
-| Domain verified for transactional sending | ◐ partially verified | Records added and resolving everywhere; Resend: DKIM and `rsend` verified, the MX and SPF on `send` pending (A7) |
+| Domain verified for transactional sending | ✓ | Resend: Verified 8 Nov 2026, 10:25 SAST (A7) |
 | Existing inbound email operational | ✓ at the SMTP level / ✗ mailbox level | MX unchanged; RCPT accepted for info@, hello@, stuart@ (C). A person to confirm the inbox (A8) |
 | Database production-ready | ✓ | Migrated, restricted role, empty (B); backups and region are owner decisions (A9, A10) |
 | Migrations applied | ✓ | 5 of 5; a second run changes nothing |
 | Encrypted secrets configured | ✓ | `DATABASE_URL`, `RESEND_API_KEY`, `ENQUIRY_SIGNING_SECRET` in production (A) |
 | Admin users verified | ✓ flow / ✗ real inbox | `ADMIN_EMAILS=info@`; sign-in, replay refusal, sessions and sign-out passed in the cloud (G1–G9); the link reaching info@ waits for Resend's verification and A8 |
 | Live email delivery tested | ✗ | Resend's test inbox only (C) |
-| Booking rules approved | ✗ | D9 |
-| Privacy notice approved | ✗ | B1 |
-| Terms and booking policies approved | ✗ | B2–B5 |
+| Booking rules approved | ✓ | D9, 8 Nov 2026 |
+| Privacy notice approved | ✓ text / ✗ facts | B1 approved 8 Nov 2026; the registered details, Information Officer and retention period (B3–B5) still to give |
+| Terms and booking policies approved | ✓ text / ✗ two points | B2 approved 8 Nov 2026; cancellation charges and payment terms still open (B2) |
 | Failed-email monitoring available | ✓ | The dashboard's count and marks (E1b, F5); automatic retry optional (A11) |
 | Restore and rollback procedure documented | ✓ | F |
 | SEO migration PR tests still passing | ✓ | `npm test` (the registry and redirect tests), the twelve historical booking links on the deployed test project (8 of 8) |
@@ -403,8 +403,8 @@ Public activation also needs the owner's explicit go-ahead for `ENQUIRY_MODE=liv
 
 ### Reversible deployment plan
 
-1. **Verify the domain (A7).** *Records added and verification requested on 8 Nov 2026.* Wait for Resend's **Verified** (its dashboard, or its email to the account; `node scripts/cloudflare/setup.mjs resend` also shows the status). Then set `SENDING_DOMAIN.verified: true` in `scripts/cloudflare/project.mjs`: the test project then sends as hello@ and lets info@ receive. `setup.mjs test --apply`, `build.mjs test`, deploy to `--branch test`. *Undo:* delete the four records; nothing else uses them.
+1. **Verify the domain (A7).** *Done 8 Nov 2026: Resend Verified at 10:25 SAST; `SENDING_DOMAIN.verified` set.* Apply it to the test project: `setup.mjs test --apply`, `build.mjs test`, deploy to `--branch test` (needs a provisioned Cloudflare token and a new access key, `secrets.mjs test preview --generate ENQUIRY_ACCESS_KEY=@<file> --apply`). *Undo:* delete the four records; nothing else uses them.
 2. **Prove real delivery (A8).** `node qa/enquiry-live.mjs --base=https://test.good-times-enquiry-test.pages.dev --only=X,G,H` (the team notification and the sign-in link now reach info@). A person confirms the inbox and the `Authentication-Results` header. *Undo:* nothing to undo (test data only, removed by `--cleanup`).
-3. **Approvals.** D9, B1–B5 (or a recorded override for the domain), A9–A11 decisions, and the owner's written go-ahead for live enquiries.
+3. **Approvals.** D9, B1 and B2's text: done 8 Nov 2026. Still: B3–B5 and B2's two points (or a recorded override for the domain), the A9–A11 decisions, and the owner's written go-ahead for live enquiries.
 4. **Activate.** In `project.mjs` set production `ENQUIRY_MODE: 'live'`; `setup.mjs pages --apply` (it refuses while a secret is missing); `build.mjs production` (the static form and the runtime read the same variables, so they agree); `wrangler pages deploy site --project-name good-times-in-cape-town --branch main`; `smoke.mjs … --env production`; `/api/health?check=db`; one controlled enquiry from staff. *Undo:* set `ENQUIRY_MODE: 'preview'` and redeploy, or roll back to the previous deployment in the Cloudflare dashboard (seconds); stored enquiries are kept (F › rollback).
 5. **Afterwards.** Revoke the full-access Resend key; when the test project is no longer needed, delete it (its deployments, secrets and the test sending key) and the Neon branch `enquiry-test`.
