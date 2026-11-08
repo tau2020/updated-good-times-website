@@ -146,13 +146,13 @@ export function ratingRow({ rating, reviews, url = '', label = 'Tripadvisor revi
  */
 const VARIANT = { gold: 'primary', primary: 'primary', outline: 'secondary', secondary: 'secondary', ghost: 'secondary gt-button--on-dark', tertiary: 'tertiary', '': 'secondary' };
 export function button({ href, label, variant = '', icon: ic = '', cls = '', size = '', attrs = '' }) {
-  if (label === SIGNATURE_CTA) {
-    const block = /gt-button--block/.test(cls);
-    return leafButton({ href, label, size: [block && 'block', size].filter(Boolean).join(' '), cls: cls.replace(/\bgt-button--block\b/, '').trim(), attrs: attrs.replace(SIGNATURE_ATTRS, '').trim() });
-  }
-  const v = VARIANT[variant] ?? 'secondary';
+  // Plan My Day was the green signature leaf wherever it sat; since the owner's request of 8 Nov 2026 it is the standard
+  // green pill wherever it sits, with the signature's one description
+  const signature = label === SIGNATURE_CTA;
+  const v = signature ? 'primary' : VARIANT[variant] ?? 'secondary';
+  const a = signature && !attrs.includes(SIGNATURE_ATTRS) ? [attrs, SIGNATURE_ATTRS].filter(Boolean).join(' ') : attrs;
   const classes = ['btn', 'gt-button', ...v.split(' ').map((x) => (x.startsWith('gt-') ? x : `gt-button--${x}`)), size && `gt-button--${size}`, cls].filter(Boolean).join(' ');
-  return `<a class="${classes}" href="${esc(href)}"${attrs ? ` ${attrs}` : ''}>${ic ? icon(ic) : ''}<span>${esc(label)}</span></a>`;
+  return `<a class="${classes}" href="${esc(href)}"${a ? ` ${a}` : ''}>${ic ? icon(ic) : ''}<span>${esc(label)}</span></a>`;
 }
 
 /**
@@ -162,44 +162,27 @@ export function button({ href, label, variant = '', icon: ic = '', cls = '', siz
  * don't; the visible label stays the accessible name.
  */
 export const SIGNATURE_CTA = 'Plan My Day';
+/**
+ * The navbar's call to action (the owner's request of 8 Nov 2026): "Book Your Adventure", the site's standard green pill
+ * (button({ variant: 'primary' })), to the same booking link and with the same description as the signature. The
+ * concierge, the phone menu, the phone bar and the footer keep Plan My Day.
+ */
+export const NAV_CTA = 'Book Your Adventure';
 export const SIGNATURE_DESC_ID = 'signature-cta-desc';
 export const signatureDesc = () =>
   `<p id="${SIGNATURE_DESC_ID}" hidden>Opens our enquiry form. We reply with availability and a personalised quote; nothing is booked until we confirm it with you.</p>`;
 export const SIGNATURE_ATTRS = `aria-describedby="${SIGNATURE_DESC_ID}"`;
 
 /**
- * The signature leaf (the owner's brief of 6 Nov 2026; design/button-tokens.md): the brand's primary calls to action are
- * leaf-shaped. One inline SVG per button draws the leaf (a rounded base with a short stem at the left, the tip at the right,
- * the upper edge a little fuller than the lower), its midrib (clear near the base and the tip, faint under the words), two
- * pairs of side veins that open on hover, and a leaf-shaped focus ring. The drawing stretches with the label
- * (preserveAspectRatio none) while its lines keep their width (non-scaling strokes); the colours are gradients defined once
- * per page (leafDefs, layout.mjs). The link itself is the target: a rectangle at least 44 px tall. Motion: leaf.js.
+ * A primary call to action: the site's standard green pill, button({ variant: 'primary' }). Every button that was
+ * leaf-shaped (the signature leaf of 6 Nov 2026) is this pill since the owner's request of 8 Nov 2026. `size`: '' (48 px),
+ * 'large' (52 px), 'compact' (44 px), 'block' (fills its column), space-separated; `owner` names the scene whose own
+ * timeline plays its entrance (data-cta-owner: the sand journey, the closing invitation). "Plan My Day" carries the
+ * signature's one description (button above).
  */
-export const LEAF_PATH = 'M7 34C7 14 40 4.5 112 4C172 3.6 214 14 237 31.5C214 48 172 60.4 112 60C42 59.6 7 53 7 34Z';
-export const LEAF_VEIN = 'M13 34C70 30.5 158 28.5 229 31.4';
-export const LEAF_VEINLETS = 'M203 30.4L216 24.2M209 30.8L221 37.2M24 33.2L35 26.6M30 33.1L41 39.6';
-export const LEAF_STEM = 'M7.5 36Q4 39.2 1.2 44';
-export const leafShape = () =>
-  `<svg class="leaf-btn__shape" viewBox="0 0 240 64" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="leaf-btn__ring" d="${LEAF_PATH}"/><path class="leaf-btn__body" d="${LEAF_PATH}"/><path class="leaf-btn__stem" d="${LEAF_STEM}"/><path class="leaf-btn__vein" d="${LEAF_VEIN}" pathLength="1"/><path class="leaf-btn__veinlets" d="${LEAF_VEINLETS}" pathLength="1"/></svg>`;
-/** The leaf's colours, once per page (an SVG with no size, never display:none, so every leaf can reference them). */
-export const leafDefs = () =>
-  `<svg class="leaf-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="gt-leaf-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#168447"/><stop offset=".5" stop-color="#147d43"/><stop offset="1" stop-color="#0f6236"/></linearGradient><linearGradient id="gt-leaf-fill-hover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#127a40"/><stop offset=".5" stop-color="#106638"/><stop offset="1" stop-color="#0b4f2c"/></linearGradient><linearGradient id="gt-leaf-vein" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#dff3de" stop-opacity=".78"/><stop offset=".3" stop-color="#dff3de" stop-opacity=".16"/><stop offset=".72" stop-color="#dff3de" stop-opacity=".16"/><stop offset="1" stop-color="#dff3de" stop-opacity=".82"/></linearGradient></defs></svg>`;
-/**
- * A leaf button. `label` is the accessible name and the words (`html` may set them with emphasis); `size`: '' (48 px),
- * 'large' (54 px), 'compact' (44 px) or 'block' (fills its column); `owner` names the timeline that plays its entrance
- * (hero, intro, sand), otherwise leaf.js unfurls it as it scrolls into view. "Plan My Day" is the signature wherever it
- * appears, so it carries the signature's one description.
- */
-export function leafButton({ href, label, html = '', size = '', cls = '', attrs = '', owner = '' }) {
-  const extra = [label === SIGNATURE_CTA && SIGNATURE_ATTRS, attrs, owner && `data-leaf-owner="${owner}"`].filter(Boolean).join(' ');
-  const classes = ['leaf-btn', ...String(size).split(' ').filter(Boolean).map((x) => `leaf-btn--${x}`), cls].filter(Boolean).join(' ');
-  return `<a class="${classes}" href="${esc(href)}" data-leaf${extra ? ` ${extra}` : ''}>${leafShape()}<span class="leaf-btn__label">${html || esc(label)}</span></a>`;
-}
-
-/** The signature champagne-gold call to action: a rounded button with the ornamental coin on its left edge (header, concierge). */
-export function coinButton({ href, label = SIGNATURE_CTA, cls = '', attrs = '', owner = '' }) {
-  // Since the brief of 6 Nov 2026 the header's and the concierge's signature is the leaf (the compass medallion retired)
-  return leafButton({ href, label, cls, attrs, owner });
+export function ctaButton({ href, label, size = '', cls = '', attrs = '', owner = '' }) {
+  const sizes = String(size).split(' ').filter(Boolean).map((x) => `gt-button--${x}`);
+  return button({ href, label, variant: 'primary', cls: [...sizes, cls].filter(Boolean).join(' '), attrs: [attrs, owner && `data-cta-owner="${owner}"`].filter(Boolean).join(' ') });
 }
 
 /**

@@ -291,7 +291,7 @@ test('the scene in the page: between the hero and the first chapter, static and 
     cta: 'Explore the Cape Peninsula Tour',
   });
   assert.match(s, /<div class="sand-journey__head">\s*<p class="sand-journey__eyebrow">Cape Peninsula · Coastal journey<\/p>\s*<h2 class="sand-journey__title" id="sand-journey-title">Look where your footsteps led\.<\/h2>\s*<\/div>/);
-  assert.match(s, /<div class="sand-journey__foot">\s*<p class="sand-journey__line">One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop\.<\/p>\s*<a class="leaf-btn sand-journey__cta" href="tours\/cape-peninsula-private-tour\/" data-leaf data-leaf-owner="sand"><svg class="leaf-btn__shape"[^>]*aria-hidden="true" focusable="false">[\s\S]*?<\/svg><span class="leaf-btn__label">Explore the Cape Peninsula Tour<\/span><\/a>\s*<\/div>/);
+  assert.match(s, /<div class="sand-journey__foot">\s*<p class="sand-journey__line">One private day on the coast: big views, the penguins at Boulders and plenty of reasons to stop\.<\/p>\s*<a class="btn gt-button gt-button--primary sand-journey__cta" href="tours\/cape-peninsula-private-tour\/" data-cta-owner="sand"><span>Explore the Cape Peninsula Tour<\/span><\/a>\s*<\/div>/);
   // Next comes the credentials strip, where the removed water chapter was (qa/surgical-change-report.md)
   assert.ok(s.indexOf('<section class="gt-credentials"') > s.indexOf('</section>'), 'the credentials strip follows the scene');
   const t = tours.find((x) => x.slug === SAND_TOUR);

@@ -53,17 +53,18 @@ test('a tour’s reviews are those of its own listing, and every listed tour wit
   assert.equal(reviewsOf({ tour: 'cape-peninsula-private-tour' }).length + reviewsOf({ tour: 'cape-winelands-private-tour' }).length + reviewsOf({ tour: 'township-private-tour' }).length + reviewsOf({ tour: 'cape-town-city-private-tour' }).length + reviewsOf({ service: 'airport' }).length + guestReviews.filter((r) => !r.tour && !r.service).length, guestReviews.length);
 });
 
-test('a review is a short chat message: the name on top in its own colour, the rating, the words, then Read more and the time; no photo head, product or platform line', () => {
+test('a review is a short chat message: the name on top in its own colour, the rating, the words and the time; no photo head, product, platform or Read more', () => {
   for (const r of guestReviews) {
     const html = guestReviewCard(r);
     assert.equal(r.avatar, undefined, `${r.name}: no photo file`);
-    assert.doesNotMatch(html, /avatar|<img|Posted on|review-card__about|review-card__platform|review-card__mark/, `${r.name}: no photo head, product or platform line`);
+    assert.doesNotMatch(html, /avatar|<img|Posted on|review-card__about|review-card__platform|review-card__mark|review-card__more|Read more|<a /, `${r.name}: no photo head, product, platform or Read more`);
+    assert.ok(html.startsWith(`<li class="review-card" data-review-id="${r.id}">`), `${r.name}: keyed by its review`);
     assert.ok(!html.includes(`>${r.product}<`), `${r.name}: the product is not printed`);
     const tone = nameTone(r.name);
     assert.ok(Number.isInteger(tone) && tone >= 0 && tone < 6 && tone === nameTone(r.name), `${r.name}: one colour, always the same`);
-    const order = ['<figcaption class="review-card__name', 'class="review-card__rating"', 'class="review-card__quote"', 'class="review-card__foot"', 'class="review-card__more"', 'class="review-card__date"'].map((k) => html.indexOf(k));
-    assert.ok(order.every((i, n) => i > 0 && (n === 0 || i > order[n - 1])), `${r.name}: name, rating, words, then the foot with Read more and the time`);
+    const order = ['<figcaption class="review-card__name', 'class="review-card__rating"', 'class="review-card__quote"', 'class="review-card__foot"', 'class="review-card__date"'].map((k) => html.indexOf(k));
+    assert.ok(order.every((i, n) => i > 0 && (n === 0 || i > order[n - 1])), `${r.name}: name, rating, words, then the time`);
     assert.ok(html.includes(`<figcaption class="review-card__name review-card__name--${tone}">`), r.name);
-    assert.match(html, /<p class="review-card__foot"><a class="review-card__more" [^>]+>Read more<span class="visually-hidden"> of [^<]+’s review on Tripadvisor \(opens in a new tab\)<\/span><\/a><time class="review-card__date" datetime="\d{4}-\d{2}-\d{2}" data-review-date>/, `${r.name}: Read more, then the time`);
+    assert.match(html, /<p class="review-card__foot"><time class="review-card__date" datetime="\d{4}-\d{2}-\d{2}" data-review-date>[^<]+<\/time><\/p>/, `${r.name}: the time at the foot`);
   }
 });

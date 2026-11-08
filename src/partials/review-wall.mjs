@@ -5,9 +5,9 @@
  *   ratingBar(site)        each platform's own rating and number of reviews, linked to its listing, and its own
  *                          "Write a review"; the figures sit side by side and are never added together
  *   guestReviewCard(r)     one review, as a short, clean chat message (the owner's requests of 8 Nov 2026: no photo
- *                          heads, the names on top, no product or platform line): the reviewer's name heading the
- *                          bubble, their own rating, the title they gave their review (in quotation marks, word for
- *                          word), and at the foot "Read more" to the whole review and, where a chat puts it, the time
+ *                          heads, the names on top, no product, platform or Read more line): the reviewer's name
+ *                          heading the bubble, their own rating, the title they gave their review (in quotation marks,
+ *                          word for word), and at the foot, where a chat puts it, the time
  *   reviewWall({ list })   the cards, a few at a time: the rest wait in a <template> (carried by the page, drawn only
  *                          when asked for) and "Load more" adds them (src/assets/js/review-wall.js). A wall may instead
  *                          name a page to take the rest from (`moreFrom`: the home page carries eight cards and fetches
@@ -47,16 +47,16 @@ export function ratingBar(site, { cls = '', attrs = '' } = {}) {
   </ul>`;
 }
 
-/** One review card (a list item): the name, the rating, the reviewer's words; Read more and the time at the foot. */
+/** One review card (a list item, keyed by its review's id): the name, the rating, the reviewer's words, the time. */
 export function guestReviewCard(r) {
   // Kept lean: a page may carry eighty of these (the stars are drawn by the stylesheet)
   const rating = Math.max(1, Math.min(5, Math.round(r.rating)));
-  return `<li class="review-card">
+  return `<li class="review-card" data-review-id="${esc(r.id)}">
   <figure class="review-card__inner">
     <figcaption class="review-card__name review-card__name--${nameTone(r.name)}">${esc(r.name)}</figcaption>
     <p class="review-card__rating"><span class="review-card__stars" style="--n:${rating}" aria-hidden="true"></span><span class="visually-hidden">Rated ${rating} out of 5</span></p>
     <blockquote class="review-card__quote"><p>“${esc(r.title)}”</p></blockquote>
-    <p class="review-card__foot"><a class="review-card__more" href="${esc(r.url)}" ${EXTERNAL}>Read more<span class="visually-hidden"> of ${esc(r.name)}’s review on ${esc(r.platform)} (opens in a new tab)</span></a><time class="review-card__date" datetime="${esc(r.date)}" data-review-date>${esc(shortDate(r.date))}</time></p>
+    <p class="review-card__foot"><time class="review-card__date" datetime="${esc(r.date)}" data-review-date>${esc(shortDate(r.date))}</time></p>
   </figure>
 </li>`;
 }

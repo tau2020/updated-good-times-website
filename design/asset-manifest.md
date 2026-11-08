@@ -74,6 +74,6 @@ The complete library is `src/data/images.mjs` (one entry per photograph, its alt
 
 ## 6. Other assets this round
 
-No new photograph was generated, upscaled or retouched beyond the name blur. The signature leaf
-(`src/partials/ui.mjs`) and the airport route motif (`src/pages/index.mjs` › `ROUTE`) are inline SVG, decorative and
+No new photograph was generated, upscaled or retouched beyond the name blur. The signature leaf (retired on
+8 Nov 2026; it was `src/partials/ui.mjs`) and the airport route motif (`src/pages/index.mjs` › `ROUTE`) are inline SVG, decorative and
 hidden from assistive technology. GSAP's CustomEase and SplitText 3.15.0 joined the vendor folder (`NOTICE.md`).

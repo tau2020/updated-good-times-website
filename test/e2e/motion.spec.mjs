@@ -71,14 +71,13 @@ test.describe('the brand aircraft', () => {
   });
 
   test('a visitor who arrives past the hero (a link to a section, a restored scroll) gets the whole header at once', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'the header carries Plan My Day from 40em');
+    test.skip(isMobile, 'the header carries its booking button from 40em');
     await motion(page);
     await page.goto('/#gallery');
     // Never the 5.8 s entrance for someone already half a screen down: it finishes at once
     await page.waitForFunction(() => window.__heroEntrance && window.__heroEntrance.progress() === 1, null, { timeout: 5_000 });
     const cta = page.locator('.site-header .header-cta');
     expect(await cta.evaluate((a) => getComputedStyle(a).opacity)).toBe('1');
-    expect(await cta.locator('.leaf-btn__shape').evaluate((s) => getComputedStyle(s).opacity)).toBe('1');
     await expect(page.locator('.brand.is-awaiting-aircraft')).toHaveCount(0);
   });
 

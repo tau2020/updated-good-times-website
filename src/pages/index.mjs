@@ -172,7 +172,7 @@ export const page = {
   // services (HeroServices, partials/hero-services.mjs; their entrance is part of hero.js).
   styles: ['assets/css/phone-gallery.css', 'assets/css/hero-services.css', 'assets/css/living-cape.css', 'assets/css/media.css', 'assets/css/culinary.css', ...REVIEW_WALL_ASSETS.styles, 'assets/css/scenic.css', 'assets/css/voices.css'],
   // GSAP core comes with every page (the concierge, layout.mjs). Here: ScrollTrigger, Flip and MotionPathPlugin, and
-  // CustomEase and SplitText for the Cape Peninsula entrance and the leaf's unfurl (GSAP 3.15, self-hosted; the policy
+  // CustomEase and SplitText for the Cape Peninsula entrance (GSAP 3.15, self-hosted; the policy
   // allows same-origin scripts only), the hero's entrance, its phone gallery, the chapters (the guest voices' reveal
   // among them, living-cape.js)
   // and the media system: the destination carousel, the exhibition and its lightbox.

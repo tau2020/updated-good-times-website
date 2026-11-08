@@ -326,7 +326,7 @@ test.describe('home hero', () => {
     await expect(page.locator('.hero p.hero__lead, .hero__link, .hero .search, .hero form, .hero [role="tablist"], .hero input, .hero .eyebrow, .hero .btn')).toHaveCount(0);
     await expect(page.locator('.hero .medallion, .hero .stars, .hero .rating')).toHaveCount(0);
     // No icon, arrow or leaf in the hero section; the headline's swash is decoration (aria-hidden)
-    await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon, .hero .leaf-btn')).toHaveCount(0);
+    await expect(page.locator('.hero svg:not(.phone-gallery svg), .hero .icon')).toHaveCount(0);
     await expect(headline.locator('svg.hero-headline__swash[aria-hidden="true"]')).toHaveCount(1);
     await expect(page.locator('.hero')).not.toContainText(/tripadvisor|extraordinary places|cape town, personally|tailored|find experiences/i);
     // The header over the hero: the reversed logo from the approved logo pack, Plan My Day with its ornamental coin
@@ -343,7 +343,7 @@ test.describe('home hero', () => {
     expect(lockup.width, 'never narrower than the kit minimum').toBeGreaterThanOrEqual(180);
     expect(lockup.clipped).not.toContain('hidden');
     await expect(header.locator('.header-cta')).toHaveAttribute('href', /(^|\/)enquire\/$/);
-    await expect(header.locator('.header-cta .leaf-btn__shape')).toHaveCount(1);
+    await expect(header.locator('.header-cta')).toHaveClass(/gt-button--primary/);
     await expect(header.locator('.primary-nav a')).toHaveText(['Tours', 'Transfers', 'Destinations', 'About', 'Contact']);
     const fonts = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/['"]/g, '')));
     expect(fonts, 'Bricolage Grotesque (display) and DM Sans (body) loaded').toEqual(expect.arrayContaining(['Bricolage Grotesque', 'DM Sans']));
@@ -714,8 +714,8 @@ test.describe('guest voices', () => {
     const first = guestReviews[0];
     await expect(cards.first().locator('.review-card__quote')).toHaveText(`“${first.title}”`);
     await expect(cards.first().locator('.review-card__name')).toHaveText(first.name);
-    await expect(cards.first().locator('.review-card__more')).toHaveAttribute('href', first.url);
-    await expect(cards.first().locator('.review-card__more')).toHaveAccessibleName(`Read more of ${first.name}’s review on Tripadvisor (opens in a new tab)`);
+    await expect(cards.first()).toHaveAttribute('data-review-id', first.id);
+    await expect(section.locator('.review-card a, .review-card__more')).toHaveCount(0); // no Read more (the owner's request of 8 Nov 2026)
     // Short and clean (the owner's request of 8 Nov 2026): no product or platform line on a card
     await expect(section.locator('.review-card__platform, .review-card__about, .review-card__mark')).toHaveCount(0);
     await expect(section.locator('.review-card').first()).not.toContainText(/Posted on|Private Tour/);
@@ -738,7 +738,7 @@ test.describe('guest voices', () => {
     await expect(section.locator('[data-review-status]')).toHaveText('Showing 16 reviews.');
     while (await more.isVisible()) await more.click();
     await expect(cards).toHaveCount(guestReviews.length);
-    expect(new Set(await cards.locator('.review-card__more').evaluateAll((as) => as.map((a) => a.href))).size).toBe(guestReviews.length);
+    expect(new Set(await cards.evaluateAll((els) => els.map((e) => e.getAttribute('data-review-id')))).size).toBe(guestReviews.length);
     await expect(section.locator('.review-wall__all')).toHaveAttribute('href', 'reviews/');
   });
 
@@ -1704,26 +1704,44 @@ test.describe('the button system', () => {
     expect(seen, 'pills were found to check').toBeGreaterThan(10);
   });
 
-  test('Plan My Day is the signature enquiry action: the header, the concierge and the phone menu carry it as the leaf', async ({ page, isMobile }) => {
+  test('the booking action: Book Your Adventure in the navbar, Plan My Day in the concierge and the phone menu, each the green pill (8 Nov 2026)', async ({ page, isMobile }) => {
     await page.goto('/tours/?nomotion');
     if (!isMobile) {
-      await expect(page.locator('.header-cta')).toHaveText('Plan My Day');
-      await expect(page.locator('.header-cta')).toHaveAccessibleName('Plan My Day');
-      await expect(page.locator('.header-cta')).toHaveAccessibleDescription(/Opens our enquiry form/);
-      await expect(page.locator('.header-cta .leaf-btn__shape')).toHaveAttribute('aria-hidden', 'true');
+      const nav = page.locator('.header-cta');
+      await expect(nav).toHaveText('Book Your Adventure');
+      await expect(nav).toHaveAccessibleName('Book Your Adventure');
+      await expect(nav).toHaveAccessibleDescription(/Opens our enquiry form/);
+      await expect(nav).toHaveAttribute('href', /enquire\/$/);
+      await expect(nav).toHaveClass(/gt-button gt-button--primary/);
+      expect(await nav.evaluate((e) => [getComputedStyle(e).backgroundColor, getComputedStyle(e).color])).toEqual(['rgb(20, 125, 67)', 'rgb(255, 255, 255)']);
+      await expect(nav.locator('svg')).toHaveCount(0);
+      // One line, inside the bar, at every desktop width
+      for (const w of [1024, 1120, 1280, 1440]) {
+        await page.setViewportSize({ width: w, height: 900 });
+        const fit = await page.evaluate(() => {
+          const c = document.querySelector('.header-cta').getBoundingClientRect();
+          const bar = document.querySelector('.header-bar').getBoundingClientRect();
+          return { right: c.right, barRight: bar.right, h: c.height };
+        });
+        expect(fit.right, `${w}: inside the bar`).toBeLessThanOrEqual(fit.barRight + 0.5);
+        expect(fit.h, `${w}: one line`).toBeLessThan(50);
+      }
+      await page.setViewportSize({ width: 1440, height: 900 });
       await page.locator('[data-concierge-toggle]').click();
       const cta = page.locator('#concierge .gt-concierge-panel__cta');
       await expect(cta).toHaveText('Plan My Day');
       await expect(cta).toHaveAttribute('href', /enquire\/$/);
-      await expect(cta.locator('.leaf-btn__shape')).toHaveCount(1);
+      await expect(cta).toHaveClass(/gt-button--primary/);
     } else {
-      // Below 40em the header has no Plan My Day (it is in the menu and the call bar): never a squeezed leaf in the bar
+      // Below 40em the header has no booking button (it is in the menu and the call bar): never a squeezed pill in the bar
       await expect(page.locator('.header-cta')).toBeHidden();
       await page.locator('[data-nav-toggle]').click();
-      const drawer = page.locator('.drawer__footer .leaf-btn');
+      const drawer = page.locator('.drawer__footer .gt-button');
       await expect(drawer).toHaveText('Plan My Day');
       await expect(drawer).toHaveAttribute('href', /enquire\/$/);
+      await expect(drawer).toHaveClass(/gt-button--primary/);
     }
+    await expect(page.locator('.leaf-btn, [data-leaf]')).toHaveCount(0);
     // Nothing on the site still says Book Now or Start Planning
     for (const path of ['/', '/tours/', '/contact/', '/reviews/']) {
       await page.goto(`${path}?nomotion`);
@@ -1731,25 +1749,19 @@ test.describe('the button system', () => {
     }
   });
 
-  test('every primary is the leaf-green pill or the signature leaf, with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
+  test('every primary is the leaf-green pill (the leaf-shaped ones too, since 8 Nov 2026), with white words; every control is at least 44 px tall; carousel and gallery steps are labelled in words', async ({ page, isMobile }) => {
     for (const path of ['/', '/tours/cape-winelands-private-tour/', '/contact/', '/destinations/', '/enquire/']) {
       await page.goto(`${path}?nomotion`);
       const primaries = await page.locator('.gt-button--primary:visible').evaluateAll((els) => els.map((e) => { const cs = getComputedStyle(e); return { text: e.textContent.trim(), fill: cs.backgroundColor, ink: cs.color, radius: parseFloat(cs.borderTopLeftRadius), h: e.getBoundingClientRect().height }; }));
-      const leaves = await page.locator('.leaf-btn:visible').evaluateAll((els) => els.map((e) => { const body = e.querySelector('.leaf-btn__body'); return { text: e.textContent.trim(), fill: body && getComputedStyle(body).fill, ink: getComputedStyle(e).color, h: e.getBoundingClientRect().height }; }));
-      expect(primaries.length + leaves.length, path).toBeGreaterThan(0);
+      expect(primaries.length, path).toBeGreaterThan(0);
+      await expect(page.locator('.leaf-btn, [data-leaf]'), `${path}: no leaf-shaped button`).toHaveCount(0);
       for (const b of primaries) {
         // --green-primary (#147D43), a pill (design/button-design.md)
         expect(b.fill, `${path}: ${b.text}`).toBe('rgb(20, 125, 67)');
         expect(b.ink, `${path}: ${b.text}`).toBe('rgb(255, 255, 255)');
         expect(b.radius, `${path}: ${b.text}`).toBeGreaterThanOrEqual(b.h / 2 - 1);
       }
-      for (const b of leaves) {
-        // The signature leaf (design/button-tokens.md): the leaf gradient behind white words, on a 44 px target at least
-        expect(b.fill, `${path}: ${b.text}`).toMatch(/url\("?#gt-leaf-fill(-hover)?"?\)/);
-        expect(b.ink, `${path}: ${b.text}`).toBe('rgb(255, 255, 255)');
-        expect(b.h, `${path}: ${b.text}`).toBeGreaterThanOrEqual(43.5);
-      }
-      const short = await page.locator('.gt-button:visible, .leaf-btn:visible').evaluateAll((els) => els.filter((e) => e.getBoundingClientRect().height < 43.5).map((e) => e.textContent.trim()));
+      const short = await page.locator('.gt-button:visible').evaluateAll((els) => els.filter((e) => e.getBoundingClientRect().height < 43.5).map((e) => e.textContent.trim()));
       expect(short, `${path}: 44 px targets`).toEqual([]);
     }
     await page.goto('/?nomotion');
@@ -1768,7 +1780,7 @@ test.describe('the button system', () => {
       for (const path of ['/', '/tours/cape-town-city-private-tour/', '/packages/garden-route-private-tour/', '/contact/', '/enquire/']) {
         await page.goto(`${path}?nomotion`);
         await page.evaluate(() => scrollTo(0, 1200));
-        const clipped = await page.evaluate(() => [...document.querySelectorAll('.gt-button, .leaf-btn')].filter((e) => e.offsetParent && (e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > innerWidth + 0.5)).map((e) => e.textContent.trim()));
+        const clipped = await page.evaluate(() => [...document.querySelectorAll('.gt-button')].filter((e) => e.offsetParent && (e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > innerWidth + 0.5)).map((e) => e.textContent.trim()));
         expect(clipped, `${path} at ${w}px`).toEqual([]);
       }
     }
@@ -1789,19 +1801,15 @@ test.describe('the button system', () => {
     await primary.hover();
     expect(await primary.evaluate((e) => getComputedStyle(e).transform)).toBe('none');
     expect(await primary.evaluate((e) => getComputedStyle(e).transitionDuration.split(',').every((d) => parseFloat(d) === 0))).toBe(true);
-    // The leaf: its ring is its own outline, 3 px, ink on a light ground; transparent until keyboard focus
+    // The former leaves (Request Your Tour on the contact page) take the pill's own ring: 3 px, offset 3 px, on keyboard focus
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.goto('/contact/?nomotion');
-    const leaf = page.locator('main .leaf-btn').first();
-    const stroke = () => leaf.locator('.leaf-btn__ring').evaluate((r) => [getComputedStyle(r).stroke, getComputedStyle(r).strokeWidth]);
-    expect((await stroke())[0]).toBe('rgba(0, 0, 0, 0)');
-    await leaf.focus();
+    const former = page.locator('main .gt-button--primary').first();
+    await former.focus();
     await page.keyboard.press('Shift+Tab');
     await page.keyboard.press('Tab');
-    expect(await leaf.evaluate((e) => e === document.activeElement)).toBe(true);
-    const [color, width] = await stroke();
-    expect(color).not.toBe('rgba(0, 0, 0, 0)');
-    expect(width).toBe('3px');
+    expect(await former.evaluate((e) => e === document.activeElement)).toBe(true);
+    expect(await former.evaluate((e) => { const cs = getComputedStyle(e); return [cs.outlineStyle, cs.outlineWidth, cs.outlineOffset]; })).toEqual(['solid', '3px', '3px']);
   });
 });
 

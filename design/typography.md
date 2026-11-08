@@ -99,7 +99,8 @@ statement (the logo's width ÷ 25, 10 to 13 px).
 
 ## 8. Type and the leaf
 
-The signature leaf's words are always white and never sit in its narrow ends (wider padding at the tip than the base).
+(The signature leaf, retired on 8 Nov 2026: every leaf-shaped button is now the green pill, white words on green in the
+pill's own type.) The signature leaf's words were always white and never sat in its narrow ends (wider padding at the tip than the base).
 DM Sans 650 at 1 rem for the standard and header leaves; Bricolage Grotesque 700 for the large leaves. (The hero's
 **Find Your Good Time** leaf, Bricolage 800 with a drawn 9° lean, was removed on 7 Nov 2026: see §10.) Calls to action are written in title case, as the brief writes them ("Plan My Day").
 

@@ -1,4 +1,4 @@
-import { esc, button, coinButton } from '../partials/ui.mjs';
+import { esc, button, ctaButton, SIGNATURE_CTA } from '../partials/ui.mjs';
 import { engraved, ENGRAVED_EMBLEMS, ENGRAVED_UTILITIES } from '../partials/engraved.mjs';
 import { sunSeal, travelNote, quietOutline, chapterMark, serviceInvitation, SERVICES } from '../partials/living-cape.mjs';
 
@@ -66,7 +66,7 @@ const body = () => `
     <div class="container">
       <h2 class="lc-specimen__h" id="ds-actions">The leaf-green button system (assets/css/buttons.css, design/button-design.md)</h2>
       <p class="lc-body">The flagship, with the compass medallion, for the header and the Travel Concierge:</p>
-      <div class="lc-specimen__row">${coinButton({ href: 'enquire/' })}</div>
+      <div class="lc-specimen__row">${ctaButton({ href: 'enquire/', label: SIGNATURE_CTA })}</div>
       <p class="lc-body">Primary · Leaf Green: default, hover, pressed, keyboard focus, loading, disabled; prominent; compact.</p>
       <div class="lc-specimen__row">
         ${sunSeal({ href: 'enquire/', label: 'Get a Quote' })}

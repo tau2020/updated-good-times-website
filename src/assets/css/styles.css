@@ -675,11 +675,11 @@ body {
 .primary-nav a[aria-current='page']::after {
   transform: scaleX(1);
 }
-/* Phones keep Plan My Day in the drawer; from 40em it sits in the header beside the menu button */
+/* Phones keep the booking action in the drawer; from 40em Book Your Adventure sits in the header beside the menu button */
 .header-cta {
   display: none;
 }
-/* (Its sizes in the bar, compact from 1024 to 1119 px, are the leaf's: buttons.css › .header-cta.leaf-btn) */
+/* (The standard primary pill: buttons.css; it is hidden below 40em there too, as that sheet loads after this one) */
 @media (min-width: 40em) {
   .header-cta {
     display: inline-flex;
@@ -1258,10 +1258,18 @@ body {
 .section-head--center .lead {
   margin-inline: auto;
 }
+/* A breadcrumb in a centred head is centred with it (the reviews page's title band) */
+.section-head--center .breadcrumb ol {
+  justify-content: center;
+}
 @media (max-width: 39.99em) {
   .section-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+  /* …except a centred head, which stays centred on phones */
+  .section-head--center {
+    align-items: center;
   }
 }
 

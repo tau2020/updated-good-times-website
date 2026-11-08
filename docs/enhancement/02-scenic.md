@@ -49,7 +49,8 @@ one file of 3 to 13 kB.
 - **More visible.** Each plane is about half as strong again: 13, 16 and 18% became 20, 24 and 27% on the home page, and
   the new bands sit at 24 to 32%. The `--copy` wash starts lower (at half the band, not 38%) and is lighter (the band's
   ground at 72%, not 90%).
-- **A translucent foreground.** The glass over a plane (`--gt-scenic-card`) is 72% white instead of 88%, with a 14 px
+- **A translucent foreground.** The glass over a plane (`--gt-scenic-card`) is 60% white instead of 88% (72% at first; the
+  independent check of the preview measured that as 2 to 6 levels from a plain card, too little to see), with a 14 px
   blur (it was 10 px) so the words stay clear of the photograph; under reduced transparency, or without blur, it is the
   near-opaque white it was. The review wall's bar and cards on the home page take the same glass (`voices.css`).
 - **Four more pages**, each in its quietest band of words (the table above), never behind prices, forms, tab panels,

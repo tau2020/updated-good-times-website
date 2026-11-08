@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
 import { site } from '../src/data/site.mjs';
 import { layout } from '../src/partials/layout.mjs';
-import { SIGNATURE_CTA, SIGNATURE_DESC_ID } from '../src/partials/ui.mjs';
+import { SIGNATURE_CTA, SIGNATURE_DESC_ID, NAV_CTA } from '../src/partials/ui.mjs';
 
 const dir = new URL('../src/pages/', import.meta.url);
 const pages = [];
@@ -28,19 +28,20 @@ const control = (html, label) => {
 };
 const hrefOf = (attrs) => (/href="([^"]*)"/.exec(attrs) || [])[1]?.replace(/&amp;/g, '&').replace(/^(\.\.\/)+/, '');
 
-test('the signature reads "Plan My Day" in the header, the concierge, the phone menu, the phone bar and the footer, each to the page’s booking link', () => {
+test('the booking action: Book Your Adventure in the navbar (8 Nov 2026), Plan My Day in the concierge, the phone menu, the phone bar and the footer, each a green pill to the page’s booking link', () => {
   const verified = { ...site, contact: { ...site.contact, whatsapp: { ...site.contact.whatsapp, verified: true } } };
   for (const p of pages) {
     const html = layout(p, verified);
     const book = (p.enquireHref || 'enquire/').replace(/&amp;/g, '&');
-    const header = /<a class="leaf-btn header-cta"([^>]*)>/.exec(html)?.[1] || '';
-    const concierge = /<a class="leaf-btn gt-concierge-panel__cta"([^>]*)>/.exec(html)?.[1] || '';
-    const drawer = /<div class="drawer__footer">\s*<a class="leaf-btn[^"]*"([^>]*)>[\s\S]*?<span class="leaf-btn__label">([^<]*)<\/span>/.exec(html) || [];
-    assert.equal(hrefOf(header), book, `${p.path}: header`);
+    const header = /<a class="btn gt-button gt-button--primary header-cta"([^>]*)><span>([^<]*)<\/span>/.exec(html) || [];
+    const concierge = /<a class="btn gt-button gt-button--primary gt-concierge-panel__cta"([^>]*)>/.exec(html)?.[1] || '';
+    const drawer = /<div class="drawer__footer">\s*<a class="btn gt-button gt-button--primary gt-button--block"([^>]*)><span>([^<]*)<\/span>/.exec(html) || [];
+    assert.equal(hrefOf(header[1] || ''), book, `${p.path}: header`);
+    assert.equal(header[2], NAV_CTA, `${p.path}: the navbar's words`);
     assert.equal(hrefOf(concierge), book, `${p.path}: concierge`);
     assert.equal(hrefOf(drawer[1] || ''), book, `${p.path}: phone menu`);
     assert.equal(drawer[2], SIGNATURE_CTA, `${p.path}: phone menu label`);
-    assert.match(html, new RegExp(`<span class="leaf-btn__label">${SIGNATURE_CTA}</span></a>`), `${p.path}: the leaf's label`);
+    assert.doesNotMatch(html, /leaf-btn|data-leaf/, `${p.path}: no leaf-shaped button (8 Nov 2026)`);
     const footer = html.slice(html.indexOf('id="footer-company"'), html.indexOf('id="footer-legal"'));
     assert.equal(hrefOf(control(footer, SIGNATURE_CTA)[0] || ''), book, `${p.path}: footer`);
     if (p.path !== 'enquire/index.html') {
@@ -49,8 +50,10 @@ test('the signature reads "Plan My Day" in the header, the concierge, the phone 
     }
     // Every signature link is described by the one hidden line, which exists once on the page
     const uses = [...html.matchAll(new RegExp(`>(?:<span[^>]*>)*${SIGNATURE_CTA}<`, 'g'))].length;
-    assert.ok(uses >= 4, `${p.path}: ${uses} signature links`);
-    assert.equal((html.match(new RegExp(`aria-describedby="${SIGNATURE_DESC_ID}"`, 'g')) || []).length, uses, `${p.path}: each one described`);
+    // The concierge, the phone menu and the footer everywhere, the phone bar except on the booking page (it calls instead)
+    assert.ok(uses >= 3, `${p.path}: ${uses} signature links`);
+    // …and the navbar's Book Your Adventure, the same booking action, shares the description
+    assert.equal((html.match(new RegExp(`aria-describedby="${SIGNATURE_DESC_ID}"`, 'g')) || []).length, uses + 1, `${p.path}: each one described`);
     assert.equal((html.match(new RegExp(`<p id="${SIGNATURE_DESC_ID}" hidden>`, 'g')) || []).length, 1, `${p.path}: one description`);
     assert.doesNotMatch(html, /Start Planning|Plan My Journey|Book Now/i, `${p.path}: retired labels`);
   }

@@ -1,5 +1,5 @@
 import { focusOf } from '../partials/media.mjs';
-import { esc, icon, button, leafButton, picture, preloadFor, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
+import { esc, icon, button, ctaButton, picture, preloadFor, breadcrumb, sectionHead, price, showRating, currencyPicker, moneyTag } from '../partials/ui.mjs';
 import { rowCard } from '../partials/cards.mjs';
 import { services, types } from '../data/transfers.mjs';
 import { fromLine } from '../data/pricing.mjs';
@@ -46,7 +46,7 @@ function serviceBlock(s, site, i) {
     <p class="small muted">Not included: ${esc(s.notIncluded.join(', ').toLowerCase())}. ${esc(s.cancellation)}</p>
     <div class="service-block__foot">
       ${price(s, site)}
-      ${leafButton({ href: request, label: 'Arrange My Transfer' })}
+      ${ctaButton({ href: request, label: 'Arrange My Transfer' })}
     </div>
     ${tiers}
     ${i === 0 && site.prices.show && s.price ? `<div class="currency-area currency-area--inline">${currencyPicker({ id: 'currency-transfers' })}</div>` : ''}
@@ -134,7 +134,7 @@ export const page = {
       <li>${icon('luggage')} <span><strong>Luggage</strong>, including anything oversized such as golf bags or surfboards.</span></li>
     </ul>
     <p class="callout">${icon('info')}<span>A transfer request is not a confirmed booking: one of our team confirms it with you.</span></p>
-    <div class="center-x mt-6">${leafButton({ href: 'enquire/?type=transfer', label: 'Arrange My Transfer' })}</div>
+    <div class="center-x mt-6">${ctaButton({ href: 'enquire/?type=transfer', label: 'Arrange My Transfer' })}</div>
   </div>
 </section>`,
 };

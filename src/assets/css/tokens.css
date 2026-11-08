@@ -135,7 +135,7 @@
   --gt-scene-paper: rgb(255 255 255 / 0.9);
   --gt-scene-wash: none;
   --gt-scene-mask: none;
-  --gt-scenic-card: rgb(255 255 255 / 0.72); /* glass over a scenic band: a little translucent (8 Nov 2026) */
+  --gt-scenic-card: rgb(255 255 255 / 0.6); /* glass over a scenic band: visibly translucent (the owner's request of 8 Nov 2026) */
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

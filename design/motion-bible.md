@@ -2,7 +2,9 @@
 
 The owner's brief of 6 Nov 2026 (§8 to §10) asks for a home page that feels like a living Cape Town travel journal: each
 major section with its own motion identity, the strongest effects at the story's turns, nothing random. This is the
-record of what moves, when, why and who owns it. The signature leaf has its own sheet: `design/button-tokens.md`.
+record of what moves, when, why and who owns it. The signature leaf (retired 8 Nov 2026: every leaf-shaped button is
+the green pill, and its unfurl and `leaf.js` are gone; a scene's call to action keeps a short fade) had its own sheet:
+`design/button-tokens.md`.
 
 ## 1. The rhythm
 

@@ -66,14 +66,15 @@ chapter 09, `/reviews/` and the Reviews tab of each tour with reviews.
 | Part | Content | Rules |
 |---|---|---|
 | The rating bar | "Tripadvisor rating 5.0 ★★★★★ 264 reviews [Write a review]" beside "Google rating 5.0 ★★★★★ 10 reviews [Write a review]" | Each figure from its one constant (`site.tripadvisor`, `site.google`), never added together, no date; the counts link to the listing and the profile; each "Write a review" opens that platform's own form (both opened in a browser on 8 Nov 2026: Tripadvisor's `UserReviewEdit` page for the listing, and Google's form by the profile's Place ID, `ChIJ21BcDeVnzB0R8eeEloFUvnQ`, the profile's feature id in Google's encoding, which landed on the profile with its CID and its 5.0 from 10) |
-| The cards | Short, clean chat messages (the owner's requests of 8 Nov 2026: no photo heads, the names on top, no product or platform line): the reviewer's name heading a speech bubble, in one of six colours, as a group chat names its senders; their own rating (stars); the title they gave their review in quotation marks, word for word; and at the bubble's foot "Read more" (the whole review on Tripadvisor, new tab, its name saying so) and, where a chat puts the time, when they wrote it ("2 weeks ago", from the visitor's clock; the date itself in the element and its tooltip). The platform is named by the rating bar above the cards and by each Read more link | Nothing summarised, shortened or reworded; only spaces around a title trimmed. Four across on wide walls, two in narrower ones, one on phones (container queries, so a tour's tab and the home page use one set of rules) |
+| The cards | Short, clean chat messages (the owner's requests of 8 Nov 2026: no photo heads, the names on top, no product, platform or Read more line): the reviewer's name heading a speech bubble, in one of six colours, as a group chat names its senders; their own rating (stars); the title they gave their review in quotation marks, word for word; and at the bubble's foot, where a chat puts the time, when they wrote it ("2 weeks ago", by calendar months and years from the visitor's clock; the date itself in the element and its tooltip). The platform is named by the rating bar above the cards, whose counts link to each listing, and by `/reviews/`' note; each card is keyed by its review's id (`data-review-id`) | Nothing summarised, shortened or reworded; only spaces around a title trimmed. Four across on wide walls, two in narrower ones, one on phones (container queries, so a tour's tab and the home page use one set of rules) |
 | Load more | Eight more each press on the home page, twelve on `/reviews/` | Focus moves to the first new card; a status line says how many are showing; the button leaves once every card is in. Without the script the first cards show with their dates and the link under them leads to the rest |
 
 The cards come from `src/data/guest-reviews.mjs`: the owner's archive (Drive › the reviews archive, the index workbook's
 Reviews tab, compiled 5 Nov 2026), the 81 reviews it records of the 264 on the listing (it indexed the reviews that
 carry photographs; every one is listed, newest first, from 20 Oct 2026 back to 17 Dec 2019, all rated 5). Each entry is
 the archive's record: id, title, name, date, rating, product, trip type and the review's address, from which its tour or
-service follows. The archive holds no review bodies, so a card shows the title and "Read more" leads to the rest; it
+service follows. The archive holds no review bodies, so a card shows the title (the whole review is on Tripadvisor; the
+cards carry no link of their own since the owner's request of 8 Nov 2026); it
 holds no Google reviews, so none is shown and Google's figure stands in the bar alone. A Google review would join the
 list with `platform: 'Google'` and its own address, and the card's mark and "Posted on Google" follow.
 
@@ -86,15 +87,14 @@ near 1.3 kB.
 
 Design: the screenshots' structure in the site's own type and greens. The bar is one white card with a cell per
 platform. The cards are speech bubbles: light (`--ivory-soft`) with a soft shadow, one square corner where a small tail
-points to the name, and on the home page white glass over the sea plane (72% white, blurred where the sea is drawn:
+points to the name, and on the home page white glass over the sea plane (60% white, blurred where the sea is drawn:
 `voices.css`; the tail takes the bubble's colour). The six name colours are dark tones of the palette's family, each 6:1
 or more on the bubble. The chapter's heading is centred, as in the screenshots, with no introduction under it (the
 owner removed it). The first version drew each reviewer's initial in a coloured circle; the owner asked for the photo
 heads to go and the names on top, so the cards carry no avatar, initial or photo slot.
 
 Accessibility: the stars are decoration with "Rated 5 out of 5" for screen readers; each link's name says where it goes
-("Read more of Hannah C's review on Tripadvisor (opens in a new tab)", "264 reviews on Tripadvisor (opens in a new
-tab)"); every control is at least 44 px tall and every link at least 24 px; the cards are a list with a label; a focused
+("264 reviews on Tripadvisor (opens in a new tab)", "Write a review on Google (opens in a new tab)"); every control is at least 44 px tall and every link at least 24 px; the cards are a list with a label; a focused
 card shows a ring. Motion: `living-cape.js` rises the head, the bar and the wall once (opacity and 16 px); cards added by
 "Load more" fade in once, not under reduced motion.
 

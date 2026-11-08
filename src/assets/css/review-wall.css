@@ -3,7 +3,7 @@
    The rating bar (each platform's own rating, its own "Write a review"), then the reviewers' own words as chat
    messages, short and clean (the owner's requests of 8 Nov 2026: no photo heads, the names on top, no product or
    platform line): a light bubble with a small tail at its top corner, the reviewer's name heading it in one of six
-   colours, their rating and words, and at its foot Read more and the time. Four across where the
+   colours, their rating and words, and the time at its foot. Four across where the
    wall is wide, two in a narrower column, one on phones (container queries, so a tour page's tab and the home page's
    chapter use the same rules), a few at a time with "Load more" (review-wall.js). Over a scenic band (the home page)
    the bubbles are white glass (voices.css).
@@ -185,26 +185,11 @@
   color: var(--ink);
   overflow-wrap: anywhere;
 }
-.review-card__more {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2rem;
-  font-size: var(--text-small);
-  font-weight: 600;
-  color: var(--gold);
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
-  text-underline-offset: 3px;
-}
-.review-card__more:hover {
-  color: var(--gold-hover);
-  text-decoration-color: currentColor;
-}
 .review-card__foot {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 0.25rem 0.75rem;
   margin-top: auto;
   font-size: var(--text-xs);

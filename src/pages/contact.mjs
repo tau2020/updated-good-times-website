@@ -1,4 +1,4 @@
-import { esc, icon, brandMark, button, leafButton, breadcrumb, sectionHead, contactList } from '../partials/ui.mjs';
+import { esc, icon, brandMark, button, ctaButton, breadcrumb, sectionHead, contactList } from '../partials/ui.mjs';
 import { scenicLayer } from '../partials/scenic.mjs';
 
 const crumbs = [{ label: 'Home', href: './' }, { label: 'Contact', href: 'contact/' }];
@@ -32,7 +32,7 @@ export const page = {
       <h2>Send a booking request</h2>
       <p>We’ll confirm availability and your price by email, WhatsApp or phone before anything is booked.</p>
       <div class="cluster">
-        ${leafButton({ href: 'enquire/?type=tour', label: 'Request Your Tour' })}
+        ${ctaButton({ href: 'enquire/?type=tour', label: 'Request Your Tour' })}
         ${button({ href: 'enquire/?type=transfer', label: 'Arrange My Transfer', variant: 'outline', icon: 'car' })}
       </div>
       <ul class="ticks" role="list">

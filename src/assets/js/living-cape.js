@@ -234,8 +234,8 @@
   /* ---------- 10 · The invitation (motion bible §13): the journey's calm close, the other end of "Look where your
      footsteps led.". The photograph comes up out of the dusk (its layer from 0.3 to full over 1.5 s, the picture
      settling from 1.08 over 2 s); the seal and the chapter mark; the headline's words rise and clear one after another
-     (SplitText words: a softer gesture than the Peninsula's line masks); the line; then Plan My Day unfurls (its leaf
-     is this scene's: data-leaf-owner="invite") and the transfer action appears beside it. Once, as it comes into
+     (SplitText words: a softer gesture than the Peninsula's line masks); the line; then Plan My Day appears (its pill
+     is this scene's: data-cta-owner="invite") and the transfer action beside it. Once, as it comes into
      view: the invitation never hides again, and focus inside it shows it whole. The scene's drift (scrubbed, wide
      screens) is shared with the other scenes: it moves the drift layer and the words block, never these. ---------- */
   (function invite() {
@@ -248,9 +248,9 @@
     var mark = head && head.querySelector('.lc-mark');
     var title = s.querySelector('.lc-statement');
     var line = s.querySelector('.lc-scene__line');
-    var leaf = s.querySelector('[data-leaf-owner="invite"]');
+    var cta = s.querySelector('[data-cta-owner="invite"]');
     var rest = toArray('.lc-scene__actions > *', s).filter(function (a) {
-      return a !== leaf;
+      return a !== cta;
     });
     var words = null;
     if (title && window.SplitText) {
@@ -268,11 +268,7 @@
       else if (title) tl.fromTo(title, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9 * f, clearProps: 'opacity,transform' }, 0.6 * f);
       if (line) tl.fromTo(line, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 * f, clearProps: 'opacity,transform' }, 1.25 * f);
       var at = 1.75 * f;
-      if (leaf) {
-        tl.fromTo(leaf, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', clearProps: 'opacity' }, at);
-        var unfurl = window.GTLeaf && window.GTLeaf.unfurl ? window.GTLeaf.unfurl(leaf) : null;
-        if (unfurl) tl.add(unfurl, at);
-      }
+      if (cta) tl.fromTo(cta, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', clearProps: 'opacity' }, at);
       if (rest.length) tl.fromTo(rest, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'opacity,transform' }, at + 0.45);
       s.__entrance = tl;
       api.invite = tl;

@@ -50,7 +50,7 @@ export const page = {
       </div>
     </div>
     ${reviewWall({ list: guestReviews, initial: 12, step: 12, label: 'Reviews from Tripadvisor, newest first', all: { href: ta.url, label: `All ${ta.reviewCount} reviews on Tripadvisor`, external: true } })}
-    <p class="source-note mt-6">Reviews are the opinions of Tripadvisor members, shown as they wrote them: each card is the title the reviewer gave their review, with their rating, their name and the date they wrote it, and Read more opens the whole review on Tripadvisor. These are the ${guestReviews.length} reviews in our own records; all ${ta.reviewCount} are on Tripadvisor. Our Google reviews are read on Google.</p>
+    <p class="source-note mt-6">Reviews are the opinions of Tripadvisor members, shown as they wrote them: each card is the title the reviewer gave their review, with their rating, their name and the date they wrote it. These are the ${guestReviews.length} reviews in our own records; all ${ta.reviewCount}, in full, are on Tripadvisor. Our Google reviews are read on Google.</p>
   </div>
 </section>
 

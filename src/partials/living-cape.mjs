@@ -7,7 +7,7 @@
  * assets/css/living-cape-system.css, so nothing restyles the approved hero, the
  * header's default bar or its Book Now coin. Every href is a real route of this site.
  */
-import { esc, icon, picture, coinButton, artPanel, leafButton } from './ui.mjs';
+import { esc, icon, picture, artPanel, ctaButton, SIGNATURE_CTA } from './ui.mjs';
 import { engraved } from './engraved.mjs';
 import { tours } from '../data/tours.mjs';
 import { packages } from '../data/packages.mjs';
@@ -16,13 +16,13 @@ import { packages } from '../data/packages.mjs';
  * The Living Cape's three actions, members of the site's leaf-green button system (assets/css/buttons.css,
  * design/button-design.md): Sun Seal is the primary (Leaf Green, prominent size), Travel Note the tertiary (words
  * over a fine rule), Quiet Outline the secondary (Soft Leaf on a light ground; over a photograph, `tone: 'light'`,
- * the solid white on-image pill, so it reads on any picture). No arrows; the old class names stay as hooks. The
- * compass medallion is kept for the flagship (coinButton in ui.mjs).
+ * the solid white on-image pill, so it reads on any picture). No arrows; the old class names stay as hooks.
  */
 export function sunSeal({ href, label, tone = '', cls = '', attrs = '', owner = '' }) {
-  // The home page's closing actions are the signature leaf (the brief of 6 Nov 2026), large; "Plan My Day" carries the
-  // signature's one description (ui.mjs). owner: the scene whose timeline plays its entrance (living-cape.js)
-  return leafButton({ href, label, size: 'large', cls: ['lc-seal', tone && `lc-seal--${tone}`, cls].filter(Boolean).join(' '), attrs, owner });
+  // The home page's closing actions: the large standard green pill (the signature leaf until the owner's request of
+  // 8 Nov 2026); "Plan My Day" carries the signature's one description (ui.mjs). owner: the scene whose timeline plays
+  // its entrance (living-cape.js)
+  return ctaButton({ href, label, size: 'large', cls: ['lc-seal', tone && `lc-seal--${tone}`, cls].filter(Boolean).join(' '), attrs, owner });
 }
 
 /** Travel Note: an editorial link, the tertiary action. */
@@ -169,7 +169,7 @@ export function conciergePanel({ bookHref = 'enquire/', reach = '' } = {}) {
           <p class="gt-concierge-panel__heading">Tell us what you have in mind</p>
           <p class="gt-concierge-panel__note">We’ll reply with availability and a personalised quote, and nothing is booked until we’ve confirmed it with you.</p>
         </div>
-        ${coinButton({ href: bookHref, cls: 'gt-concierge-panel__cta' })}
+        ${ctaButton({ href: bookHref, label: SIGNATURE_CTA, cls: 'gt-concierge-panel__cta' })}
       </div>
       ${reach}
     </div>

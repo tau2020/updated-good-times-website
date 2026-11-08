@@ -17,16 +17,21 @@
   var full = hasIntl ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : null;
   var slice = Array.prototype.slice;
 
-  /** "today", "3 days ago", "last week", "5 months ago", "2 years ago"; '' for a date that cannot be read or is ahead */
+  /** "today", "3 days ago", "last week", "5 months ago", "last year", "2 years ago"; '' for a date that cannot be read
+      or is ahead. Weeks under a month; after that whole calendar months and years, so an anniversary is a full year
+      (a year ago today is "last year", never "this year") */
   function ago(iso, now) {
     var then = Date.parse(iso + 'T12:00:00Z');
     if (!relative || isNaN(then)) return '';
     var days = Math.floor((now - then) / DAY);
     if (days < 0) return '';
     if (days < 7) return relative.format(-days, 'day');
-    if (days < 30) return relative.format(-Math.floor(days / 7), 'week');
-    if (days < 365) return relative.format(-Math.max(1, Math.floor(days / 30.44)), 'month');
-    return relative.format(-Math.floor(days / 365.25), 'year');
+    var a = new Date(then);
+    var b = new Date(now);
+    var months = (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + (b.getUTCMonth() - a.getUTCMonth()) - (b.getUTCDate() < a.getUTCDate() ? 1 : 0);
+    if (months < 1) return relative.format(-Math.max(1, Math.floor(days / 7)), 'week');
+    if (months < 12) return relative.format(-months, 'month');
+    return relative.format(-Math.floor(months / 12), 'year');
   }
 
   function dates(root, now) {
@@ -41,10 +46,9 @@
     }
   }
 
-  /** A card's identity: the address of the review it links to */
+  /** A card's identity: its review's id */
   function key(card) {
-    var a = card.querySelector('.review-card__more');
-    return a ? a.href : '';
+    return card.getAttribute('data-review-id') || '';
   }
 
   /** Every card of the first wall on another page of the site, its links made absolute against that page */

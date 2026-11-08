@@ -77,17 +77,17 @@ test('verified WhatsApp: every page gets a WhatsApp + Plan My Day bar; tour page
     assert.ok(bar, `${p.path}: contact bar`);
     assert.match(html, /<body class="[^"]*\bhas-mobile-cta\b/, `${p.path}: footer clears the bar`);
     assert.match(bar, new RegExp(`href="https://wa\\.me/${digits}"[^>]*>.*WhatsApp`), `${p.path}: WhatsApp button`);
-    assert.equal((bar.match(/class="(?:btn |leaf-btn[" ])/g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the leaf)`);
+    assert.equal((bar.match(/class="btn /g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the green pill)`);
     assert.doesNotMatch(html, /data-mobile-cta[ >]/, `${p.path}: one bar only`);
     if (p.path === 'enquire/index.html') {
       assert.match(bar, /href="tel:/, 'enquiry page: Call');
       assert.doesNotMatch(bar, /href="[^"]*enquire\//, 'enquiry page: no link to itself');
     } else if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
     } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
+      assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
     } else {
-      assert.match(bar, /href="[^"]*enquire\/"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: Plan My Day`);
+      assert.match(bar, /href="[^"]*enquire\/"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: Plan My Day`);
     }
   }
 });
@@ -164,13 +164,13 @@ test('only the phone verified (Good Times until 7 Nov 2026): every page gets a C
       assert.equal((bar.match(/class="btn /g) || []).length, 1, 'enquiry page: Call alone');
       assert.doesNotMatch(bar, /href="[^"]*enquire\//, 'enquiry page: no link to itself');
     } else {
-      assert.equal((bar.match(/class="(?:btn |leaf-btn[" ])/g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the leaf)`);
+      assert.equal((bar.match(/class="btn /g) || []).length, 2, `${p.path}: two buttons (Plan My Day is the green pill)`);
       if (p.path.startsWith('tours/') && p.path !== 'tours/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled tour booking`);
       } else if (p.path.startsWith('packages/') && p.path !== 'packages/index.html') {
-        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
+        assert.match(bar, /href="[^"]*enquire\/\?type=tour&amp;tour=[a-z-]+(&amp;nights=\d+)?"[^>]*>[\s\S]*?<span>Plan My Day<\/span>/, `${p.path}: prefilled package booking`);
       } else {
-        assert.match(bar, /<span class="leaf-btn__label">Plan My Day<\/span>/, `${p.path}: Plan My Day`);
+        assert.match(bar, /<span>Plan My Day<\/span>/, `${p.path}: Plan My Day`);
       }
     }
   }

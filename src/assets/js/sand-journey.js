@@ -311,7 +311,7 @@
      plays once the sand has cleared (p 0.84; the sand is all but gone by 0.80) and runs back, twice as fast, if the
      visitor scrolls back above p 0.80. Eyebrow (0.5 s: a short rise and fade), headline (SplitText: its words rise
      through a mask per line, staggered, with a CustomEase settle, about 1.25 s in all; re-split when its width
-     changes), the line (0.7 s), then the leaf unfurls, its midrib drawing (leaf.js), once the line is readable: about
+     changes), the line (0.7 s), then the call to action fades in (a green pill since 8 Nov 2026), once the line is readable: about
      2.4 s in all on desktop, a little shorter on tablets and phones. Opacity and transforms only, so the words never
      leave the accessibility tree, and the link is never moved: it can be focused at any time, and focus anywhere in
      the words shows them at once. While they wait (hidden) they take no pointer events. Built once the renderer is
@@ -354,10 +354,8 @@
     }
     tl.addLabel('line', 0.95 * f);
     tl.fromTo(line, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 * f, ease: 'power2.out', clearProps: 'opacity,transform' }, 'line');
-    tl.addLabel('leaf', 1.55 * f);
-    tl.fromTo(cta, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', clearProps: 'opacity' }, 'leaf');
-    var unfurl = window.GTLeaf && window.GTLeaf.unfurl ? window.GTLeaf.unfurl(cta) : null;
-    if (unfurl) tl.add(unfurl, 'leaf');
+    tl.addLabel('cta', 1.55 * f);
+    tl.fromTo(cta, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', clearProps: 'opacity' }, 'cta');
     return tl;
   };
   // (Re)build the entrance, keeping where the old one was and where it was going (a re-split mid-entrance carries on)

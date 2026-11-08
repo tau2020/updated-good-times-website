@@ -1,4 +1,12 @@
-# Button tokens: the signature leaf
+# Button tokens: the signature leaf (retired 8 Nov 2026)
+
+> **Retired.** At the owner's requests of 8 Nov 2026 ("make all the leaf designed buttons into normal green buttons";
+> the navbar's "Plan My Day" became "Book Your Adventure") every leaf-shaped button is the site's standard green pill:
+> `button({ variant: 'primary' })`, or `ctaButton()` for the former leaves' sizes and scene owners
+> (`src/partials/ui.mjs`). The leaf's drawing, gradients, styles and motion (`leafButton`, `leafShape`, `leafDefs`,
+> `.leaf-btn`, `leaf.js`) are deleted; the scenes keep their own short fades for their calls to action
+> (`data-cta-owner`). Below is the record of what the leaf was.
+
 
 The owner's brief of 6 Nov 2026 asks for primary buttons that are themselves leaf-shaped: "a real reusable branded
 component, not merely a rounded rectangle with a leaf icon". This is that component. It sits on top of the leaf-green pill
