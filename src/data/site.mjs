@@ -129,7 +129,9 @@ export const site = {
      * its own widgets (and a date beside it); its widget terms forbid showing ratings elsewhere once its widgets are
      * used. Not requested yet: the release gate names it (docs/APPROVAL_REGISTER.md › R4).
      */
-    permission: { status: 'not requested', verified: false },
+    // Confirmed by the owner on 8 Nov 2026 ("R4: Approved"); Tripadvisor's written permission itself is not on file in
+    // this repository: file it with the approval register.
+    permission: { status: 'granted (confirmed by the owner, 8 Nov 2026)', date: '2026-11-08', verified: true, source: 'the owner’s confirmation, 8 Nov 2026' },
     /** Tripadvisor's own "Write a review" form for the listing (opened in a browser on 8 Nov 2026: "Tell us, how was your visit?", Good Times In Cape Town). */
     writeReviewUrl: 'https://www.tripadvisor.co.za/UserReviewEdit-g312659-d19611200-Good_Times_In_Cape_Town-Cape_Town_Central_Western_Cape.html',
   },
@@ -268,7 +270,9 @@ export const site = {
      * Sign-off by a South African legal practitioner of the privacy notice and the terms as reconciled on 8 Nov 2026
      * (the owner's brief asks for it before publication). Until it is recorded here, the release gate holds production.
      */
-    counselReview: { by: '', date: '', verified: false },
+    // Confirmed by the owner on 8 Nov 2026 ("B7: Signed off: Approved", the cutover instruction's follow-up). The
+    // practitioner's name and the signed copy are not on file in this repository: file them with the approval register.
+    counselReview: { by: 'A South African legal practitioner (sign-off confirmed by the owner, 8 Nov 2026; name not on file)', date: '2026-11-08', verified: true, source: 'the owner’s confirmation, 8 Nov 2026' },
     // Recorded 7 Nov 2026 by tau2020, the repository's owner, for the production deployment at
     // good-times-in-cape-town.pages.dev only (not the domain): these open items are accepted for that release and stay
     // open (docs/APPROVAL_REGISTER.md, A1 and B1–B5). Kept as given; the texts themselves were approved on 8 Nov 2026.

@@ -139,7 +139,7 @@ test('until Good Times approves the text, the page says it is a draft and names 
     assert.equal(/<p class="notice notice--warning">/.test(html), !x.legal.termsApproved);
     if (!x.legal.termsApproved) {
       assert.match(html, /Draft for Good Times’ approval\./);
-      assert.ok(OPEN_POINTS.length > 0 && html.includes(`Still to confirm: ${OPEN_POINTS.join('; ')}`), 'every open point is named');
+      assert.ok(html.includes(OPEN_POINTS.length ? `Still to confirm: ${OPEN_POINTS.join('; ')}` : 'Still to confirm: the registered business details'), 'every open point is named');
     }
   }
   assert.doesNotMatch(termsPage.body({ site: approvedTerms(production) }), /notice--warning|Draft for Good Times/);

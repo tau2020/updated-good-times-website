@@ -47,8 +47,10 @@ test('both texts approved by the owner on 8 Nov 2026, effective that day; the fa
   // Items 4 and 5: the per-booking cancellation rule and the payment terms
   assert.deepEqual({ ...site.legal.cancellation, source: undefined }, { dayTour: 24, multiDay: 48, transfer: 24, activity: 24, lateCharge: 100, noShowCharge: 100, source: undefined });
   assert.deepEqual({ ...site.legal.payment, source: undefined }, { methods: ['bank transfer (EFT)', 'card', 'cash'], depositPercent: 50, depositDaysBefore: 7, balance: 'on the day', source: undefined });
-  // Not yet signed off by a South African legal practitioner (the owner's brief of 8 Nov 2026)
-  assert.equal(site.legal.counselReview.verified, false);
+  // The legal practitioner's sign-off (B7): confirmed by the owner on 8 Nov 2026, recorded as the owner's confirmation
+  assert.equal(site.legal.counselReview.verified, true);
+  assert.equal(site.legal.counselReview.date, '2026-11-08');
+  assert.match(site.legal.counselReview.by, /confirmed by the owner/);
   // The one fact taken as published: the office on the official site (to be confirmed as the address for notices).
   assert.deepEqual(site.legal.address, { text: '277 Main Road, Adelphi Centre, Sea Point, Cape Town, 8005', verified: true });
 });
@@ -112,16 +114,17 @@ test('the release gate names what the approval did not settle: the unconfirmed f
     else assert.match(open, new RegExp(`site\\.legal\\.${key}`), key);
   }
   for (const point of OPEN_POINTS) assert.ok(open.includes(point), point);
-  // The override (A1, extended on 8 Nov 2026 at the owner's instruction) lets the pages.dev release through with the legal
-  // practitioner's sign-off and Tripadvisor's permission still open: accepted, never recorded as given
+  // B6 decided, B7 and R4 confirmed by the owner (8 Nov 2026): the gate is clear on its own, without the pages.dev
+  // override, as the domain requires
   const d = releaseDecision(site);
   assert.equal(d.clear, true, d.remaining.join('; '));
-  for (const m of [
-    'no South African legal practitioner has signed off the privacy notice and the terms (site.legal.counselReview)',
-    'Tripadvisor’s permission to show its rating, its review count and its reviewers’ titles outside its widgets is not recorded (site.tripadvisor.permission)',
-  ]) assert.ok(d.overridden.includes(m), m);
-  assert.equal(site.tripadvisor.permission.verified, false, 'the permission is not recorded as given');
-  assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } }).clear, false, 'the domain still needs every open point');
+  assert.deepEqual(d.overridden, [], 'nothing needs the override any more');
+  const domain = releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null } });
+  assert.equal(domain.clear, true, domain.remaining.join('; '));
+  assert.equal(site.tripadvisor.permission.verified, true);
+  assert.equal(site.tripadvisor.permission.date, '2026-11-08');
+  // Take a confirmation away and the gate holds again
+  assert.equal(releaseDecision({ ...site, legal: { ...site.legal, releaseOverride: null, counselReview: { by: '', date: '', verified: false } } }).clear, false, 'the domain needs the sign-off');
 });
 
 test('every "From" price states Good Times’ own basis, never "per adult"; the FAQ says prices are per group', () => {

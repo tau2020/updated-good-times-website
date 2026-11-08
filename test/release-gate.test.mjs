@@ -38,12 +38,13 @@ test('the gate lists every open approval and fact while the texts are drafts', (
 
 test('approvals alone do not clear the gate while the terms leave a commercial point open', () => {
   const s = approved();
-  // The terms leave the cancellation notice and payment to Good Times: the gate holds until they are written.
-  assert.ok(OPEN_POINTS.length > 0);
-  const open = releaseBlockers(s);
-  assert.equal(open.length, OPEN_POINTS.length, open.join('; '));
+  // A commercial point the terms leave open holds the gate until it is written (none today: the owner decided B6 on 8 Nov 2026)
+  const point = 'when the deposit is due for a late booking';
+  const open = releaseBlockers(s, { openTermsPoints: [point] });
+  assert.equal(open.length, 1, open.join('; '));
   assert.ok(open.every((o) => /booking terms do not yet cover/.test(o)));
-  assert.deepEqual(releaseBlockers(s, { openTermsPoints: [] }), [], 'everything approved, confirmed and written: clear');
+  assert.deepEqual(OPEN_POINTS, [], 'B6 decided: nothing left open in the terms');
+  assert.deepEqual(releaseBlockers(s), [], 'everything approved, confirmed and written: clear');
 });
 
 test('a draft says it is a draft; an unconfirmed fact is left out, never shown as pending', () => {
@@ -60,7 +61,7 @@ test('a draft says it is a draft; an unconfirmed fact is left out, never shown a
   // Every open point is named in the draft notice, in the page's own words.
   const terms = termsPage.body({ site: draft });
   assert.match(terms, /Draft for Good Times’ approval/);
-  assert.ok(terms.includes(`Still to confirm: ${OPEN_POINTS.join('; ')}; and the registered business details.`), 'the open points');
+  assert.ok(terms.includes(OPEN_POINTS.length ? `Still to confirm: ${OPEN_POINTS.join('; ')}; and the registered business details.` : 'Still to confirm: the registered business details.'), 'the open points');
   const final = approved();
   final.preview = false;
   const done = privacy.body({ site: final });
@@ -112,21 +113,24 @@ test('the script itself fails the job, and says why, while anything open is not 
 test('an owner’s override passes exactly the blockers it names; anything else still stops the release', () => {
   const s = structuredClone(site);
   s.legal.releaseOverride = { date: '2026-10-26', by: 'test', accepted: ['site.legal.effective', 'site.legal.entity', 'site.legal.address', 'site.legal.informationOfficer', 'site.legal.retention', 'OPEN_POINTS', 'site.legal.counselReview', 'site.tripadvisor.permission'] };
-  Object.assign(s.legal, { privacyApproved: true, termsApproved: true, effective: '', retention: { text: '', verified: false } });
-  const ok = releaseDecision(s);
+  // This copy keeps open what the live data has since settled (B6, B7, R4 on 8 Nov 2026), so the override has work to do
+  Object.assign(s.legal, { privacyApproved: true, termsApproved: true, effective: '', retention: { text: '', verified: false }, counselReview: { by: '', date: '', verified: false } });
+  s.tripadvisor.permission = { status: 'not requested', verified: false };
+  const opts = { openTermsPoints: ['when the deposit is due for a late booking'] };
+  const ok = releaseDecision(s, opts);
   assert.equal(ok.clear, true, ok.remaining.join('; '));
   // effective, retention, the open deposit point, the practitioner's sign-off and Tripadvisor's permission
   assert.ok(ok.overridden.length >= 5, ok.overridden.join('; '));
   // A blocker the override does not name: an unapproved privacy notice.
   s.legal.privacyApproved = false;
-  const stopped = releaseDecision(s);
+  const stopped = releaseDecision(s, opts);
   assert.equal(stopped.clear, false);
   assert.deepEqual(stopped.remaining, ['Good Times has not approved the privacy notice (site.legal.privacyApproved)']);
   // Without a dated override, nothing is waived.
   s.legal.privacyApproved = true;
   s.legal.releaseOverride = { accepted: ok.overridden.length ? ['site.legal.effective'] : [] };
-  assert.equal(releaseDecision(s).clear, false);
+  assert.equal(releaseDecision(s, opts).clear, false);
   // A key must match whole: "site.legal.e" waives nothing.
   s.legal.releaseOverride = { date: '2026-10-26', accepted: ['site.legal.e', 'OPEN'] };
-  assert.equal(releaseDecision(s).overridden.length, 0);
+  assert.equal(releaseDecision(s, opts).overridden.length, 0);
 });

@@ -21,9 +21,13 @@ const crumbs = [{ label: 'Home', href: './' }, { label: 'Terms & Conditions', hr
  * What only Good Times can confirm. Each becomes part of the terms, and leaves this list, once confirmed. The release
  * gate holds production while one is open (scripts/release-gate.mjs; docs/APPROVAL_REGISTER.md › B6).
  */
-export const OPEN_POINTS = [
-  `when the deposit is due for a booking made less than ${site.legal.payment.depositDaysBefore} days before the excursion (requests are accepted with 48 hours’ notice, so a deposit ${site.legal.payment.depositDaysBefore} days before cannot always be paid)`,
-];
+/**
+ * What the owner's rules still leave open in the terms (the release gate holds the domain while any is). Empty since the
+ * owner's decision of 8 Nov 2026 on B6 ("proceed with 7 days"): the deposit stays due 7 days before the excursion, and for
+ * a booking made less than 7 days ahead section 2's last sentence is the answer (we say when it is due when we confirm
+ * the booking).
+ */
+export const OPEN_POINTS = [];
 
 const list = (items) => items.join('; ');
 const { payment: PAY, cancellation: CANCEL } = site.legal;
@@ -34,8 +38,8 @@ const methods = (m) => (m.length > 1 ? `${m.slice(0, -1).join(', ')} or ${m[m.le
  * The text, as written. A clause is a paragraph with an optional bold label,
  * or a label over a list of points. Good Times' published text (5 Nov 2026), with the owner's payment and
  * cancellation terms of 8 Nov 2026 (the Legal details checklist, items 4 and 5: site.legal.payment and
- * site.legal.cancellation) in sections 2 and 3. Section 2's last sentence is interim wording for the case the
- * owner's rules leave open (OPEN_POINTS): it says only what the approved text said before, for that case alone.
+ * site.legal.cancellation) in sections 2 and 3. Section 2's last sentence answers the case of a booking made less than
+ * 7 days ahead (the approved text's own words), confirmed by the owner's decision of 8 Nov 2026 on B6.
  */
 export const TERMS = {
   intro:
@@ -133,7 +137,7 @@ export const termsPage = {
 </section>
 <section class="section">
   <div class="container prose">
-    ${legal.termsApproved ? '' : `<p class="notice notice--warning">${icon('alert')}<span><strong>Draft for Good Times’ approval.</strong> These are Good Times’ own terms, adapted where this website works differently. Still to confirm: ${esc(list(OPEN_POINTS))}; and the registered business details. Then a legal review, before these terms are published. Nothing here is invented in the meantime.</span></p>`}
+    ${legal.termsApproved ? '' : `<p class="notice notice--warning">${icon('alert')}<span><strong>Draft for Good Times’ approval.</strong> These are Good Times’ own terms, adapted where this website works differently. Still to confirm: ${esc(OPEN_POINTS.length ? `${list(OPEN_POINTS)}; and the registered business details` : 'the registered business details')}. Then a legal review, before these terms are published. Nothing here is invented in the meantime.</span></p>`}
     ${legal.effective ? `<p class="small muted">Effective ${esc(legal.effective)}.</p>` : ''}
     <p>${esc(TERMS.intro)}</p>
     ${legal.entity.verified || legal.address.verified ? `<p>${legal.entity.verified ? `${esc(s.name)} is the trading name of ${esc(legal.entity.name)}${legal.entity.registration ? `, registration number ${esc(legal.entity.registration)}` : ''}${legal.entity.directors ? `; directors: ${esc(legal.entity.directors)}` : ''}.` : ''} ${legal.address.verified ? `Address: ${esc(legal.address.text)}.` : ''}</p>` : ''}
