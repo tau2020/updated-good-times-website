@@ -152,9 +152,35 @@ node scripts/cloudflare/smoke.mjs https://staging.good-times-in-cape-town.pages.
 | `preview` | preview | <https://preview.good-times-in-cape-town.pages.dev> |
 | `main` | production | not deployed: `deployTarget('main')` refuses until `RELEASE.approved` |
 
-Safety rails in code: `setup.mjs` works only in the Good Times account (`ACCOUNT.match`); `domain`, `email` and `resend` change nothing, even with `--apply`, until the owner approves the cutover (`DOMAIN.approved`); it never deletes or overwrites a DNS record, and never reads or prints a secret. `scripts/release-gate.mjs` lists what must be approved before production (privacy notice, terms, legal facts).
+Safety rails in code: `setup.mjs` works only in the Good Times account (`ACCOUNT.match`); `domain` and `email` change nothing, even with `--apply`, until the owner approves the cutover (`DOMAIN.approved`); `resend` has its own approval (`SENDING_DOMAIN.approved`, given 8 Nov 2026) and adds only the sending domain's subdomain records, never the apex's (where the token cannot edit DNS it prints them for a person to add); it never deletes or overwrites a DNS record, and never reads or prints a secret. `scripts/release-gate.mjs` lists what must be approved before production (privacy notice, terms, legal facts).
 
 The build writes `site/_headers`: the Content-Security-Policy with the inline script's hash, security headers (HSTS included), cache rules and, in preview builds, `X-Robots-Tag: noindex`; production builds add `noindex` only for Cloudflare's own `pages.dev` addresses, so only the domain would ever be indexed.
+
+### Encrypted secrets
+
+Secret names are declared in `project.mjs` (`SECRETS`, `TEST_SECRETS`); their values go in from files, never the command line, and are read back by name only:
+
+```bash
+node scripts/cloudflare/secrets.mjs main production DATABASE_URL=@<file> RESEND_API_KEY=@<file> --generate ENQUIRY_SIGNING_SECRET=@<new file>          # read-only
+node scripts/cloudflare/secrets.mjs main production DATABASE_URL=@<file> RESEND_API_KEY=@<file> --generate ENQUIRY_SIGNING_SECRET=@<new file> --apply
+```
+
+It refuses names the project does not declare, a database URL for the owner role or without TLS, a value that is not a Resend key, and keys shorter than 32 characters; the main project's preview environment (staging and every preview branch) gets no secrets at all. After setting, it proves every other variable and secret is unchanged. The application's database role is `gt_app` (`scripts/db/app-role.mjs`: data access only, no DDL); migrations run as the owner (`DATABASE_URL=<owner URL> npm run db:migrate`).
+
+### The enquiry test deployment
+
+A Pages project of its own, `good-times-enquiry-test` (`TEST_PROJECT`), so its live settings can never reach staging. Its `test` branch (<https://test.good-times-enquiry-test.pages.dev>) takes live enquiries into the Neon branch `enquiry-test`, answers only requests that carry its access key (the `X-GT-Access` header or the `gt_access` cookie; `/api/health` stays open), sends every email to Resend's test inbox except the owned inboxes in `EMAIL_TEST_RECIPIENTS`, and is a preview build (noindex). Its production address is never deployed.
+
+```bash
+node scripts/cloudflare/setup.mjs test --apply          # its variables (the secrets first, with secrets.mjs test preview … --create)
+node scripts/cloudflare/build.mjs test
+npx wrangler pages deploy site --project-name good-times-enquiry-test --branch test
+# the scenarios, checked in the database and in Resend (see the script's header for the variables):
+node qa/enquiry-live.mjs --base=https://test.good-times-enquiry-test.pages.dev [--fault-email=… --fault-db=… --owner-db] --cleanup
+E2E_ENQUIRY_MODE=live E2E_BASE_URL=https://test.good-times-enquiry-test.pages.dev E2E_ACCESS_KEY=… npx playwright test test/e2e/enquiry.spec.mjs --grep "live build"
+```
+
+The go-live evidence and the remaining approvals are in `docs/enquiries/GO_LIVE_READINESS.md`.
 
 ## Documentation
 

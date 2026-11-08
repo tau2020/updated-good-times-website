@@ -12,7 +12,7 @@
  * or flexible dates): it loses the booking and frees its vehicle. Needs
  * DATABASE_URL (the production connection string for production). Copies of
  * the emails in Good Times' mailbox and in Resend's log are separate:
- * docs/OPERATIONS.md › Privacy requests.
+ * docs/enquiries/GO_LIVE_READINESS.md › F (privacy requests).
  */
 import { findForErasure, eraseEnquiries, maskEmail } from '../lib/enquiries/erase.mjs';
 import { closeDb } from '../lib/db/index.mjs';
