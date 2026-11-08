@@ -2,8 +2,9 @@
 
 The owner's master enhancement prompt and its legal and reputation addendum, carried out on the branch
 `enhancement/glass-scenic-reputation-legal` (from `main` `45e972f`), with the owner's follow-up requests of the same day:
-the review section of the reference screenshots in the reviewers' own words, and the backdrops more visible and on four
-more pages. Not merged and not deployed to production: it is on a Cloudflare preview alias,
+the review section of the reference screenshots in the reviewers' own words (short chat-style cards: the name, the
+stars, the words, the time), the backdrops more visible and on four more pages, no leaf on any button (every
+leaf-shaped button is the standard green pill), and "Book Your Adventure" as the navbar's call to action. Not merged and not deployed to production: it is on a Cloudflare preview alias,
 <https://glass-review.good-times-in-cape-town.pages.dev> (`06-qa.md` › G8).
 
 | | Report |
