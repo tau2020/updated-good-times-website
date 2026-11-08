@@ -158,8 +158,8 @@ function storyCard(r) {
 }
 
 /**
- * 09 · The heading, the listing's rating (dated, linked, kept apart from the cards; no review count, which changes),
- * the grid and the way to every review.
+ * 09 · The heading, the listing's rating and its number of reviews (dated, linked, kept apart from the cards; the date
+ * is when both were read, data/site.mjs), the grid and the way to every review.
  */
 function storiesSection(site) {
   const ta = site.tripadvisor;
@@ -176,6 +176,7 @@ function storiesSection(site) {
         <span class="stories__rating-score" aria-hidden="true">${ta.rating.toFixed(1)}</span>
         ${stars()}
         <span class="stories__rating-label">Rated ${ta.rating.toFixed(1)} out of 5 on Tripadvisor</span>
+        <span class="stories__rating-count">Number of reviews on <span>Tripadvisor: <strong>${ta.reviewCount}</strong></span></span>
         <span class="stories__rating-date">As listed on ${longDate(ta.checked)}<span class="visually-hidden">. See the listing (opens in a new tab)</span></span>
       </a>
     </div>

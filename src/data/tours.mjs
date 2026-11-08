@@ -11,8 +11,8 @@
  *    the team, and this site sends a request, not a booking.
  *  - `price` is the rate in ZAR, per group, with its group tiers, read from pricing.mjs (the one place a rate is
  *    set; the owner's approved prices of 7 Nov 2026); `price: null` is "on enquiry", with the official note in `priceNote`.
- *  - `tripadvisor` holds the product's own listing figures, read on 5 Nov 2026; only the
- *    five tours the listing sells have one.
+ *  - `tripadvisor` holds the product's own listing figures, read on 5 Nov 2026 and read again, unchanged, on
+ *    8 Nov 2026 (`TA_CHECKED`); only the tours the listing sells have one (the transfer's is in transfers.mjs).
  *  - A tour with no Good Times photograph (`images.hero: null`) shows the approved
  *    logo artwork instead, never another place's photo. Since the media audit of
  *    6 Nov 2026 none does: Cape Agulhas and Sky Diving show openly licensed
@@ -28,6 +28,8 @@ import { priceFor, groupMax } from './pricing.mjs';
 const OFFICIAL = 'https://www.goodtimesincapetown.co.za/tour/';
 const TA = 'https://www.tripadvisor.co.za/AttractionProductReview-g312659-';
 const CHECKED = '2026-11-05';
+/** When the Tripadvisor figures were last read on the listing (site.mjs `tripadvisor`). */
+const TA_CHECKED = '2026-11-08';
 const APPROVAL = 'published by Good Times on goodtimesincapetown.co.za; wording adapted for this site';
 const source = (slug) => ({ listing: `${OFFICIAL}${slug}/`, checked: CHECKED });
 /** The usual cancellation terms on the official tour pages. */
@@ -114,7 +116,7 @@ export const tours = [
       title: 'Cape Peninsula Private Tour: Cape Point & Boulders Penguins',
       description: 'A full-day private Cape Peninsula tour from Cape Town: Chapman’s Peak Drive, the Cape of Good Hope, Cape Point and the Boulders Beach penguins, with pickup from your accommodation.',
     },
-    tripadvisor: { url: `${TA}d19714975-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 87, checked: CHECKED },
+    tripadvisor: { url: `${TA}d19714975-Cape_Peninsula_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 87, checked: TA_CHECKED },
     confirm: ['The official page says “Max 4 people” and also lists a rate for 5–8 guests: confirm the group sizes offered.'],
     source: source('cape-peninsula-private-tour'),
     approval: APPROVAL,
@@ -163,7 +165,7 @@ export const tours = [
       title: 'Cape Town City Private Tour: Castle, District Six & Bo-Kaap',
       description: 'A private guided tour of central Cape Town: the Castle of Good Hope, City Hall, the District Six Museum, Parliament, the Company’s Garden and the Bo-Kaap, with pickup.',
     },
-    tripadvisor: { url: `${TA}d19907537-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 16, checked: CHECKED },
+    tripadvisor: { url: `${TA}d19907537-Cape_Town_Private_City_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 16, checked: TA_CHECKED },
     confirm: [],
     source: source('cape-town-city-private-tour'),
     approval: APPROVAL,
@@ -207,7 +209,7 @@ export const tours = [
       title: 'Cape Winelands Private Tour: Stellenbosch & Franschhoek',
       description: 'A private Cape Winelands day from Cape Town: Fairview Wine & Cheese, La Motte, Franschhoek village and Lanzerac, with pickup from your accommodation.',
     },
-    tripadvisor: { url: `${TA}d19685038-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 39, checked: CHECKED },
+    tripadvisor: { url: `${TA}d19685038-Cape_Winelands_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 39, checked: TA_CHECKED },
     confirm: ['The official page says “Max 4 people” and also lists a rate for 5–8 guests: confirm the group sizes offered.'],
     source: source('cape-winelands-private-tour'),
     approval: APPROVAL,
@@ -248,7 +250,7 @@ export const tours = [
       title: 'Township Private Tour: Langa, Cape Town',
       description: 'A private half-day tour of Langa in Cape Town: the Guga S’Thebe Arts & Culture Centre, a walk through the neighbourhood, a drumming session and an optional traditional beer tasting.',
     },
-    tripadvisor: { url: `${TA}d20311065-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 22, checked: CHECKED },
+    tripadvisor: { url: `${TA}d20311065-Langa_Township_Private_Tour-Cape_Town_Central_Western_Cape.html`, rating: 5.0, reviews: 22, checked: TA_CHECKED },
     confirm: ['Langa photographs showing children, or teenagers who may be under 18, are not used (the rights log’s four, and two withdrawn on 5 Nov 2026): parental consent would be needed.'],
     source: source('township-private-tour'),
     approval: APPROVAL,

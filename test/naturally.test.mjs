@@ -193,10 +193,11 @@ test('reviews: real names and ratings, initials until an approved photo exists, 
   }
   assert.equal((sec.match(/The review in short, in our words/g) || []).length, reviews.length);
   assert.doesNotMatch(sec, /in their words|“/, 'no claim that the words are the reviewers’');
-  // The listing's rating, dated, and no review count to go stale
+  // The listing's rating and its number of reviews (the owner's request of 8 Nov 2026), dated with the day both were read
   assert.match(sec, new RegExp(`Rated ${site.tripadvisor.rating.toFixed(1)} out of 5 on Tripadvisor`));
-  assert.match(sec, /As listed on 5 November 2026/);
-  assert.doesNotMatch(sec, new RegExp(`\\b${site.tripadvisor.reviewCount}\\b`));
+  assert.match(sec, new RegExp(`Number of reviews on <span>Tripadvisor: <strong>${site.tripadvisor.reviewCount}</strong></span>`));
+  assert.equal(site.tripadvisor.reviewCount, 264);
+  assert.match(sec, /As listed on 8 November 2026/);
   // Several visible at once without JavaScript: the grid is collapsed only by the script
   assert.doesNotMatch(sec, /class="stories__grid is-collapsed"/);
   assert.match(sec, /data-stories-more hidden/);
