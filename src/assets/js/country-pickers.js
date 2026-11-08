@@ -2,9 +2,10 @@
    Loaded as an ES module by enquiry.js. Without JavaScript both fields stay plain text boxes, as before.
 
    - Phone or WhatsApp: a flag button with the calling code beside the number. It opens a list to search by
-     country, other name ("UK", "Holland") or code ("+44", "44"). The number field stays the real field: leaving it
-     puts the code in front ("07700 900123" → "+44 7700 900123"), and a number typed or pasted with + or 00 moves
-     the button to its country. A code is only ever applied by the visitor: chosen in the list, typed with the
+     country, other name ("UK", "Holland") or code ("+44", "44"). The code lives on the button only, never twice:
+     the box keeps the number as the visitor writes it, and the form sends the two together ("07700 900123" with
+     the UK → "+44 7700 900123", shown in full on the review step). A number typed with + or 00 moves its code onto
+     the button when the visitor leaves the box; one pasted or filled in by the browser moves it at once. A code is only ever applied by the visitor: chosen in the list, typed with the
      number, or following their country of residence. The browser's language ("en-GB") only puts its country first
      in the list: "en-US" is the default of half the world, and a guessed +1 in front of a South African number
      would send a number nobody can call. Until a code is chosen the button says so, and the form asks for one.
@@ -53,7 +54,7 @@ function listbox({ id, label, owner, dial }) {
   };
   return {
     ul,
-    render(countries, { current = '', activate = true } = {}) {
+    render(countries, { current = '', query = '', activate = true } = {}) {
       items = countries;
       ul.replaceChildren(
         ...countries.map((c) => {
@@ -65,7 +66,8 @@ function listbox({ id, label, owner, dial }) {
       );
       active = -1;
       owner.removeAttribute('aria-activedescendant');
-      if (activate && countries.length) setActive(Math.max(0, countries.findIndex((c) => c.iso === current)));
+      // Something typed: the best match is the one Enter takes. Nothing typed: the country already chosen.
+      if (activate && countries.length) setActive(query.trim() ? 0 : Math.max(0, countries.findIndex((c) => c.iso === current)));
     },
     move: (delta) => setActive(active < 0 ? 0 : active + delta),
     get current() {
@@ -130,12 +132,14 @@ export function enhancePhone(input) {
       /* a convenience only */
     }
   };
+  // The button's parts stay in place and only their words change: the box's blur can update the button between a
+  // pointer's down and up on it, and a replaced part would swallow that click.
+  const flagEl = node('span', { class: 'tel__flag', 'aria-hidden': 'true' });
+  const dialEl = node('span', { class: 'tel__dial', 'aria-hidden': 'true' });
+  button.append(flagEl, dialEl, node('span', { class: 'tel__caret', 'aria-hidden': 'true' }));
   const show = () => {
-    button.replaceChildren(
-      node('span', { class: 'tel__flag', 'aria-hidden': 'true' }, chosen ? flagOf(chosen.iso) : '🌐'),
-      node('span', { class: 'tel__dial', 'aria-hidden': 'true' }, chosen ? `+${chosen.dial}` : 'Code'),
-      node('span', { class: 'tel__caret', 'aria-hidden': 'true' }),
-    );
+    flagEl.textContent = chosen ? flagOf(chosen.iso) : '🌐';
+    dialEl.textContent = chosen ? `+${chosen.dial}` : 'Code';
     button.setAttribute('aria-label', chosen ? `Country code: ${chosen.name}, +${chosen.dial}. Change it` : 'Choose your country code');
   };
   const choose = (c, { byPerson = false } = {}) => {
@@ -159,7 +163,7 @@ export function enhancePhone(input) {
 
   const render = (q) => {
     const found = searchCountries(q, { first: [chosen?.iso, guess?.iso].filter(Boolean) });
-    list.render(found, { current: chosen?.iso });
+    list.render(found, { current: chosen?.iso, query: q });
     empty.hidden = found.length > 0;
     empty.textContent = found.length ? '' : `No country matches “${q.trim()}”.`;
     status.textContent = q.trim() ? countWord(found.length) : '';
@@ -183,15 +187,20 @@ export function enhancePhone(input) {
     document.removeEventListener('pointerdown', outside, true);
     focus?.focus();
   }
+  // A number written with its code: the code goes to the button, the box keeps the rest.
+  const moveCode = (country = null) => {
+    const split = splitNumber(input.value, chosen?.iso);
+    if (!split) return false;
+    choose(country || split.country, { byPerson: true });
+    input.value = split.rest;
+    fire(input);
+    return true;
+  };
   const pick = (c) => {
     if (!c) return;
     choose(c, { byPerson: true });
-    // A number already written with another code takes the new one.
-    const split = splitNumber(input.value);
-    if (split && split.country.dial !== c.dial) {
-      input.value = withCode(split.rest, c);
-      fire(input);
-    }
+    // The form re-checks the number with its new code (a "choose your code" message clears).
+    if (!moveCode(c)) fire(input);
     close({ focus: input });
   };
 
@@ -211,22 +220,20 @@ export function enhancePhone(input) {
   });
   onOptionClick(list.ul, pick);
 
-  // A number typed or pasted with its code moves the button to that country.
-  input.addEventListener('input', () => {
+  // A number with its code: the button follows while typing; pasted or autofilled, the code moves to it at once.
+  input.addEventListener('input', (e) => {
+    if (!e.isTrusted) return; // our own events
     const split = splitNumber(input.value, chosen?.iso);
-    if (split && split.country.iso !== chosen?.iso) choose(split.country, { byPerson: true });
+    if (!split) return;
+    if (split.country.iso !== chosen?.iso) choose(split.country, { byPerson: true });
+    if (!/^(insertText|deleteContent)/.test(e.inputType || '')) moveCode();
   });
-  // Leaving the field shows the number as it will be sent.
-  input.addEventListener('blur', () => {
-    const full = withCode(input.value, chosen);
-    if (full !== input.value) {
-      input.value = full;
-      fire(input);
-    }
-  });
+  input.addEventListener('blur', () => moveCode());
 
   return {
     compose: (value) => withCode(value, chosen),
+    /** A number written without a code while no code is chosen: the form asks for one. */
+    needsCode: (value) => Boolean(String(value ?? '').trim()) && !chosen && !/^(\+|00)/.test(String(value).trim()),
     // Only while the number is still empty: then the code is on the button, in view, before anything is typed.
     follow(iso) {
       const c = byIso(iso);
@@ -259,7 +266,7 @@ export function enhanceCountry(input, { onPick } = {}) {
   };
   const openWith = (q) => {
     const found = searchCountries(q, { first: guess ? [guess.iso] : [] });
-    list.render(found, { current: byName(input.value)?.iso || '', activate: Boolean(q.trim()) });
+    list.render(found, { current: byName(input.value)?.iso || '', query: q, activate: Boolean(q.trim()) });
     list.ul.hidden = found.length === 0;
     input.setAttribute('aria-expanded', String(found.length > 0));
     status.textContent = q.trim() ? (found.length ? countWord(found.length) : 'No country matches. You can keep what you typed.') : '';

@@ -173,6 +173,13 @@ function init(root) {
   const panelFor = (step) => (step === 'details' ? detailsPanel() : panels[step]);
   const sectionFor = (step) => (step === 'details' ? type() : step);
 
+  /** The shared checks, worded for the code button where it is on the page (the schema's words are for the plain box). */
+  function check(v, opts) {
+    const r = validateEnquiry(v, opts);
+    if (r.errors?.phone && phoneUi?.needsCode(raw(panels.contact, 'phone'))) r.errors.phone = 'Choose your country calling code with the button beside the number.';
+    return r;
+  }
+
   function values() {
     const d = detailsPanel();
     const contact = readPanel(panels.contact);
@@ -453,7 +460,7 @@ function init(root) {
   function recheck(panel) {
     if (!panel || !panel.querySelector('[data-error-for]:not([hidden])')) return;
     const step = panel.dataset.wizardStep;
-    const r = validateEnquiry(values(), { section: sectionFor(step) });
+    const r = check(values(), { section: sectionFor(step) });
     panel.querySelectorAll('[data-error-for]:not([hidden])').forEach((e) => {
       const name = e.dataset.errorFor;
       if (!r.errors[name]) clearFieldError(panel, name);
@@ -888,7 +895,7 @@ function init(root) {
     hideSubmitError();
     showOnly(panel);
     if (step === 'review') {
-      renderSummary(panel.querySelector('[data-review]'), summaryModel(validateEnquiry(values()).data), { editable: true });
+      renderSummary(panel.querySelector('[data-review]'), summaryModel(check(values()).data), { editable: true });
     }
     updateProgress();
     persist();
@@ -900,7 +907,7 @@ function init(root) {
     if (state.checking) return;
     const step = state.step;
     const panel = panelFor(step);
-    const r = validateEnquiry(values(), { section: sectionFor(step) });
+    const r = check(values(), { section: sectionFor(step) });
     if (!r.ok) {
       showErrors(panel, r.errors);
       return;
@@ -975,7 +982,7 @@ function init(root) {
   async function send() {
     hideSubmitError();
     const vals = values();
-    const r = validateEnquiry(vals);
+    const r = check(vals);
     if (!r.ok) {
       const step = firstErrorStep(r.errors) || 'review';
       goTo(step, { focus: false });
@@ -1238,7 +1245,7 @@ function init(root) {
   syncOnline();
 
   let start = prefilled ? 'details' : ORDER.includes(draft?.step) ? draft.step : 'service';
-  if (start === 'review' && !validateEnquiry(values()).ok) start = firstErrorStep(validateEnquiry(values()).errors) || 'service';
+  if (start === 'review' && !check(values()).ok) start = firstErrorStep(check(values()).errors) || 'service';
   submitBtn.disabled = false;
   root.classList.add('is-ready');
   goTo(start, { focus: false, scroll: false });
