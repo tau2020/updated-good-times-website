@@ -103,7 +103,7 @@ function mockApi(state = {}) {
       s.domains[m[2]].push({ name: body.name, status: 'pending' });
       return ok(s.domains[m[2]].at(-1));
     }
-    if (p === '/zones') return ok(s.zones.filter((z) => z.name === u.searchParams.get('name') && z.account === u.searchParams.get('account.id')));
+    if (p === '/zones') return ok(s.zones.filter((z) => z.name === u.searchParams.get('name') && z.account.id === u.searchParams.get('account.id')));
     if ((m = /^\/zones\/([^/]+)\/dns_records$/.exec(p))) {
       if (s.dnsForbidden) return res(403, { success: false, errors: [{ code: 10000, message: 'Authentication error' }] });
       if (method === 'GET') return ok(s.records);
@@ -157,7 +157,7 @@ const exec = (argv, api, { cfg = quiet, env = {} } = {}) => {
   return run(argv, { env: { CLOUDFLARE_API_TOKEN: 'cf-test-token', CLOUDFLARE_API_BASE: CF, RESEND_API_BASE: RS, ...env }, fetchImpl: api.fetchImpl, log: (l) => lines.push(l), cfg });
 };
 const out = () => lines.join('\n');
-const activeZone = { id: 'zone-1', name: project.DOMAIN.apex, status: 'active', account: GT.id, name_servers: ['ada.ns.cloudflare.com', 'bob.ns.cloudflare.com'] };
+const activeZone = { id: 'zone-1', name: project.DOMAIN.apex, status: 'active', account: { id: GT.id, name: GT.name }, name_servers: ['ada.ns.cloudflare.com', 'bob.ns.cloudflare.com'] };
 /** The same settings once the owner has approved the cutover: the only way the domain and email steps may write (resend has SENDING_DOMAIN.approved). */
 const cutover = { ...quiet, DOMAIN: { ...project.DOMAIN, approved: true } };
 const APEX = project.DOMAIN.apex;
@@ -241,7 +241,20 @@ test('refuses an account that cannot be proven to be Good Times’, and changes 
   assert.match(out(), /confirmed by token owner goodtimesincapetown@example\.com/);
   await assert.rejects(run(['check'], { env: {}, fetchImpl: owned.fetchImpl, log: () => {} }), /set CLOUDFLARE_API_TOKEN \(a token created in the Good Times account/);
   // A valid token without any account permission sees no account at all: say what to add.
-  await assert.rejects(exec(['pages', '--apply'], mockApi({ accounts: [] }), { env: { CLOUDFLARE_ACCOUNT_ID: GT.id } }), (e) => e instanceof Refusal && /reaches no Cloudflare account.*Account › Cloudflare Pages › Edit with Account Resources › Include › the Good Times account \(goodtimesincapetown\)/.test(e.message));
+  await assert.rejects(exec(['pages', '--apply'], mockApi({ accounts: [] }), { env: { CLOUDFLARE_ACCOUNT_ID: GT.id } }), (e) => e instanceof Refusal && /reaches no Cloudflare account.*Account › Cloudflare Pages › Edit with Account Resources › Include › the Good Times account \(goodtimesincapetown\) and Account › Account Settings: Read/.test(e.message));
+  await assert.rejects(exec(['pages'], mockApi({ accounts: [], zones: [activeZone] })), /reaches no Cloudflare account it can list\. .*or set CLOUDFLARE_ACCOUNT_ID/);
+  // A token that lists no account (no Account Settings: Read) is proven by Cloudflare's record of the domain's zone in
+  // the account CLOUDFLARE_ACCOUNT_ID names, by that account's name; never by the id alone.
+  const unlisted = mockApi({ accounts: [], zones: [activeZone] });
+  const proven = await exec(['pages', '--apply'], unlisted, { env: { CLOUDFLARE_ACCOUNT_ID: GT.id } });
+  assert.equal(proven.account.id, GT.id);
+  assert.match(out(), /Account: Goodtimesincapetown’s Account \[acc-gt\], confirmed by account name "Goodtimesincapetown’s Account" \(Cloudflare's record of the zone goodtimesincapetown\.co\.za\)/);
+  const stranger = mockApi({ accounts: [], zones: [{ ...activeZone, account: { id: 'acc-other', name: 'Driftnimbus Account' } }] });
+  await assert.rejects(exec(['pages', '--apply'], stranger, { env: { CLOUDFLARE_ACCOUNT_ID: 'acc-other' } }), /reaches no Cloudflare account it can list, and the zone goodtimesincapetown\.co\.za cannot be read in account acc-other under a Good Times name/);
+  assert.deepEqual(stranger.writes(), []);
+  const elsewhere = mockApi({ accounts: [], zones: [activeZone] });
+  await assert.rejects(exec(['pages', '--apply'], elsewhere, { env: { CLOUDFLARE_ACCOUNT_ID: 'acc-other' } }), /cannot be read in account acc-other/);
+  assert.deepEqual(elsewhere.writes(), []);
   // Without anything to match, no account can be confirmed.
   await assert.rejects(exec(['check'], mockApi(), { cfg: { ...quiet, ACCOUNT: { match: '' } } }), /ACCOUNT\.match is empty/);
 });

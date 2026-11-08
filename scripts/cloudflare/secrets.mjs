@@ -105,7 +105,7 @@ export async function putSecrets(argv, { env = process.env, fetchImpl = fetch, l
 
   if (!env.CLOUDFLARE_API_TOKEN) throw new Refusal('set CLOUDFLARE_API_TOKEN (a token created in the Good Times account; never commit it)');
   const cf = cloudflareClient({ token: env.CLOUDFLARE_API_TOKEN, base: env.CLOUDFLARE_API_BASE || CF_API, fetchImpl });
-  const { account, proof } = await resolveAccount(cf, { match: cfg.ACCOUNT.match, accountId: env.CLOUDFLARE_ACCOUNT_ID || '' });
+  const { account, proof } = await resolveAccount(cf, { match: cfg.ACCOUNT.match, accountId: env.CLOUDFLARE_ACCOUNT_ID || '', apex: cfg.DOMAIN?.apex });
   log(`Account: ${account.name} [${account.id}], confirmed by ${proof}${apply ? '' : ' (read-only run)'}`);
   const path = `/accounts/${account.id}/pages/projects/${project.name}`;
   let before = await cf.find(path);

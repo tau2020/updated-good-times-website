@@ -140,16 +140,28 @@ export function resendClient({ apiKey, base = RESEND_API, fetchImpl = fetch }) {
 
 /* ---------- the account ---------- */
 
-/** The Good Times account among the token's accounts, with how it was proven; refuses anything else. */
-export async function resolveAccount(cf, { match, accountId = '' }) {
+/**
+ * The Good Times account among the token's accounts, with how it was proven; refuses anything else.
+ * A token without Account › Account Settings: Read lists no account at all, even one where it holds Pages or zone
+ * permissions. For such a token, with CLOUDFLARE_ACCOUNT_ID set, Cloudflare's own record of the domain's zone in
+ * that account (`apex`) names the account: the same proof by name, never a guess.
+ */
+export async function resolveAccount(cf, { match, accountId = '', apex = '' }) {
   const accounts = (await cf.get('/accounts?per_page=50')) || [];
   const user = await cf.get('/user').catch(() => null); // needs User › User Details: Read
   const want = String(match || '').toLowerCase();
   if (!want) throw new Refusal('ACCOUNT.match is empty in scripts/cloudflare/project.mjs, so no account can be confirmed');
-  const named = (a) => a.name.toLowerCase().includes(want);
+  const named = (a) => String(a?.name || '').toLowerCase().includes(want);
   const owner = Boolean(user?.email?.toLowerCase().includes(want));
   if (!accounts.length) {
-    throw new Refusal(`this token reaches no Cloudflare account, so it has no account permission. Edit it (My Profile › API Tokens) to add Account › Cloudflare Pages › Edit with Account Resources › Include › the Good Times account (${match}), then run again.`);
+    const zones = accountId && apex ? (await cf.get(`/zones?name=${encodeURIComponent(apex)}&account.id=${accountId}`).catch(() => null)) || [] : [];
+    const held = zones.find((z) => z.name === apex && z.account?.id === accountId)?.account;
+    if (held && named(held)) return { account: { id: held.id, name: held.name }, proof: `account name "${held.name}" (Cloudflare's record of the zone ${apex})` };
+    throw new Refusal(
+      `this token reaches no Cloudflare account it can list${accountId ? `, and the zone ${apex || 'of the domain'} cannot be read in account ${accountId} under a Good Times name` : ''}. ` +
+        `Edit it (My Profile › API Tokens) to add Account › Cloudflare Pages › Edit with Account Resources › Include › the Good Times account (${match}) and Account › Account Settings: Read` +
+        `${accountId ? '' : ', or set CLOUDFLARE_ACCOUNT_ID to the account\'s id'}, then run again.`,
+    );
   }
   const listed = accounts.map((a) => `${a.name} [${a.id}]`).join(', ');
   let account = accountId ? accounts.find((a) => a.id === accountId) : accounts.find(named);
@@ -453,7 +465,7 @@ export async function run(argv, { env = process.env, fetchImpl = fetch, log = co
   const verified = await verifyToken(cf, accountId);
   if (!verified && accountId) throw tokenRefusal(env.CLOUDFLARE_API_TOKEN, accountId);
   log(`Cloudflare token: ${verified || 'not a user token (set CLOUDFLARE_ACCOUNT_ID to verify an account token)'}`);
-  const { account, proof } = await resolveAccount(cf, { match: cfg.ACCOUNT.match, accountId });
+  const { account, proof } = await resolveAccount(cf, { match: cfg.ACCOUNT.match, accountId, apex: cfg.DOMAIN?.apex });
   log(`Account: ${account.name} [${account.id}], confirmed by ${proof}${apply ? '' : ' (read-only run)'}`);
   const opts = { cfg, apply, log };
   const results = {};
